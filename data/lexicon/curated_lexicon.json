@@ -417881,5 +417881,6021 @@
     "category": "general",
     "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L160781",
     "batch": "2026-11-06-written-b41"
+  },
+  {
+    "char": "放完",
+    "jyutping": "fong3 jyun4",
+    "code": "40",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L160783",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "放寬心",
+    "jyutping": "fong3 fun1 sam1",
+    "code": "433",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L160787",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "放寬政策",
+    "jyutping": "fong3 fun1 zing3 caak3",
+    "code": "4344",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L160788",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "放射出",
+    "jyutping": "fong3 se6 ceot1",
+    "code": "423",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L160794",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "放射出來",
+    "jyutping": "fong3 se6 ceot1 loi4",
+    "code": "4230",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L250178",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "放射學",
+    "jyutping": "fong3 se6 hok6",
+    "code": "422",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L160797",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "放射醫學",
+    "jyutping": "fong3 se6 ji1 hok6",
+    "code": "4232",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L160796",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "放影",
+    "jyutping": "fong3 jing2",
+    "code": "49",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L160836",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "放影機",
+    "jyutping": "fong3 jing2 gei1",
+    "code": "493",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L160837",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "放心不下",
+    "jyutping": "fong3 sam1 bat1 haa6",
+    "code": "4332",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L160840",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "放心使用",
+    "jyutping": "fong3 sam1 si2 jung6",
+    "code": "4392",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L160841",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "放心大膽",
+    "jyutping": "fong3 sam1 daai6 daam2",
+    "code": "4329",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L160842",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "放心好了",
+    "jyutping": "fong3 sam1 hou2 liu5",
+    "code": "4395",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L160843",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "放心起來",
+    "jyutping": "fong3 sam1 hei2 loi4",
+    "code": "4390",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L250254",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "放手不管",
+    "jyutping": "fong3 sau2 bat1 gun2",
+    "code": "4939",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L160858",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "放手大幹",
+    "jyutping": "fong3 sau2 daai6 gon3",
+    "code": "4924",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L160860",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "放手放腳",
+    "jyutping": "fong3 sau2 fong3 goek3",
+    "code": "4944",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L160861",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "放掉",
+    "jyutping": "fong3 diu6",
+    "code": "42",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L160862",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "放氣",
+    "jyutping": "fong3 hei3",
+    "code": "44",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L160887",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "放油",
+    "jyutping": "fong3 jau4",
+    "code": "40",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L160892",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "放滿",
+    "jyutping": "fong3 mun5",
+    "code": "45",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L160904",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "放火燒",
+    "jyutping": "fong3 fo2 siu1",
+    "code": "493",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L160906",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "放煙幕",
+    "jyutping": "fong3 jin1 mok6",
+    "code": "432",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L160912",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "放煙火",
+    "jyutping": "fong3 jin1 fo2",
+    "code": "439",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L160913",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "放爆竹",
+    "jyutping": "fong3 baau3 zuk1",
+    "code": "443",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L160917",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "放牛吃草",
+    "jyutping": "fong3 ngau4 hek3 cou2",
+    "code": "4049",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L160920",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "放狗屁",
+    "jyutping": "fong3 gau2 pei3",
+    "code": "494",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L160929",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "放生池",
+    "jyutping": "fong3 saang1 ci4",
+    "code": "430",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L160931",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "放眼望去",
+    "jyutping": "fong3 ngaan5 mong6 heoi3",
+    "code": "4524",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L160941",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "放着不用",
+    "jyutping": "fong3 zoek6 bat1 jung6",
+    "code": "4232",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L160944",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "放着不管",
+    "jyutping": "fong3 zoek6 bat1 gun2",
+    "code": "4239",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L160945",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "放穩",
+    "jyutping": "fong3 wan2",
+    "code": "49",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L160948",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "放糖",
+    "jyutping": "fong3 tong4",
+    "code": "40",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L160955",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "放縱不羈",
+    "jyutping": "fong3 zung3 bat1 gei1",
+    "code": "4433",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L250409",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "放置不用",
+    "jyutping": "fong3 zi3 bat1 jung6",
+    "code": "4432",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L160968",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "放聲歌唱",
+    "jyutping": "fong3 sing1 go1 coeng3",
+    "code": "4334",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L160772",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "放聲高唱",
+    "jyutping": "fong3 sing1 gou1 coeng3",
+    "code": "4334",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L160773",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "放聲高歌",
+    "jyutping": "fong3 sing1 gou1 go1",
+    "code": "4333",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L160774",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "放膽去做",
+    "jyutping": "fong3 daam2 heoi3 zou6",
+    "code": "4942",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L160974",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "放輕",
+    "jyutping": "fong3 heng1",
+    "code": "43",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L250484",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "放輕",
+    "jyutping": "fong3 hing1",
+    "code": "43",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L250484",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "放進來",
+    "jyutping": "fong3 zeon3 loi4",
+    "code": "440",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161011",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "放進去",
+    "jyutping": "fong3 zeon3 heoi3",
+    "code": "444",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161010",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "放過來",
+    "jyutping": "fong3 gwo3 loi4",
+    "code": "440",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161008",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "放錄像",
+    "jyutping": "fong3 luk6 zoeng6",
+    "code": "422",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L160835",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "放錯",
+    "jyutping": "fong3 co3",
+    "code": "44",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L250509",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "放長",
+    "jyutping": "fong3 coeng4",
+    "code": "40",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L250512",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "放長假",
+    "jyutping": "fong3 coeng4 gaa3",
+    "code": "404",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L250513",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "放長線",
+    "jyutping": "fong3 coeng4 sin3",
+    "code": "404",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L250514",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "放開來",
+    "jyutping": "fong3 hoi1 loi4",
+    "code": "430",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L160831",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "放開手",
+    "jyutping": "fong3 hoi1 sau2",
+    "code": "439",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L160829",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "放鞭",
+    "jyutping": "fong3 bin1",
+    "code": "43",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161024",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "放鞭炮",
+    "jyutping": "fong3 bin1 paau3",
+    "code": "434",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161025",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "放風聲",
+    "jyutping": "fong3 fung1 seng1",
+    "code": "433",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L250543",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "放風聲",
+    "jyutping": "fong3 fung1 sing1",
+    "code": "433",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L250543",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "放馬過來",
+    "jyutping": "fong3 maa5 gwo3 loi4",
+    "code": "4540",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L250557",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "放高",
+    "jyutping": "fong3 gou1",
+    "code": "43",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161039",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "放魚入海",
+    "jyutping": "fong3 jyu4 jap6 hoi2",
+    "code": "4029",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L250569",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "放魚入海",
+    "jyutping": "fong3 jyu2 jap6 hoi2",
+    "code": "4929",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L250569",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "政商",
+    "jyutping": "zing3 soeng1",
+    "code": "43",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161084",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "政壇醜聞",
+    "jyutping": "zing3 taan4 cau2 man4",
+    "code": "4090",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161087",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "政局演變",
+    "jyutping": "zing3 guk6 jin2 bin3",
+    "code": "4294",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161096",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "政局穩定",
+    "jyutping": "zing3 guk6 wan2 ding6",
+    "code": "4292",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161097",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "政府公告",
+    "jyutping": "zing3 fu2 gung1 gou3",
+    "code": "4934",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161106",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "政府網站",
+    "jyutping": "zing3 fu2 mong5 zaam6",
+    "code": "4952",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L250682",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "政府職能",
+    "jyutping": "zing3 fu2 zik1 nang4",
+    "code": "4930",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161111",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "政府議案",
+    "jyutping": "zing3 fu2 ji5 on3",
+    "code": "4954",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L250686",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "政府門戶網站",
+    "jyutping": "zing3 fu2 mun4 wu6 mong5 zaam6",
+    "code": "490252",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L250692",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "政府首腦",
+    "jyutping": "zing3 fu2 sau2 nou5",
+    "code": "4995",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161115",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "政情報導",
+    "jyutping": "zing3 cing4 bou3 dou6",
+    "code": "4042",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L250699",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "政治事件",
+    "jyutping": "zing3 zi6 si6 gin2",
+    "code": "4229",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161136",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "政治事件",
+    "jyutping": "zing3 zi6 si6 gin6",
+    "code": "4222",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161136",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "政治信仰",
+    "jyutping": "zing3 zi6 seon3 joeng5",
+    "code": "4245",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161138",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "政治信念",
+    "jyutping": "zing3 zi6 seon3 nim6",
+    "code": "4242",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161139",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "政治動員",
+    "jyutping": "zing3 zi6 dung6 jyun4",
+    "code": "4220",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161141",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "政治勢力",
+    "jyutping": "zing3 zi6 sai3 lik6",
+    "code": "4242",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161142",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "政治危機",
+    "jyutping": "zing3 zi6 ngai4 gei1",
+    "code": "4203",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161146",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "政治宣傳",
+    "jyutping": "zing3 zi6 syun1 cyun4",
+    "code": "4230",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161156",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "政治局勢",
+    "jyutping": "zing3 zi6 guk6 sai3",
+    "code": "4224",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161159",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "政治形勢",
+    "jyutping": "zing3 zi6 jing4 sai3",
+    "code": "4204",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161163",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "政治思潮",
+    "jyutping": "zing3 zi6 si1 ciu4",
+    "code": "4230",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161164",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "政治情報",
+    "jyutping": "zing3 zi6 cing4 bou3",
+    "code": "4204",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L250772",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "政治氣候",
+    "jyutping": "zing3 zi6 hei3 hau6",
+    "code": "4242",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161171",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "政治決斷",
+    "jyutping": "zing3 zi6 kyut3 dyun6",
+    "code": "4242",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161140",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "政治波動",
+    "jyutping": "zing3 zi6 bo1 dung6",
+    "code": "4232",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161172",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "政治理念",
+    "jyutping": "zing3 zi6 lei5 nim6",
+    "code": "4252",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161176",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "政治立場",
+    "jyutping": "zing3 zi6 laap6 coeng4",
+    "code": "4220",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161178",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "政治腐敗",
+    "jyutping": "zing3 zi6 fu6 baai6",
+    "code": "4222",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L250809",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "政治謀略",
+    "jyutping": "zing3 zi6 mau4 loek6",
+    "code": "4202",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L250819",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "政治責任",
+    "jyutping": "zing3 zi6 zaak3 jam6",
+    "code": "4242",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L250824",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "政治路線",
+    "jyutping": "zing3 zi6 lou6 sin3",
+    "code": "4224",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L250828",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "政治逃犯",
+    "jyutping": "zing3 zi6 tou4 faan2",
+    "code": "4209",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161197",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "政治野心",
+    "jyutping": "zing3 zi6 je5 sam1",
+    "code": "4253",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161200",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "政治陰謀",
+    "jyutping": "zing3 zi6 jam1 mau4",
+    "code": "4230",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161201",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "政治頭腦",
+    "jyutping": "zing3 zi6 tau4 nou5",
+    "code": "4205",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161149",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "政治體制",
+    "jyutping": "zing3 zi6 tai2 zai3",
+    "code": "4294",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161137",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "政策主張",
+    "jyutping": "zing3 caak3 zyu2 zoeng1",
+    "code": "4493",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161227",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "政策優惠",
+    "jyutping": "zing3 caak3 jau1 wai6",
+    "code": "4432",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161228",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "政策措施",
+    "jyutping": "zing3 caak3 cou3 si1",
+    "code": "4443",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161232",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "政策方針",
+    "jyutping": "zing3 caak3 fong1 zam1",
+    "code": "4433",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L250882",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "政見發表",
+    "jyutping": "zing3 gin3 faat3 biu2",
+    "code": "4449",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L250911",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "故事分析",
+    "jyutping": "gu3 si6 fan1 sik1",
+    "code": "4233",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161280",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "故事情節",
+    "jyutping": "gu3 si6 cing4 zit3",
+    "code": "4204",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L250961",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "故事書",
+    "jyutping": "gu3 si6 syu1",
+    "code": "423",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161278",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "故事梗概",
+    "jyutping": "gu3 si6 gang2 koi3",
+    "code": "4294",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161285",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "故作不知",
+    "jyutping": "gu3 zok3 bat1 zi1",
+    "code": "4433",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161301",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "故作多情",
+    "jyutping": "gu3 zok3 do1 cing4",
+    "code": "4430",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161302",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "故意傷害",
+    "jyutping": "gu3 ji3 soeng1 hoi6",
+    "code": "4432",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161352",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "故意犯罪",
+    "jyutping": "gu3 ji3 faan6 zeoi6",
+    "code": "4422",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161355",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "故態復作",
+    "jyutping": "gu3 taai3 fuk6 zok3",
+    "code": "4424",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161348",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "故鄉情",
+    "jyutping": "gu3 hoeng1 cing4",
+    "code": "430",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161275",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "故障診斷",
+    "jyutping": "gu3 zoeng3 can2 dyun6",
+    "code": "4492",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L251129",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "故障診斷",
+    "jyutping": "gu3 zoeng3 can2 dyun3",
+    "code": "4494",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L251129",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "效忠國家",
+    "jyutping": "haau6 zung1 gwok3 gaa1",
+    "code": "2343",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161404",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "效期",
+    "jyutping": "haau6 kei4",
+    "code": "20",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161407",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "效果器",
+    "jyutping": "haau6 gwo2 hei3",
+    "code": "294",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161409",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "效果顯著",
+    "jyutping": "haau6 gwo2 hin2 zyu3",
+    "code": "2994",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161413",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "效率高",
+    "jyutping": "haau6 leot6 gou1",
+    "code": "223",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161423",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "效率高",
+    "jyutping": "haau6 leot2 gou1",
+    "code": "293",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161423",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敍述出來",
+    "jyutping": "zeoi6 seot6 ceot1 loi4",
+    "code": "2230",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L72069",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敍述者",
+    "jyutping": "zeoi6 seot6 ze2",
+    "code": "229",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L72072",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敏感區域",
+    "jyutping": "man5 gam2 keoi1 wik6",
+    "code": "5932",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161528",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敏感數據",
+    "jyutping": "man5 gam2 sou3 geoi3",
+    "code": "5944",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161532",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敏感時期",
+    "jyutping": "man5 gam2 si4 kei4",
+    "code": "5900",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161533",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敏感期",
+    "jyutping": "man5 gam2 kei4",
+    "code": "590",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161534",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敏感話題",
+    "jyutping": "man5 gam2 waa6 tai4",
+    "code": "5920",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L251299",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敏感部位",
+    "jyutping": "man5 gam2 bou6 wai6",
+    "code": "5922",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161537",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敏捷性",
+    "jyutping": "man5 zit6 sing3",
+    "code": "524",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161541",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敏而好學",
+    "jyutping": "man5 ji4 hou3 hok6",
+    "code": "5042",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161544",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "救上來",
+    "jyutping": "gau3 soeng5 loi4",
+    "code": "450",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L251324",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "救上去",
+    "jyutping": "gau3 soeng5 heoi3",
+    "code": "454",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161551",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "救下",
+    "jyutping": "gau3 haa6",
+    "code": "42",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161553",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "救下來",
+    "jyutping": "gau3 haa6 loi4",
+    "code": "420",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L251328",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "救下去",
+    "jyutping": "gau3 haa6 heoi3",
+    "code": "424",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161554",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "救世濟民",
+    "jyutping": "gau3 sai3 zai3 man4",
+    "code": "4440",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161560",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "救人者",
+    "jyutping": "gau3 jan4 ze2",
+    "code": "409",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161568",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "救出去",
+    "jyutping": "gau3 ceot1 heoi3",
+    "code": "434",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161572",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "救到",
+    "jyutping": "gau3 dou2",
+    "code": "49",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161573",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "救到",
+    "jyutping": "gau3 dou3",
+    "code": "44",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161573",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "救命錢",
+    "jyutping": "gau3 meng6 cin2",
+    "code": "429",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L251373",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "救回",
+    "jyutping": "gau3 wui4",
+    "code": "40",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161590",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "救回來",
+    "jyutping": "gau3 wui4 loi4",
+    "code": "400",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L251377",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "救回去",
+    "jyutping": "gau3 wui4 heoi3",
+    "code": "404",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161591",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "救心丸",
+    "jyutping": "gau3 sam1 jyun2",
+    "code": "439",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161604",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "救心丸",
+    "jyutping": "gau3 sam1 jyun4",
+    "code": "430",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161604",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "救援船隻",
+    "jyutping": "gau3 wun4 syun4 zek3",
+    "code": "4004",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161620",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "救援艇",
+    "jyutping": "gau3 wun4 teng5",
+    "code": "405",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161621",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "救援車輛",
+    "jyutping": "gau3 wun4 ce1 loeng6",
+    "code": "4032",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L251420",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "救援飛機",
+    "jyutping": "gau3 wun4 fei1 gei1",
+    "code": "4033",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L251426",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "救法",
+    "jyutping": "gau3 faat3",
+    "code": "44",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161636",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "救溺",
+    "jyutping": "gau3 nik6",
+    "code": "42",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161652",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "救溺",
+    "jyutping": "gau3 nik1",
+    "code": "43",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161652",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "救濟災民",
+    "jyutping": "gau3 zai3 zoi1 man4",
+    "code": "4430",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161644",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "救濟貧民",
+    "jyutping": "gau3 zai3 pan4 man4",
+    "code": "4400",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161647",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "救濟費",
+    "jyutping": "gau3 zai3 fai3",
+    "code": "444",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161648",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "救濟難民",
+    "jyutping": "gau3 zai3 naan6 man4",
+    "code": "4420",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161651",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "救火拯溺",
+    "jyutping": "gau3 fo2 cing2 nik6",
+    "code": "4992",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161657",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "救火拯溺",
+    "jyutping": "gau3 fo2 cing2 nik1",
+    "code": "4993",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161657",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "救災物資",
+    "jyutping": "gau3 zoi1 mat6 zi1",
+    "code": "4323",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L251489",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "救生帶",
+    "jyutping": "gau3 sang1 daai3",
+    "code": "434",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161678",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "救生設備",
+    "jyutping": "gau3 sang1 cit3 bei6",
+    "code": "4342",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L251520",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "救護船",
+    "jyutping": "gau3 wu6 syun4",
+    "code": "420",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161612",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "救過來",
+    "jyutping": "gau3 gwo3 loi4",
+    "code": "440",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161701",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "救醒",
+    "jyutping": "gau3 seng2",
+    "code": "49",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161703",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "救醒",
+    "jyutping": "gau3 sing2",
+    "code": "49",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161703",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "救難船",
+    "jyutping": "gau3 naan6 syun4",
+    "code": "420",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161707",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敗下陣來",
+    "jyutping": "baai6 haa6 zan6 loi4",
+    "code": "2220",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L251614",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敗不餒",
+    "jyutping": "baai6 bat1 neoi5",
+    "code": "235",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L251616",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敗壞名譽",
+    "jyutping": "baai6 waai6 ming4 jyu6",
+    "code": "2202",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L251636",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敗家女",
+    "jyutping": "baai6 gaa1 neoi5",
+    "code": "235",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L251639",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敗而不餒",
+    "jyutping": "baai6 ji4 bat1 neoi5",
+    "code": "2035",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L251665",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敗陣下來",
+    "jyutping": "baai6 zan6 haa6 loi4",
+    "code": "2220",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L251687",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "教下",
+    "jyutping": "gaau3 haa6",
+    "code": "42",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161739",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "教下去",
+    "jyutping": "gaau3 haa6 heoi3",
+    "code": "424",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161740",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "教人",
+    "jyutping": "gaau3 jan4",
+    "code": "40",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161751",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "教你做",
+    "jyutping": "gaau3 nei5 zou6",
+    "code": "452",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161760",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "教你用",
+    "jyutping": "gaau3 nei5 jung6",
+    "code": "452",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161761",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "教出",
+    "jyutping": "gaau3 ceot1",
+    "code": "43",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161770",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "教務主任",
+    "jyutping": "gaau3 mou6 zyu2 jam6",
+    "code": "4292",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161772",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "教務會議",
+    "jyutping": "gaau3 mou6 wui6 ji5",
+    "code": "4225",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161773",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "教女",
+    "jyutping": "gaau3 neoi5",
+    "code": "45",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161799",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "教學中心",
+    "jyutping": "gaau3 hok6 zung1 sam1",
+    "code": "4233",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161807",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "教學大樓",
+    "jyutping": "gaau3 hok6 daai6 lau4",
+    "code": "4220",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161813",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "教學提綱",
+    "jyutping": "gaau3 hok6 tai4 gong1",
+    "code": "4203",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161817",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "教學改革",
+    "jyutping": "gaau3 hok6 goi2 gaak3",
+    "code": "4294",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161818",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "教學材料",
+    "jyutping": "gaau3 hok6 coi4 liu2",
+    "code": "4209",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161823",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "教學研究",
+    "jyutping": "gaau3 hok6 jin4 gau3",
+    "code": "4204",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161835",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "教學秩序",
+    "jyutping": "gaau3 hok6 dit6 zeoi6",
+    "code": "4222",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161837",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "教學策略",
+    "jyutping": "gaau3 hok6 caak3 loek6",
+    "code": "4242",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161838",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "教學管理",
+    "jyutping": "gaau3 hok6 gun2 lei5",
+    "code": "4295",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161839",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "教學計劃",
+    "jyutping": "gaau3 hok6 gai3 waak6",
+    "code": "4242",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161843",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "教學設施",
+    "jyutping": "gaau3 hok6 cit3 si1",
+    "code": "4243",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161845",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "教學評估",
+    "jyutping": "gaau3 hok6 ping4 gu2",
+    "code": "4209",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161846",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "教學輔導",
+    "jyutping": "gaau3 hok6 fu6 dou6",
+    "code": "4222",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161852",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "教學進度",
+    "jyutping": "gaau3 hok6 zeon3 dou6",
+    "code": "4242",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161853",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "教學風格",
+    "jyutping": "gaau3 hok6 fung1 gaak3",
+    "code": "4234",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161855",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "教完",
+    "jyutping": "gaau3 jyun4",
+    "code": "40",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161856",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "教師工資",
+    "jyutping": "gaau3 si1 gung1 zi1",
+    "code": "4333",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161875",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "教師資格",
+    "jyutping": "gaau3 si1 zi1 gaak3",
+    "code": "4334",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161887",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "教我如何",
+    "jyutping": "gaau3 ngo5 jyu4 ho4",
+    "code": "4500",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161894",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "教材費",
+    "jyutping": "gaau3 coi4 fai3",
+    "code": "404",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L252015",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "教畫",
+    "jyutping": "gaau3 waa2",
+    "code": "49",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161929",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "教畫",
+    "jyutping": "gaau3 waak6",
+    "code": "42",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161929",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "教畫",
+    "jyutping": "gaau3 waa6",
+    "code": "42",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161929",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "教練車",
+    "jyutping": "gaau3 lin6 ce1",
+    "code": "423",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L252093",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "教職人員",
+    "jyutping": "gaau3 zik1 jan4 jyun4",
+    "code": "4300",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161967",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "教育獎",
+    "jyutping": "gaau3 juk6 zoeng2",
+    "code": "429",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161984",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "教育經費",
+    "jyutping": "gaau3 juk6 ging1 fai3",
+    "code": "4234",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L252176",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "教育規劃",
+    "jyutping": "gaau3 juk6 kwai1 waak6",
+    "code": "4232",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L252184",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "教育軟件",
+    "jyutping": "gaau3 juk6 jyun5 gin6",
+    "code": "4252",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L252198",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "教育體制",
+    "jyutping": "gaau3 juk6 tai2 zai3",
+    "code": "4294",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161975",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "教與學",
+    "jyutping": "gaau3 jyu5 hok6",
+    "code": "452",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161741",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "教錯",
+    "jyutping": "gaau3 co3",
+    "code": "44",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L252247",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "教養有方",
+    "jyutping": "gaau3 joeng5 jau5 fong1",
+    "code": "4553",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161768",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敝姓",
+    "jyutping": "bai6 sing3",
+    "code": "24",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162083",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敝舍",
+    "jyutping": "bai6 se3",
+    "code": "24",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162097",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敞開供應",
+    "jyutping": "cong2 hoi1 gung1 jing3",
+    "code": "9334",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162107",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敞開大門",
+    "jyutping": "cong2 hoi1 daai6 mun4",
+    "code": "9320",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162108",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敢上來",
+    "jyutping": "gam2 soeng5 loi4",
+    "code": "950",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L252355",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敢上去",
+    "jyutping": "gam2 soeng5 heoi3",
+    "code": "954",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162122",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敢不敢",
+    "jyutping": "gam2 bat1 gam2",
+    "code": "939",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162125",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敢借",
+    "jyutping": "gam2 ze3",
+    "code": "94",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162140",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敢做敢當",
+    "jyutping": "gam2 zou6 gam2 dong1",
+    "code": "9293",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162142",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敢出去",
+    "jyutping": "gam2 ceot1 heoi3",
+    "code": "934",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162145",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敢動",
+    "jyutping": "gam2 dung6",
+    "code": "92",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162148",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敢唱",
+    "jyutping": "gam2 coeng3",
+    "code": "94",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162152",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敢問路",
+    "jyutping": "gam2 man6 lou6",
+    "code": "922",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L252395",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敢喊",
+    "jyutping": "gam2 haam3",
+    "code": "94",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162154",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敢喝",
+    "jyutping": "gam2 hot3",
+    "code": "94",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162155",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敢坐",
+    "jyutping": "gam2 co5",
+    "code": "95",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162156",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敢寫",
+    "jyutping": "gam2 se2",
+    "code": "99",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162143",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敢怒敢言",
+    "jyutping": "gam2 nou6 gam2 jin4",
+    "code": "9290",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162167",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敢想敢說",
+    "jyutping": "gam2 soeng2 gam2 syut3",
+    "code": "9994",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L252420",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敢愛敢恨",
+    "jyutping": "gam2 oi3 gam2 han6",
+    "code": "9492",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L252422",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敢打敢拼",
+    "jyutping": "gam2 daa2 gam2 ping3",
+    "code": "9994",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162174",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敢找",
+    "jyutping": "gam2 zaau2",
+    "code": "99",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162176",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敢拆",
+    "jyutping": "gam2 caak3",
+    "code": "94",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162179",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敢接",
+    "jyutping": "gam2 zip3",
+    "code": "94",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162181",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敢於創新",
+    "jyutping": "gam2 jyu1 cong3 san1",
+    "code": "9343",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162132",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敢演",
+    "jyutping": "gam2 jin2",
+    "code": "99",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162190",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敢用",
+    "jyutping": "gam2 jung6",
+    "code": "92",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162194",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敢畫",
+    "jyutping": "gam2 waak6",
+    "code": "92",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162195",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敢管",
+    "jyutping": "gam2 gun2",
+    "code": "99",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162197",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敢罵",
+    "jyutping": "gam2 maa6",
+    "code": "92",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L252465",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敢肯定",
+    "jyutping": "gam2 hang2 ding6",
+    "code": "992",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162199",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敢試",
+    "jyutping": "gam2 si3",
+    "code": "94",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L252471",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敢說敢做",
+    "jyutping": "gam2 syut3 gam2 zou6",
+    "code": "9492",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L252472",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敢說話",
+    "jyutping": "gam2 syut3 waa6",
+    "code": "942",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L252473",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敢談",
+    "jyutping": "gam2 taam4",
+    "code": "90",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L252474",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敢講",
+    "jyutping": "gam2 gong2",
+    "code": "99",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L252476",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敢輸",
+    "jyutping": "gam2 syu1",
+    "code": "93",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L252485",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敢過來",
+    "jyutping": "gam2 gwo3 loi4",
+    "code": "940",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162213",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敢過去",
+    "jyutping": "gam2 gwo3 heoi3",
+    "code": "944",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162212",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敢鬧",
+    "jyutping": "gam2 naau6",
+    "code": "92",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162215",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "散了架",
+    "jyutping": "saan2 liu5 gaa3",
+    "code": "954",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162221",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "散光眼鏡",
+    "jyutping": "saan2 gwong1 ngaan5 geng2",
+    "code": "9359",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L252519",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "散光眼鏡",
+    "jyutping": "saan2 gwong1 ngaan5 geng3",
+    "code": "9354",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L252519",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "散光鏡",
+    "jyutping": "saan2 gwong1 geng2",
+    "code": "939",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L252521",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "散光鏡",
+    "jyutping": "saan2 gwong1 geng3",
+    "code": "934",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L252521",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "散出",
+    "jyutping": "saan3 ceot1",
+    "code": "43",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162240",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "散去",
+    "jyutping": "saan3 heoi3",
+    "code": "44",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162242",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "散學",
+    "jyutping": "saan3 hok6",
+    "code": "42",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162252",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "散掉",
+    "jyutping": "saan3 diu6",
+    "code": "42",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162282",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "散播謠言",
+    "jyutping": "saan3 bo3 jiu4 jin4",
+    "code": "4400",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L252594",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "散散漫漫",
+    "jyutping": "saan2 saan2 maan6 maan6",
+    "code": "9922",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162291",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "散文式",
+    "jyutping": "saan2 man4 sik1",
+    "code": "903",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162296",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "散文式",
+    "jyutping": "saan2 man2 sik1",
+    "code": "993",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162296",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "散文隨筆",
+    "jyutping": "saan2 man4 ceoi4 bat1",
+    "code": "9003",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162299",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "散文隨筆",
+    "jyutping": "saan2 man2 ceoi4 bat1",
+    "code": "9903",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162299",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "散步區",
+    "jyutping": "saan3 bou6 keoi1",
+    "code": "423",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162309",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "散步道",
+    "jyutping": "saan3 bou6 dou6",
+    "code": "422",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162310",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "散熱裝置",
+    "jyutping": "saan3 jit6 zong1 zi3",
+    "code": "4234",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162321",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "散班",
+    "jyutping": "saan3 baan1",
+    "code": "43",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162324",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "散發傳單",
+    "jyutping": "saan3 faat3 cyun4 daan1",
+    "code": "4403",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162244",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "散發出",
+    "jyutping": "saan3 faat3 ceot1",
+    "code": "443",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162245",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "散裝貨",
+    "jyutping": "saan2 zong1 fo3",
+    "code": "934",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162338",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "散財",
+    "jyutping": "saan3 coi4",
+    "code": "40",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L252683",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "散頁",
+    "jyutping": "saan2 jip6",
+    "code": "92",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L252705",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敬上",
+    "jyutping": "ging3 soeng6",
+    "code": "42",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162406",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敬如上賓",
+    "jyutping": "ging3 jyu4 soeng6 ban1",
+    "code": "4023",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162436",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敬請期待",
+    "jyutping": "ging3 cing2 kei4 doi6",
+    "code": "4902",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L252907",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敲一敲",
+    "jyutping": "haau1 jat1 haau1",
+    "code": "333",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163297",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敲下",
+    "jyutping": "haau1 haa6",
+    "code": "32",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163300",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敲下來",
+    "jyutping": "haau1 haa6 loi4",
+    "code": "320",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L253744",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敲下去",
+    "jyutping": "haau1 haa6 heoi3",
+    "code": "324",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163301",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敲住",
+    "jyutping": "haau1 zyu6",
+    "code": "32",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163305",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敲來敲去",
+    "jyutping": "haau1 loi4 haau1 heoi3",
+    "code": "3034",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L253750",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敲出",
+    "jyutping": "haau1 ceot1",
+    "code": "33",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163310",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敲掉",
+    "jyutping": "haau1 diu6",
+    "code": "32",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163321",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敲更",
+    "jyutping": "haau1 gang1",
+    "code": "33",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163324",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敲破",
+    "jyutping": "haau1 po3",
+    "code": "34",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163330",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敲碎",
+    "jyutping": "haau1 seoi3",
+    "code": "34",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163331",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敲詐錢財",
+    "jyutping": "haau1 zaa3 cin2 coi4",
+    "code": "3490",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L253792",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敲警鐘",
+    "jyutping": "haau1 ging2 zung1",
+    "code": "393",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L253794",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敲過",
+    "jyutping": "haau1 gwo3",
+    "code": "34",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163348",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敲鐘",
+    "jyutping": "haau1 zung1",
+    "code": "33",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L253824",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敲鑼",
+    "jyutping": "haau1 lo4",
+    "code": "30",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L253826",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敲開",
+    "jyutping": "haau1 hoi1",
+    "code": "33",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163319",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敲響喪鐘",
+    "jyutping": "haau1 hoeng2 song1 zung1",
+    "code": "3933",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163314",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敲響警鐘",
+    "jyutping": "haau1 hoeng2 ging2 zung1",
+    "code": "3993",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163315",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敲骨剝髓",
+    "jyutping": "haau1 gwat1 mok1 seoi5",
+    "code": "3335",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L253848",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "整件事",
+    "jyutping": "zing2 gin6 si6",
+    "code": "922",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163389",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "整來整去",
+    "jyutping": "zing2 loi4 zing2 heoi3",
+    "code": "9094",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L253903",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "整個來說",
+    "jyutping": "zing2 go3 loi4 syut3",
+    "code": "9404",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163381",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "整句話",
+    "jyutping": "zing2 geoi3 waa6",
+    "code": "942",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L253942",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "整合性",
+    "jyutping": "zing2 hap6 sing3",
+    "code": "924",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163451",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "整固",
+    "jyutping": "zing2 gu3",
+    "code": "94",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163458",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "整形外科",
+    "jyutping": "zing2 jing4 ngoi6 fo1",
+    "code": "9023",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163467",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "整形手術",
+    "jyutping": "zing2 jing4 sau2 seot6",
+    "code": "9092",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163468",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "整垮",
+    "jyutping": "zing2 kwaa1",
+    "code": "93",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163471",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "整場戲",
+    "jyutping": "zing2 coeng4 hei3",
+    "code": "904",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163463",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "整塊地",
+    "jyutping": "zing2 faai3 dei6",
+    "code": "942",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163465",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "整夜未歸",
+    "jyutping": "zing2 je6 mei6 gwai1",
+    "code": "9223",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163478",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "整套書",
+    "jyutping": "zing2 tou3 syu1",
+    "code": "943",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163483",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "整好",
+    "jyutping": "zing2 hou2",
+    "code": "99",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163484",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "整容手術",
+    "jyutping": "zing2 jung4 sau2 seot6",
+    "code": "9092",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163493",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "整封信",
+    "jyutping": "zing2 fung1 seon3",
+    "code": "934",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163497",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "整年到頭",
+    "jyutping": "zing2 nin4 dou3 tau4",
+    "code": "9040",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163508",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "整年累月",
+    "jyutping": "zing2 nin4 leoi5 jyut6",
+    "code": "9052",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163509",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "整形醫院",
+    "jyutping": "zing2 jing4 ji1 jyun2",
+    "code": "9039",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163516",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "整晚",
+    "jyutping": "zing2 maan5",
+    "code": "95",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163555",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "整本書",
+    "jyutping": "zing2 bun2 syu1",
+    "code": "993",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163560",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "整朵花",
+    "jyutping": "zing2 do2 faa1",
+    "code": "993",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163563",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "整杯水",
+    "jyutping": "zing2 bui1 seoi2",
+    "code": "939",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163570",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "整杯茶",
+    "jyutping": "zing2 bui1 caa4",
+    "code": "930",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163571",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "整杯酒",
+    "jyutping": "zing2 bui1 zau2",
+    "code": "939",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163572",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "整條路",
+    "jyutping": "zing2 tiu4 lou6",
+    "code": "902",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163567",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "整棵樹",
+    "jyutping": "zing2 po1 syu6",
+    "code": "932",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163587",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "整棵樹",
+    "jyutping": "zing2 fo2 syu6",
+    "code": "992",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163587",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "整段路",
+    "jyutping": "zing2 dyun6 lou6",
+    "code": "922",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163590",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "井然有序",
+    "jyutping": "zing2 jin4 jau5 zeoi6",
+    "code": "9052",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163603",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "整理出來",
+    "jyutping": "zing2 lei5 ceot1 loi4",
+    "code": "9530",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L254163",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "整理盒",
+    "jyutping": "zing2 lei5 hap2",
+    "code": "959",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163612",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "整理盒",
+    "jyutping": "zing2 lei5 hap6",
+    "code": "952",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163612",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "整理行裝",
+    "jyutping": "zing2 lei5 hang4 zong1",
+    "code": "9503",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163614",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "整瓶",
+    "jyutping": "zing2 ping4",
+    "code": "90",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163616",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "整盒",
+    "jyutping": "zing2 hap2",
+    "code": "99",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163618",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "整盒",
+    "jyutping": "zing2 hap6",
+    "code": "92",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163618",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "整碗飯",
+    "jyutping": "zing2 wun2 faan6",
+    "code": "992",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L254183",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "整節課",
+    "jyutping": "zing2 zit3 fo3",
+    "code": "944",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L254194",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "整篇文章",
+    "jyutping": "zing2 pin1 man4 zoeng1",
+    "code": "9303",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163632",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "整缸水",
+    "jyutping": "zing2 gong1 seoi2",
+    "code": "939",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163642",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "整行字",
+    "jyutping": "zing2 hong4 zi6",
+    "code": "902",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163654",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "整衣斂容",
+    "jyutping": "zing2 ji1 lim5 jung4",
+    "code": "9350",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163656",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "整衣斂容",
+    "jyutping": "zing2 ji1 lim6 jung4",
+    "code": "9320",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163656",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "整裝待命",
+    "jyutping": "zing2 zong1 doi6 ming6",
+    "code": "9322",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163662",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "正襟危坐",
+    "jyutping": "zing3 kam1 ngai4 zo6",
+    "code": "4302",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163663",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "整過",
+    "jyutping": "zing2 gwo3",
+    "code": "94",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163678",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "整道菜",
+    "jyutping": "zing2 dou6 coi3",
+    "code": "924",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163680",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "整部書",
+    "jyutping": "zing2 bou6 syu1",
+    "code": "923",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163682",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "整頓作風",
+    "jyutping": "zing2 deon6 zok3 fung1",
+    "code": "9243",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L254301",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "整頓紀律",
+    "jyutping": "zing2 deon6 gei2 leot6",
+    "code": "9292",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L254304",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "整顆心",
+    "jyutping": "zing2 fo2 sam1",
+    "code": "993",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L254309",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "整餐飯",
+    "jyutping": "zing2 caan1 faan6",
+    "code": "932",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L254330",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "整首歌",
+    "jyutping": "zing2 sau2 go1",
+    "code": "993",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163711",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "整骨",
+    "jyutping": "zing2 gwat1",
+    "code": "93",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163712",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "整體健康",
+    "jyutping": "zing2 tai2 gin6 hong1",
+    "code": "9923",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163394",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "整體利益",
+    "jyutping": "zing2 tai2 lei6 jik1",
+    "code": "9923",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163395",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "整體實力",
+    "jyutping": "zing2 tai2 sat6 lik6",
+    "code": "9922",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163399",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "整體素質",
+    "jyutping": "zing2 tai2 sou3 zat1",
+    "code": "9943",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163407",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "整體規劃",
+    "jyutping": "zing2 tai2 kwai1 waak6",
+    "code": "9932",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163411",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "整齊乾淨",
+    "jyutping": "zing2 cai4 gon1 zeng6",
+    "code": "9032",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L254366",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "整齊乾淨",
+    "jyutping": "zing2 cai4 gon1 zing6",
+    "code": "9032",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L254366",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "整齊有序",
+    "jyutping": "zing2 cai4 jau5 zeoi6",
+    "code": "9052",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L254368",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "整齊清潔",
+    "jyutping": "zing2 cai4 cing1 git3",
+    "code": "9034",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L254369",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "整齣戲",
+    "jyutping": "zing2 ceot1 hei3",
+    "code": "934",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163429",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敵不住",
+    "jyutping": "dik6 bat1 zyu6",
+    "code": "232",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161441",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敵不過",
+    "jyutping": "dik6 bat1 gwo3",
+    "code": "234",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161444",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敵兵",
+    "jyutping": "dik6 bing1",
+    "code": "23",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161452",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敵友不分",
+    "jyutping": "dik6 jau5 bat1 fan1",
+    "code": "2533",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161461",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敵對勢力",
+    "jyutping": "dik6 deoi3 sai3 lik6",
+    "code": "2442",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161474",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敵對態度",
+    "jyutping": "dik6 deoi3 taai3 dou6",
+    "code": "2442",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161475",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敵對狀態",
+    "jyutping": "dik6 deoi3 zong6 taai3",
+    "code": "2424",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161476",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敵對行動",
+    "jyutping": "dik6 deoi3 hang4 dung6",
+    "code": "2402",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161479",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敵對行為",
+    "jyutping": "dik6 deoi3 hang4 wai4",
+    "code": "2400",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161478",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敵得過",
+    "jyutping": "dik6 dak1 gwo3",
+    "code": "234",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161483",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敵我不分",
+    "jyutping": "dik6 ngo5 bat1 fan1",
+    "code": "2533",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161492",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敵船",
+    "jyutping": "dik6 syun4",
+    "code": "20",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161509",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敵隊",
+    "jyutping": "dik6 deoi6",
+    "code": "22",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161514",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敷上",
+    "jyutping": "fu1 soeng5",
+    "code": "35",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163719",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敷好",
+    "jyutping": "fu1 hou2",
+    "code": "39",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163724",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敷着",
+    "jyutping": "fu1 zoek6",
+    "code": "32",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163736",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敷臉",
+    "jyutping": "fu1 lim5",
+    "code": "35",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163739",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敷過",
+    "jyutping": "fu1 gwo3",
+    "code": "34",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163749",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "敷面",
+    "jyutping": "fu1 min6",
+    "code": "32",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163751",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "數上來",
+    "jyutping": "sou2 soeng5 loi4",
+    "code": "950",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162556",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "數上去",
+    "jyutping": "sou2 soeng5 heoi3",
+    "code": "954",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162555",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "數不到",
+    "jyutping": "sou2 bat1 dou2",
+    "code": "939",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162559",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "數不到",
+    "jyutping": "sou2 bat1 dou3",
+    "code": "934",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162559",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "數人",
+    "jyutping": "sou3 jan4",
+    "code": "40",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162578",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "數人",
+    "jyutping": "sou2 jan4",
+    "code": "90",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162578",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "數位化",
+    "jyutping": "sou3 wai2 faa3",
+    "code": "494",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162601",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "數位化",
+    "jyutping": "sou3 wai6 faa3",
+    "code": "424",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162601",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "數位顯示",
+    "jyutping": "sou3 wai2 hin2 si6",
+    "code": "4992",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162603",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "數位顯示",
+    "jyutping": "sou3 wai6 hin2 si6",
+    "code": "4292",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162603",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "數來數去",
+    "jyutping": "sou2 loi4 sou2 heoi3",
+    "code": "9094",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163043",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "數分之差",
+    "jyutping": "sou3 fan1 zi1 caa1",
+    "code": "4333",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162622",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "數夜未歸",
+    "jyutping": "sou3 je6 mei6 gwai1",
+    "code": "4223",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162828",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "數字串",
+    "jyutping": "sou3 zi6 cyun3",
+    "code": "424",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162833",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "數字地圖",
+    "jyutping": "sou3 zi6 dei6 tou4",
+    "code": "4220",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162843",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "數字相機",
+    "jyutping": "sou3 zi6 soeng2 gei1",
+    "code": "4293",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162860",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "數字鍵盤",
+    "jyutping": "sou3 zi6 gin6 pun4",
+    "code": "4220",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162871",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "數學公式",
+    "jyutping": "sou3 hok6 gung1 sik1",
+    "code": "4233",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162876",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "數學分析",
+    "jyutping": "sou3 hok6 fan1 sik1",
+    "code": "4233",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162878",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "數學原理",
+    "jyutping": "sou3 hok6 jyun4 lei5",
+    "code": "4205",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162880",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "數學教師",
+    "jyutping": "sou3 hok6 gaau3 si1",
+    "code": "4243",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162885",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "數學方法",
+    "jyutping": "sou3 hok6 fong1 faat3",
+    "code": "4234",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162887",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "數學模型",
+    "jyutping": "sou3 hok6 mou4 jing4",
+    "code": "4200",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162888",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "數學知識",
+    "jyutping": "sou3 hok6 zi1 sik1",
+    "code": "4233",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162892",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "數學老師",
+    "jyutping": "sou3 hok6 lou5 si1",
+    "code": "4253",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162898",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "數學考試",
+    "jyutping": "sou3 hok6 haau2 si3",
+    "code": "4294",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162899",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "數學試卷",
+    "jyutping": "sou3 hok6 si3 gyun2",
+    "code": "4249",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162902",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "數學試題",
+    "jyutping": "sou3 hok6 si3 tai4",
+    "code": "4240",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162903",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "數學課程",
+    "jyutping": "sou3 hok6 fo3 cing4",
+    "code": "4240",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162905",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "數完",
+    "jyutping": "sou2 jyun4",
+    "code": "90",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162907",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "數據交換",
+    "jyutping": "sou3 geoi3 gaau1 wun6",
+    "code": "4432",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162942",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "數據傳輸",
+    "jyutping": "sou3 geoi3 cyun4 syu1",
+    "code": "4403",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162945",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "數據報表",
+    "jyutping": "sou3 geoi3 bou3 biu2",
+    "code": "4449",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162971",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "數據壓縮",
+    "jyutping": "sou3 geoi3 aat3 suk1",
+    "code": "4443",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162955",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "數據文件",
+    "jyutping": "sou3 geoi3 man4 gin2",
+    "code": "4409",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162974",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "數據文件",
+    "jyutping": "sou3 geoi3 man4 gin6",
+    "code": "4402",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162974",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "數據檢索",
+    "jyutping": "sou3 geoi3 gim2 sok3",
+    "code": "4494",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162978",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "數據源",
+    "jyutping": "sou3 geoi3 jyun4",
+    "code": "440",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162983",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "數據誤差",
+    "jyutping": "sou3 geoi3 ng6 caa1",
+    "code": "4423",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162998",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "數據資料",
+    "jyutping": "sou3 geoi3 zi1 liu2",
+    "code": "4439",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162999",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "數據量",
+    "jyutping": "sou3 geoi3 loeng6",
+    "code": "442",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163005",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "數數看",
+    "jyutping": "sou2 sou2 hon3",
+    "code": "994",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163021",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "數易其稿",
+    "jyutping": "sou3 ji6 kei4 gou2",
+    "code": "4209",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163029",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "數百人",
+    "jyutping": "sou3 baak3 jan4",
+    "code": "440",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163103",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "數碼化",
+    "jyutping": "sou3 maa5 faa3",
+    "code": "454",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163192",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "數碼影像",
+    "jyutping": "sou3 maa5 jing2 zoeng6",
+    "code": "4592",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163202",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "數碼技術",
+    "jyutping": "sou3 maa5 gei6 seot6",
+    "code": "4522",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163203",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "數碼照片",
+    "jyutping": "sou3 maa5 ziu3 pin2",
+    "code": "4549",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163205",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "數碼照片",
+    "jyutping": "sou3 maa5 ziu3 pin3",
+    "code": "4544",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163205",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "數碼產品",
+    "jyutping": "sou3 maa5 caan2 ban2",
+    "code": "4599",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163190",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "數碼相冊",
+    "jyutping": "sou3 maa5 soeng2 caak3",
+    "code": "4594",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163207",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "數碼相片",
+    "jyutping": "sou3 maa5 soeng2 pin2",
+    "code": "4599",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163209",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "數碼相片",
+    "jyutping": "sou3 maa5 soeng2 pin3",
+    "code": "4594",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163209",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "數碼科技",
+    "jyutping": "sou3 maa5 fo1 gei6",
+    "code": "4532",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163210",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "數碼設備",
+    "jyutping": "sou3 maa5 cit3 bei6",
+    "code": "4542",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163213",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "數碼電視",
+    "jyutping": "sou3 maa5 din6 si6",
+    "code": "4522",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163206",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "數碼頻道",
+    "jyutping": "sou3 maa5 pan4 dou6",
+    "code": "4502",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163215",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "數站",
+    "jyutping": "sou3 zaam6",
+    "code": "42",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163220",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "數站",
+    "jyutping": "sou2 zaam6",
+    "code": "92",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163220",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "數算",
+    "jyutping": "sou2 syun3",
+    "code": "94",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163226",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "數罪併罰",
+    "jyutping": "sou3 zeoi6 bing3 fat6",
+    "code": "4242",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163237",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "數萬人",
+    "jyutping": "sou3 maan6 jan4",
+    "code": "420",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162534",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "數週後",
+    "jyutping": "sou3 zau1 hau6",
+    "code": "432",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162815",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "數過來",
+    "jyutping": "sou2 gwo3 loi4",
+    "code": "940",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163260",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "數過去",
+    "jyutping": "sou2 gwo3 heoi3",
+    "code": "944",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163259",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "數錯",
+    "jyutping": "sou2 co3",
+    "code": "94",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163276",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "文人畫",
+    "jyutping": "man4 jan4 waa2",
+    "code": "009",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163803",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "文人畫",
+    "jyutping": "man4 jan4 waa6",
+    "code": "002",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163803",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "文件傳輸",
+    "jyutping": "man4 gin2 cyun4 syu1",
+    "code": "0903",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163815",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "文件傳輸",
+    "jyutping": "man4 gin6 cyun4 syu1",
+    "code": "0203",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163815",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "文件名稱",
+    "jyutping": "man4 gin2 ming4 cing1",
+    "code": "0903",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163821",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "文件名稱",
+    "jyutping": "man4 gin6 ming4 cing1",
+    "code": "0203",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163821",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "文件翻譯",
+    "jyutping": "man4 gin2 faan1 jik6",
+    "code": "0932",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L255411",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "文件翻譯",
+    "jyutping": "man4 gin6 faan1 jik6",
+    "code": "0232",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L255411",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "文件袋",
+    "jyutping": "man4 gin2 doi2",
+    "code": "099",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163837",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "文件袋",
+    "jyutping": "man4 gin6 doi6",
+    "code": "022",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163837",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "文件類型",
+    "jyutping": "man4 gin2 leoi6 jing4",
+    "code": "0920",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163831",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "文件類型",
+    "jyutping": "man4 gin6 leoi6 jing4",
+    "code": "0220",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163831",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "文具禮品",
+    "jyutping": "man4 geoi6 lai5 ban2",
+    "code": "0259",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163864",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "文化交往",
+    "jyutping": "man4 faa3 gaau1 wong5",
+    "code": "0435",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163880",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "文化傳媒",
+    "jyutping": "man4 faa3 cyun4 mui4",
+    "code": "0400",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163883",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "文化名人",
+    "jyutping": "man4 faa3 ming4 jan4",
+    "code": "0400",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163889",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "文化場所",
+    "jyutping": "man4 faa3 coeng4 so2",
+    "code": "0409",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163894",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "文化娛樂",
+    "jyutping": "man4 faa3 jyu4 lok6",
+    "code": "0402",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L255495",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "文化底蘊",
+    "jyutping": "man4 faa3 dai2 wan5",
+    "code": "0495",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163904",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "文化氛圍",
+    "jyutping": "man4 faa3 fan1 wai4",
+    "code": "0430",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163913",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "文化水準",
+    "jyutping": "man4 faa3 seoi2 zeon2",
+    "code": "0499",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163914",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "文化用品",
+    "jyutping": "man4 faa3 jung6 ban2",
+    "code": "0429",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163918",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "文化素質",
+    "jyutping": "man4 faa3 sou3 zat1",
+    "code": "0443",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L255534",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "文化背景",
+    "jyutping": "man4 faa3 bui3 ging2",
+    "code": "0449",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163924",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "文史類",
+    "jyutping": "man4 si2 leoi6",
+    "code": "092",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163955",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "文娛活動",
+    "jyutping": "man4 jyu4 wut6 dung6",
+    "code": "0022",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L255645",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "文字串",
+    "jyutping": "man4 zi6 cyun3",
+    "code": "024",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164005",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "文字大小",
+    "jyutping": "man4 zi6 daai6 siu2",
+    "code": "0229",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164008",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "文字廣告",
+    "jyutping": "man4 zi6 gwong2 gou3",
+    "code": "0294",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164012",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "文字描述",
+    "jyutping": "man4 zi6 miu4 seot6",
+    "code": "0202",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164013",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "文字效果",
+    "jyutping": "man4 zi6 haau6 gwo2",
+    "code": "0229",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164015",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "文字水平",
+    "jyutping": "man4 zi6 seoi2 ping4",
+    "code": "0290",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164017",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "文字版",
+    "jyutping": "man4 zi6 baan2",
+    "code": "029",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164019",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "文字特效",
+    "jyutping": "man4 zi6 dak6 haau6",
+    "code": "0222",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164020",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "文字編輯",
+    "jyutping": "man4 zi6 pin1 cap1",
+    "code": "0233",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L255674",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "文字說明",
+    "jyutping": "man4 zi6 syut3 ming4",
+    "code": "0240",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L255677",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "文字量",
+    "jyutping": "man4 zi6 loeng6",
+    "code": "022",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164024",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "文學事業",
+    "jyutping": "man4 hok6 si6 jip6",
+    "code": "0222",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164029",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "文學刊物",
+    "jyutping": "man4 hok6 hon1 mat6",
+    "code": "0232",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164031",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "文學創作",
+    "jyutping": "man4 hok6 cong3 zok3",
+    "code": "0244",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164032",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "文學名著",
+    "jyutping": "man4 hok6 ming4 zyu3",
+    "code": "0204",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164036",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "文學批評",
+    "jyutping": "man4 hok6 pai1 ping4",
+    "code": "0230",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164047",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "文學期刊",
+    "jyutping": "man4 hok6 kei4 hon1",
+    "code": "0203",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164050",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "文學理論",
+    "jyutping": "man4 hok6 lei5 leon6",
+    "code": "0252",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164052",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "文學藝術",
+    "jyutping": "man4 hok6 ngai6 seot6",
+    "code": "0222",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164059",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "文學青年",
+    "jyutping": "man4 hok6 cing1 nin4",
+    "code": "0230",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164067",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "文定之喜",
+    "jyutping": "man4 ding6 zi1 hei2",
+    "code": "0239",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164080",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "文才出眾",
+    "jyutping": "man4 coi4 ceot1 zung3",
+    "code": "0034",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164173",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "文書工作",
+    "jyutping": "man4 syu1 gung1 zok3",
+    "code": "0334",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163790",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "文書處理",
+    "jyutping": "man4 syu1 cyu2 lei5",
+    "code": "0395",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163789",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "文書處理",
+    "jyutping": "man4 syu1 cyu5 lei5",
+    "code": "0355",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163789",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "文末",
+    "jyutping": "man4 mut6",
+    "code": "02",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164249",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "文本文檔",
+    "jyutping": "man4 bun2 man4 dong2",
+    "code": "0909",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164255",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "文本校對",
+    "jyutping": "man4 bun2 gaau3 deoi3",
+    "code": "0944",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164256",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "文本格式",
+    "jyutping": "man4 bun2 gaak3 sik1",
+    "code": "0943",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164257",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "文本檢索",
+    "jyutping": "man4 bun2 gim2 sok3",
+    "code": "0994",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164259",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "文本編輯",
+    "jyutping": "man4 bun2 pin1 cap1",
+    "code": "0933",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L256053",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "文本處理",
+    "jyutping": "man4 bun2 cyu2 lei5",
+    "code": "0995",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164251",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "文本處理",
+    "jyutping": "man4 bun2 cyu5 lei5",
+    "code": "0955",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164251",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "文段",
+    "jyutping": "man4 dyun6",
+    "code": "02",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164295",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "文法書",
+    "jyutping": "man4 faat3 syu1",
+    "code": "043",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164308",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "文物保護",
+    "jyutping": "man4 mat6 bou2 wu6",
+    "code": "0292",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164338",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "文物古蹟",
+    "jyutping": "man4 mat6 gu2 zik1",
+    "code": "0293",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L256173",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "文獻資料",
+    "jyutping": "man4 hin3 zi1 liu2",
+    "code": "0439",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164360",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "文章主題",
+    "jyutping": "man4 zoeng1 zyu2 tai4",
+    "code": "0390",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L256269",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "文章內容",
+    "jyutping": "man4 zoeng1 noi6 jung4",
+    "code": "0320",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L256271",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "文筆優美",
+    "jyutping": "man4 bat1 jau1 mei5",
+    "code": "0335",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164422",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "文藝創作",
+    "jyutping": "man4 ngai6 cong3 zok3",
+    "code": "0244",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164461",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "文藝團體",
+    "jyutping": "man4 ngai6 tyun4 tai2",
+    "code": "0209",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164462",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "文藝表演",
+    "jyutping": "man4 ngai6 biu2 jin2",
+    "code": "0299",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164483",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "文辭優美",
+    "jyutping": "man4 ci4 jau1 mei5",
+    "code": "0035",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164530",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "文采出眾",
+    "jyutping": "man4 coi2 ceot1 zung3",
+    "code": "0934",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164546",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "文雅氣息",
+    "jyutping": "man4 ngaa5 hei3 sik1",
+    "code": "0543",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164559",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "文體活動",
+    "jyutping": "man4 tai2 wut6 dung6",
+    "code": "0922",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163845",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "斗折蛇行",
+    "jyutping": "dau2 zit3 se4 hang4",
+    "code": "9400",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164700",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "斗酒百篇",
+    "jyutping": "dau2 zau2 baak3 pin1",
+    "code": "9943",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164758",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "料峭春寒",
+    "jyutping": "liu6 ciu3 ceon1 hon4",
+    "code": "2430",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164791",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "料想不到",
+    "jyutping": "liu6 soeng2 bat1 dou2",
+    "code": "2939",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164796",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "料想不到",
+    "jyutping": "liu6 soeng2 bat1 dou3",
+    "code": "2934",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164796",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "料想到",
+    "jyutping": "liu6 soeng2 dou2",
+    "code": "299",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164797",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "料想到",
+    "jyutping": "liu6 soeng2 dou3",
+    "code": "294",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164797",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "料想得到",
+    "jyutping": "liu6 soeng2 dak1 dou2",
+    "code": "2939",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164798",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "料理台",
+    "jyutping": "liu6 lei5 toi2",
+    "code": "259",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164805",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "料理台",
+    "jyutping": "liu6 lei5 toi4",
+    "code": "250",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164805",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "料理店",
+    "jyutping": "liu6 lei5 dim3",
+    "code": "254",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164806",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "斜坡路",
+    "jyutping": "ce4 bo1 lou6",
+    "code": "032",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164832",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "斜對角",
+    "jyutping": "ce4 deoi3 gok3",
+    "code": "044",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164836",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "斜挎包",
+    "jyutping": "ce4 kwaa3 baau1",
+    "code": "043",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164846",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "斜插",
+    "jyutping": "ce4 caap3",
+    "code": "04",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164847",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "斜方形",
+    "jyutping": "ce4 fong1 jing4",
+    "code": "030",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164848",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "斜桿",
+    "jyutping": "ce4 gon2",
+    "code": "09",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164851",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "斜桿",
+    "jyutping": "ce4 gon1",
+    "code": "03",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164851",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "斜眼看人",
+    "jyutping": "ce4 ngaan5 hon3 jan4",
+    "code": "0540",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164865",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "斜着",
+    "jyutping": "ce4 zoek6",
+    "code": "02",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164874",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "斜進來",
+    "jyutping": "ce4 zeon3 loi4",
+    "code": "040",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164893",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "斜進去",
+    "jyutping": "ce4 zeon3 heoi3",
+    "code": "044",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164892",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "斜過來",
+    "jyutping": "ce4 gwo3 loi4",
+    "code": "040",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164890",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "斜過去",
+    "jyutping": "ce4 gwo3 heoi3",
+    "code": "044",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164889",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "斟上",
+    "jyutping": "zam1 soeng5",
+    "code": "35",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164904",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "斟滿",
+    "jyutping": "zam1 mun5",
+    "code": "35",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164908",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "斟酌一下",
+    "jyutping": "zam1 zoek3 jat1 haa5",
+    "code": "3435",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164912",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "斟酌一下",
+    "jyutping": "zam1 zoek3 jat1 haa6",
+    "code": "3432",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164912",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "斤兩不足",
+    "jyutping": "gan1 loeng2 bat1 zuk1",
+    "code": "3933",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164922",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "斤半",
+    "jyutping": "gan1 bun3",
+    "code": "34",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164923",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "斤數",
+    "jyutping": "gan1 sou3",
+    "code": "34",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164925",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "斧柄",
+    "jyutping": "fu2 beng2",
+    "code": "99",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164955",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "斧柄",
+    "jyutping": "fu2 beng3",
+    "code": "94",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164955",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "斧鑿痕跡",
+    "jyutping": "fu2 zok6 han4 zik1",
+    "code": "9203",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164948",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "斬下",
+    "jyutping": "zaam2 haa6",
+    "code": "92",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164961",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "斬下來",
+    "jyutping": "zaam2 haa6 loi4",
+    "code": "920",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164963",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "斬下去",
+    "jyutping": "zaam2 haa6 heoi3",
+    "code": "924",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164962",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "斬妖",
+    "jyutping": "zaam2 jiu2",
+    "code": "99",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164970",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "斬斷情絲",
+    "jyutping": "zaam2 dyun6 cing4 si1",
+    "code": "9203",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164976",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "斬斷情絲",
+    "jyutping": "zaam2 tyun5 cing4 si1",
+    "code": "9503",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164976",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "斬殺",
+    "jyutping": "zaam2 saat3",
+    "code": "94",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164978",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "斬盡",
+    "jyutping": "zaam2 zeon6",
+    "code": "92",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164973",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "斬立決",
+    "jyutping": "zaam2 laap6 kyut3",
+    "code": "924",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164980",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "斬草",
+    "jyutping": "zaam2 cou2",
+    "code": "99",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164982",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "斬頭去尾",
+    "jyutping": "zaam2 tau4 heoi3 mei5",
+    "code": "9045",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164968",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "斬首示眾",
+    "jyutping": "zaam2 sau2 si6 zung3",
+    "code": "9924",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164992",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新一任",
+    "jyutping": "san1 jat1 jam6",
+    "code": "332",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L165802",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新一季",
+    "jyutping": "san1 jat1 gwai3",
+    "code": "334",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L165804",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新一屆",
+    "jyutping": "san1 jat1 gaai3",
+    "code": "334",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L258235",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新一期",
+    "jyutping": "san1 jat1 kei4",
+    "code": "330",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L165806",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新人輩出",
+    "jyutping": "san1 jan4 bui3 ceot1",
+    "code": "3043",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L258307",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新來者",
+    "jyutping": "san1 loi4 ze2",
+    "code": "309",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L258330",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新家具",
+    "jyutping": "san1 gaa1 geoi6",
+    "code": "332",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L258334",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新債",
+    "jyutping": "san1 zaai3",
+    "code": "34",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L165883",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新元素",
+    "jyutping": "san1 jyun4 sou3",
+    "code": "304",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L165885",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新兵入伍",
+    "jyutping": "san1 bing1 jap6 ng5",
+    "code": "3325",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L165905",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新兵訓練",
+    "jyutping": "san1 bing1 fan3 lin6",
+    "code": "3342",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L258365",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新刊",
+    "jyutping": "san1 hon1",
+    "code": "33",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L165919",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新創意",
+    "jyutping": "san1 cong3 ji3",
+    "code": "344",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L165922",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新動向",
+    "jyutping": "san1 dung6 hoeng3",
+    "code": "324",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L165942",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新去處",
+    "jyutping": "san1 heoi3 cyu3",
+    "code": "344",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L165977",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新唱片",
+    "jyutping": "san1 coeng3 pin2",
+    "code": "349",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L165998",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新唱片",
+    "jyutping": "san1 coeng3 pin3",
+    "code": "344",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L165998",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新型材料",
+    "jyutping": "san1 jing4 coi4 liu2",
+    "code": "3009",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L166018",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新墳",
+    "jyutping": "san1 fan4",
+    "code": "30",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L166013",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新女裝",
+    "jyutping": "san1 neoi5 zong1",
+    "code": "353",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L166057",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新娘裝",
+    "jyutping": "san1 noeng4 zong1",
+    "code": "303",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L166066",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新婚之夜",
+    "jyutping": "san1 fan1 zi1 je6",
+    "code": "3332",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L166068",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新婚夜",
+    "jyutping": "san1 fan1 je6",
+    "code": "332",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L166069",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新婚夫婦",
+    "jyutping": "san1 fan1 fu1 fu5",
+    "code": "3335",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L166070",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新婚旅行",
+    "jyutping": "san1 fan1 leoi5 hang4",
+    "code": "3350",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L166072",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新媳婦",
+    "jyutping": "san1 sik1 fu5",
+    "code": "335",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L166074",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新學年",
+    "jyutping": "san1 hok6 nin4",
+    "code": "320",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L166082",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新學期",
+    "jyutping": "san1 hok6 kei4",
+    "code": "320",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L166083",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新學說",
+    "jyutping": "san1 hok6 syut3",
+    "code": "324",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L166084",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新官上任",
+    "jyutping": "san1 gun1 soeng5 jam6",
+    "code": "3352",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L166096",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新家",
+    "jyutping": "san1 gaa1",
+    "code": "33",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L166104",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新密碼",
+    "jyutping": "san1 mat6 maa5",
+    "code": "325",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L166113",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新專輯",
+    "jyutping": "san1 zyun1 cap1",
+    "code": "333",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L165814",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新居落成",
+    "jyutping": "san1 geoi1 lok6 sing4",
+    "code": "3320",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L166117",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新年好",
+    "jyutping": "san1 nin4 hou2",
+    "code": "309",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L166149",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新年愉快",
+    "jyutping": "san1 nin4 jyu4 faai3",
+    "code": "3004",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L166151",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新年新氣象",
+    "jyutping": "san1 nin4 san1 hei3 zoeng6",
+    "code": "30342",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L166152",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新年禮品",
+    "jyutping": "san1 nin4 lai5 ban2",
+    "code": "3059",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L166153",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新年禮物",
+    "jyutping": "san1 nin4 lai5 mat6",
+    "code": "3052",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L166154",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新年賀詞",
+    "jyutping": "san1 nin4 ho6 ci4",
+    "code": "3020",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L258728",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新廠",
+    "jyutping": "san1 cong2",
+    "code": "39",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L165974",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新形態",
+    "jyutping": "san1 jing4 taai3",
+    "code": "304",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L166183",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新思路",
+    "jyutping": "san1 si1 lou6",
+    "code": "332",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L166189",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新愁",
+    "jyutping": "san1 sau4",
+    "code": "30",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L166191",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新感受",
+    "jyutping": "san1 gam2 sau6",
+    "code": "392",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L166194",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新技能",
+    "jyutping": "san1 gei6 nang4",
+    "code": "320",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L166203",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新招數",
+    "jyutping": "san1 ziu1 sou3",
+    "code": "334",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L166207",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新攻勢",
+    "jyutping": "san1 gung1 sai3",
+    "code": "334",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L166214",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新教材",
+    "jyutping": "san1 gaau3 coi4",
+    "code": "340",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L166222",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新教練",
+    "jyutping": "san1 gaau3 lin6",
+    "code": "342",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L258826",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新春快樂",
+    "jyutping": "san1 ceon1 faai3 lok6",
+    "code": "3342",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L166258",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新春愉快",
+    "jyutping": "san1 ceon1 jyu4 faai3",
+    "code": "3304",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L166259",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新時尚",
+    "jyutping": "san1 si4 soeng6",
+    "code": "302",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L166247",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新時空",
+    "jyutping": "san1 si4 hung1",
+    "code": "303",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L166248",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新曲",
+    "jyutping": "san1 kuk1",
+    "code": "33",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L166265",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新會員",
+    "jyutping": "san1 wui6 jyun4",
+    "code": "320",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L165870",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新桃換舊符",
+    "jyutping": "san1 tou4 wun6 gau6 fu4",
+    "code": "30220",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L166286",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新機型",
+    "jyutping": "san1 gei1 jing4",
+    "code": "330",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L166275",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新機種",
+    "jyutping": "san1 gei1 zung2",
+    "code": "339",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L166276",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新機遇",
+    "jyutping": "san1 gei1 jyu6",
+    "code": "332",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L166277",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新歌",
+    "jyutping": "san1 go1",
+    "code": "33",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L166296",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新歡舊愛",
+    "jyutping": "san1 fun1 gau6 oi3",
+    "code": "3324",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L166293",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新法案",
+    "jyutping": "san1 faat3 on3",
+    "code": "344",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L166328",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新添",
+    "jyutping": "san1 tim1",
+    "code": "33",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L166349",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新潮流",
+    "jyutping": "san1 ciu4 lau4",
+    "code": "300",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L166360",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新片預告",
+    "jyutping": "san1 pin2 jyu6 gou3",
+    "code": "3924",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L259057",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新片預告",
+    "jyutping": "san1 pin3 jyu6 gou3",
+    "code": "3424",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L259057",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新理念",
+    "jyutping": "san1 lei5 nim6",
+    "code": "352",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L166374",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新生訓練",
+    "jyutping": "san1 sang1 fan3 lin6",
+    "code": "3342",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L259088",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新界面",
+    "jyutping": "san1 gaai3 min6",
+    "code": "342",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L166399",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新病毒",
+    "jyutping": "san1 beng6 duk6",
+    "code": "322",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L166425",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新療法",
+    "jyutping": "san1 liu4 faat3",
+    "code": "304",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L166424",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新髮型",
+    "jyutping": "san1 faat3 jing4",
+    "code": "340",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L165981",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新的一頁",
+    "jyutping": "san1 dik1 jat1 jip6",
+    "code": "3332",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L259152",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新的篇章",
+    "jyutping": "san1 dik1 pin1 zoeng1",
+    "code": "3333",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L166429",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新稅法",
+    "jyutping": "san1 seoi3 faat3",
+    "code": "344",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L259177",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新穎別緻",
+    "jyutping": "san1 wing6 bit6 zi3",
+    "code": "3224",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L259182",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新窗口",
+    "jyutping": "san1 coeng1 hau2",
+    "code": "339",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L166448",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新策略",
+    "jyutping": "san1 caak3 loek6",
+    "code": "342",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L166458",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新紀錄",
+    "jyutping": "san1 gei2 luk6",
+    "code": "392",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L259201",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新網友",
+    "jyutping": "san1 mong5 jau5",
+    "code": "355",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L259212",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新網址",
+    "jyutping": "san1 mong5 zi2",
+    "code": "359",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L259213",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新線路",
+    "jyutping": "san1 sin3 lou6",
+    "code": "342",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L259216",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新聞事業",
+    "jyutping": "san1 man4 si6 jip6",
+    "code": "3022",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L259260",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新聞來源",
+    "jyutping": "san1 man4 loi4 jyun4",
+    "code": "3000",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L259262",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新聞出版",
+    "jyutping": "san1 man4 ceot1 baan2",
+    "code": "3039",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L259264",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新聞分析",
+    "jyutping": "san1 man4 fan1 sik1",
+    "code": "3033",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L259268",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新聞動態",
+    "jyutping": "san1 man4 dung6 taai3",
+    "code": "3024",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L259269",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新聞報導",
+    "jyutping": "san1 man4 bou3 dou6",
+    "code": "3042",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L259272",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新聞報道",
+    "jyutping": "san1 man4 bou3 dou6",
+    "code": "3042",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L259273",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新聞媒體",
+    "jyutping": "san1 man4 mui4 tai2",
+    "code": "3009",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L259275",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新聞提要",
+    "jyutping": "san1 man4 tai4 jiu3",
+    "code": "3004",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L259284",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新聞標題",
+    "jyutping": "san1 man4 biu1 tai4",
+    "code": "3030",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L259289",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新聞炒作",
+    "jyutping": "san1 man4 caau2 zok3",
+    "code": "3094",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L259291",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新聞照片",
+    "jyutping": "san1 man4 ziu3 pin2",
+    "code": "3049",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L259292",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新聞熱線",
+    "jyutping": "san1 man4 jit6 sin3",
+    "code": "3024",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L259293",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新聞熱點",
+    "jyutping": "san1 man4 jit6 dim2",
+    "code": "3029",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L259294",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新聞節目",
+    "jyutping": "san1 man4 zit3 muk6",
+    "code": "3042",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L259301",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新聞自由",
+    "jyutping": "san1 man4 zi6 jau4",
+    "code": "3020",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L259310",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新聞調查",
+    "jyutping": "san1 man4 diu6 caa4",
+    "code": "3020",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L259314",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新聞資料",
+    "jyutping": "san1 man4 zi1 liu2",
+    "code": "3039",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L259315",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新聞追蹤",
+    "jyutping": "san1 man4 zeoi1 zung1",
+    "code": "3033",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L259318",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新聞頻道",
+    "jyutping": "san1 man4 pan4 dou6",
+    "code": "3002",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L259325",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新股申購",
+    "jyutping": "san1 gu2 san1 kau3",
+    "code": "3934",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L259331",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新能源",
+    "jyutping": "san1 nang4 jyun4",
+    "code": "300",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L166495",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新舊交接",
+    "jyutping": "san1 gau6 gaau1 zip3",
+    "code": "3234",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L166242",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新舊觀念",
+    "jyutping": "san1 gau6 gun1 nim6",
+    "code": "3232",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L166246",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新花招",
+    "jyutping": "san1 faa1 ziu1",
+    "code": "333",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L166504",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新花樣",
+    "jyutping": "san1 faa1 joeng6",
+    "code": "332",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L166505",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新芽",
+    "jyutping": "san1 ngaa4",
+    "code": "30",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L166507",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新裝修",
+    "jyutping": "san1 zong1 sau1",
+    "code": "333",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L166532",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新視角",
+    "jyutping": "san1 si6 gok3",
+    "code": "324",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L259449",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新視野",
+    "jyutping": "san1 si6 je5",
+    "code": "325",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L259451",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新詞彙",
+    "jyutping": "san1 ci4 wai6",
+    "code": "302",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L259461",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新詞語",
+    "jyutping": "san1 ci4 jyu5",
+    "code": "305",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L259462",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新課程",
+    "jyutping": "san1 fo3 cing4",
+    "code": "340",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L259469",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新貨",
+    "jyutping": "san1 fo3",
+    "code": "34",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L259494",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新起點",
+    "jyutping": "san1 hei2 dim2",
+    "code": "399",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L166570",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新車型",
+    "jyutping": "san1 ce1 jing4",
+    "code": "330",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L259514",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新途徑",
+    "jyutping": "san1 tou4 ging3",
+    "code": "304",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L166582",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新造型",
+    "jyutping": "san1 zou6 jing4",
+    "code": "320",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L166584",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新進人員",
+    "jyutping": "san1 zeon3 jan4 jyun4",
+    "code": "3400",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L166579",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新遊戲",
+    "jyutping": "san1 jau4 hei3",
+    "code": "304",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L166352",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新郎新娘",
+    "jyutping": "san1 long4 san1 noeng4",
+    "code": "3030",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L166592",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新郵件",
+    "jyutping": "san1 jau4 gin2",
+    "code": "309",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L166586",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新郵件",
+    "jyutping": "san1 jau4 gin6",
+    "code": "302",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L166586",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新開幕",
+    "jyutping": "san1 hoi1 mok6",
+    "code": "332",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L166172",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新開設",
+    "jyutping": "san1 hoi1 cit3",
+    "code": "334",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L166175",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新面孔",
+    "jyutping": "san1 min6 hung2",
+    "code": "329",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L166692",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新鞋",
+    "jyutping": "san1 haai4",
+    "code": "30",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L166694",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新頁面",
+    "jyutping": "san1 jip6 min6",
+    "code": "322",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L259690",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新風景",
+    "jyutping": "san1 fung1 ging2",
+    "code": "339",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L259700",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新風氣",
+    "jyutping": "san1 fung1 hei3",
+    "code": "334",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L259702",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "新體驗",
+    "jyutping": "san1 tai2 jim6",
+    "code": "392",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L165876",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "斷了線",
+    "jyutping": "tyun5 liu5 sin3",
+    "code": "554",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L165002",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "斷了線",
+    "jyutping": "dyun6 liu5 sin3",
+    "code": "254",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L165002",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "斷了腿",
+    "jyutping": "tyun5 liu5 teoi2",
+    "code": "559",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L165003",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "斷了腿",
+    "jyutping": "dyun6 liu5 teoi2",
+    "code": "259",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L165003",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "斷劍",
+    "jyutping": "tyun5 gim3",
+    "code": "54",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L165012",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "斷劍",
+    "jyutping": "dyun6 gim3",
+    "code": "24",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L165012",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "斷奶期",
+    "jyutping": "tyun5 naai5 kei4",
+    "code": "550",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L165035",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "斷奶期",
+    "jyutping": "dyun6 naai5 kei4",
+    "code": "250",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L165035",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "斷層掃描",
+    "jyutping": "tyun5 cang4 sou3 miu4",
+    "code": "5040",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L165043",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "斷崖絕壁",
+    "jyutping": "dyun6 ngaai4 zyut6 bik1",
+    "code": "2023",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L165049",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "斷後路",
+    "jyutping": "dyun6 hau6 lou6",
+    "code": "222",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L165018",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "斷成兩截",
+    "jyutping": "tyun5 sing4 loeng5 zit6",
+    "code": "5052",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L165059",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "斷成兩截",
+    "jyutping": "dyun6 sing4 loeng5 zit6",
+    "code": "2052",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L165059",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "斷手",
+    "jyutping": "tyun5 sau2",
+    "code": "59",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L165060",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "斷手",
+    "jyutping": "dyun6 sau2",
+    "code": "29",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L165060",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "斷手斷腳",
+    "jyutping": "tyun5 sau2 tyun5 goek3",
+    "code": "5954",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L165061",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "斷手斷腳",
+    "jyutping": "dyun6 sau2 dyun6 goek3",
+    "code": "2924",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L165061",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "斷斷不可",
+    "jyutping": "dyun3 dyun3 bat1 ho2",
+    "code": "4439",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L165068",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "斷案如神",
+    "jyutping": "dyun3 on3 jyu4 san4",
+    "code": "4400",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L165081",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "斷無此事",
+    "jyutping": "dyun3 mou4 ci2 si6",
+    "code": "4092",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L165071",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "斷然拒絕",
+    "jyutping": "dyun3 jin4 keoi5 zyut6",
+    "code": "4052",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L165099",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "斷然拒絕",
+    "jyutping": "dyun6 jin4 keoi5 zyut6",
+    "code": "2052",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L165099",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "斷然處置",
+    "jyutping": "dyun3 jin4 cyu2 zi3",
+    "code": "4094",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L165098",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "斷然處置",
+    "jyutping": "dyun3 jin4 cyu5 zi3",
+    "code": "4054",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L165098",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "斷然處置",
+    "jyutping": "dyun6 jin4 cyu2 zi3",
+    "code": "2094",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L165098",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "斷絕來往",
+    "jyutping": "dyun6 zyut6 loi4 wong5",
+    "code": "2205",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L165132",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "斷絕往來",
+    "jyutping": "dyun6 zyut6 wong5 loi4",
+    "code": "2250",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L165130",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "斷絕邦交",
+    "jyutping": "dyun6 zyut6 bong1 gaau1",
+    "code": "2233",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L165133",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "斷絕關係",
+    "jyutping": "dyun6 zyut6 gwaan1 hai6",
+    "code": "2232",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L165129",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "斷腳",
+    "jyutping": "tyun5 goek3",
+    "code": "54",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L165144",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "斷腳",
+    "jyutping": "dyun6 goek3",
+    "code": "24",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L165144",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "斷腸人",
+    "jyutping": "dyun6 coeng4 jan4",
+    "code": "200",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L165140",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "斷航",
+    "jyutping": "dyun6 hong4",
+    "code": "20",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L165150",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "斷裂點",
+    "jyutping": "dyun6 lit6 dim2",
+    "code": "229",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L165167",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "斷骨",
+    "jyutping": "tyun5 gwat1",
+    "code": "53",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L165190",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "斷骨",
+    "jyutping": "dyun6 gwat1",
+    "code": "23",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L165190",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "斷點續傳",
+    "jyutping": "dyun6 dim2 zuk6 cyun4",
+    "code": "2920",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L165094",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "方位圖",
+    "jyutping": "fong1 wai2 tou4",
+    "code": "390",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L166771",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "方位圖",
+    "jyutping": "fong1 wai6 tou4",
+    "code": "320",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L166771",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "方位感",
+    "jyutping": "fong1 wai2 gam2",
+    "code": "399",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L166772",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "方位感",
+    "jyutping": "fong1 wai6 gam2",
+    "code": "329",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L166772",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "方便使用",
+    "jyutping": "fong1 bin6 si2 jung6",
+    "code": "3292",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L166782",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "方向箭頭",
+    "jyutping": "fong1 hoeng3 zin3 tau4",
+    "code": "3440",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L166840",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "方向鍵",
+    "jyutping": "fong1 hoeng3 gin6",
+    "code": "342",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L260124",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "方寸不亂",
+    "jyutping": "fong1 cyun3 bat1 lyun6",
+    "code": "3432",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L166915",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "方寸之間",
+    "jyutping": "fong1 cyun3 zi1 gaan1",
+    "code": "3433",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L260227",
+    "batch": "2026-11-06-written-b42"
+  },
+  {
+    "char": "方寸無主",
+    "jyutping": "fong1 cyun3 mou4 zyu2",
+    "code": "3409",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L166921",
+    "batch": "2026-11-06-written-b42"
   }
 ]

@@ -15,79 +15,76 @@
     "冷僻退回"
   ],
   "automatic_bands": "0: subtitle channels>=20 or Essay>=1000; 1: channels>=5 or Essay>=500; otherwise 2. Absence alone never withdraws a word.",
-  "curated_sha256": "a93feafbde7bded491b4ae0167537d358b0c021668fd1a607f6343d8c5faf9fd",
-  "output_sha256": "ca19042c37ca1eb5fc936ac7ab90a1fa1df143f1f1fac96a06d814bd6ec99fc0",
-  "judgments_sha256": "abeadaff4d2df8b6a712c653433fb7e209c96616d6017ee4c3a62a04abce06f6",
-  "curated_literals": 50725,
-  "observed_literals": 92387,
-  "graded_literals": 114990,
-  "contextual_judgments": 14001,
+  "curated_sha256": "84adb7504fa7ec3bfae48b4abcf5cdab0618fcb135ee22eba59c4eac3fd93e24",
+  "output_sha256": "7c522f1ae4717cdfd06374866e1e4f9beeb66655705b30bc760ef88e5fc1435d",
+  "judgments_sha256": "e2ae290438ba106b6c87af2eb058856cc3fd37b96c29e691a177945c33ed20f3",
+  "curated_literals": 51414,
+  "observed_literals": 92783,
+  "graded_literals": 115678,
+  "contextual_judgments": 14161,
   "pending_curated_literals": 0,
   "curated_grades": {
-    "0": 4089,
-    "1": 22242,
+    "0": 4160,
+    "1": 22512,
     "3": 2051,
-    "2": 22343
+    "2": 22691
   },
   "withdrawn_curated_literals": 2051,
   "withdrawn_curated_readings": 2117,
   "validation": {
-    "merged_rows": 231254,
-    "merged_literals": 214660,
-    "unique_triples": 231252,
-    "baseline_rows": 230071,
+    "merged_rows": 232006,
+    "merged_literals": 215348,
+    "unique_triples": 232004,
+    "baseline_rows": 231254,
     "all_previous_rows_and_multiplicities_retained": true,
-    "old_word_grades_preserved": 113951,
-    "new_source_readings": 1183,
+    "old_word_grades_preserved": 114990,
+    "new_source_readings": 752,
     "new_pairs_retained": true,
-    "search_checks": 232,
-    "preferred_reading_checks": 118,
-    "word_usage_keys": 114990,
+    "search_checks": 207,
+    "preferred_reading_checks": 60,
+    "word_usage_keys": 115678,
     "withdrawn_curated_literals": 2051,
     "live_db_unchanged": true,
     "backend_pwa_essay_frequency_keys": 266884,
     "essay_frequency_tables_equal": true,
-    "backend_pwa_word_grade_keys": 114990,
-    "backend_pwa_curated_reading_grade_keys": 52907,
+    "backend_pwa_word_grade_keys": 115678,
+    "backend_pwa_curated_reading_grade_keys": 53669,
     "word_grade_tables_equal": true,
     "curated_reading_grade_tables_equal": true,
-    "old_source_rows_preserved": 51071,
-    "old_reading_grades_preserved": 51071,
-    "old_usage_rows_preserved": 113951,
-    "old_judgments_preserved": 13817,
-    "new_source_forms": 1041,
-    "new_merged_forms": 1038,
+    "old_source_rows_preserved": 52254,
+    "old_reading_grades_preserved": 52254,
+    "old_usage_rows_preserved": 114990,
+    "old_judgments_preserved": 14001,
+    "new_source_forms": 690,
+    "new_merged_forms": 688,
     "existing_merged_forms_with_new_readings": [
-      "孿生",
-      "支票簿",
-      "熙來攘往"
+      "井然有序",
+      "正襟危坐"
     ],
     "unrelated_user_files_unchanged": true,
+    "raw_source_forms": 51416,
+    "normalized_source_forms": 51414,
+    "new_word_usage_judgments": 160,
     "existing_runtime_readings_mirrored": 0,
-    "new_merged_readings": 1183,
+    "new_merged_readings": 752,
     "heteronym_full_pool_ranking_equal": true,
     "non_han_tiers_match_backend": true,
-    "new_exact_literal_restorations": [
-      "據云"
-    ],
-    "normalization_observed_frequency_reused": {
-      "據云": 383
-    },
+    "new_exact_literal_restorations": [],
+    "normalization_observed_frequency_reused": {},
     "prior_runtime_rows_affected_by_new_normalization": 0,
     "prior_word_usage_keys_affected_by_new_normalization": 0,
     "prior_stored_relation_keys_affected_by_new_normalization": 0,
-    "previous_word_usage_records_preserved": 113951,
-    "previous_word_usage_judgments_preserved": 13817,
-    "new_word_usage_judgments": 184,
-    "full_pool_parity_queries": 37,
-    "full_pool_parity_rows": 63874,
+    "previous_word_usage_records_preserved": 114990,
+    "previous_word_usage_judgments_preserved": 14001,
+    "full_pool_parity_queries": 41,
+    "full_pool_parity_rows": 54459,
     "full_pool_ranking_equal": true,
-    "previous_reading_grades_preserved": 51071,
-    "previous_source_rows_preserved": 51071,
+    "previous_reading_grades_preserved": 52254,
+    "previous_source_rows_preserved": 52254,
     "explicit_previous_reading_grade_repairs": 0,
     "new_word_normalization_idempotent": true,
-    "smoke_tests": 319,
-    "smoke_passed": 315,
+    "smoke_tests": 320,
+    "smoke_passed": 316,
     "smoke_skipped": 4,
     "seam_tests": 89,
     "seam_passed": 83,
@@ -112,23 +109,21 @@
       "modes": 3
     },
     "final_reading_audit": {
-      "removed_uncommitted_readings": [
-        {
-          "char": "塗脂抹粉",
-          "uncommitted_jyutping": "tou4 zi1 maat3 fan2",
-          "reviewed_jyutping": "tou4 zi1 mut3 fan2",
-          "outcome": "already_present",
-          "reference": "https://jyut.net/query?q=抹"
-        }
-      ],
-      "modern_whole_word_variants_retained": {
-        "熙來攘往": [
-          "hei1 loi4 joeng4 wong5",
-          "hei1 loi4 joeng5 wong5"
-        ]
-      },
-      "committed_source_rows_changed": 0
+      "new_source_readings_reviewed": 752,
+      "confirmed_form_reading_code_alignment": true,
+      "whole_word_context_and_modern_variants_reviewed": true,
+      "drafts_not_admitted_automatically": true,
+      "contradictory_preliminary_notes_replaced": 4,
+      "old_source_readings_repaired": 0,
+      "all_previous_source_and_grade_objects_preserved": 52254,
+      "病_beng6_only": true,
+      "lyric_observations_context_checked": 7,
+      "cross_word_lyric_fragments_rejected": [
+        "放煙",
+        "教上",
+        "斂色"
+      ]
     }
   },
-  "updated_through_batch": "2026-11-06-written-b41"
+  "updated_through_batch": "2026-11-06-written-b42"
 }

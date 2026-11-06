@@ -1628,3 +1628,14 @@ PWA 建置及產物檢查、portable 前端建置均通過。使用中資料庫�
 新增據雲→據云的精確還原，保留說話義云；原 Essay 據云 **383** 權重沿用。舊執行詞庫、詞源、分級及已存關係鍵無受影響，精確規則增至 **80**、解析快取升至 **22**。字形、草稿、正式音、碼、來源行及分級理由見[B41 審核表](../data/lexicon/reviews/2026-11-06-written-b41-supplement.tsv)、[metadata](../data/lexicon/reviews/2026-11-06-written-b41.meta.json)和[重建與排序驗證](../data/lexicon/reviews/2026-11-06-written-b41-validation.json)。尚有 **68,608 個池內候選、249 個讀音／語境待核項及 924 個地域初篩候選**；以上為 dev 進度。
 
 最終詞級覆核：塗脂抹粉依[現代完整配詞](https://jyut.net/query?q=抹)採 mut3，已有讀音查重覆蓋，未加入初稿擦拭義 maat3；該音在其他詞義仍按語境審定。熙來攘往的 [joeng4 完整詞例](https://en.wiktionary.org/wiki/Module:zh/data/yue-word/029)保留，既有[香港字書 joeng5 詞例](https://jyut.net/query?q=攘)亦未刪除。
+
+
+## 第四十二批：完成讀音覆核與詞邊界檢查
+
+逐項審核 2,000 個候選，第二輪退回 541 個低使用度、窄域或欠完整的初選項。正式補入 **690 個來源字面、752 組讀音**；其中 **688 個字面首次進入合併詞庫**，井然有序及正襟危坐補入已覆核讀音。原有 52,254 個詞源及讀音分級物件逐欄保留，未以新詞覆蓋舊記錄。
+
+[敬上](https://cantonese.sheik.co.uk/dictionary/words/6369/)改用完整詞音 ging3 soeng6，[散架](https://jyutdictionary.com/dictionary/entry/散架)的鬆散解體義用 saan2 gaa3，散了架同步採 saan2 liu5 gaa3。文人墨士、故弄虛玄及新古典主等來源異形或片段，分別按文人墨客、故弄玄虛、新古典主義查重，正式字面、音節及 0243 碼一併核對。
+
+固定版本廣東歌語料的 **7 個連續字串**均檢視原句：大放煙花中的放煙、教上帝嫌棄中的教上、收斂色彩中的斂色，均跨詞邊界而退回。敢喝、散去、敷好及數算另按完整自然用法收錄；重複副歌與歌唱音未當日常整詞頻率。
+
+原有 114,990 個常用度記錄及 14,001 項判斷逐欄保留；沒有 Essay／TUBELEX 整詞觀測者新增 **160 項 AI 判斷**，累計 **14,161 項**。全部 **51,414 個正規化自建字面**有分級，有效 **49,363 個字面、50,889 組讀音**；歷史退回 2,051 個字面、2,117 組讀音不變。解析快取格式維持 22，字形還原規則維持 80。見[B42 審核表](../data/lexicon/reviews/2026-11-06-written-b42-supplement.tsv)、[metadata](../data/lexicon/reviews/2026-11-06-written-b42.meta.json)及[完整驗證](../data/lexicon/reviews/2026-11-06-written-b42-validation.json)。尚有 **66,608 個池內候選、249 個歷史待核項及 924 個地域初篩項**；本批為 dev 進度。

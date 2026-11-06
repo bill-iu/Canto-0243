@@ -543,3 +543,12 @@ mui1 女孩子泛稱未有二妹整詞根據，本批不擴入。
 歌詞連串另記完整原文行號，擁到跨相擁／到邊界而退回；歌曲次數及異音不冒充日常頻率。據云的說話義還原云，精確規則增至 80、快取格式 22，無舊鍵遷移。草稿、正式音、正字及先後理由見[B41 審核表](../data/lexicon/reviews/2026-11-06-written-b41-supplement.tsv)及[驗證記錄](../data/lexicon/reviews/2026-11-06-written-b41-validation.json)。
 
 最終詞級覆核：塗脂抹粉依[現代完整配詞](https://jyut.net/query?q=抹)採 mut3，已有讀音查重覆蓋，未加入初稿擦拭義 maat3；該音在其他詞義仍按語境審定。熙來攘往的 [joeng4 完整詞例](https://en.wiktionary.org/wiki/Module:zh/data/yue-word/029)保留，既有[香港字書 joeng5 詞例](https://jyut.net/query?q=攘)亦未刪除。
+
+
+## 第四十二批：完成語境讀音覆核
+
+本批新增 752 組讀音並配分級，原 52,254 個讀音分級物件逐欄保留。敬上按完整書信詞例用 soeng6；散了架按散架鬆散解體義用 saan2 gaa3。文件／郵件先列 gin2、保留 gin6；整棵樹保留現代 po1／fo2，整衣斂容保留 lim5／lim6，不因孤字等級便把有效整詞讀音刪去。
+
+[斷的現代詞例](https://jyut.net/query?q=斷)區分斷無此事、斷然拒絕的 dyun3 與截開、折斷的 dyun6／tyun5；[斷然的 dyun6 完整詞例](https://cantonese.sheik.co.uk/dictionary/characters/2176/?full=true)亦保留列後。[診斷](https://jyutdictionary.com/dictionary/entry/診斷)的 dyun6／dyun3 均按整詞保留；沒有把該詞的異讀機械套入所有斷字詞。
+
+文人墨客的客 haak3、文如其人的如 jyu4、新陳代謝的陳 can4 及新古典主義末字義 ji6 均與正式字面同步；數數看兩個數皆 sou2，數百人的數為數量 sou3，數算為動詞 sou2。詞語本身常用度與讀音先後獨立處理，來源和 AI 判斷可在[B42 審核表](../data/lexicon/reviews/2026-11-06-written-b42-supplement.tsv)及[驗證](../data/lexicon/reviews/2026-11-06-written-b42-validation.json)追溯。
