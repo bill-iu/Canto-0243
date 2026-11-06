@@ -1,20 +1,20 @@
 {
   "date": "2026-11-06",
   "reviewer": "AI-assisted whole-word commonness review; not measured corpus frequency or human item-by-item approval",
-  "curated_rows": 26511,
-  "curated_sha256": "72ed22c670da3928f58921eb6a61a854813f8e13d596653e6c8cdc664f2fe2d8",
+  "curated_rows": 27975,
+  "curated_sha256": "05f63117c59fd6cf8977e97b7cf8c117d86d67a436da562da30664f5c9926774",
   "rime_char_sha256": "868937c3ebbcaf47170a80a43bd063b20f6699a884e39110154fd91bba9d195d",
-  "ranks_sha256": "344601f4fa3daf8468337cad4bc298191086e410d17451735c670863cd67ebde",
+  "ranks_sha256": "080b200bb50de2730b4176094c1fb47360646553fa5a121cfeac089e78ec294e",
   "grades": {
-    "預設": 23427,
-    "常用": 3010,
+    "預設": 24750,
+    "常用": 3151,
     "罕見": 71,
     "棄用": 3
   },
   "basis": {
-    "rime-components": 24674,
+    "rime-components": 25935,
     "rime-orthographic": 52,
-    "ai-context": 1785
+    "ai-context": 1988
   },
   "grade_order": [
     "預設",
@@ -38,26 +38,29 @@
     "爲": "為"
   },
   "validation": {
-    "merged_rows": 207646,
-    "merged_literals": 192187,
-    "unique_pairs": 207644,
-    "baseline_unique_pairs": 206174,
-    "normalized_baseline_unique_pairs": 206173,
+    "merged_rows": 209110,
+    "merged_literals": 193592,
+    "unique_pairs": 209108,
+    "baseline_unique_pairs": 207644,
+    "normalized_baseline_unique_pairs": 207644,
     "all_baseline_pairs_retained_after_explicit_literal_migrations": true,
     "baseline_counter_retained_after_explicit_literal_migrations": true,
-    "existing_literal_migrations": 4,
-    "existing_pairs_deduplicated": 1,
-    "added_source_rows": 1471,
+    "existing_literal_migrations": 1,
+    "existing_pairs_deduplicated": 0,
+    "added_source_rows": 1464,
     "all_new_pairs_retained": true,
     "persisted_rows_match": true,
     "existing_exact_duplicate_groups": 2,
-    "representative_search_checks": 283,
+    "representative_search_checks": 413,
+    "positive_search_checks_reused_from_identical_persisted_db": true,
+    "changed_word_searches_rerun": true,
+    "read_only_validation_db_unchanged": true,
     "live_db_unchanged": true,
-    "backend_pwa_word_grade_keys": 26853,
-    "previous_reading_grades_preserved": 25040,
+    "backend_pwa_word_grade_keys": 28335,
+    "previous_reading_grades_preserved": 26511,
     "new_word_normalization_idempotent": true,
-    "smoke_tests": 284,
-    "smoke_passed": 280,
+    "smoke_tests": 285,
+    "smoke_passed": 281,
     "smoke_skipped": 4,
     "seam_tests": 89,
     "seam_passed": 83,
@@ -66,7 +69,7 @@
     "ranking_and_lookup_self_checks": true,
     "targeted_node_typecheck": true,
     "pwa_artifact_guard": true,
-    "layer_cache_format": "8",
+    "layer_cache_format": "9",
     "layer_cache_cold_misses": 8,
     "layer_cache_warm_hits": 8,
     "layer_cache_counter_matches_uncached_db": true
@@ -77,5 +80,5 @@
     "license": "CC BY 4.0",
     "modifications": "Aggregated single-character grades for word readings; explicit glyph inheritance and AI contextual overrides are marked per row."
   },
-  "updated_through_batch": "2026-11-06-written-b17"
+  "updated_through_batch": "2026-11-06-written-b18"
 }
