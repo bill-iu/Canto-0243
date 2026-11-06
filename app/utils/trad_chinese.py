@@ -109,6 +109,7 @@ _CONTEXTUAL_RESTORE: dict[str, str] = {
     "木傢俱": "木家具",
     "木製傢俱": "木製家具",
     "木託盤": "木托盤",
+    "機械繫統": "機械系統",
 }
 
 # Bare word senses: preserve the input, since the converted form can have its
