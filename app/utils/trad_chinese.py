@@ -145,6 +145,11 @@ _CONTEXTUAL_RESTORE: dict[str, str] = {
     "長卷髮": "長捲髮",
     "開鋪": "開舖",
     "降擋": "降檔",
+    "氣衝鬥牛": "氣衝斗牛",
+    "翻鬥車": "翻斗車",
+    "降低幹擾": "降低干擾",
+    "電磁幹擾": "電磁干擾",
+    "迴天無術": "回天無術",
 }
 
 # Bare word senses: preserve the input, since the converted form can have its
