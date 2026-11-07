@@ -97,3 +97,4 @@ char	old_jyutping	old_code	action	value	note
 滋事分子	zi1 si6 fan1 zi2	3239	delete		2026-11-06-written-b49：人物身份義的分子 fan6，有粵典滋事分子的完整現代詞例；移除這一精確字面誤套分子結構／數學 fan1 的讀音，保留 fan6 及其餘字詞的 fan1。 https://words.hk/zidin/份子
 響應	hoeng2 jing1	93	delete		B54 整詞覆核：響應是回應附和 jing3，應該 jing1 屬另一義；已有 hoeng2 jing3，精確刪除錯義音，不全局刪 jing1。https://words.hk/zidin/響應 ; https://cantonese.org/search.php?q=ho
 轎車	kiu4 ce1	03	delete		B54 現代整詞覆核：轎 kiu4 僅見1947舊書習讀，現代轎車 giu6*2 與 giu2 有完整詞例，kiu2 亦有現代俗讀；只刪此整詞 kiu4，保留其他三音和單字歷史讀音。https://cantonese.sheik.co.uk/dictionary/words/6910/ ; https://jyut.net/query?q=轎
+行將	hang6 zoeng1	23	set_jyutping	hang4 zoeng1	B61 整詞覆核：行將為即將／快要，CC-Canto完整詞及現代字典行將詞例讀hang4，不套品行hang6。精確替換此整詞並重算0243碼；保留其餘行字與hang6。來源為kaifang而非Rime，原始檔SHA3756a8923d9dc8f4507dbe4a8deeea93f5420f7a139b9e28587ef2bddf444be7；原始檔不改。https://cantonese.org/search.php?q=行 ; https://jyut.net/query?q=行
