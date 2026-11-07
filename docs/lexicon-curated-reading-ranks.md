@@ -625,3 +625,13 @@ mui1 女孩子泛稱未有二妹整詞根據，本批不擴入。
 獲益匪淺的匪讀 fei2，字形改正後未保留非 fei1 的錯配草稿。狂風怒號 hou4、玄奧晦澀 fui3 sap1 等按完整詞義分級，不因孤字順位把正常全詞判作罕見。玻璃墊 zin3／din3 及玻璃框 kwaang1／hong1 的日常、文讀先後獨立於詞語常用度。
 
 見[B51 讀音與字形審核](../data/lexicon/reviews/2026-11-06-written-b51-supplement.tsv)及[B51 完整驗證](../data/lexicon/reviews/2026-11-06-written-b51-validation.json)。組合與無實測順位均標明為 AI 判斷；未改舊來源、全局字音或原有詞頻。
+
+## 第五十二批整詞讀音終審（2026-11-07）
+
+新增 **983 組讀音分級**，累計 **63,209 組來源讀音**；原有 62,226 個分級物件保留。甩的[現代字書詞義](https://jyut.net/query?q=甩)區分主動揮擲 seot1 與脫落 lat1，甩乾 seot1 gon1 不沿 lat1 草稿；當作、擔任分別採 dong3、dong1。男生宿舍沿[完整男生](https://words.hk/zidin/男生) sang1，沒有機械套生育 saang1。
+
+盛菜、盛酒先列 sing4；[香港中學生中文詞典的現代同義詞例](https://jyut.net/query?q=盛)亦有 sing6 盛飯、盛湯，因此保留較後，不當錯音刪去。[甲乙](https://jyut.net/query?q=乙)以香港日常 jyut6 優先、jyut3 文讀較後；[發酵](https://jyut.net/query?q=酵)的 haau1／gaau3、[曰](https://jyut.net/query?q=曰)的 joek6／jyut6 亦保留現代同義異讀。白淨淨依[完整白淨](https://words.hk/zidin/白淨)取 zeng6；皮膜以書面 mok6 優先、同義語音 mok2 排後。
+
+病入骨髓 seoi5、白癜風 din6、百媚生 mei6 sang1、皇皇巨著 zyu3 與改正字形同步覆核；病一律 beng6。白茉莉的 lei2／lei6、番薯藤的 syu2／syu4 有完整詞根依據；百年偕老 gaai1 優先、haai4 現代又讀較後。戰犯 faan2、和尚 soeng2 及茄克 gaa1 hak1 按完整詞核對，沒有因孤字缺項把正常整詞列作罕見。
+
+完整字形、碼、依據與順位見[B52 審核](../data/lexicon/reviews/2026-11-06-written-b52-supplement.tsv)和[B52 最終驗證](../data/lexicon/reviews/2026-11-06-written-b52-validation.json)。無實測整詞順位明示為 AI 判斷，與詞語本身的常用度獨立。
