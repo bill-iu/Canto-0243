@@ -721,3 +721,11 @@ B60最終覆核補正：「表妹夫」依完整「妹夫」mui6fu1讀6，不把
 說唱樂ngok6，說短道長coeng4，話中帶刺zung1，誤報率leot6，謹備菲酌fei2，警察局長zoeng2，豎行hong4。說服教育採現代整詞依據seoi3fuk6，本批沒有憑此批量刪除其他舊來源讀音。測cak1建議先、caak1現代習讀後；券hyun3先、gyun3現代又讀後；證件gin2先gin6後，會員wui2先wui6後；不以裸字級別把正常整詞配讀判成罕見。諄諄zeon1與豌豆wun2有現代詞級依據，詞語較書面另由熟悉度排後。
 
 語云jyu5wan4保持言語之云，不變雲朵之雲；完整字面修復與快取36一併驗證。歌詞跨詞命中、白髮名詞邊界及同曲重複不當獨立詞頻。逐項依據見[B62審核表](../data/lexicon/reviews/2026-11-06-written-b62-supplement.tsv)，全部新增首選讀音及一般／異讀排序比對見[B62最終驗證](../data/lexicon/reviews/2026-11-06-written-b62-validation.json)。
+
+### B63：買賣與財務語境，多音字按整詞分義
+
+新增1,086組讀音。「貴行」「貿易商行」用hong4而非haang4／hong2；賈禍是招致禍患gu2，gwu2現代同義後列，不是姓氏gaa2；賺大錢用金錢cin2，不把錯切大錢的cin4搬入。負擔重、越來越重以重量cung5先，書讀zung6後；負有重任及貴重物品先用zung6。貧鈾彈daan6非彈奏daan2，足數sou3非數算sou2，貨幣匯率leot6非草稿leot2，賢相soeng3非互相soeng1。
+
+前批語重情深唯一舊列明列cung4→zung6／5003→5203勘誤，表示言語懇切，原來源及標記保留；72,299個其餘舊來源與分級物件不變。歷史B62審核表保留當時值，本批repair列記錄前後音，驗證可還原輸入指紋。
+
+貯5先2後、轎giu2先giu6及kiu2後、贍sin6先sim6後、券hyun3先gyun3後、舌sit3先sit6後均有現代依據；不收僅早期轎kiu4。贏到口語結果dou2先，完整歌詞dou3後。字面較書面與讀音是否常見分開判斷，新讀音沒有新增罕見／棄用級。豔后修復及快取37一併驗證。逐項依據見[B63審核表](../data/lexicon/reviews/2026-11-06-written-b63-supplement.tsv)，完整新首選及前後端一般／異讀排序見[B63最終驗證](../data/lexicon/reviews/2026-11-06-written-b63-validation.json)。
