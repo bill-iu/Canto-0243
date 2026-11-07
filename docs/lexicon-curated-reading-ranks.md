@@ -679,3 +679,11 @@ mui1 女孩子泛稱未有二妹整詞根據，本批不擴入。
 [繫](https://jyut.net/query?q=繫)鞋帶的打結義有完整 gai3 詞例，hai6 的束縛義也有效，較後保留；繫心／繫懷不套打結音。[繩](https://words.hk/zidin/繩)物件採 sing2 先、sing4 本調後，繩結等固定配詞另判；[繞](https://jyut.net/query?q=繞)採 jiu2 先、jiu5 同義異讀後。[翹](https://cantonese.sheik.co.uk/dictionary/characters/8512/)向上彎曲動作採 kiu3 語音先，kiu4 書讀保留，翹板及翹首固定詞仍用4。
 
 群英薈萃依現代完整詞例保留 kui2／wui6／wai3，沒有把缺乏依據的 wai6 入庫。腐蝕採損傷材料 sik6，不混蝕本虧耗 sit6；聚斂錢財保留 lim5／lim6，縫釦子採 kau3，不憑變調猜出 kau2。完整來源、0243碼和先後見[B57 審核](../data/lexicon/reviews/2026-11-06-written-b57-supplement.tsv)及[B57 最終驗證](../data/lexicon/reviews/2026-11-06-written-b57-validation.json)。讀音先後為整詞語境判斷，與詞語常用度分開。
+
+## 第五十八批整詞讀音終審（2026-11-07）
+
+新增 **968組來源讀音分級**，累計 **69,357組**；原有68,389個分級物件逐欄保留。[聽](https://jyut.net/query?q=聽)的teng1語音、ting1書讀依耳聞及接受意見義排先後，聽從的ting3同義讀法保留較後；[聽覺](https://words.hk/zidin/聽覺)固定感官詞有現代ting3直接詞例，不能套用聽見1刪除。聽裝為馬口鐵罐義ting3，不沿用耳聞teng1。19條舊自建ting3來源覆核後保留，沒有作一律刪音。
+
+[背](https://jyut.net/query?q=背)誦記憶的bui6採先，有現代字典同義背誦詞例的bui3保留後；負載及背面bui3另判。[聞](https://jyut.net/query?q=聞)的man4兼耳聞及嗅聞，不機械套名聞聲譽man6。膜mok6／mok2、粒nap1／lap1、鞋haai2／haai4等有據讀法分列；語音變調不因孤字缺項就當作棄用。聾啞症ngaa2、痙攣lyun4、抹黑mut3 haak1按現代字義覆核讀音分級，詞語常用度獨立處理。
+
+自供狀gung1、自傳式zyun6、自彈taan4、臆度dok6、肥分fan6、能謀善斷dyun3及位置上soeng6按完整詞義判斷。來源、0243碼、先後、語料邊界與排除原因見[B58審核表](../data/lexicon/reviews/2026-11-06-written-b58-supplement.tsv)及[B58最終驗證](../data/lexicon/reviews/2026-11-06-written-b58-validation.json)。

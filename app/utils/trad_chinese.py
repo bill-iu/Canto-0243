@@ -122,6 +122,7 @@ _CONTEXTUAL_RESTORE: dict[str, str] = {
     "移星換鬥": "移星換斗",
     "礙難照準": "礙難照准",
     "續藉手續": "續借手續",
+    "能徵善戰": "能征善戰",
 }
 
 # Bare word senses: preserve the input, since the converted form can have its
