@@ -112,6 +112,8 @@ _CONTEXTUAL_RESTORE: dict[str, str] = {
     "機械繫統": "機械系統",
     "水煙鬥": "水煙斗",
     "煙鬥": "煙斗",
+    "準建證": "准建證",
+    "準遷證": "准遷證",
 }
 
 # Bare word senses: preserve the input, since the converted form can have its
@@ -125,6 +127,12 @@ _PRESERVE_LITERALS = {
     "划進去": "划進去", "划进去": "划進去",
     "划過來": "划過來", "划过来": "划過來",
     "划過去": "划過去", "划过去": "划過去",
+    # Swimming motion keeps 游; travel expressions written 遊 stay distinct.
+    "游來": "游來", "游来": "游來",
+    "游來游去": "游來游去", "游来游去": "游來游去",
+    "游進去": "游進去", "游进去": "游進去",
+    "游過來": "游過來", "游过来": "游過來",
+    "游過去": "游過去", "游过去": "游過去",
 }
 
 

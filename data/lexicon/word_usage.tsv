@@ -17457,7 +17457,9 @@ m	0	tubelex	0	839	161		keep
 准入關	2	ai-context	0		0	AI 判斷：較少使用但可辨識、可復用的書面或專門表達，保留並排後。	keep
 准將	1	tubelex	572	18	7		keep
 准尉	1	tubelex	512	1	1		keep
+准建證	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 准許	1	tubelex	622	56	8		keep
+准遷證	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 凇	1	tubelex	610	4	1		keep
 凈	0	tubelex	1690	35	18		keep
 凋	2	tubelex	177	4	3		keep
@@ -74776,10 +74778,16 @@ m	0	tubelex	0	839	161		keep
 活	0	tubelex	7741	1356	190		keep
 活下	1	tubelex	461	13	9		keep
 活下去	0	tubelex	1159	205	31		keep
+活不下去	1	tubelex	702	38	16		keep
+活不了	1	tubelex	568	44	12		keep
+活不成	1	tubelex	503	12	4		keep
 活人	1	tubelex	266	153	19		keep
+活人無數	2	tubelex	303	2	1		keep
 活佛	1	tubelex	849	15	5		keep
 活像	1	tubelex	533	8	6		keep
 活兒	0	tubelex	1011	59	9		keep
+活出	0	tubelex	636	114	20		keep
+活到	0	tubelex	444	73	23		keep
 活到老	1	tubelex	549	12	7		keep
 活劇	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
 活力	0	tubelex	2491	270	89		keep
@@ -74790,59 +74798,90 @@ m	0	tubelex	0	839	161		keep
 活動分子	2	essay	382		0		keep
 活動力	1	tubelex	518	2	2		keep
 活動區	2	tubelex	0	3	2		keep
+活動場所	1	essay	764		0		keep
 活動室	1	tubelex	605	1	1		keep
 活動家	1	tubelex	559	8	6		keep
 活動度	2	tubelex	0	1	1		keep
 活動性	1	tubelex	578	3	2		keep
+活動房	1	tubelex	591	1	1		keep
+活動房屋	2	tubelex	442	1	1		keep
 活動期	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
+活動木偶	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 活動橋	2	ai-context	0		0	AI 判斷：較少使用但可辨識、可復用的書面或專門表達，保留並排後。	keep
 活動狀態	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
+活動硬盤	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+活動舞台	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 活動課	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
 活動量	2	tubelex	1	4	2		keep
 活化	0	tubelex	1131	19	11		keep
 活化劑	2	tubelex	489	1	1		keep
+活化因子	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
+活化液	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 活化石	1	tubelex	561	6	6		keep
+活化能	2	essay	477		0		keep
 活受罪	1	tubelex	529	5	2		keep
 活口	1	tubelex	561	27	4		keep
 活命	1	tubelex	177	54	12		keep
 活命之恩	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
+活命恩人	2	essay	55		0		keep
+活命要緊	2	essay	281		0		keep
 活命錢	2	tubelex	0	1	1		keep
 活埋	1	tubelex	355	20	10		keep
 活塞	0	tubelex	1156	13	4		keep
+活塞式	2	tubelex	0	1	1		keep
+活塞桿	1	essay	514		0		keep
+活多久	2	tubelex	0	3	2		keep
 活套	2	tubelex	444	2	1		keep
 活字	1	tubelex	579	3	2		keep
 活字典	2	tubelex	426	1	1		keep
 活字印刷	1	tubelex	529	5	5		keep
 活字印刷術	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
+活字盤	2	essay	187		0		keep
 活學活用	1	tubelex	547	3	3		keep
 活寶	1	tubelex	721	8	3		keep
 活度	1	tubelex	508	4	3		keep
+活得	0	tubelex	622	129	52		keep
 活性	0	tubelex	177	122	29		keep
+活性中心	2	essay	449		0		keep
 活性區	2	ai-context	0		0	AI 判斷：較少使用但可辨識、可復用的書面或專門表達，保留並排後。	keep
 活性染料	1	essay	547		0		keep
 活性氧	2	tubelex	0	18	1		keep
+活性污泥	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 活性炭	1	tubelex	911	4	4		keep
+活性部位	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
+活性鈣	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 活捉	1	tubelex	610	39	13		keep
 活期	1	tubelex	810	6	4		keep
 活期存款	1	tubelex	575	6	4		keep
 活板	2	tubelex	389	3	2		keep
 活棋	2	tubelex	0	2	1		keep
+活樹	2	tubelex	388	1	1		keep
 活檢	1	tubelex	730	3	2		keep
 活死人	1	tubelex	581	6	2		keep
+活氧機	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 活水	1	tubelex	622	102	11		keep
+活泉	1	tubelex	514	6	2		keep
 活法	1	tubelex	599	12	8		keep
 活泛	2	tubelex	467	4	1		keep
 活活	0	tubelex	88	120	21		keep
 活潑	0	tubelex	2491	187	23		keep
+活潑可愛	2	tubelex	0	4	3		keep
+活潑地	2	tubelex	0	4	2		keep
+活潑大方	2	tubelex	0	1	1		keep
 活潑潑	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
+活潑生動	2	tubelex	460	2	2		keep
+活潑開朗	2	tubelex	0	2	2		keep
 活火	2	tubelex	437	1	1		keep
 活火山	1	tubelex	511	16	5		keep
 活物	1	tubelex	88	75	8		keep
 活現	2	tubelex	177	4	3		keep
 活生生	0	tubelex	1245	128	33		keep
+活產	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
+活用	1	tubelex	622	7	5		keep
 活畜	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
 活疫苗	2	tubelex	0	7	4		keep
 活着	0	tubelex	444	1058	69		keep
+活神仙	2	tubelex	323	3	2		keep
 活祭	2	tubelex	452	24	3		keep
 活立木	2	ai-context	0		0	AI 判斷：較少使用但可辨識、可復用的書面或專門表達，保留並排後。	keep
 活結	2	tubelex	468	1	1		keep
@@ -74850,18 +74889,29 @@ m	0	tubelex	0	839	161		keep
 活罪	2	tubelex	439	1	1		keep
 活脱	2	tubelex	0	1	1		keep
 活脱脱	2	tubelex	0	6	4		keep
+活膩了	1	tubelex	0	13	5		keep
 活色生香	2	tubelex	371	3	2		keep
+活荷載	2	essay	397		0		keep
 活菩薩	2	tubelex	458	7	4		keep
 活血	0	tubelex	1017	4	4		keep
 活血化瘀	2	tubelex	365	1	1		keep
 活見鬼	2	tubelex	486	2	1		keep
 活計	1	tubelex	562	22	1		keep
 活該	0	tubelex	1284	58	11		keep
+活讀	2	essay	276		0		keep
 活豬	2	tubelex	0	2	1		keep
 活路	1	tubelex	701	43	13		keep
 活蹦亂跳	1	tubelex	710	21	5		keep
+活蹦活跳	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 活躍	0	tubelex	1512	362	74		keep
+活躍分子	1	tubelex	515	3	3		keep
+活躍度	1	tubelex	0	13	9		keep
 活躍期	2	tubelex	0	3	1		keep
+活躍股	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+活過	1	tubelex	177	29	7		keep
+活過來	1	tubelex	598	73	8		keep
+活釦	2	tubelex	409	2	2		keep
+活錢	2	tubelex	435	6	3		keep
 活門	2	tubelex	465	3	1		keep
 活雞	0	ai-context	0		0	AI 判斷：日常生活反覆使用的自然表達；沒有整詞實測詞頻，不捏造次數。	keep
 活雷鋒	2	tubelex	0	2	2		keep
@@ -74869,65 +74919,129 @@ m	0	tubelex	0	839	161		keep
 活靶	2	essay	389		0		keep
 活靶子	2	tubelex	0	5	2		keep
 活頁	1	tubelex	584	2	1		keep
+活頁夾	2	tubelex	300	3	2		keep
+活頁文選	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
+活頁目錄	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+活頁簿	2	essay	253		0		keep
 活體	1	tubelex	761	8	3		keep
 活體解剖	2	tubelex	0	2	2		keep
+活魚	1	tubelex	572	4	2		keep
+活鮮	2	tubelex	0	1	1		keep
 洽	2	tubelex	88	1	1		keep
 洽詢	1	tubelex	502	2	2		keep
 洽談	0	tubelex	1650	14	5		keep
+洽談室	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 洽談會	1	essay	970		0		keep
 洽購	1	tubelex	553	2	1		keep
 派	0	tubelex	23581	2136	218		keep
+派上用場	1	tubelex	594	29	9		keep
+派人參加	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+派來	1	tubelex	177	48	8		keep
+派克筆	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 派兵	1	tubelex	729	86	14		keep
+派兵助陣	2	essay	55		0		keep
+派兵攻打	2	tubelex	371	1	1		keep
 派出	0	tubelex	1879	315	67		keep
 派出國	2	tubelex	0	1	1		keep
 派出所	0	tubelex	3025	34	10		keep
 派出所長	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
 派出機構	2	tubelex	0	2	1		keep
 派別	1	tubelex	794	59	15		keep
+派到	1	essay	746		0		keep
 派員	1	tubelex	736	7	3		keep
+派員參加	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+派團	2	tubelex	444	1	1		keep
+派團參加	2	essay	352		0		keep
 派對	0	tubelex	2135	81	21		keep
+派差	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 派息	1	tubelex	1	17	5		keep
 派生	1	tubelex	764	7	6		keep
+派生物	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+派生類	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 派發	1	tubelex	177	33	14		keep
 派系	0	tubelex	88	127	32		keep
+派車	1	essay	548		0		keep
+派車來	2	tubelex	397	2	2		keep
+派車去	2	essay	377		0		keep
+派軍	2	essay	427		0		keep
 派送	1	tubelex	896	14	7		keep
 派遣	0	tubelex	1402	192	49		keep
 派遣證	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
 派遣軍	2	tubelex	0	1	1		keep
+派隊	2	tubelex	1	1	1		keep
 派頭	1	tubelex	703	29	6		keep
 派駐	1	tubelex	857	11	9		keep
+派駐在	2	tubelex	392	1	1		keep
+派駐所	2	essay	194		0		keep
 流	0	tubelex	37908	468	99		keep
+流上	2	essay	446		0		keep
+流上來	2	essay	224		0		keep
+流上去	2	essay	187		0		keep
 流下	0	tubelex	2313	80	20		keep
+流下來	1	tubelex	647	31	13		keep
+流下去	2	tubelex	439	5	3		keep
+流下淚來	1	tubelex	516	6	2		keep
+流了淚	0	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：日常生活反覆使用的自然表達，列日常級；不是實測整詞次數。	keep
+流了血	2	tubelex	0	7	3		keep
 流亡	0	tubelex	855	45	22		keep
+流亡國外	2	tubelex	435	1	1		keep
 流亡政府	2	tubelex	462	23	4		keep
+流亡海外	2	tubelex	449	2	2		keep
 流亡者	2	tubelex	0	5	3		keep
 流佈	2	tubelex	493	1	1		keep
+流來	2	tubelex	483	1	1		keep
+流來流去	2	essay	324		0		keep
 流俗	1	tubelex	528	2	2		keep
 流傳	0	tubelex	800	314	60		keep
+流傳下去	2	tubelex	470	4	2		keep
 流傳千古	2	tubelex	0	4	3		keep
+流傳後世	2	tubelex	437	2	2		keep
 流傳於世	2	tubelex	464	1	1		keep
+流傳開來	1	tubelex	514	11	5		keep
 流光	1	tubelex	866	67	5		keep
+流光易逝	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 流光溢彩	1	tubelex	614	24	5		keep
 流入	0	tubelex	266	153	44		keep
 流入地	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
 流入量	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
 流出	0	tubelex	4716	257	54		keep
+流出去	1	tubelex	460	12	10		keep
 流出地	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
+流出物	2	tubelex	0	1	1		keep
+流出量	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 流利	0	tubelex	1423	47	19		keep
+流利地	2	tubelex	0	4	3		keep
+流到	0	tubelex	2046	26	8		keep
 流動	0	tubelex	2669	330	60		keep
+流動人口	0	tubelex	1063	10	4		keep
+流動力學	2	essay	404		0		keep
+流動基金	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 流動性	0	tubelex	2153	235	35		keep
+流動户口	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
+流動比率	1	tubelex	512	2	1		keep
+流動沙丘	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 流動率	2	tubelex	0	2	1		keep
 流動站	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
+流動資本	2	tubelex	433	5	3		keep
 流動資產	1	tubelex	640	8	4		keep
 流動資金	1	tubelex	929	1	1		keep
 流動量	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
 流化牀	1	essay	619		0		keep
+流去	1	tubelex	571	2	2		keep
 流口水	0	tubelex	1002	23	8		keep
 流向	0	tubelex	266	70	35		keep
+流回	2	essay	493		0		keep
+流回來	2	essay	327		0		keep
+流回去	2	essay	344		0		keep
 流域	0	tubelex	1574	65	23		keep
 流域性	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
+流域規劃	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+流域面積	1	essay	543		0		keep
+流場	2	tubelex	0	1	1		keep
 流失	0	tubelex	444	119	53		keep
 流失率	2	tubelex	0	5	3		keep
+流失量	2	essay	433		0		keep
+流媒體	0	tubelex	1075	118	22		keep
 流寇	1	tubelex	555	58	2		keep
 流寓	2	tubelex	0	3	1		keep
 流年	1	tubelex	975	9	5		keep
@@ -74935,11 +75049,16 @@ m	0	tubelex	0	839	161		keep
 流年似水	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
 流弊	2	tubelex	482	3	3		keep
 流式	2	tubelex	0	4	2		keep
+流式細胞	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 流彈	2	tubelex	177	1	1		keep
 流形	1	essay	523		0		keep
+流往	2	tubelex	0	2	1		keep
+流得	2	tubelex	177	1	1		keep
 流徙	2	tubelex	425	6	1		keep
 流感	0	tubelex	88	215	26		keep
+流感疫苗	1	tubelex	658	1	1		keep
 流態化	2	ai-context	0		0	AI 判斷：較少使用但可辨識、可復用的書面或專門表達，保留並排後。	keep
+流掉	2	essay	486		0		keep
 流放	0	tubelex	88	106	23		keep
 流放地	1	tubelex	0	11	5		keep
 流散	1	tubelex	531	14	7		keep
@@ -74947,33 +75066,55 @@ m	0	tubelex	0	839	161		keep
 流於形式	1	tubelex	568	5	3		keep
 流明	1	tubelex	659	3	3		keep
 流星	0	tubelex	978	70	31		keep
+流星焰火	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
+流星羣	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 流星趕月	2	tubelex	441	1	1		keep
 流星錘	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
 流星雨	1	tubelex	955	23	5		keep
 流暢	0	tubelex	978	129	44		keep
+流暢地	2	tubelex	0	2	2		keep
+流暢性	1	tubelex	505	3	3		keep
 流毒	1	tubelex	500	3	3		keep
 流民	1	tubelex	586	64	2		keep
 流氓	0	tubelex	3737	137	25		keep
+流氓團夥	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+流氓婆	2	essay	128		0		keep
+流氓學生	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 流氓無產者	2	tubelex	396	1	1		keep
 流氓罪	2	tubelex	437	5	2		keep
+流氓行為	2	tubelex	0	1	1		keep
+流氓軟件	0	tubelex	1041	1	1		keep
+流氓阿飛	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+流氓集團	2	tubelex	353	1	1		keep
 流氣	2	tubelex	484	1	1		keep
 流水	0	tubelex	800	208	48		keep
 流水不腐	2	tubelex	436	2	2		keep
 流水席	2	tubelex	437	1	1		keep
 流水無情	1	tubelex	522	1	1		keep
 流水線	1	tubelex	981	59	18		keep
+流水線結構	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+流水聲	2	tubelex	88	2	1		keep
 流水號	1	essay	636		0		keep
 流水賬	1	tubelex	630	2	2		keep
+流水過程	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+流汁	2	tubelex	0	3	1		keep
 流汗	1	tubelex	533	21	9		keep
+流汗浹背	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 流沙	1	tubelex	793	10	6		keep
+流泄	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+流泄出來	2	tubelex	303	1	1		keep
 流泉	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
 流注	1	tubelex	533	1	1		keep
 流派	1	tubelex	266	42	19		keep
+流派風格	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 流流	0	tubelex	1957	3	2		keep
 流浪	0	tubelex	5873	189	37		keep
 流浪人	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
+流浪女	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+流浪歌	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 流浪漢	1	tubelex	772	85	14		keep
 流浪狗	1	tubelex	745	11	6		keep
+流浪生活	2	tubelex	0	6	4		keep
 流浪者	1	tubelex	737	25	10		keep
 流浸膏	3	ai-context	0		0	AI 判斷：日常及一般填詞極少使用的冷僻古語、罕用變語或過窄術語，退回自建收錄。	withdraw_curated
 流涎	2	tubelex	324	1	1		keep
@@ -74981,46 +75122,76 @@ m	0	tubelex	0	839	161		keep
 流淌	0	tubelex	1404	175	19		keep
 流淚	0	tubelex	3114	163	21		keep
 流溢	1	tubelex	535	13	2		keep
+流滿	0	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：日常生活反覆使用的自然表達，列日常級；不是實測整詞次數。	keep
 流瀉	1	tubelex	557	2	1		keep
 流火	1	tubelex	572	9	1		keep
+流片	2	tubelex	0	1	1		keep
 流產	1	tubelex	266	29	9		keep
+流當	2	essay	299		0		keep
+流盡	1	tubelex	564	2	1		keep
 流盼	2	tubelex	460	3	2		keep
 流眼淚	0	tubelex	3826	24	9		keep
+流着淚	1	tubelex	533	18	6		keep
 流矢	2	tubelex	453	4	2		keep
+流砂	2	essay	441		0		keep
 流程	0	tubelex	1868	558	184		keep
 流程化	2	tubelex	0	2	2		keep
 流程圖	0	tubelex	1029	2	2		keep
 流竄	1	tubelex	710	22	6		keep
+流竄作案	2	tubelex	0	2	2		keep
+流竄到	2	tubelex	444	4	1		keep
 流經	1	tubelex	744	18	8		keep
 流線	1	tubelex	706	15	6		keep
 流線型	1	tubelex	606	6	5		keep
+流線形	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 流腦	1	essay	551		0		keep
 流膿	1	tubelex	531	3	2		keep
 流芳	2	tubelex	177	2	2		keep
 流芳千古	2	tubelex	453	2	2		keep
+流芳後世	2	essay	336		0		keep
 流芳百世	1	tubelex	523	3	3		keep
 流落	0	tubelex	1690	43	17		keep
+流落他鄉	2	tubelex	432	2	1		keep
+流落外鄉	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+流落天涯	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+流落失所	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 流落江湖	2	tubelex	409	2	1		keep
+流落異鄉	2	essay	406		0		keep
+流落風塵	2	tubelex	0	1	1		keep
 流蕩	2	tubelex	480	5	2		keep
 流蘇	1	tubelex	779	5	3		keep
 流螢	1	tubelex	546	23	2		keep
 流血	0	tubelex	5161	264	46		keep
+流血事件	1	tubelex	0	13	10		keep
+流血政變	2	essay	310		0		keep
+流血流汗	2	tubelex	0	2	2		keep
+流血犧牲	2	tubelex	495	7	4		keep
+流血衝突	2	tubelex	494	6	3		keep
 流行	0	tubelex	1868	781	205		keep
 流行性	1	tubelex	738	7	3		keep
+流行時尚	0	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：日常生活反覆使用的自然表達，列日常級；不是實測整詞次數。	keep
+流行時裝	0	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：日常生活反覆使用的自然表達，列日常級；不是實測整詞次數。	keep
+流行榜	0	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：日常生活反覆使用的自然表達，列日常級；不是實測整詞次數。	keep
 流行歌	1	tubelex	525	5	3		keep
 流行歌曲	1	tubelex	895	15	10		keep
 流行病	1	tubelex	581	44	19		keep
 流行病學	1	tubelex	798	9	5		keep
+流行色	1	tubelex	581	2	2		keep
 流行語	1	tubelex	624	7	2		keep
+流行起來	1	tubelex	555	20	9		keep
 流行音樂	0	tubelex	1059	44	7		keep
+流行風	2	essay	1		0		keep
 流裏流氣	2	tubelex	456	1	1		keep
 流覽	1	tubelex	506	1	1		keep
 流言	1	tubelex	533	66	15		keep
+流言惑眾	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 流言蜚語	1	tubelex	599	26	4		keep
 流變	1	tubelex	651	2	1		keep
+流變學	1	essay	569		0		keep
 流變性	2	ai-context	0		0	AI 判斷：較少使用但可辨識、可復用的書面或專門表達，保留並排後。	keep
 流賊	2	tubelex	490	21	2		keep
 流質	1	tubelex	562	6	2		keep
+流質食物	2	essay	450		0		keep
 流走	1	tubelex	266	12	9		keep
 流路	2	ai-context	0		0	AI 判斷：較少使用但可辨識、可復用的書面或專門表達，保留並排後。	keep
 流轉	0	tubelex	266	155	20		keep
@@ -75028,27 +75199,54 @@ m	0	tubelex	0	839	161		keep
 流通	0	tubelex	1156	138	48		keep
 流通券	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
 流通性	1	tubelex	1	6	6		keep
+流通手段	2	essay	426		0		keep
 流通業	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
+流通渠道	1	tubelex	528	3	2		keep
+流通盤	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 流通股	0	tubelex	1187	1	1		keep
+流通股東	1	essay	928		0		keep
+流通證券	2	essay	325		0		keep
+流通費用	2	essay	423		0		keep
 流通量	1	tubelex	510	4	2		keep
 流通領域	1	essay	726		0		keep
 流逝	0	tubelex	1868	172	45		keep
 流速	1	tubelex	783	16	7		keep
+流速計	2	essay	341		0		keep
 流連	1	tubelex	533	22	5		keep
 流連忘返	1	tubelex	725	5	5		keep
+流進	1	tubelex	612	15	7		keep
+流進來	2	tubelex	409	1	1		keep
+流進去	2	essay	358		0		keep
+流遍	2	tubelex	484	2	2		keep
+流遍全身	2	tubelex	0	1	1		keep
 流過	1	tubelex	711	33	8		keep
+流過來	2	tubelex	412	1	1		keep
+流過去	2	tubelex	436	2	2		keep
+流過淚	2	tubelex	0	1	1		keep
+流道	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 流配	2	tubelex	374	1	1		keep
 流量	0	tubelex	88	434	97		keep
+流量儀表	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 流量表	1	tubelex	637	4	2		keep
 流金	2	tubelex	400	2	2		keep
+流金歲月	2	tubelex	0	10	2		keep
+流金鑠石	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 流離	1	tubelex	651	12	4		keep
 流離失所	1	tubelex	584	27	12		keep
+流離轉徙	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 流雲	1	tubelex	888	334	5		keep
 流露	0	tubelex	2313	64	14		keep
+流露出	0	tubelex	1160	166	16		keep
+流露出來	1	tubelex	574	19	7		keep
 流風	1	tubelex	575	2	2		keep
+流風餘韻	2	essay	348		0		keep
 流體	0	tubelex	1034	16	5		keep
 流體力學	1	tubelex	596	2	2		keep
+流體動力	1	essay	517		0		keep
+流體密度	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
+流體性	2	essay	204		0		keep
 流鶯	2	tubelex	495	4	1		keep
+流鼻涕	1	tubelex	723	16	9		keep
 流鼻血	2	tubelex	266	6	3		keep
 浙江	0	tubelex	6760	188	40		keep
 浙江籍	2	ai-context	0		0	AI 判斷：較少使用但可辨識、可復用的書面或專門表達，保留並排後。	keep
@@ -75062,17 +75260,21 @@ m	0	tubelex	0	839	161		keep
 浦	0	tubelex	1535	13	4		keep
 浩	0	tubelex	3025	21	7		keep
 浩劫	1	tubelex	88	35	14		keep
+浩嘆	2	essay	446		0		keep
 浩大	1	tubelex	821	72	13		keep
 浩如煙海	1	tubelex	542	1	1		keep
 浩歌	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
 浩氣	1	tubelex	537	3	2		keep
+浩氣凜然	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 浩氣長存	2	tubelex	434	1	1		keep
 浩浩	1	tubelex	785	10	9		keep
+浩浩湯湯	2	tubelex	415	4	2		keep
 浩浩蕩蕩	1	tubelex	978	65	8		keep
 浩淼	1	tubelex	571	3	1		keep
 浩渺	1	tubelex	568	2	2		keep
 浩瀚	1	tubelex	177	112	19		keep
 浩瀚無垠	2	tubelex	0	2	1		keep
+浩瀚無涯	2	essay	332		0		keep
 浩然	1	tubelex	533	13	2		keep
 浩然之氣	2	tubelex	479	6	2		keep
 浩然正氣	1	tubelex	536	11	4		keep
@@ -75084,22 +75286,39 @@ m	0	tubelex	0	839	161		keep
 浪子	1	tubelex	622	41	6		keep
 浪子回頭	1	tubelex	548	9	3		keep
 浪子回頭金不換	2	tubelex	445	5	3		keep
+浪客	2	tubelex	0	1	1		keep
 浪尖	1	tubelex	630	8	7		keep
+浪峯	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 浪得虛名	1	tubelex	533	5	2		keep
+浪打浪	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+浪板	2	tubelex	449	2	1		keep
 浪浪	2	tubelex	177	4	3		keep
 浪漫	0	tubelex	5873	304	85		keep
 浪漫主義	1	tubelex	825	14	5		keep
 浪漫主義者	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
 浪漫史	2	tubelex	0	1	1		keep
+浪漫情懷	2	tubelex	0	1	1		keep
+浪漫愛情	2	tubelex	0	5	3		keep
+浪漫插曲	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 浪漫曲	1	essay	506		0		keep
+浪漫氣息	2	tubelex	0	1	1		keep
+浪漫氣質	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 浪漫派	2	tubelex	496	4	2		keep
+浪漫生活	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 浪潮	0	tubelex	1578	214	47		keep
+浪潮洶湧	2	tubelex	383	2	2		keep
 浪濤	1	tubelex	577	12	4		keep
 浪花	1	tubelex	974	45	17		keep
 浪蕩	1	tubelex	598	15	4		keep
 浪蕩子	2	tubelex	467	18	3		keep
 浪費	0	tubelex	7652	609	107		keep
+浪費地	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+浪費成性	2	essay	243		0		keep
+浪費時間	0	tubelex	1186	114	27		keep
+浪費者	2	essay	352		0		keep
+浪費資源	2	tubelex	0	3	3		keep
 浪跡	1	tubelex	635	3	2		keep
+浪跡天下	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 浪跡天涯	1	tubelex	715	9	5		keep
 浪跡江湖	2	tubelex	468	2	1		keep
 浪遊	2	tubelex	460	3	1		keep
@@ -75107,24 +75326,40 @@ m	0	tubelex	0	839	161		keep
 浪鼓	2	tubelex	0	1	1		keep
 浮	0	tubelex	2669	58	23		keep
 浮一大白	2	tubelex	0	2	1		keep
+浮上來	1	tubelex	511	8	5		keep
+浮上去	2	tubelex	332	2	2		keep
+浮世	2	tubelex	0	4	3		keep
+浮來	2	tubelex	458	1	1		keep
+浮來浮去	2	essay	234		0		keep
 浮價煙	3	ai-context	0		0	AI 判斷：日常及一般填詞極少使用的冷僻古語、罕用變語或過窄術語，退回自建收錄。	withdraw_curated
+浮光	1	tubelex	581	4	2		keep
 浮光掠影	1	tubelex	558	5	2		keep
+浮光躍金	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 浮出	0	tubelex	800	98	30		keep
 浮力	1	tubelex	594	13	6		keep
+浮力計	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 浮動	0	tubelex	177	76	20		keep
+浮動價	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+浮動價格	2	essay	366		0		keep
 浮動匯率	1	tubelex	505	1	1		keep
 浮動匯率制	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
 浮動式	2	tubelex	0	3	2		keep
+浮升	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+浮台	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 浮名	2	tubelex	493	1	1		keep
+浮名虛譽	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 浮圖	1	tubelex	509	1	1		keep
 浮土	2	tubelex	468	4	2		keep
 浮塵	1	tubelex	595	3	3		keep
 浮子	1	essay	563		0		keep
 浮屍	1	tubelex	512	4	1		keep
 浮屠	2	tubelex	177	14	2		keep
+浮島	2	tubelex	0	1	1		keep
 浮式	2	tubelex	0	1	1		keep
+浮影	2	essay	453		0		keep
 浮想	1	tubelex	610	3	3		keep
 浮想聯翩	1	tubelex	590	13	6		keep
+浮於	1	tubelex	566	10	6		keep
 浮木	2	tubelex	0	1	1		keep
 浮板	2	tubelex	0	6	1		keep
 浮樑	2	ai-context	0		0	AI 判斷：較少使用但可辨識、可復用的書面或專門表達，保留並排後。	keep
@@ -75133,30 +75368,47 @@ m	0	tubelex	0	839	161		keep
 浮水	1	tubelex	513	4	3		keep
 浮水印	2	tubelex	398	1	1		keep
 浮沉	1	tubelex	266	17	9		keep
+浮沉不定	2	essay	401		0		keep
+浮沙	2	tubelex	0	1	1		keep
 浮油	2	tubelex	481	4	2		keep
 浮法	2	ai-context	0		0	AI 判斷：較少使用但可辨識、可復用的書面或專門表達，保留並排後。	keep
+浮法玻璃	2	tubelex	0	1	1		keep
 浮泡	2	tubelex	0	1	1		keep
 浮淺	1	tubelex	508	6	1		keep
 浮游	1	tubelex	625	14	9		keep
+浮游動物	2	essay	483		0		keep
+浮游植物	1	tubelex	518	2	1		keep
 浮游生物	1	tubelex	536	13	6		keep
 浮滑	2	tubelex	396	1	1		keep
 浮漂	1	tubelex	551	37	1		keep
 浮潛	1	tubelex	529	14	4		keep
 浮現	0	tubelex	9254	463	24		keep
+浮球閥	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 浮生	1	tubelex	797	15	9		keep
 浮生若夢	1	essay	546		0		keep
 浮石	1	tubelex	526	1	1		keep
+浮石粉	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
+浮空	1	tubelex	266	18	8		keep
 浮空器	2	ai-context	0		0	AI 判斷：較少使用但可辨識、可復用的書面或專門表達，保留並排後。	keep
 浮筒	2	tubelex	476	1	1		keep
+浮而不實	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 浮腫	1	tubelex	926	21	8		keep
+浮舟	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+浮華不實	2	essay	307		0		keep
 浮萍	1	tubelex	732	10	4		keep
 浮蕩	2	tubelex	431	1	1		keep
+浮薄	2	tubelex	356	1	1		keep
+浮言	2	essay	349		0		keep
 浮誇	1	tubelex	88	34	9		keep
 浮豔	2	essay	387		0		keep
 浮財	2	tubelex	395	4	1		keep
+浮起	1	tubelex	889	51	13		keep
 浮躁	0	tubelex	1612	20	10		keep
+浮釣	2	essay	410		0		keep
 浮雕	1	tubelex	878	114	6		keep
 浮雲	0	tubelex	1176	16	7		keep
+浮雲富貴	2	essay	259		0		keep
+浮雲蔽日	2	tubelex	319	1	1		keep
 浮面	2	tubelex	448	1	1		keep
 浮點	1	tubelex	684	3	2		keep
 浮點數	1	tubelex	520	17	3		keep
@@ -75164,8 +75416,12 @@ m	0	tubelex	0	839	161		keep
 浯	1	tubelex	581	5	1		keep
 浴	1	tubelex	622	50	8		keep
 浴佛	2	tubelex	489	3	2		keep
+浴佛節	2	tubelex	425	1	1		keep
 浴場	2	tubelex	88	9	4		keep
 浴室	0	tubelex	7029	150	44		keep
+浴室櫃	0	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：日常生活反覆使用的自然表達，列日常級；不是實測整詞次數。	keep
+浴室用品	0	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：日常生活反覆使用的自然表達，列日常級；不是實測整詞次數。	keep
+浴室鏡	0	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：日常生活反覆使用的自然表達，列日常級；不是實測整詞次數。	keep
 浴巾	1	tubelex	444	17	5		keep
 浴池	1	tubelex	88	15	6		keep
 浴火重生	2	tubelex	369	3	3		keep
@@ -75175,12 +75431,23 @@ m	0	tubelex	0	839	161		keep
 浴缸	0	tubelex	3648	64	26		keep
 浴血	1	tubelex	649	19	6		keep
 浴血奮戰	1	tubelex	572	9	3		keep
+浴血戰	2	essay	382		0		keep
+浴血戰鬥	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 浴衣	2	tubelex	88	6	3		keep
 浴袍	1	tubelex	978	7	4		keep
 海	0	tubelex	16284	883	102		keep
 海上	0	tubelex	177	532	72		keep
+海上保險	2	essay	486		0		keep
+海上基地	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 海上生明月	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
+海上結構	2	tubelex	0	1	1		keep
+海上運輸	1	tubelex	511	1	1		keep
+海中	1	tubelex	266	60	15		keep
+海中撈月	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 海事	0	tubelex	1071	11	8		keep
+海事法	2	essay	354		0		keep
+海事職業	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
+海事處	1	essay	519		0		keep
 海兔	2	tubelex	0	1	1		keep
 海內	1	tubelex	717	14	5		keep
 海內外	0	tubelex	1349	16	8		keep
@@ -75203,17 +75470,29 @@ m	0	tubelex	0	839	161		keep
 海基導彈	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
 海堤	1	tubelex	535	1	1		keep
 海報	0	tubelex	622	127	21		keep
+海報設計	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 海外	0	tubelex	444	878	158		keep
+海外劇場	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+海外學人	2	essay	442		0		keep
+海外投資	1	tubelex	724	3	3		keep
 海外版	1	tubelex	639	5	5		keep
+海外經營	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+海外華人	1	tubelex	757	10	7		keep
+海外關係	2	tubelex	434	2	2		keep
+海天一色	2	tubelex	1	2	2		keep
 海寇	2	tubelex	0	1	1		keep
+海屋添籌	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 海岸	0	tubelex	355	275	56		keep
 海岸帶	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
 海岸線	1	tubelex	853	41	17		keep
+海岸階地	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 海島	0	tubelex	1037	82	7		keep
+海島型	2	tubelex	385	1	1		keep
 海峽	0	tubelex	1128	103	17		keep
 海峽兩岸	1	tubelex	983	1	1		keep
 海市蜃樓	1	tubelex	630	15	5		keep
 海帶	2	tubelex	177	31	3		keep
+海帶絲	0	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：日常生活反覆使用的自然表達，列日常級；不是實測整詞次數。	keep
 海平線	2	tubelex	466	4	3		keep
 海平面	1	tubelex	599	38	15		keep
 海底	0	tubelex	711	530	42		keep
@@ -75222,15 +75501,21 @@ m	0	tubelex	0	839	161		keep
 海怪	1	tubelex	599	17	4		keep
 海戰	1	tubelex	825	55	9		keep
 海拔	0	tubelex	1372	89	28		keep
+海損保險	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
+海損鑑定	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 海星	1	tubelex	88	15	5		keep
 海景	1	tubelex	444	29	12		keep
+海景房	2	tubelex	0	2	2		keep
+海景畫	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 海枯石爛	1	tubelex	603	3	2		keep
 海柳	2	ai-context	0		0	AI 判斷：較少使用但可辨識、可復用的書面或專門表達，保留並排後。	keep
+海桐	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 海棠	0	tubelex	1105	470	4		keep
 海棠樹	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
 海棠花	1	tubelex	542	2	1		keep
 海槽	2	ai-context	0		0	AI 判斷：較少使用但可辨識、可復用的書面或專門表達，保留並排後。	keep
 海權	1	tubelex	0	44	5		keep
+海歸派	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 海民	2	ai-context	0		0	AI 判斷：較少使用但可辨識、可復用的書面或專門表達，保留並排後。	keep
 海氣	2	tubelex	0	1	1		keep
 海水	0	tubelex	711	277	45		keep
@@ -75242,19 +75527,28 @@ m	0	tubelex	0	839	161		keep
 海波	1	tubelex	818	5	4		keep
 海洋	0	tubelex	6674	1034	86		keep
 海洋學家	2	tubelex	0	1	1		keep
+海洋工程	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 海洋性	1	tubelex	533	1	1		keep
 海洋性氣候	2	tubelex	494	5	1		keep
+海洋權益	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+海洋氣候	2	tubelex	430	1	1		keep
 海洋法	1	tubelex	513	12	7		keep
+海洋環境	2	tubelex	0	4	2		keep
 海洋生物	1	tubelex	625	55	18		keep
 海洋能	2	tubelex	0	1	1		keep
+海洋資源	2	tubelex	350	2	2		keep
 海洋館	2	tubelex	1	1	1		keep
 海洛因	1	tubelex	744	18	4		keep
 海派	2	tubelex	88	10	3		keep
 海流	1	tubelex	538	9	5		keep
 海流圖	2	ai-context	0		0	AI 判斷：較少使用但可辨識、可復用的書面或專門表達，保留並排後。	keep
 海浪	0	tubelex	444	133	26		keep
+海浪滔天	2	tubelex	347	1	1		keep
+海浪聲	2	tubelex	177	5	1		keep
+海浪般	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 海浬	2	tubelex	0	5	2		keep
 海涵	1	tubelex	547	5	3		keep
+海深	1	tubelex	0	6	5		keep
 海温	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
 海港	1	tubelex	88	41	9		keep
 海溝	1	tubelex	536	22	6		keep
@@ -75268,6 +75562,7 @@ m	0	tubelex	0	839	161		keep
 海牙	1	tubelex	678	23	13		keep
 海牛	2	tubelex	177	6	3		keep
 海狗	2	tubelex	88	1	1		keep
+海狗腎	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 海狸	1	tubelex	519	16	2		keep
 海狸鼠	2	tubelex	427	1	1		keep
 海狼	2	tubelex	0	1	1		keep
@@ -75278,12 +75573,15 @@ m	0	tubelex	0	839	161		keep
 海王星	1	tubelex	591	233	11		keep
 海珍品	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
 海生	1	tubelex	608	4	3		keep
+海生植物	2	essay	312		0		keep
 海產	1	tubelex	567	5	4		keep
 海產品	1	tubelex	708	3	3		keep
 海疆	1	tubelex	540	2	1		keep
 海百合	2	tubelex	427	3	1		keep
 海盆	2	tubelex	430	1	1		keep
 海盜	1	tubelex	177	292	16		keep
+海盜旗	0	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：日常生活反覆使用的自然表達，列日常級；不是實測整詞次數。	keep
+海盜版	2	essay	342		0		keep
 海盜船	1	tubelex	811	32	4		keep
 海相	1	essay	597		0		keep
 海相沉積	2	ai-context	0		0	AI 判斷：較少使用但可辨識、可復用的書面或專門表達，保留並排後。	keep
@@ -75293,10 +75591,13 @@ m	0	tubelex	0	839	161		keep
 海神	1	tubelex	266	46	10		keep
 海禁	2	tubelex	488	4	3		keep
 海空	1	tubelex	1	9	7		keep
+海空運	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 海端	2	tubelex	293	1	1		keep
+海竿	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 海米	1	tubelex	556	1	1		keep
 海納百川	1	tubelex	610	3	1		keep
 海綿	1	tubelex	444	70	12		keep
+海綿墊	0	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：日常生活反覆使用的自然表達，列日常級；不是實測整詞次數。	keep
 海綿體	1	tubelex	552	4	2		keep
 海膽	2	tubelex	266	8	2		keep
 海船	1	tubelex	563	11	3		keep
@@ -75307,22 +75608,34 @@ m	0	tubelex	0	839	161		keep
 海藍	1	tubelex	647	3	1		keep
 海藍色	2	tubelex	177	2	2		keep
 海藻	1	tubelex	927	31	8		keep
+海藻類	2	tubelex	0	1	1		keep
 海蛇	1	tubelex	521	4	1		keep
 海蜇皮	2	essay	458		0		keep
+海蜇頭	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+海蝕作用	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+海蝕台	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+海蝕崖	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+海蝕柱	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+海蝕洞	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 海蝦	1	tubelex	501	1	1		keep
 海螵蛸	2	essay	434		0		keep
 海螺	1	tubelex	821	13	7		keep
 海角	1	tubelex	266	8	5		keep
 海角天涯	1	tubelex	557	1	1		keep
+海訓	2	tubelex	0	1	1		keep
+海誓	2	tubelex	88	1	1		keep
 海誓山盟	1	tubelex	634	10	5		keep
 海警	2	tubelex	0	16	1		keep
 海豚	0	tubelex	533	147	20		keep
 海象	1	tubelex	528	6	5		keep
 海豹	1	tubelex	782	125	12		keep
+海貍	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 海貝	1	tubelex	566	3	2		keep
 海賊	2	tubelex	355	41	4		keep
+海賊團	2	tubelex	0	6	2		keep
 海路	1	tubelex	617	19	5		keep
 海軍	0	tubelex	2217	406	35		keep
+海軍上將	2	tubelex	0	7	3		keep
 海軍基地	1	tubelex	545	15	7		keep
 海軍藍	2	tubelex	473	1	1		keep
 海軍陸戰隊	1	tubelex	607	27	11		keep
@@ -75333,13 +75646,17 @@ m	0	tubelex	0	839	161		keep
 海邊	0	tubelex	2758	232	35		keep
 海里	0	tubelex	876	221	25		keep
 海量	0	tubelex	177	78	33		keep
+海錨	2	essay	350		0		keep
 海闊天空	1	tubelex	895	11	8		keep
 海闊憑魚躍	2	tubelex	0	3	3		keep
 海關	0	tubelex	533	98	27		keep
 海關人員	2	tubelex	472	4	3		keep
 海關法	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
+海關監管	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 海關税	2	tubelex	0	2	1		keep
 海防	1	tubelex	600	24	5		keep
+海防區	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
+海防林	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 海防部隊	2	tubelex	336	2	2		keep
 海陸	1	tubelex	588	14	4		keep
 海陸空	1	tubelex	586	10	7		keep
@@ -75347,14 +75664,19 @@ m	0	tubelex	0	839	161		keep
 海陸風	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
 海雕	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
 海難	1	tubelex	543	13	3		keep
+海霧	2	tubelex	462	14	1		keep
 海面	0	tubelex	266	225	20		keep
 海鞘	2	tubelex	414	2	1		keep
 海韻	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
 海頓	1	tubelex	577	3	2		keep
 海風	1	tubelex	800	52	9		keep
 海馬	1	tubelex	266	44	12		keep
+海驢	2	essay	420		0		keep
 海魚	1	tubelex	564	7	2		keep
 海鮮	0	tubelex	1245	115	26		keep
+海鮮大餐	1	essay	525		0		keep
+海鮮酒樓	2	tubelex	0	1	1		keep
+海鯛	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 海鰻	2	tubelex	458	1	1		keep
 海鳥	1	tubelex	581	17	3		keep
 海鷂	2	ai-context	0		0	AI 判斷：較少使用但可辨識、可復用的書面或專門表達，保留並排後。	keep
@@ -75366,22 +75688,32 @@ m	0	tubelex	0	839	161		keep
 浸入	1	tubelex	742	13	8		keep
 浸出	2	essay	1		0		keep
 浸出法	2	ai-context	0		0	AI 判斷：較少使用但可辨識、可復用的書面或專門表達，保留並排後。	keep
+浸出液	2	tubelex	0	2	1		keep
 浸出物	2	ai-context	0		0	AI 判斷：較少使用但可辨識、可復用的書面或專門表達，保留並排後。	keep
+浸到	2	tubelex	177	4	3		keep
 浸取	2	ai-context	0		0	AI 判斷：較少使用但可辨識、可復用的書面或專門表達，保留並排後。	keep
+浸完	2	essay	384		0		keep
 浸提	2	ai-context	0		0	AI 判斷：較少使用但可辨識、可復用的書面或專門表達，保留並排後。	keep
+浸於	2	tubelex	472	2	1		keep
 浸染	1	tubelex	588	32	6		keep
 浸水	1	tubelex	571	3	2		keep
 浸沒	1	tubelex	539	5	4		keep
 浸泡	0	tubelex	1434	80	19		keep
+浸液	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 浸淫	1	tubelex	444	13	5		keep
 浸漬	1	tubelex	597	1	1		keep
 浸潤	1	tubelex	886	9	4		keep
+浸潤性	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 浸濕	1	tubelex	0	12	5		keep
 浸禮	2	tubelex	427	38	1		keep
 浸禮會	1	ai-context	0		0	AI 覆核：為熟悉、可復用的生活或書面名稱，但日常使用頻繁程度低於基本口語，列通用級；未捏造整詞頻率。	keep
 浸種	1	tubelex	535	10	3		keep
 浸蝕	2	essay	485		0		keep
+浸軟	2	essay	473		0		keep
 浸透	1	tubelex	817	32	10		keep
+浸遍	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+浸過	2	tubelex	266	6	4		keep
+浸酒	0	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：日常生活反覆使用的自然表達，列日常級；不是實測整詞次數。	keep
 浹	2	tubelex	444	2	1		keep
 涅	1	tubelex	88	21	14		keep
 涅槃	1	tubelex	209	74	17		keep
@@ -75398,6 +75730,8 @@ m	0	tubelex	0	839	161		keep
 消化	0	tubelex	2402	250	59		keep
 消化不良	1	tubelex	879	8	7		keep
 消化力	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
+消化吸收	1	tubelex	853	11	6		keep
+消化器	2	essay	380		0		keep
 消化器官	1	tubelex	504	1	1		keep
 消化性	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
 消化液	1	tubelex	538	2	2		keep
@@ -75408,46 +75742,74 @@ m	0	tubelex	0	839	161		keep
 消化腺	2	essay	443		0		keep
 消化道	1	tubelex	920	12	4		keep
 消化酶	1	tubelex	536	1	1		keep
+消卻	2	essay	372		0		keep
+消去	2	tubelex	177	3	3		keep
+消去法	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 消受	2	tubelex	177	8	3		keep
 消夏	1	tubelex	584	3	1		keep
 消失	0	tubelex	34526	1962	236		keep
+消失下去	2	essay	279		0		keep
+消失掉	1	tubelex	550	22	8		keep
 消導藥	3	ai-context	0		0	AI 判斷：日常及一般填詞極少使用的冷僻古語、罕用變語或過窄術語，退回自建收錄。	withdraw_curated
 消弭	1	tubelex	555	22	8		keep
 消彌	2	tubelex	0	1	1		keep
 消息	0	tubelex	13170	2812	291		keep
 消息人士	1	tubelex	0	57	15		keep
+消息來源	1	tubelex	561	18	10		keep
 消息傳遞	2	tubelex	0	9	2		keep
+消息日誌	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
+消息閉塞	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 消息靈通	1	tubelex	546	10	2		keep
+消息面	1	tubelex	766	14	8		keep
 消愁	2	tubelex	177	9	3		keep
+消掉	1	tubelex	518	28	12		keep
 消散	0	tubelex	1779	201	27		keep
 消旋	2	ai-context	0		0	AI 判斷：較少使用但可辨識、可復用的書面或專門表達，保留並排後。	keep
 消暑	2	tubelex	88	8	4		keep
 消業	2	tubelex	0	2	1		keep
 消極	0	tubelex	266	264	29		keep
+消極因素	2	essay	494		0		keep
 消極影響	2	tubelex	0	8	4		keep
+消極思想	2	tubelex	0	2	2		keep
 消極怠工	2	tubelex	490	4	2		keep
 消極性	2	essay	430		0		keep
+消極悲觀	2	tubelex	0	4	3		keep
+消極情緒	2	tubelex	0	4	3		keep
+消極態度	2	tubelex	0	2	1		keep
 消極面	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
 消毒	0	tubelex	3203	98	37		keep
 消毒劑	1	tubelex	631	6	3		keep
+消毒器	2	essay	1		0		keep
+消毒室	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+消毒機	0	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：日常生活反覆使用的自然表達，列日常級；不是實測整詞次數。	keep
 消毒櫃	1	essay	667		0		keep
 消毒水	1	tubelex	542	8	5		keep
 消毒液	2	tubelex	1	5	3		keep
+消毒片	2	essay	489		0		keep
 消毒藥	2	essay	459		0		keep
 消毒藥水	2	tubelex	468	1	1		keep
 消氣	1	tubelex	570	5	2		keep
+消水腫	0	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：日常生活反覆使用的自然表達，列日常級；不是實測整詞次數。	keep
 消沉	1	tubelex	533	64	16		keep
 消泡劑	2	ai-context	0		0	AI 判斷：較少使用但可辨識、可復用的書面或專門表達，保留並排後。	keep
+消消氣	1	tubelex	504	2	2		keep
 消減	1	tubelex	444	25	7		keep
 消滅	0	tubelex	2847	534	68		keep
+消火栓箱	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 消災	1	tubelex	266	16	6		keep
 消炎	0	tubelex	1042	28	9		keep
+消炎劑	2	essay	340		0		keep
 消炎藥	1	tubelex	748	4	4		keep
+消痛貼	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 消痰	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
 消瘦	1	tubelex	266	24	8		keep
 消石灰	2	tubelex	401	1	1		keep
 消磁	1	tubelex	536	2	1		keep
+消磁器	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 消磨	0	tubelex	1245	44	17		keep
+消磨時光	2	tubelex	0	3	2		keep
+消磨歲月	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+消納	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 消耗	0	tubelex	4627	593	144		keep
 消耗品	1	tubelex	581	16	6		keep
 消耗性	2	tubelex	0	2	2		keep
@@ -75458,22 +75820,34 @@ m	0	tubelex	0	839	161		keep
 消聲	1	tubelex	633	3	2		keep
 消聲匿跡	2	tubelex	454	1	1		keep
 消聲器	1	tubelex	605	2	1		keep
+消聲室	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 消腫	1	tubelex	803	4	3		keep
+消腫劑	2	essay	156		0		keep
+消腫止痛	0	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：日常生活反覆使用的自然表達，列日常級；不是實測整詞次數。	keep
+消腫藥	2	tubelex	327	1	1		keep
+消色差	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 消融	1	tubelex	786	30	7		keep
 消融術	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
 消解	1	tubelex	799	14	9		keep
 消費	0	tubelex	1334	885	100		keep
 消費主義	1	tubelex	0	36	7		keep
+消費信貸	1	tubelex	579	1	1		keep
 消費力	2	tubelex	0	10	3		keep
+消費合作	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 消費品	0	tubelex	1340	30	14		keep
 消費國	2	tubelex	0	4	2		keep
 消費型	2	tubelex	0	1	1		keep
+消費市場	1	tubelex	967	13	5		keep
 消費性	2	tubelex	0	5	3		keep
+消費水平	1	tubelex	820	6	5		keep
 消費率	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
 消費税	2	tubelex	0	50	4		keep
+消費結構	1	essay	583		0		keep
 消費羣	2	tubelex	0	1	1		keep
 消費者	0	tubelex	12260	883	61		keep
+消費行為	2	tubelex	0	5	3		keep
 消費觀	2	tubelex	1	8	3		keep
+消費觀念	1	tubelex	693	6	4		keep
 消費量	1	tubelex	900	9	5		keep
 消費額	1	tubelex	535	3	3		keep
 消費類	1	tubelex	814	2	2		keep
@@ -75483,64 +75857,148 @@ m	0	tubelex	0	839	161		keep
 消長	1	tubelex	551	5	2		keep
 消閒	1	tubelex	536	5	2		keep
 消防	0	tubelex	711	86	30		keep
+消防人	2	tubelex	0	3	1		keep
+消防人員	0	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：日常生活反覆使用的自然表達，列日常級；不是實測整詞次數。	keep
 消防員	0	tubelex	14949	13	9		keep
 消防器材	2	tubelex	0	1	1		keep
+消防大隊	1	essay	587		0		keep
 消防安全	1	tubelex	912	2	2		keep
+消防官兵	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 消防局	2	tubelex	177	3	2		keep
+消防工作	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+消防工程	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+消防支隊	2	essay	1		0		keep
+消防梯	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+消防水帶	0	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：日常生活反覆使用的自然表達，列日常級；不是實測整詞次數。	keep
+消防法	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+消防泵	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
+消防演習	0	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：日常生活反覆使用的自然表達，列日常級；不是實測整詞次數。	keep
+消防炮	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+消防產品	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
+消防用水	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+消防站	2	tubelex	0	1	1		keep
+消防系統	0	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：日常生活反覆使用的自然表達，列日常級；不是實測整詞次數。	keep
+消防網	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+消防船	2	tubelex	0	1	1		keep
+消防設備	2	essay	360		0		keep
+消防設施	0	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：日常生活反覆使用的自然表達，列日常級；不是實測整詞次數。	keep
 消防車	0	tubelex	7652	5	2		keep
+消防車庫	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+消防通道	2	tubelex	0	1	1		keep
 消防隊	1	tubelex	597	5	3		keep
 消防隊員	1	tubelex	592	3	2		keep
+消防電梯	2	tubelex	0	1	1		keep
+消防龍頭	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 消除	0	tubelex	1334	366	98		keep
+消除矛盾	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+消除隔閡	2	tubelex	0	2	2		keep
+消除隱患	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 消隱	1	tubelex	511	1	1		keep
 消霧	2	ai-context	0		0	AI 判斷：較少使用但可辨識、可復用的書面或專門表達，保留並排後。	keep
 消音	1	tubelex	605	6	5		keep
 消音器	1	tubelex	88	12	5		keep
 消食	1	tubelex	609	3	3		keep
+消食片	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 涉	2	tubelex	177	3	3		keep
 涉世	1	tubelex	610	1	1		keep
+涉世不深	2	tubelex	482	1	1		keep
 涉世未深	1	tubelex	579	1	1		keep
+涉事	1	tubelex	177	11	8		keep
 涉及	0	tubelex	1423	975	217		keep
 涉及面	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
 涉外	0	tubelex	1135	3	3		keep
+涉外企業	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+涉外單位	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
+涉外婚姻	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 涉嫌	0	tubelex	444	74	38		keep
+涉嫌犯罪	2	tubelex	0	2	2		keep
+涉嫌者	2	essay	281		0		keep
 涉密	2	tubelex	0	1	1		keep
 涉案	1	tubelex	266	12	9		keep
 涉案人	2	tubelex	0	1	1		keep
 涉案人員	2	tubelex	0	4	2		keep
+涉案者	2	tubelex	463	1	1		keep
+涉槍	2	tubelex	0	1	1		keep
+涉毒	2	tubelex	1	1	1		keep
 涉水	1	tubelex	631	16	9		keep
+涉水而行	2	essay	328		0		keep
+涉水而過	2	tubelex	407	1	1		keep
+涉水過河	2	tubelex	393	1	1		keep
 涉獵	1	tubelex	747	21	10		keep
 涉税	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
+涉税案	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+涉累	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
+涉網	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
+涉賭	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 涉足	0	tubelex	1244	52	24		keep
+涉足其間	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+涉足於	2	tubelex	443	1	1		keep
+涉足花叢	2	essay	131		0		keep
 涉農	1	essay	823		0		keep
+涉過	2	tubelex	484	3	2		keep
 涉險	1	tubelex	560	13	3		keep
+涉黃案	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 涎	1	tubelex	671	3	3		keep
+涎液	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
+涎腺炎	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 涑	1	tubelex	579	2	1		keep
 涓	1	tubelex	893	5	4		keep
+涓流	2	tubelex	0	3	3		keep
 涓涓	1	tubelex	613	5	4		keep
+涓涓細流	1	tubelex	540	4	2		keep
 涓滴	2	tubelex	447	2	1		keep
+涓滴不漏	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
+涓滴成河	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 涔涔	1	tubelex	524	2	1		keep
 涕	2	tubelex	88	2	2		keep
+涕泗交流	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 涕泗橫流	2	tubelex	370	2	1		keep
 涕泗縱橫	2	tubelex	300	1	1		keep
 涕泣	2	tubelex	473	1	1		keep
 涕淚	1	tubelex	524	9	5		keep
+涕淚交下	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+涕淚交加	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+涕淚交集	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 涮	1	tubelex	177	12	6		keep
+涮鍋	2	tubelex	0	1	1		keep
 涯	1	tubelex	889	10	2		keep
 液	0	tubelex	2491	60	22		keep
+液位計	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 液冷	2	ai-context	0		0	AI 判斷：較少使用但可辨識、可復用的書面或專門表達，保留並排後。	keep
+液劑	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 液力	1	essay	555		0		keep
 液化	1	tubelex	877	40	13		keep
+液化器	2	essay	378		0		keep
 液化氣	1	tubelex	891	1	1		keep
+液化氣罐	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 液化氣船	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
+液化點	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 液壓	0	tubelex	1263	28	6		keep
+液壓件	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
+液壓工具	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+液壓式	1	essay	511		0		keep
 液壓油	1	essay	650		0		keep
 液壓泵	2	essay	1		0		keep
+液壓站	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
+液壓管線	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
+液壓缸	2	essay	1		0		keep
+液壓表	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
+液壓閥	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 液態	1	tubelex	838	51	6		keep
+液態氧	2	essay	370		0		keep
 液態氫	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
 液態水	2	tubelex	467	1	1		keep
+液態空氣	2	essay	348		0		keep
 液晶	1	tubelex	88	5	5		keep
+液晶屏	0	tubelex	1059	1	1		keep
+液晶屏幕	0	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：日常生活反覆使用的自然表達，列日常級；不是實測整詞次數。	keep
+液晶彩電	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+液晶模塊	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
+液晶電腦	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 液晶電視	0	essay	1649		0		keep
+液晶面板	1	essay	809		0		keep
 液晶顯示	1	essay	808		0		keep
+液晶體	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 液氦	2	essay	415		0		keep
 液氧	2	tubelex	0	10	1		keep
 液氨	1	tubelex	546	2	2		keep
@@ -75552,35 +76010,49 @@ m	0	tubelex	0	839	161		keep
 液狀	2	tubelex	0	2	1		keep
 液相	2	ai-context	0		0	AI 判斷：較少使用但可辨識、可復用的書面或專門表達，保留並排後。	keep
 液相色譜儀	3	ai-context	0		0	AI 判斷：日常及一般填詞極少使用的冷僻古語、罕用變語或過窄術語，退回自建收錄。	withdraw_curated
+液肥	2	tubelex	0	1	1		keep
 液體	0	tubelex	4894	283	29		keep
 液體燃料	1	tubelex	517	1	1		keep
 液體狀態	2	tubelex	402	1	1		keep
 液體石蠟	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
+液體鈣	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 涴	2	tubelex	446	1	1		keep
 涵	1	tubelex	88	10	5		keep
 涵容	2	tubelex	407	4	2		keep
+涵括	2	tubelex	0	14	3		keep
 涵義	1	tubelex	865	14	5		keep
+涵育	2	essay	338		0		keep
 涵蓋	0	tubelex	1678	146	49		keep
 涵蓋面	2	tubelex	0	1	1		keep
 涵養	1	tubelex	88	22	7		keep
 涸	2	tubelex	88	1	1		keep
 涸澤而漁	2	tubelex	417	3	1		keep
 涼	0	tubelex	127340	169	29		keep
+涼了半截	1	tubelex	500	1	1		keep
 涼亭	1	tubelex	88	70	8		keep
 涼台	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
+涼如水	2	tubelex	0	5	2		keep
 涼帽	2	tubelex	441	1	1		keep
 涼快	1	tubelex	88	36	15		keep
 涼意	1	tubelex	444	34	5		keep
 涼拌	1	tubelex	892	14	6		keep
+涼拌菜	1	tubelex	550	1	1		keep
+涼拌麪	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 涼月	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
 涼棚	1	tubelex	521	7	2		keep
+涼椅	2	essay	423		0		keep
 涼氣	0	tubelex	1067	37	7		keep
 涼水	1	tubelex	977	24	9		keep
+涼水塔	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
+涼水池	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 涼水澡	2	tubelex	0	2	1		keep
 涼涼	1	tubelex	355	16	7		keep
+涼涼快快	2	essay	306		0		keep
+涼涼爽爽	2	essay	349		0		keep
 涼爽	1	tubelex	177	42	13		keep
 涼瓜	2	tubelex	0	1	1		keep
 涼皮	1	tubelex	775	6	2		keep
+涼粉條	2	essay	243		0		keep
 涼糕	2	essay	471		0		keep
 涼絲絲	2	tubelex	469	2	2		keep
 涼茶	1	tubelex	88	11	5		keep
@@ -75589,33 +76061,50 @@ m	0	tubelex	0	839	161		keep
 涼薄	2	tubelex	0	5	1		keep
 涼鞋	2	tubelex	88	4	3		keep
 涼風	0	tubelex	1067	18	6		keep
+涼風習習	1	tubelex	511	7	2		keep
 涼颼颼	1	tubelex	527	6	4		keep
 涿	1	tubelex	574	1	1		keep
 淅淅	2	tubelex	497	3	3		keep
 淅淅瀝瀝	2	tubelex	1	8	3		keep
 淅瀝	1	tubelex	646	1	1		keep
 淅瀝瀝	2	tubelex	0	4	1		keep
+淆亂視聽	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 淇	0	tubelex	1008	4	2		keep
 淋	0	tubelex	9076	25	13		keep
 淋巴	1	tubelex	963	9	5		keep
+淋巴因子	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 淋巴液	2	tubelex	488	1	1		keep
 淋巴瘤	1	tubelex	640	1	1		keep
 淋巴癌	0	ai-context	0		0	AI 判斷：日常生活反覆使用的自然表達；沒有整詞實測詞頻，不捏造次數。	keep
 淋巴管	1	tubelex	562	1	1		keep
 淋巴細胞	1	tubelex	829	4	3		keep
 淋巴結	1	tubelex	918	5	4		keep
+淋巴結核	2	tubelex	0	1	1		keep
 淋巴結炎	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
+淋巴肉	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 淋巴腺	2	tubelex	464	1	1		keep
+淋得	1	tubelex	514	2	2		keep
 淋洗	2	essay	496		0		keep
 淋浴	1	tubelex	88	25	16		keep
+淋浴房	2	tubelex	0	4	3		keep
+淋浴間	1	tubelex	0	13	5		keep
 淋漓	0	tubelex	444	47	20		keep
 淋漓盡致	0	tubelex	1220	65	20		keep
 淋濕	1	tubelex	0	20	8		keep
+淋灑	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 淋病	1	tubelex	755	6	3		keep
+淋病菌	2	essay	254		0		keep
+淋菌	1	essay	604		0		keep
+淋透	0	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：日常生活反覆使用的自然表達，列日常級；不是實測整詞次數。	keep
+淋過	1	tubelex	513	1	1		keep
 淋雨	1	tubelex	177	21	8		keep
+淋頭	1	essay	532		0		keep
 淌	1	tubelex	355	46	11		keep
 淑	0	tubelex	1485	24	7		keep
 淑女	1	tubelex	978	41	8		keep
+淑女型	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+淑女裝	1	essay	543		0		keep
+淑女風格	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 淒	1	tubelex	711	1	1		keep
 淒冷	1	tubelex	545	2	2		keep
 淒厲	1	tubelex	978	61	4		keep
@@ -75625,63 +76114,100 @@ m	0	tubelex	0	839	161		keep
 淒涼	0	tubelex	1868	101	12		keep
 淒淒	2	tubelex	0	2	1		keep
 淘	0	tubelex	1067	28	18		keep
+淘井	2	tubelex	315	1	1		keep
 淘寶	0	tubelex	6135	89	28		keep
 淘氣	1	tubelex	266	31	11		keep
+淘氣堡	0	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：日常生活反覆使用的自然表達，列日常級；不是實測整詞次數。	keep
 淘氣鬼	2	tubelex	450	1	1		keep
 淘汰	0	tubelex	88	216	78		keep
 淘汰制	1	tubelex	517	2	2		keep
 淘汰式	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
+淘汰法	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 淘汰率	2	tubelex	0	2	1		keep
 淘汰賽	1	tubelex	772	1	1		keep
 淘汰賽制	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
+淘沙	2	essay	304		0		keep
+淘沙取金	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+淘沙得金	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 淘洗	1	tubelex	549	1	1		keep
 淘米	1	tubelex	576	1	1		keep
+淘米籮	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 淘金	1	tubelex	958	12	8		keep
 淘金熱	2	tubelex	457	1	1		keep
 淘金者	1	tubelex	545	2	2		keep
+淘金路	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 淙淙	1	tubelex	560	3	2		keep
+淙淙流水	2	essay	383		0		keep
 淚	0	tubelex	9610	76	17		keep
+淚下沾襟	2	essay	230		0		keep
+淚乾腸斷	2	essay	241		0		keep
 淚人	1	tubelex	562	2	2		keep
 淚光	0	tubelex	2224	11	6		keep
+淚千行	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 淚如泉湧	1	tubelex	523	3	1		keep
 淚如雨下	1	tubelex	571	6	4		keep
 淚水	0	tubelex	7385	180	16		keep
+淚水汪汪	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+淚水直流	2	essay	377		0		keep
 淚汪汪	1	tubelex	532	3	3		keep
 淚泉	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
 淚流	1	tubelex	711	16	6		keep
 淚流滿面	0	tubelex	1097	48	10		keep
+淚浸	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 淚涔涔	2	essay	299		0		keep
 淚滴	1	tubelex	647	3	3		keep
 淚珠	1	tubelex	533	18	3		keep
 淚痕	1	tubelex	533	25	3		keep
+淚痕斑斑	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 淚眼	1	tubelex	177	19	5		keep
+淚眼愁眉	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+淚眼汪汪	2	tubelex	477	2	1		keep
 淚腺	2	tubelex	355	1	1		keep
+淚腺炎	2	essay	359		0		keep
+淚色	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 淚花	1	tubelex	758	17	4		keep
+淚道	2	tubelex	0	1	1		keep
+淚雨	1	tubelex	545	7	2		keep
 淝	1	tubelex	572	7	1		keep
 淞	1	tubelex	762	2	1		keep
 淡	0	tubelex	8720	153	44		keep
+淡入	1	essay	517		0		keep
+淡入淡出	2	essay	474		0		keep
 淡出	0	tubelex	444	24	20		keep
+淡出淡入	2	essay	347		0		keep
 淡化	0	tubelex	355	66	31		keep
+淡化處理	2	essay	409		0		keep
 淡去	2	tubelex	266	20	2		keep
+淡味	2	tubelex	454	1	1		keep
+淡如水	2	tubelex	0	4	4		keep
+淡如逝水	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 淡妝	2	tubelex	355	2	2		keep
+淡妝濃抹	2	essay	452		0		keep
+淡妝輕抹	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 淡季	1	tubelex	622	17	7		keep
 淡定	0	tubelex	3203	174	27		keep
 淡忘	1	tubelex	266	20	13		keep
+淡掃蛾眉	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 淡旺季	0	ai-context	0		0	AI 判斷：日常生活反覆使用的自然表達；沒有整詞實測詞頻，不捏造次數。	keep
 淡水	0	tubelex	355	95	23		keep
 淡水湖	1	tubelex	548	10	6		keep
 淡水魚	1	tubelex	602	5	4		keep
 淡泊	1	tubelex	835	11	5		keep
 淡泊名利	1	tubelex	545	9	6		keep
+淡泊寧靜	2	tubelex	0	1	1		keep
 淡泊明志	2	tubelex	478	2	1		keep
 淡淡	0	tubelex	4983	379	8		keep
 淡淡地	1	tubelex	889	53	3		keep
+淡淡無味	2	essay	308		0		keep
 淡淡的	0	tubelex	795	197	31		keep
 淡漠	1	tubelex	905	79	8		keep
 淡灰	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
+淡灰色	2	tubelex	0	3	3		keep
 淡然	1	tubelex	444	190	7		keep
+淡然置之	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 淡然處之	2	tubelex	483	3	3		keep
 淡竹	2	ai-context	0		0	AI 判斷：較少使用但可辨識、可復用的書面或專門表達，保留並排後。	keep
+淡竹葉	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 淡紅	1	tubelex	554	2	2		keep
 淡紅色	1	tubelex	558	4	2		keep
 淡紫	1	tubelex	556	3	2		keep
@@ -75694,18 +76220,25 @@ m	0	tubelex	0	839	161		keep
 淡薄	1	tubelex	88	25	11		keep
 淡藍	1	tubelex	721	6	2		keep
 淡藍色	1	tubelex	735	24	6		keep
+淡褐	2	essay	382		0		keep
 淡褐色	2	tubelex	88	2	2		keep
+淡豆豉	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 淡酒	2	tubelex	479	2	2		keep
 淡雅	1	tubelex	899	13	3		keep
 淡青	2	essay	478		0		keep
 淡青色	1	tubelex	517	6	2		keep
 淡靜	2	tubelex	0	1	1		keep
+淡食	2	tubelex	0	1	1		keep
+淡飯	1	tubelex	560	1	1		keep
+淡鹽水	0	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：日常生活反覆使用的自然表達，列日常級；不是實測整詞次數。	keep
 淡黃	1	tubelex	589	13	1		keep
+淡黃色	2	tubelex	266	14	4		keep
 淤	0	tubelex	1006	4	2		keep
 淤傷	2	tubelex	428	5	3		keep
 淤塞	2	tubelex	490	1	1		keep
 淤沙	2	essay	358		0		keep
 淤泥	1	tubelex	819	44	11		keep
+淤淺	2	essay	335		0		keep
 淤積	1	tubelex	717	9	2		keep
 淤血	1	tubelex	593	14	3		keep
 淦	1	tubelex	648	23	1		keep
@@ -75714,36 +76247,61 @@ m	0	tubelex	0	839	161		keep
 淨利	1	tubelex	668	13	4		keep
 淨利潤	0	tubelex	1914	63	12		keep
 淨利潤率	2	tubelex	0	4	3		keep
+淨剩	2	tubelex	0	9	1		keep
 淨勝	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
 淨勝球	2	essay	369		0		keep
 淨化	0	tubelex	3915	243	25		keep
 淨化劑	2	tubelex	473	7	1		keep
 淨化器	1	tubelex	660	7	5		keep
+淨化水	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+淨化環境	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+淨化系統	1	essay	543		0		keep
+淨含量	1	essay	592		0		keep
 淨土	1	tubelex	88	59	14		keep
+淨土宗	1	tubelex	530	23	4		keep
 淨增	1	tubelex	578	2	1		keep
+淨寬	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
+淨差	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 淨度	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
 淨心	2	tubelex	0	3	3		keep
 淨手	2	tubelex	482	3	2		keep
+淨損	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 淨收入	1	tubelex	564	31	8		keep
+淨數	0	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：日常生活反覆使用的自然表達，列日常級；不是實測整詞次數。	keep
+淨氣	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 淨水	1	tubelex	867	60	5		keep
 淨水器	1	tubelex	703	3	2		keep
+淨水廠	2	tubelex	467	4	2		keep
+淨水機	0	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：日常生活反覆使用的自然表達，列日常級；不是實測整詞次數。	keep
 淨流量	2	ai-context	0		0	AI 判斷：較少使用但可辨識、可復用的書面或專門表達，保留並排後。	keep
 淨現金	2	tubelex	0	3	2		keep
+淨瓶	1	tubelex	508	2	1		keep
 淨盡	2	tubelex	450	11	1		keep
 淨空	2	tubelex	0	2	1		keep
+淨素	0	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：日常生活反覆使用的自然表達，列日常級；不是實測整詞次數。	keep
 淨菜	2	essay	475		0		keep
+淨虧損	2	tubelex	0	11	2		keep
 淨資產	0	tubelex	1338	58	17		keep
 淨資產值	1	ai-context	0		0	AI 覆核：為熟悉、可復用的生活或書面名稱，但日常使用頻繁程度低於基本口語，列通用級；未捏造整詞頻率。	keep
 淨賺	1	tubelex	599	6	6		keep
+淨賺額	2	essay	25		0		keep
+淨贏	0	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：日常生活反覆使用的自然表達，列日常級；不是實測整詞次數。	keep
 淨身	1	tubelex	577	4	2		keep
+淨車價	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 淨重	1	tubelex	648	11	1		keep
+淨重量	2	essay	419		0		keep
 淨額	1	tubelex	761	2	1		keep
+淨餘	2	essay	345		0		keep
 淩	0	tubelex	1423	38	17		keep
 淪	1	tubelex	266	5	5		keep
 淪亡	2	tubelex	88	5	3		keep
+淪入	2	tubelex	454	3	2		keep
+淪入敵手	2	essay	263		0		keep
+淪入風塵	2	essay	240		0		keep
 淪喪	1	tubelex	712	19	6		keep
 淪為	0	tubelex	0	188	32		keep
 淪落	1	tubelex	533	52	13		keep
+淪落人	2	tubelex	357	2	2		keep
 淪落風塵	2	tubelex	0	2	1		keep
 淪陷	1	tubelex	177	91	13		keep
 淪陷區	2	tubelex	489	8	2		keep
@@ -75761,18 +76319,29 @@ m	0	tubelex	0	839	161		keep
 淫穢	0	tubelex	1305	17	6		keep
 淫笑	0	tubelex	1334	4	1		keep
 淫蕩	0	tubelex	3114	21	6		keep
+淫蕩女	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
+淫行	2	tubelex	409	2	1		keep
 淫褻	2	tubelex	475	1	1		keep
+淫詞	2	tubelex	0	10	1		keep
+淫詞豔曲	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+淫詞豔語	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+淫語	2	essay	266		0		keep
 淫賊	2	tubelex	177	4	2		keep
+淫辭	2	essay	315		0		keep
+淫辭穢語	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 淫逸	1	tubelex	507	5	2		keep
 淫邪	2	tubelex	1	3	3		keep
+淫雨成災	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 淫靡	2	tubelex	463	1	1		keep
 淬	1	tubelex	705	5	4		keep
 淬火	1	tubelex	630	1	1		keep
 淬煉	2	tubelex	0	1	1		keep
 淮	0	tubelex	1120	4	1		keep
+淮揚菜	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 淮河	1	tubelex	888	31	5		keep
 淮海戰役	1	tubelex	572	1	1		keep
 深	0	tubelex	24293	988	215		keep
+深一步	2	tubelex	0	3	2		keep
 深一腳淺一腳	2	tubelex	0	2	2		keep
 深不可測	1	tubelex	721	46	5		keep
 深不見底	2	tubelex	0	12	4		keep
@@ -75781,65 +76350,117 @@ m	0	tubelex	0	839	161		keep
 深仁厚澤	2	ai-context	0		0	AI 判斷：較少使用但可辨識、可復用的書面或專門表達，保留並排後。	keep
 深仇	2	tubelex	177	3	2		keep
 深仇大恨	1	tubelex	540	13	9		keep
+深仇宿怨	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+深仇重怨	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 深信	0	tubelex	3470	141	25		keep
 深信不疑	1	tubelex	702	41	16		keep
 深入	0	tubelex	4449	971	229		keep
 深入人心	0	tubelex	1020	37	13		keep
+深入分析	1	tubelex	0	9	8		keep
+深入基層	1	essay	597		0		keep
+深入報導	2	essay	276		0		keep
+深入實際	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 深入探討	1	tubelex	585	27	18		keep
+深入敵後	1	tubelex	526	2	1		keep
 深入淺出	1	tubelex	777	12	7		keep
 深入生活	2	tubelex	0	1	1		keep
+深入研究	0	tubelex	954	52	33		keep
+深入細緻	2	tubelex	0	1	1		keep
 深入虎穴	2	tubelex	0	2	2		keep
+深入調查	2	tubelex	0	7	3		keep
+深入開展	0	tubelex	1168	1	1		keep
 深入骨髓	2	tubelex	0	6	4		keep
 深冬	2	tubelex	0	2	2		keep
+深凹	2	essay	452		0		keep
 深切	0	tubelex	711	114	29		keep
 深切關懷	2	tubelex	457	2	2		keep
+深切體會	2	tubelex	0	1	1		keep
+深切體認	2	essay	289		0		keep
+深到	2	tubelex	177	5	4		keep
 深刻	0	tubelex	4182	938	197		keep
 深刻印象	0	tubelex	620	35	20		keep
+深刻反思	2	tubelex	0	3	3		keep
+深刻含義	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+深刻影響	1	tubelex	554	5	3		keep
+深刻思想	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 深刻性	2	tubelex	492	3	2		keep
+深刻理解	1	tubelex	743	11	7		keep
+深刻領會	2	tubelex	0	1	1		keep
+深加	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 深加工	0	tubelex	1084	2	2		keep
 深化	0	tubelex	2477	37	22		keep
+深化改革	1	essay	803		0		keep
 深厚	0	tubelex	622	189	65		keep
+深厚感情	2	tubelex	0	3	3		keep
 深受	0	tubelex	444	224	76		keep
 深受其害	2	tubelex	0	4	3		keep
 深受感動	1	tubelex	546	14	6		keep
+深受感染	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+深受教育	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+深受苦難	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+深受鼓舞	2	tubelex	0	3	1		keep
+深吸氣	2	tubelex	0	1	1		keep
 深吻	2	tubelex	177	1	1		keep
 深呼吸	0	tubelex	910	78	22		keep
 深圳	0	tubelex	266	259	51		keep
+深圳指數	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 深圳河	2	tubelex	435	1	1		keep
+深圳股市	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 深坑	1	tubelex	577	29	6		keep
 深埋	1	tubelex	789	14	5		keep
+深埋在	1	tubelex	569	7	4		keep
 深夜	0	tubelex	2758	182	46		keep
+深夜裏	1	tubelex	1	22	7		keep
 深奧	1	tubelex	444	91	14		keep
+深奧難懂	2	essay	421		0		keep
 深妙	2	tubelex	407	1	1		keep
 深孚眾望	2	tubelex	0	2	2		keep
 深宵	2	tubelex	177	1	1		keep
+深居	1	tubelex	550	1	1		keep
 深居簡出	1	tubelex	511	17	2		keep
 深層	0	tubelex	444	145	29		keep
 深層次	0	tubelex	1282	70	26		keep
 深山	1	tubelex	355	26	8		keep
 深山幽谷	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
+深幽	2	tubelex	0	4	2		keep
 深度	0	tubelex	1156	580	142		keep
+深度知覺	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 深廣	1	tubelex	539	11	4		keep
 深得	1	tubelex	177	41	16		keep
 深得人心	2	tubelex	0	4	4		keep
+深得我心	2	tubelex	461	3	3		keep
 深心	2	tubelex	0	1	1		keep
+深念	2	essay	374		0		keep
 深怕	2	tubelex	177	13	4		keep
 深思	0	tubelex	177	97	23		keep
 深思熟慮	1	tubelex	444	37	14		keep
+深思者	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+深思苦索	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 深思遠慮	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
 深恐	2	tubelex	471	3	2		keep
+深恨	2	tubelex	489	1	1		keep
 深情	0	tubelex	978	64	21		keep
 深情厚誼	2	tubelex	498	1	1		keep
 深情款款	1	tubelex	555	6	4		keep
+深惡	1	tubelex	597	2	1		keep
 深惡痛絕	1	tubelex	742	34	9		keep
 深意	1	tubelex	177	54	12		keep
 深愛	1	tubelex	978	48	7		keep
+深愛着	2	tubelex	490	24	4		keep
 深感	0	tubelex	444	67	23		keep
+深感不便	2	essay	310		0		keep
+深感不安	1	tubelex	463	6	5		keep
+深感憂慮	2	essay	444		0		keep
+深慮	2	essay	400		0		keep
+深憾	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+深懷不滿	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 深挖	1	tubelex	587	20	15		keep
+深於	2	essay	469		0		keep
 深春	2	tubelex	0	2	1		keep
 深更半夜	1	tubelex	548	11	5		keep
 深有同感	1	tubelex	536	6	3		keep
 深有感觸	1	tubelex	704	5	4		keep
+深有研究	2	tubelex	0	2	2		keep
 深望	2	tubelex	406	3	1		keep
 深棕	2	tubelex	474	1	1		keep
 深棕色	1	tubelex	542	7	6		keep
@@ -75847,17 +76468,24 @@ m	0	tubelex	0	839	161		keep
 深水港	1	tubelex	525	5	4		keep
 深水炸彈	2	tubelex	477	9	2		keep
 深沉	0	tubelex	88	102	20		keep
+深沉不露	2	essay	251		0		keep
 深海	1	tubelex	177	130	18		keep
 深深	0	tubelex	10055	534	94		keep
 深深地	0	tubelex	733	176	35		keep
+深深感到	1	tubelex	517	2	1		keep
+深深感動	1	tubelex	553	4	1		keep
 深深淺淺	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
 深淵	0	tubelex	978	748	30		keep
 深淺	1	tubelex	177	45	9		keep
+深淺不同	2	essay	477		0		keep
 深潛	2	tubelex	0	7	2		keep
 深潭	1	tubelex	581	17	4		keep
 深澗	2	tubelex	0	2	1		keep
 深灰	1	tubelex	544	2	2		keep
 深灰色	1	tubelex	575	8	6		keep
+深為	2	tubelex	0	7	3		keep
+深獲	2	tubelex	483	2	1		keep
+深獲好評	2	tubelex	357	1	1		keep
 深痕	2	essay	420		0		keep
 深痛	2	tubelex	494	1	1		keep
 深省	1	tubelex	579	2	2		keep
@@ -75872,10 +76500,13 @@ m	0	tubelex	0	839	161		keep
 深紫色	1	tubelex	550	12	6		keep
 深綠	1	tubelex	570	7	3		keep
 深綠色	1	tubelex	570	12	5		keep
+深羨	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 深翻	2	essay	486		0		keep
 深耕	1	tubelex	571	24	18		keep
 深脈	2	tubelex	0	1	1		keep
+深致謝意	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 深色	0	tubelex	978	58	33		keep
+深色系列	2	essay	378		0		keep
 深藍	2	tubelex	88	10	4		keep
 深藍色	0	tubelex	1245	46	12		keep
 深藏	1	tubelex	859	30	14		keep
@@ -75884,24 +76515,33 @@ m	0	tubelex	0	839	161		keep
 深衣	2	tubelex	0	1	1		keep
 深表	1	tubelex	266	9	7		keep
 深表同情	2	tubelex	498	4	4		keep
+深表歉意	2	tubelex	0	3	2		keep
+深表謝意	0	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：日常生活反覆使用的自然表達，列日常級；不是實測整詞次數。	keep
+深表遺憾	2	tubelex	0	2	2		keep
 深褐	2	tubelex	436	1	1		keep
 深褐色	1	tubelex	557	10	4		keep
+深覺	2	tubelex	0	14	3		keep
 深談	1	tubelex	523	8	5		keep
 深諳	1	tubelex	743	25	8		keep
+深諳此道	2	tubelex	469	3	1		keep
 深謀	1	tubelex	547	2	2		keep
 深謀遠慮	1	tubelex	540	9	5		keep
 深通	2	tubelex	465	1	1		keep
 深造	1	tubelex	444	36	19		keep
 深遠	0	tubelex	177	215	35		keep
+深遠影響	1	tubelex	0	15	10		keep
 深邃	0	tubelex	1156	101	14		keep
 深部	1	tubelex	723	1	1		keep
 深重	1	tubelex	266	55	10		keep
+深銘肺腑	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 深長	1	tubelex	800	12	6		keep
 深閨	1	tubelex	570	4	2		keep
+深院	1	essay	521		0		keep
 深陷	0	tubelex	968	88	31		keep
 深黃	2	tubelex	488	1	1		keep
 深黃色	2	tubelex	491	4	3		keep
 深黑色	1	tubelex	508	9	4		keep
+深點	2	essay	467		0		keep
 淳厚	1	tubelex	532	1	1		keep
 淳樸	1	tubelex	980	33	8		keep
 淵	0	tubelex	1209	26	3		keep
@@ -75912,58 +76552,104 @@ m	0	tubelex	0	839	161		keep
 淶	1	tubelex	677	1	1		keep
 混	0	tubelex	3114	366	81		keep
 混一	1	tubelex	534	1	1		keep
+混上	1	tubelex	508	4	4		keep
+混上來	2	essay	288		0		keep
+混上去	2	essay	322		0		keep
+混下	2	essay	360		0		keep
+混下來	2	essay	347		0		keep
+混下去	1	tubelex	533	7	5		keep
+混不下去	1	tubelex	524	13	6		keep
+混不開	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+混世	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 混世魔王	1	tubelex	529	6	2		keep
 混亂	0	tubelex	7741	814	80		keep
+混亂狀態	2	tubelex	0	3	3		keep
 混交	1	tubelex	543	1	1		keep
+混作一談	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+混來	2	tubelex	412	1	1		keep
+混來混去	2	tubelex	352	4	3		keep
 混元	2	tubelex	177	6	2		keep
 混入	0	tubelex	1245	48	14		keep
 混凝土	0	tubelex	1895	150	30		keep
+混凝土塊	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+混凝土泵	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
+混出	1	tubelex	531	5	4		keep
+混出來	2	essay	457		0		keep
+混出去	2	essay	361		0		keep
+混到	1	tubelex	769	16	11		keep
 混勻	2	essay	1		0		keep
+混口飯	1	essay	531		0		keep
+混口飯吃	1	tubelex	0	5	5		keep
 混合	0	tubelex	2135	362	101		keep
 混合制	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
 混合器	1	tubelex	557	5	2		keep
 混合型	1	tubelex	887	9	7		keep
 混合式	1	tubelex	544	2	1		keep
 混合性	1	tubelex	626	6	4		keep
+混合態	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
+混合接頭	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
+混合材料	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 混合機	2	ai-context	0		0	AI 判斷：較少使用但可辨識、可復用的書面或專門表達，保留並排後。	keep
 混合氣	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
+混合氣體	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+混合法	2	essay	422		0		keep
 混合泳	1	tubelex	565	3	1		keep
 混合液	1	essay	547		0		keep
 混合物	1	tubelex	812	20	12		keep
+混合策略	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+混合粉	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 混合結構	2	essay	478		0		keep
+混合經濟	2	essay	428		0		keep
+混合纖維	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 混合色	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
+混合輸入	2	tubelex	0	1	1		keep
+混合農業	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
+混合雙打	2	tubelex	0	2	2		keep
 混合體	1	tubelex	561	44	4		keep
 混同	1	tubelex	533	1	1		keep
+混同於	2	tubelex	0	1	1		keep
 混名	2	tubelex	337	1	1		keep
 混噩	2	tubelex	0	1	1		keep
 混子	1	tubelex	534	9	3		keep
 混居	2	tubelex	0	11	4		keep
 混帳	2	tubelex	177	21	1		keep
+混得	1	tubelex	945	22	9		keep
 混成	1	tubelex	177	20	12		keep
 混成團	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
 混成旅	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
 混戰	1	tubelex	444	35	9		keep
 混打	2	tubelex	0	11	2		keep
+混拼	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
+混排	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 混日子	1	tubelex	773	22	8		keep
+混有	2	tubelex	0	6	3		keep
 混水	1	tubelex	177	9	8		keep
 混水摸魚	1	tubelex	532	7	3		keep
 混沌	0	tubelex	800	136	29		keep
+混沌不分	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+混沌初開	2	tubelex	477	3	3		keep
+混流	2	tubelex	0	1	1		keep
 混流式	2	ai-context	0		0	AI 判斷：較少使用但可辨識、可復用的書面或專門表達，保留並排後。	keep
 混淆	0	tubelex	1302	103	49		keep
 混淆不清	2	tubelex	449	13	2		keep
 混淆是非	2	tubelex	446	7	2		keep
 混淆視聽	1	tubelex	521	8	6		keep
 混淆黑白	2	tubelex	379	1	1		keep
+混混	1	tubelex	355	31	9		keep
 混混噩噩	2	tubelex	0	1	1		keep
 混混沌沌	1	tubelex	528	4	2		keep
 混濁	1	tubelex	177	24	6		keep
+混為	2	tubelex	0	4	4		keep
 混為一談	1	tubelex	0	30	12		keep
 混為一體	2	tubelex	0	1	1		keep
 混煉	1	essay	504		0		keep
 混用	1	tubelex	587	1	1		keep
 混種	1	tubelex	477	12	5		keep
 混紡	1	tubelex	609	1	1		keep
+混紡布	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+混紡紗	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 混編	1	tubelex	514	4	1		keep
+混聲	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 混號	2	tubelex	285	1	1		keep
 混蛋	1	tubelex	266	100	17		keep
 混血	0	tubelex	949	91	24		keep
@@ -75971,21 +76657,40 @@ m	0	tubelex	0	839	161		keep
 混血兒	1	tubelex	533	15	4		keep
 混血種	2	tubelex	394	2	1		keep
 混血種人	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
+混血美女	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 混裝	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
 混賬	1	tubelex	545	34	4		keep
+混起	2	tubelex	338	2	1		keep
+混起來	2	essay	419		0		keep
 混跡	1	tubelex	803	25	6		keep
+混跡江湖	2	tubelex	0	2	1		keep
 混進	1	tubelex	721	21	6		keep
+混進來	2	tubelex	471	9	4		keep
+混進去	2	tubelex	496	3	2		keep
+混過	1	tubelex	545	4	2		keep
+混過來	2	essay	440		0		keep
+混過去	1	essay	514		0		keep
+混錄	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 混雙	1	tubelex	611	2	2		keep
 混雜	1	tubelex	711	80	9		keep
+混雜着	1	tubelex	314	16	5		keep
+混雜起來	2	essay	310		0		keep
 混音	1	tubelex	762	17	7		keep
 混音器	2	tubelex	461	1	1		keep
+混音版	0	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：日常生活反覆使用的自然表達，列日常級；不是實測整詞次數。	keep
 混響	1	tubelex	561	8	2		keep
 混響器	2	ai-context	0		0	AI 判斷：較少使用但可辨識、可復用的書面或專門表達，保留並排後。	keep
+混響室	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
+混響時間	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
+混頻	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 混飯	1	tubelex	553	1	1		keep
 混養	1	essay	536		0		keep
 混鬧	2	tubelex	0	1	1		keep
 淹	0	tubelex	957	42	24		keep
+淹到	2	tubelex	0	1	1		keep
 淹博	2	tubelex	297	1	1		keep
+淹埋	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+淹城	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 淹死	0	tubelex	1026	81	23		keep
 淹水	1	tubelex	502	15	8		keep
 淹沒	0	tubelex	1423	116	23		keep
@@ -75994,27 +76699,40 @@ m	0	tubelex	0	839	161		keep
 淺	0	tubelex	7652	258	56		keep
 淺丘	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
 淺井	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
+淺化	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+淺吟低唱	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 淺嘗	2	tubelex	88	7	3		keep
 淺嘗輒止	1	tubelex	536	2	2		keep
 淺層	1	tubelex	742	10	4		keep
+淺斟低酌	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 淺棕	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
+淺棕色	2	tubelex	0	5	4		keep
 淺水	2	tubelex	88	12	4		keep
 淺水區	2	tubelex	0	4	1		keep
+淺水池	2	essay	380		0		keep
 淺水灘	2	essay	382		0		keep
 淺海	1	tubelex	560	3	2		keep
+淺海漁業	2	essay	102		0		keep
+淺海養殖	2	essay	326		0		keep
 淺淡	1	tubelex	563	11	4		keep
 淺淺	1	tubelex	914	25	4		keep
 淺淺的	1	tubelex	848	18	7		keep
 淺溝	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
 淺灘	1	tubelex	177	20	6		keep
+淺灰	1	tubelex	550	1	1		keep
 淺白	2	tubelex	177	6	3		keep
+淺盤	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+淺碟	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 淺窄	2	tubelex	355	1	1		keep
 淺笑	2	tubelex	177	11	2		keep
+淺粉紅色	0	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：日常生活反覆使用的自然表達，列日常級；不是實測整詞次數。	keep
+淺粉色	2	tubelex	0	3	1		keep
 淺紅	1	tubelex	507	1	1		keep
 淺紫色	1	tubelex	517	1	1		keep
 淺綠	1	tubelex	552	6	3		keep
 淺綠色	1	tubelex	564	9	4		keep
 淺色	1	tubelex	711	37	17		keep
+淺色系	2	tubelex	0	1	1		keep
 淺薄	1	tubelex	947	48	15		keep
 淺藍	1	tubelex	601	5	3		keep
 淺藍色	1	tubelex	601	23	5		keep
@@ -76022,37 +76740,68 @@ m	0	tubelex	0	839	161		keep
 淺表性	2	tubelex	0	1	1		keep
 淺褐色	2	tubelex	0	3	2		keep
 淺見	1	tubelex	555	3	2		keep
+淺見寡聞	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+淺解	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+淺談	0	tubelex	1661	1	1		keep
+淺論	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+淺議	1	essay	811		0		keep
+淺釋	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 淺陋	2	tubelex	497	5	3		keep
+淺青色	2	tubelex	0	3	2		keep
 淺顯	1	tubelex	88	41	11		keep
 淺顯易懂	1	tubelex	539	5	5		keep
 淺黃	1	tubelex	551	4	3		keep
 淺黃色	1	tubelex	575	16	5		keep
 添	0	tubelex	56773	73	26		keep
 添丁	1	tubelex	539	11	3		keep
+添上來	2	tubelex	224	1	1		keep
+添上去	2	essay	367		0		keep
 添亂	1	tubelex	757	58	7		keep
+添作	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+添來添去	2	essay	174		0		keep
+添個	2	tubelex	494	3	2		keep
+添入	2	tubelex	489	2	2		keep
+添到	2	essay	412		0		keep
 添加	0	tubelex	355	924	152		keep
 添加劑	0	tubelex	1129	15	5		keep
 添加物	1	tubelex	537	3	3		keep
+添加程序	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 添堵	1	tubelex	0	14	6		keep
 添增	2	tubelex	418	3	2		keep
+添建	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 添彩	1	tubelex	600	2	2		keep
+添得	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+添成	2	essay	403		0		keep
+添有	2	essay	372		0		keep
+添水	2	essay	470		0		keep
 添油加醋	1	tubelex	551	18	4		keep
+添滿	2	tubelex	491	3	2		keep
 添磚加瓦	1	tubelex	560	3	3		keep
 添置	1	tubelex	88	15	7		keep
+添置衣服	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+添菜	2	essay	404		0		keep
 添補	2	tubelex	474	1	1		keep
 添設	2	tubelex	418	1	1		keep
+添購	2	tubelex	467	7	1		keep
+添足	2	tubelex	0	4	4		keep
 添辦	2	tubelex	234	1	1		keep
+添酒	2	essay	439		0		keep
 添頭	2	tubelex	0	3	1		keep
 添飯	2	tubelex	482	1	1		keep
 添麻煩	1	tubelex	724	26	7		keep
+添點	1	tubelex	519	2	2		keep
 淼	1	tubelex	910	7	3		keep
 清	0	tubelex	16818	3256	106		keep
 清一色	1	tubelex	266	24	13		keep
 清丈	2	tubelex	0	6	1		keep
+清了清	1	tubelex	0	34	5		keep
 清亮	1	tubelex	760	47	5		keep
 清人	1	tubelex	571	4	4		keep
 清代	0	tubelex	1343	28	17		keep
+清俊	2	tubelex	0	26	4		keep
+清修	1	tubelex	516	15	4		keep
 清倉	0	tubelex	1203	73	12		keep
+清倉價	0	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：日常生活反覆使用的自然表達，列日常級；不是實測整詞次數。	keep
 清償	1	tubelex	868	9	4		keep
 清光	1	tubelex	533	7	5		keep
 清兵	1	tubelex	88	39	9		keep
@@ -76068,20 +76817,33 @@ m	0	tubelex	0	839	161		keep
 清唱	2	tubelex	88	4	4		keep
 清唱劇	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
 清單	0	tubelex	177	304	52		keep
+清嗓子	2	tubelex	0	4	4		keep
+清嗓潤肺	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 清場	1	tubelex	711	18	6		keep
+清好	2	essay	442		0		keep
 清官	1	tubelex	724	24	2		keep
 清客	2	tubelex	463	26	4		keep
 清宮	1	tubelex	825	27	2		keep
 清寒	1	tubelex	582	2	1		keep
+清屏	2	tubelex	0	1	1		keep
+清帳	2	essay	413		0		keep
 清平	1	tubelex	599	20	4		keep
 清幽	2	tubelex	266	17	4		keep
+清幽幽	2	tubelex	0	1	1		keep
+清庫	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 清廉	1	tubelex	88	28	8		keep
 清廷	1	tubelex	703	23	5		keep
+清影	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 清徹	2	tubelex	177	2	1		keep
 清心	1	tubelex	769	54	6		keep
 清心寡慾	1	tubelex	530	10	5		keep
+清心少欲	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 清掃	1	tubelex	88	60	10		keep
+清掃夫	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 清掃工	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
+清掃機	0	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：日常生活反覆使用的自然表達，列日常級；不是實測整詞次數。	keep
+清掃車	0	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：日常生活反覆使用的自然表達，列日常級；不是實測整詞次數。	keep
+清掉	0	tubelex	0	39	23		keep
 清揚	1	tubelex	627	2	2		keep
 清收	2	tubelex	0	1	1		keep
 清教	1	tubelex	501	7	4		keep
@@ -76089,6 +76851,7 @@ m	0	tubelex	0	839	161		keep
 清整	2	tubelex	0	1	1		keep
 清數	2	tubelex	0	1	1		keep
 清新	0	tubelex	1423	104	46		keep
+清新自然	1	essay	578		0		keep
 清早	1	tubelex	88	82	6		keep
 清明	0	tubelex	1957	105	19		keep
 清明節	0	tubelex	1067	5	4		keep
@@ -76099,31 +76862,48 @@ m	0	tubelex	0	839	161		keep
 清晰可見	1	tubelex	754	34	10		keep
 清晰度	1	tubelex	966	25	10		keep
 清晰性	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
+清晰明確	2	tubelex	0	6	4		keep
+清晰版	0	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：日常生活反覆使用的自然表達，列日常級；不是實測整詞次數。	keep
+清晰發言	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 清暑益氣湯	3	ai-context	0		0	AI 判斷：日常及一般填詞極少使用的冷僻古語、罕用變語或過窄術語，退回自建收錄。	withdraw_curated
 清朗	1	tubelex	575	17	4		keep
 清朝	0	tubelex	533	277	51		keep
 清末	1	tubelex	88	35	19		keep
 清查	0	tubelex	1075	31	9		keep
+清查人數	2	essay	250		0		keep
 清楚	0	tubelex	95127	4510	482		keep
+清楚説出	2	tubelex	0	3	1		keep
 清欠	1	tubelex	817	1	1		keep
 清歌	2	tubelex	0	9	2		keep
 清正	1	tubelex	579	11	2		keep
 清水	0	tubelex	711	154	34		keep
+清水池	2	tubelex	0	1	1		keep
 清水河	1	tubelex	634	4	3		keep
 清水灣	2	tubelex	0	2	2		keep
 清水衙門	2	tubelex	433	7	3		keep
+清汁	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 清油	1	tubelex	527	1	1		keep
 清泉	1	tubelex	88	27	7		keep
 清波	2	tubelex	0	2	1		keep
 清洗	0	tubelex	1512	341	74		keep
 清洗劑	2	essay	1		0		keep
+清洗器	2	tubelex	0	1	1		keep
+清洗機	0	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：日常生活反覆使用的自然表達，列日常級；不是實測整詞次數。	keep
+清洗液	2	tubelex	0	3	2		keep
 清流	1	tubelex	633	30	8		keep
 清涼	1	tubelex	711	57	12		keep
+清涼劑	2	essay	394		0		keep
 清涼油	1	tubelex	525	7	1		keep
+清涼涼	2	tubelex	0	2	1		keep
+清淚	2	tubelex	177	6	1		keep
 清淡	0	tubelex	355	64	21		keep
 清淤	1	tubelex	572	1	1		keep
 清淨	0	tubelex	1243	100	19		keep
+清淨劑	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+清淨器	2	essay	269		0		keep
+清淨機	2	tubelex	0	1	1		keep
 清淨無為	2	tubelex	0	1	1		keep
+清淺	1	tubelex	556	2	2		keep
 清清	0	tubelex	1064	11	6		keep
 清清亮亮	2	tubelex	0	1	1		keep
 清清楚楚	0	tubelex	997	208	39		keep
@@ -76132,28 +76912,40 @@ m	0	tubelex	0	839	161		keep
 清清靜靜	2	essay	423		0		keep
 清減	2	tubelex	444	6	1		keep
 清湯寡水	2	tubelex	419	1	1		keep
+清湯掛麪	2	essay	457		0		keep
+清滌	2	essay	351		0		keep
 清漆	1	tubelex	576	3	2		keep
 清漣	2	tubelex	0	1	1		keep
 清漪	2	tubelex	0	2	1		keep
 清潔	0	tubelex	5873	300	63		keep
+清潔刷	2	tubelex	0	1	1		keep
 清潔劑	1	tubelex	789	7	5		keep
 清潔員	0	ai-context	0		0	AI 判斷：日常生活反覆使用的自然表達；沒有整詞實測詞頻，不捏造次數。	keep
 清潔器	1	tubelex	537	1	1		keep
 清潔工	1	tubelex	849	29	9		keep
 清潔度	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
+清潔球	0	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：日常生活反覆使用的自然表達，列日常級；不是實測整詞次數。	keep
+清潔用品	2	tubelex	0	10	4		keep
+清潔衞生	0	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：日常生活反覆使用的自然表達，列日常級；不是實測整詞次數。	keep
+清潔費	2	tubelex	0	1	1		keep
 清潤	2	tubelex	0	3	1		keep
 清澈	0	tubelex	622	120	26		keep
 清澈見底	1	tubelex	576	1	1		keep
+清濁	1	tubelex	532	2	2		keep
 清火	1	tubelex	567	1	1		keep
+清灰	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 清炒	2	tubelex	1	6	2		keep
 清熱	2	tubelex	355	2	2		keep
 清熱瀉火	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
 清熱解暑	2	tubelex	0	1	1		keep
 清熱解毒	1	tubelex	773	7	5		keep
 清爽	0	tubelex	177	65	32		keep
+清爽型	2	tubelex	0	1	1		keep
 清理	0	tubelex	3826	484	118		keep
+清理機	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 清理門户	2	tubelex	0	3	2		keep
 清甜	2	tubelex	444	3	2		keep
+清產	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 清產核資	1	essay	516		0		keep
 清田	2	tubelex	0	10	1		keep
 清瘦	1	tubelex	590	19	4		keep
@@ -76165,32 +76957,45 @@ m	0	tubelex	0	839	161		keep
 清福	1	tubelex	557	6	1		keep
 清秀	1	tubelex	177	63	8		keep
 清秋	1	tubelex	750	9	2		keep
+清税	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 清空	0	tubelex	800	88	39		keep
 清算	0	tubelex	177	97	35		keep
 清算人	2	tubelex	0	4	1		keep
 清算組	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
 清約	2	tubelex	0	1	1		keep
 清純	0	tubelex	3114	33	9		keep
+清結	2	tubelex	0	1	1		keep
 清繳	1	tubelex	578	3	2		keep
 清者自清	2	tubelex	0	2	2		keep
 清肺	2	essay	1		0		keep
 清脆	0	tubelex	2046	91	18		keep
+清脆悦耳	2	tubelex	0	1	1		keep
 清苦	1	tubelex	573	11	5		keep
 清茶	1	tubelex	815	4	2		keep
+清茶淡飯	0	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：日常生活反覆使用的自然表達，列日常級；不是實測整詞次數。	keep
 清華	0	tubelex	3307	13	8		keep
 清蒸	1	tubelex	770	16	4		keep
+清虛	1	tubelex	597	2	2		keep
 清規	1	tubelex	536	2	1		keep
 清規戒律	1	tubelex	504	1	1		keep
 清談	1	tubelex	544	28	1		keep
+清談家	2	essay	279		0		keep
 清議	2	tubelex	479	1	1		keep
 清譽	2	tubelex	0	12	1		keep
 清貧	1	tubelex	769	6	5		keep
+清貧人家	2	essay	230		0		keep
+清貧如洗	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+清貧寡慾	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 清貴	2	tubelex	0	27	2		keep
 清越	1	tubelex	549	6	2		keep
+清車	2	essay	390		0		keep
 清軍	1	tubelex	763	269	7		keep
+清辭麗句	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 清退	1	tubelex	556	6	3		keep
 清逸	1	tubelex	600	16	1		keep
 清運	1	tubelex	590	1	1		keep
+清運費	0	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：日常生活反覆使用的自然表達，列日常級；不是實測整詞次數。	keep
+清過來	2	tubelex	269	1	1		keep
 清道	1	tubelex	585	22	2		keep
 清道夫	2	tubelex	266	25	4		keep
 清遠	2	tubelex	177	15	1		keep
@@ -76199,87 +77004,139 @@ m	0	tubelex	0	839	161		keep
 清還	2	tubelex	485	1	1		keep
 清酒	1	tubelex	533	2	1		keep
 清醒	0	tubelex	9610	331	75		keep
+清醒認識	2	tubelex	0	3	3		keep
+清醒過來	1	tubelex	636	39	8		keep
+清野	2	tubelex	0	4	2		keep
 清閒	0	tubelex	1148	28	4		keep
 清關	1	tubelex	715	7	3		keep
 清除	0	tubelex	2224	256	69		keep
+清除出黨	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+清除器	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 清除率	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
 清隊	2	tubelex	314	1	1		keep
+清障	1	essay	554		0		keep
 清障車	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
 清雅	1	tubelex	789	41	3		keep
+清雅絕塵	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 清零	0	tubelex	773	106	24		keep
 清靈	2	tubelex	0	5	2		keep
 清靜	1	tubelex	711	98	12		keep
 清靜無為	2	tubelex	0	2	2		keep
+清靜風雅	2	essay	90		0		keep
 清韻	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
 清風	1	tubelex	533	48	7		keep
 清風徐來	2	tubelex	478	1	1		keep
 清風明月	1	tubelex	560	2	2		keep
+清風高節	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 清香	0	tubelex	1273	39	11		keep
+清香型酒	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 清高	1	tubelex	266	36	11		keep
 清麗	1	tubelex	88	22	5		keep
 清點	1	tubelex	838	34	6		keep
 清點人數	2	tubelex	468	1	1		keep
 清黨	2	tubelex	419	10	2		keep
+清黨行動	2	essay	124		0		keep
 渙散	1	tubelex	722	30	9		keep
 渚	1	tubelex	798	4	2		keep
 減	0	tubelex	2580	152	47		keep
 減人增效	2	ai-context	0		0	AI 判斷：較少使用但可辨識、可復用的書面或專門表達，保留並排後。	keep
+減份	2	essay	166		0		keep
 減低	0	tubelex	1601	51	18		keep
 減倉	0	tubelex	1216	88	9		keep
 減值	1	tubelex	651	7	2		keep
+減債	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 減價	2	tubelex	266	5	4		keep
+減價出售	2	essay	329		0		keep
+減價時間	2	essay	214		0		keep
 減免	0	tubelex	1351	111	22		keep
 減免税	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
+減免額	2	essay	304		0		keep
+減分	2	tubelex	0	12	3		keep
 減刑	1	tubelex	591	18	5		keep
+減到	1	tubelex	355	12	9		keep
 減半	1	tubelex	88	27	12		keep
 減去	0	tubelex	1129	84	27		keep
+減反射膜	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 減員	1	tubelex	570	12	5		keep
 減員增效	2	ai-context	0		0	AI 判斷：較少使用但可辨識、可復用的書面或專門表達，保留並排後。	keep
 減壓	1	tubelex	444	25	8		keep
+減壓器	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 減壓症	2	tubelex	214	1	1		keep
+減壓蒸餾	2	essay	440		0		keep
 減壓閥	1	essay	633		0		keep
+減壽	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+減好	2	essay	343		0		keep
 減字譜	2	ai-context	0		0	AI 判斷：較少使用但可辨識、可復用的書面或專門表達，保留並排後。	keep
 減小	1	tubelex	88	31	13		keep
 減少	0	tubelex	4004	1533	210		keep
 減弱	0	tubelex	1423	144	29		keep
+減弱到	2	tubelex	393	1	1		keep
+減得	2	tubelex	481	1	1		keep
 減徵	1	tubelex	552	3	1		keep
 減息	1	tubelex	700	32	2		keep
 減慢	0	tubelex	1245	41	13		keep
 減持	0	tubelex	1378	81	12		keep
+減按	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 減振器	2	ai-context	0		0	AI 判斷：較少使用但可辨識、可復用的書面或專門表達，保留並排後。	keep
 減掉	1	tubelex	803	25	8		keep
 減排	0	tubelex	1422	15	5		keep
 減損	1	tubelex	512	12	3		keep
 減摩	2	ai-context	0		0	AI 判斷：較少使用但可辨識、可復用的書面或專門表達，保留並排後。	keep
+減撥	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+減支	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 減收	1	essay	544		0		keep
+減收增支	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 減數	2	tubelex	355	4	2		keep
+減數分裂	1	tubelex	502	8	1		keep
+減毒疫苗	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 減法	1	tubelex	718	23	9		keep
+減法器	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 減災	1	tubelex	887	3	1		keep
+減為	2	tubelex	0	2	1		keep
+減班	2	essay	326		0		keep
 減產	1	tubelex	958	31	5		keep
 減省	2	tubelex	429	1	1		keep
 減租	2	tubelex	177	1	1		keep
 減租減息	2	tubelex	449	5	2		keep
 減税	1	tubelex	0	38	10		keep
+減税法	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+減算	2	essay	294		0		keep
+減納	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 減緩	1	tubelex	88	72	19		keep
 減縮	2	tubelex	446	1	1		keep
+減縮到	2	essay	221		0		keep
+減聲器	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 減肥	0	tubelex	2224	192	32		keep
+減肥操	0	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：日常生活反覆使用的自然表達，列日常級；不是實測整詞次數。	keep
 減肥法	1	tubelex	846	4	3		keep
+減肥茶	0	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：日常生活反覆使用的自然表達，列日常級；不是實測整詞次數。	keep
 減肥藥	1	tubelex	813	33	5		keep
+減肥餐	0	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：日常生活反覆使用的自然表達，列日常級；不是實測整詞次數。	keep
 減脂	2	tubelex	0	7	2		keep
 減至	2	tubelex	88	9	4		keep
 減色	2	tubelex	452	1	1		keep
+減色法	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 減薪	2	tubelex	355	8	4		keep
 減號	2	tubelex	478	2	1		keep
 減虧	1	essay	510		0		keep
+減課	2	essay	215		0		keep
 減讓	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
 減負	1	tubelex	796	3	2		keep
 減資	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
 減輕	0	tubelex	1334	259	49		keep
+減輕處分	2	essay	305		0		keep
+減輕負擔	1	tubelex	0	8	7		keep
 減退	1	tubelex	889	25	11		keep
 減速	1	tubelex	355	48	12		keep
 減速劑	2	essay	297		0		keep
 減速器	1	tubelex	603	1	1		keep
+減速帶	2	tubelex	0	1	1		keep
+減速慢行	2	tubelex	474	1	1		keep
+減速時間	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+減速期	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 減速板	2	ai-context	0		0	AI 判斷：較少使用但可辨識、可復用的書面或專門表達，保留並排後。	keep
+減速機	1	tubelex	804	3	1		keep
+減速比	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 減重	1	tubelex	611	13	4		keep
 減量	2	tubelex	1	11	3		keep
 減量化	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
@@ -76287,21 +77144,32 @@ m	0	tubelex	0	839	161		keep
 減除	1	tubelex	538	5	2		keep
 減震	1	tubelex	793	22	6		keep
 減震器	1	tubelex	597	1	1		keep
+減食	2	tubelex	414	1	1		keep
 渝	1	tubelex	88	22	7		keep
 渝水	1	tubelex	554	8	1		keep
 渠	1	tubelex	444	12	8		keep
 渠化	2	ai-context	0		0	AI 判斷：較少使用但可辨識、可復用的書面或專門表達，保留並排後。	keep
+渠口	2	tubelex	0	1	1		keep
+渠水	2	tubelex	446	2	1		keep
+渠灌	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 渠系	2	ai-context	0		0	AI 判斷：較少使用但可辨識、可復用的書面或專門表達，保留並排後。	keep
 渠道	0	tubelex	622	397	116		keep
+渠道商	1	tubelex	739	3	3		keep
 渠首	2	ai-context	0		0	AI 判斷：較少使用但可辨識、可復用的書面或專門表達，保留並排後。	keep
 渡	1	tubelex	800	31	17		keep
 渡假	1	tubelex	355	20	10		keep
 渡假村	2	tubelex	0	2	2		keep
+渡到	2	tubelex	456	4	3		keep
+渡劫	2	tubelex	0	100	3		keep
 渡口	1	tubelex	862	31	7		keep
 渡河	1	tubelex	778	60	16		keep
 渡船	1	tubelex	594	34	7		keep
+渡船口	2	essay	321		0		keep
+渡船頭	2	essay	335		0		keep
 渡輪	1	tubelex	88	39	6		keep
+渡運	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 渡過	0	tubelex	3025	112	17		keep
+渡過難關	1	tubelex	593	16	5		keep
 渡頭	1	tubelex	508	1	1		keep
 渡鴉	2	tubelex	462	9	2		keep
 渣	0	tubelex	18776	216	40		keep
@@ -76318,9 +77186,14 @@ m	0	tubelex	0	839	161		keep
 渦	1	tubelex	444	42	14		keep
 渦扇	1	tubelex	500	19	3		keep
 渦旋	1	tubelex	558	4	1		keep
+渦旋式	2	essay	458		0		keep
+渦旋形	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 渦流	1	tubelex	603	2	2		keep
+渦流損耗	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 渦蟲	2	tubelex	372	2	1		keep
 渦輪	1	tubelex	88	23	8		keep
+渦輪噴氣	2	tubelex	0	1	1		keep
+渦輪引擎	2	essay	411		0		keep
 渦輪機	1	tubelex	509	6	2		keep
 温	0	tubelex	0	218	41		keep
 温乎	2	tubelex	0	1	1		keep
@@ -76336,26 +77209,46 @@ m	0	tubelex	0	839	161		keep
 温存	1	tubelex	0	19	6		keep
 温室	1	tubelex	0	94	10		keep
 温室效應	2	tubelex	0	13	4		keep
+温室植物	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+温室管理	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
+温州話	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 温差	1	tubelex	0	25	10		keep
+温差值	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 温帶	1	tubelex	0	23	5		keep
+温帶植物	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+温帶氣候	2	tubelex	0	1	1		keep
 温度	0	tubelex	0	1257	94		keep
+温度保護	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 温度傳感器	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
+温度儀表	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+温度場	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 温度差	0	ai-context	0		0	AI 判斷：日常生活反覆使用的自然表達；沒有整詞實測詞頻，不捏造次數。	keep
 温度控制	2	tubelex	0	2	2		keep
 温度計	1	tubelex	0	23	9		keep
 温性	2	tubelex	0	1	1		keep
 温情	1	tubelex	0	52	10		keep
 温情脈脈	2	tubelex	0	2	1		keep
+温情蜜意	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 温控	2	tubelex	0	4	1		keep
+温控儀	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
+温控器	0	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：日常生活反覆使用的自然表達，列日常級；不是實測整詞次數。	keep
+温控表	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
+温控閥	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
+温故	2	tubelex	0	1	1		keep
 温故知新	2	tubelex	0	2	1		keep
 温故而知新	2	tubelex	0	6	1		keep
 温文	1	tubelex	0	12	5		keep
 温文儒雅	2	tubelex	0	4	2		keep
 温文爾雅	1	tubelex	0	18	7		keep
 温暖	0	tubelex	0	513	71		keep
+温暖人間	0	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：日常生活反覆使用的自然表達，列日常級；不是實測整詞次數。	keep
 温書	2	tubelex	0	91	1		keep
+温書假	0	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：日常生活反覆使用的自然表達，列日常級；不是實測整詞次數。	keep
+温服	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 温柔	0	tubelex	0	674	32		keep
 温柔敦厚	2	tubelex	0	1	1		keep
+温柔體貼	2	tubelex	0	12	4		keep
+温棚	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 温水	1	tubelex	0	59	16		keep
 温泉	1	tubelex	0	461	8		keep
 温湯	2	tubelex	0	1	1		keep
@@ -76365,50 +77258,88 @@ m	0	tubelex	0	839	161		keep
 温火	2	tubelex	0	2	1		keep
 温灸	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
 温熱	1	tubelex	0	46	6		keep
+温熱度	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 温燥	2	tubelex	0	1	1		keep
 温牀	1	tubelex	0	16	5		keep
+温牀栽培	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 温病	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
 温經	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
+温經散寒	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 温習	2	tubelex	0	13	4		keep
+温習功課	2	tubelex	0	2	2		keep
 温良	2	tubelex	0	17	3		keep
 温良恭儉讓	2	tubelex	0	6	3		keep
 温莎	2	tubelex	0	8	3		keep
 温血動物	2	tubelex	0	9	3		keep
+温表	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 温言	2	tubelex	0	19	1		keep
+温語	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+温課	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 温軟	2	tubelex	0	7	3		keep
+温酒	2	tubelex	0	4	2		keep
 温雅	2	tubelex	0	6	3		keep
 温順	1	tubelex	0	69	12		keep
+温食	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
+温飲	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 温飽	1	tubelex	0	25	7		keep
 温馨	0	tubelex	0	122	36		keep
 温馴	1	tubelex	0	16	5		keep
+温體	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+温體肉	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+温體豬肉	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+温點	2	tubelex	0	2	1		keep
 測	0	tubelex	1245	94	34		keep
 測下	2	tubelex	0	1	1		keep
+測位	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+測位器	2	essay	232		0		keep
 測出	1	tubelex	784	22	7		keep
+測到	1	tubelex	0	19	5		keep
+測功機	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
+測厚儀	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 測向	2	ai-context	0		0	AI 判斷：較少使用但可辨識、可復用的書面或專門表達，保留並排後。	keep
 測回	2	tubelex	0	1	1		keep
 測字	1	tubelex	594	1	1		keep
 測完	2	tubelex	0	1	1		keep
 測定	0	tubelex	2399	20	7		keep
 測定器	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
+測定機	2	essay	383		0		keep
+測定法	1	tubelex	559	1	1		keep
 測年技術	2	tubelex	0	1	1		keep
+測序	1	tubelex	678	23	7		keep
 測度	1	tubelex	589	41	4		keep
+測得	1	tubelex	745	3	2		keep
+測微表	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
+測數據	2	tubelex	0	1	1		keep
 測時	2	essay	461		0		keep
+測智商	0	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：日常生活反覆使用的自然表達，列日常級；不是實測整詞次數。	keep
 測查	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
+測流	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 測深	1	essay	518		0		keep
 測知	2	tubelex	465	2	1		keep
 測程	2	ai-context	0		0	AI 判斷：較少使用但可辨識、可復用的書面或專門表達，保留並排後。	keep
 測算	0	tubelex	1377	32	9		keep
 測繪	0	tubelex	1196	15	4		keep
+測繪員	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+測繪學	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 測繪局	1	essay	579		0		keep
+測航	2	essay	260		0		keep
 測評	0	tubelex	1533	36	14		keep
+測評師	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 測試	0	tubelex	11123	1791	176		keep
 測試人員	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
 測試代碼	2	tubelex	0	5	1		keep
+測試函數	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 測試台	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
+測試報告	0	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：日常生活反覆使用的自然表達，列日常級；不是實測整詞次數。	keep
 測試工具	2	tubelex	0	1	1		keep
+測試數據	2	tubelex	0	5	2		keep
+測試期	0	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：日常生活反覆使用的自然表達，列日常級；不是實測整詞次數。	keep
 測試版	1	tubelex	914	6	4		keep
 測試環境	2	tubelex	0	2	1		keep
 測試用例	1	tubelex	681	2	1		keep
+測試程序	2	tubelex	0	1	1		keep
+測試語言	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
+測試通過	2	tubelex	0	10	2		keep
 測試題	2	tubelex	1	4	2		keep
 測謊	2	tubelex	177	9	3		keep
 測謊儀	2	tubelex	0	5	2		keep
@@ -76419,60 +77350,135 @@ m	0	tubelex	0	839	161		keep
 測量員	1	tubelex	510	11	2		keep
 測量學	1	essay	539		0		keep
 測量學家	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
+測量術	2	essay	332		0		keep
+測量計	2	essay	410		0		keep
+測量誤差	0	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：日常生活反覆使用的自然表達，列日常級；不是實測整詞次數。	keep
 測量隊	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
+測錄到	2	essay	1		0		keep
+測震	2	essay	420		0		keep
+測震儀	2	essay	334		0		keep
 測震學	2	ai-context	0		0	AI 判斷：較少使用但可辨識、可復用的書面或專門表達，保留並排後。	keep
+測音器	2	essay	182		0		keep
+測音計	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 測驗	0	tubelex	2491	94	13		keep
+測驗分數	0	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：日常生活反覆使用的自然表達，列日常級；不是實測整詞次數。	keep
+測驗法	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+測驗題	0	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：日常生活反覆使用的自然表達，列日常級；不是實測整詞次數。	keep
+測高	1	essay	539		0		keep
+測高度	2	essay	263		0		keep
 測點	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
 渭	1	tubelex	814	1	1		keep
 港	0	tubelex	29098	267	50		keep
 港交所	1	tubelex	582	9	3		keep
 港人	0	tubelex	14771	35	9		keep
 港元	0	tubelex	1325	68	17		keep
+港劇	1	tubelex	690	2	2		keep
 港務	1	tubelex	621	3	2		keep
+港務監督	2	essay	412		0		keep
+港務費	2	essay	392		0		keep
 港區	0	tubelex	1026	20	3		keep
 港口	0	tubelex	444	357	64		keep
 港口區	2	tubelex	479	4	1		keep
+港口型	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
+港口機械	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
+港口法	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+港口税	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 港台	1	tubelex	0	10	7		keep
+港台劇	0	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：日常生活反覆使用的自然表達，列日常級；不是實測整詞次數。	keep
+港台明星	0	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：日常生活反覆使用的自然表達，列日常級；不是實測整詞次數。	keep
+港台歌手	0	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：日常生活反覆使用的自然表達，列日常級；不是實測整詞次數。	keep
+港台歌星	0	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：日常生活反覆使用的自然表達，列日常級；不是實測整詞次數。	keep
+港台歌曲	0	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：日常生活反覆使用的自然表達，列日常級；不是實測整詞次數。	keep
+港台片	0	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：日常生活反覆使用的自然表達，列日常級；不是實測整詞次數。	keep
+港台腔	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+港外	2	tubelex	454	1	1		keep
 港大	0	tubelex	1156	1	1		keep
 港姐	2	tubelex	444	2	1		keep
 港島	2	tubelex	444	4	2		keep
 港幣	1	tubelex	800	76	11		keep
 港府	1	tubelex	559	22	7		keep
 港式	1	tubelex	614	3	3		keep
+港星	1	tubelex	554	3	1		keep
 港普	2	tubelex	0	1	1		keep
 港池	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
 港漫	2	tubelex	0	8	1		keep
 港澳	0	tubelex	1156	75	16		keep
 港澳地區	1	tubelex	563	4	1		keep
+港澳遊	2	essay	1		0		keep
 港灣	0	tubelex	1224	28	8		keep
+港片	1	tubelex	736	1	1		keep
+港版	1	tubelex	842	42	5		keep
 港獨	1	tubelex	0	23	5		keep
+港界	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 港股	0	tubelex	1423	53	12		keep
 港英	2	tubelex	177	2	1		keep
+港英政府	2	tubelex	418	1	1		keep
+港製	2	essay	299		0		keep
+港製品	2	essay	273		0		keep
+港譯	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 港豬	2	tubelex	444	1	1		keep
 港資	2	tubelex	1	4	1		keep
 港鐵	2	tubelex	0	1	1		keep
 渲	1	tubelex	670	1	1		keep
 渲染	0	tubelex	355	136	45		keep
+渲染器	2	tubelex	0	11	1		keep
+渲染法	2	essay	284		0		keep
 渴	0	tubelex	1334	68	15		keep
+渴到	2	essay	337		0		keep
+渴得	2	tubelex	439	4	4		keep
 渴念	2	essay	418		0		keep
 渴想	2	tubelex	395	94	2		keep
+渴愛	2	essay	416		0		keep
 渴慕	1	tubelex	506	240	6		keep
 渴望	0	tubelex	2669	1112	115		keep
 渴死	1	tubelex	531	8	5		keep
 渴求	0	tubelex	1601	199	23		keep
 渴盼	1	tubelex	558	2	2		keep
+渴盼着	2	essay	90		0		keep
+渴着	2	essay	167		0		keep
+游上	2	tubelex	495	1	1		keep
+游上來	2	tubelex	363	1	1		keep
+游上去	2	tubelex	302	2	1		keep
+游下	2	essay	458		0		keep
+游下來	2	essay	329		0		keep
+游下去	2	essay	364		0		keep
+游來	1	tubelex	607	1	1		keep
+游來游去	1	tubelex	595	8	3		keep
+游出	1	tubelex	524	1	1		keep
+游到	1	tubelex	177	12	9		keep
+游去	2	tubelex	266	3	3		keep
+游回	2	tubelex	473	2	2		keep
+游回來	2	tubelex	432	1	1		keep
+游回去	2	essay	367		0		keep
 游水	0	tubelex	5517	24	4		keep
 游泳	0	tubelex	2847	258	64		keep
+游泳圈	1	tubelex	569	3	2		keep
 游泳場	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
+游泳帽	0	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：日常生活反覆使用的自然表達，列日常級；不是實測整詞次數。	keep
 游泳池	0	tubelex	1254	96	40		keep
 游泳衣	1	tubelex	537	2	2		keep
+游泳褲	2	tubelex	456	2	2		keep
 游泳賽	2	essay	442		0		keep
 游泳隊	1	tubelex	572	1	1		keep
 游泳館	1	tubelex	836	6	3		keep
+游進去	2	tubelex	305	1	1		keep
+游過來	2	essay	491		0		keep
+游過去	1	tubelex	494	5	5		keep
 游離鈣	2	ai-context	0		0	AI 判斷：較少使用但可辨識、可復用的書面或專門表達，保留並排後。	keep
 渺小	0	tubelex	622	107	21		keep
+渺渺	2	tubelex	266	53	4		keep
 渺無人跡	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
+渺無人蹤	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+渺無希望	2	essay	244		0		keep
+渺無影蹤	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+渺無聲息	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+渺無蹤影	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+渺無音訊	2	tubelex	0	2	1		keep
+渺然	2	tubelex	429	2	2		keep
+渺若煙雲	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 渺茫	1	tubelex	444	33	14		keep
+渺茫無望	2	essay	253		0		keep
+渺遠	2	tubelex	450	1	1		keep
 渾	0	tubelex	1156	33	4		keep
 渾似	2	tubelex	423	3	1		keep
 渾厚	1	tubelex	770	32	4		keep
@@ -76480,48 +77486,79 @@ m	0	tubelex	0	839	161		keep
 渾圓	1	tubelex	177	17	5		keep
 渾忘	2	tubelex	0	1	1		keep
 渾樸	2	essay	440		0		keep
+渾水	1	tubelex	617	20	4		keep
 渾水摸魚	1	tubelex	576	19	4		keep
 渾沌	2	tubelex	266	24	2		keep
+渾沌一片	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 渾河	1	tubelex	584	1	1		keep
 渾渾噩噩	1	tubelex	776	52	7		keep
 渾濁	1	tubelex	88	63	13		keep
+渾濁度	2	essay	429		0		keep
 渾然	2	tubelex	177	26	4		keep
+渾然一色	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 渾然一體	1	tubelex	586	5	2		keep
 渾然不知	1	tubelex	1	16	9		keep
 渾然不覺	2	tubelex	1	11	4		keep
 渾然天成	1	tubelex	582	9	4		keep
+渾然無知	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
+渾然自成	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 渾蛋	2	tubelex	463	1	1		keep
 渾身	0	tubelex	1690	611	26		keep
 渾身上下	1	tubelex	618	64	6		keep
+渾身是勁	2	tubelex	0	2	2		keep
+渾身是汗	2	essay	455		0		keep
+渾身發抖	1	tubelex	547	24	5		keep
 渾身解數	1	tubelex	588	17	6		keep
 渾黃	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
 湊	0	tubelex	7563	323	28		keep
+湊上來	2	tubelex	492	2	1		keep
+湊上去	1	tubelex	521	6	3		keep
+湊不出來	2	tubelex	324	2	1		keep
+湊個	1	tubelex	0	13	5		keep
+湊出	2	tubelex	469	13	3		keep
+湊到	1	tubelex	813	27	3		keep
 湊合	0	tubelex	1827	56	14		keep
+湊合着	1	tubelex	575	20	7		keep
+湊在一起	1	tubelex	571	17	7		keep
+湊夠	1	tubelex	1	20	8		keep
 湊巧	1	tubelex	88	80	12		keep
+湊得	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+湊成	1	tubelex	266	15	5		keep
 湊數	1	tubelex	533	6	2		keep
+湊湊	1	tubelex	0	6	5		keep
 湊湊合合	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
 湊熱鬧	1	tubelex	266	40	8		keep
+湊興	2	essay	313		0		keep
 湊趣	2	tubelex	471	5	1		keep
 湊足	1	tubelex	530	14	4		keep
 湊近	1	tubelex	800	43	7		keep
 湊錢	1	tubelex	548	11	5		keep
 湊集	2	tubelex	470	2	2		keep
+湊齊	1	tubelex	88	43	14		keep
 湍急	1	tubelex	586	19	12		keep
 湍流	1	tubelex	581	8	3		keep
+湍流阻力	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 湓	1	tubelex	538	3	1		keep
 湔	1	tubelex	564	2	1		keep
 湖	0	tubelex	15483	277	44		keep
 湖上	1	tubelex	444	80	10		keep
 湖中	1	tubelex	266	102	19		keep
+湖光塔影	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 湖光山色	1	tubelex	593	6	4		keep
 湖內	1	essay	502		0		keep
 湖北	0	tubelex	3748	63	16		keep
 湖南	0	tubelex	5117	119	26		keep
 湖南人	1	tubelex	836	5	4		keep
+湖南籍	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+湖南菜	0	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：日常生活反覆使用的自然表達，列日常級；不是實測整詞次數。	keep
+湖名	2	essay	465		0		keep
+湖外	2	essay	389		0		keep
 湖岸	2	tubelex	1	10	4		keep
 湖廣	1	tubelex	585	47	2		keep
 湖心	1	tubelex	577	22	4		keep
+湖沼學	2	essay	312		0		keep
 湖泊	0	tubelex	177	190	41		keep
+湖流	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 湖澤	2	tubelex	415	1	1		keep
 湖濱	1	tubelex	837	5	1		keep
 湖畔	1	tubelex	979	62	12		keep
@@ -76530,30 +77567,48 @@ m	0	tubelex	0	839	161		keep
 湖面	1	tubelex	533	97	14		keep
 湘	0	tubelex	2093	11	5		keep
 湘簾	2	essay	410		0		keep
+湘籍	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
+湘菜館	0	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：日常生活反覆使用的自然表達，列日常級；不是實測整詞次數。	keep
 湘語	2	tubelex	427	1	1		keep
 湘軍	1	tubelex	715	8	5		keep
 湛江	0	tubelex	1283	2	2		keep
+湛湛青天	2	tubelex	0	1	1		keep
 湛然	2	tubelex	487	5	1		keep
 湛藍	2	tubelex	177	24	4		keep
+湛藍湛藍	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 湞	1	tubelex	512	1	1		keep
 湟	1	tubelex	613	1	1		keep
 湧	0	tubelex	6318	163	16		keep
 湧上	1	tubelex	889	16	4		keep
+湧上來	1	tubelex	562	12	5		keep
+湧上去	2	essay	378		0		keep
+湧上心來	2	tubelex	404	2	2		keep
+湧來	1	tubelex	731	10	2		keep
 湧入	0	tubelex	1067	165	41		keep
 湧出	0	tubelex	1423	65	9		keep
+湧出來	1	tubelex	572	8	4		keep
+湧出去	2	essay	312		0		keep
 湧動	0	tubelex	1048	69	9		keep
+湧向	1	tubelex	768	21	8		keep
+湧往	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 湧水量	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
 湧泉	1	tubelex	619	29	5		keep
+湧泉相報	2	tubelex	0	7	2		keep
+湧泉穴	2	tubelex	0	6	3		keep
 湧流	2	tubelex	444	42	1		keep
 湧浪	2	tubelex	457	2	1		keep
 湧潮	2	essay	438		0		keep
 湧現	0	tubelex	1156	71	19		keep
+湧現出	1	tubelex	932	17	10		keep
 湧起	1	tubelex	811	58	5		keep
 湧進	1	tubelex	177	30	8		keep
+湧進來	1	tubelex	481	9	6		keep
+湧進去	2	tubelex	346	3	2		keep
 湮	2	tubelex	177	1	1		keep
 湮沒	1	tubelex	612	2	1		keep
 湮沒無聞	2	essay	398		0		keep
 湮滅	1	tubelex	744	63	7		keep
+湮滅證據	2	tubelex	355	1	1		keep
 湯	0	tubelex	13526	227	34		keep
 湯劑	1	tubelex	529	1	1		keep
 湯加	1	tubelex	644	6	2		keep
@@ -76574,46 +77629,74 @@ m	0	tubelex	0	839	161		keep
 湯鍋	1	tubelex	589	3	2		keep
 湯頭	1	tubelex	523	2	2		keep
 湯飯	2	tubelex	451	1	1		keep
+湯餃	2	essay	379		0		keep
 湯麪	1	tubelex	565	7	4		keep
 湲	2	tubelex	478	1	1		keep
 溏	1	tubelex	580	3	2		keep
 源	0	tubelex	3381	185	61		keep
 源代碼	0	tubelex	1730	19	12		keep
 源地	1	tubelex	0	17	13		keep
+源地址	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+源委	2	tubelex	291	4	2		keep
 源文件	0	tubelex	1042	6	4		keep
 源於	0	tubelex	2149	178	42		keep
 源泉	0	tubelex	1225	70	28		keep
 源流	1	tubelex	619	8	6		keep
+源清流潔	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 源源	0	tubelex	693	34	22		keep
 源源不斷	0	tubelex	1063	142	37		keep
 源源不絕	0	tubelex	1067	21	7		keep
 源源而來	2	tubelex	406	2	1		keep
 源碼	0	tubelex	1776	5	3		keep
+源碼庫	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+源碼站	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 源程序	1	essay	739		0		keep
 源自	0	tubelex	1067	213	64		keep
+源語言	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 源遠流長	1	tubelex	767	11	6		keep
 源頭	0	tubelex	2135	269	33		keep
 源頭活水	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
 準	0	tubelex	3292	279	53		keep
+準位	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 準保	2	tubelex	477	2	2		keep
 準備	0	tubelex	89342	5222	367		keep
+準備不周	2	tubelex	0	1	1		keep
+準備充分	1	tubelex	559	8	5		keep
 準備好	0	essay	2149		0		keep
 準備就緒	1	tubelex	1	21	11		keep
+準備後事	2	tubelex	0	1	1		keep
 準備會	2	tubelex	0	3	2		keep
+準備期	2	tubelex	0	3	2		keep
+準備考	2	tubelex	0	2	1		keep
 準備金	1	tubelex	883	23	4		keep
 準備金率	1	tubelex	824	3	1		keep
+準分子	1	essay	581		0		keep
 準則	0	tubelex	177	143	28		keep
+準媽咪	0	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：日常生活反覆使用的自然表達，列日常級；不是實測整詞次數。	keep
+準媽媽	1	essay	955		0		keep
 準將	2	tubelex	0	1	1		keep
+準度	2	tubelex	482	8	3		keep
+準心	2	tubelex	0	20	4		keep
+準據	2	essay	460		0		keep
 準據法	2	ai-context	0		0	AI 判斷：較少使用但可辨識、可復用的書面或專門表達，保留並排後。	keep
+準新娘	1	tubelex	572	1	1		keep
+準新郎	1	tubelex	513	1	1		keep
 準星	2	tubelex	177	1	1		keep
 準時	0	tubelex	7296	95	18		keep
+準時出席	2	essay	425		0		keep
+準時到達	1	tubelex	543	4	3		keep
+準會	1	tubelex	559	2	1		keep
 準決賽	2	tubelex	475	2	2		keep
+準港姐	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+準現房	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 準直	2	ai-context	0		0	AI 判斷：較少使用但可辨識、可復用的書面或專門表達，保留並排後。	keep
+準直光束	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 準確	0	tubelex	2046	831	153		keep
 準確度	1	tubelex	772	42	9		keep
 準確性	0	tubelex	1392	43	20		keep
 準確無誤	1	tubelex	599	21	10		keep
 準確率	1	tubelex	828	16	6		keep
+準系統	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 準繩	1	tubelex	564	14	5		keep
 準考號	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
 準考證	2	essay	177		0		keep
@@ -76624,18 +77707,39 @@ m	0	tubelex	0	839	161		keep
 準頭	1	tubelex	522	15	3		keep
 準點	1	tubelex	556	2	2		keep
 溗	2	tubelex	281	1	1		keep
+溘然	2	essay	475		0		keep
+溘然而逝	2	essay	318		0		keep
 溘然長逝	2	essay	438		0		keep
 溜	0	tubelex	2936	189	37		keep
+溜上來	2	essay	321		0		keep
+溜上去	2	tubelex	287	1	1		keep
+溜下	2	essay	435		0		keep
+溜下來	2	tubelex	401	4	3		keep
+溜下去	2	essay	364		0		keep
 溜之大吉	1	tubelex	523	8	3		keep
+溜來	2	essay	399		0		keep
+溜來溜去	2	essay	362		0		keep
 溜冰	1	tubelex	88	12	6		keep
 溜冰場	1	tubelex	617	2	2		keep
 溜冰鞋	1	tubelex	568	3	2		keep
 溜出	1	tubelex	554	19	4		keep
+溜出來	1	tubelex	522	6	4		keep
+溜出去	1	tubelex	536	8	4		keep
+溜回	1	tubelex	484	10	7		keep
+溜回來	2	tubelex	408	2	2		keep
+溜回去	2	essay	379		0		keep
 溜圓	2	tubelex	492	2	2		keep
+溜完	2	essay	385		0		keep
 溜掉	1	tubelex	524	2	2		keep
 溜溜球	2	tubelex	474	1	1		keep
 溜滑梯	2	tubelex	413	8	2		keep
 溜走	1	tubelex	899	49	12		keep
+溜進	1	tubelex	586	17	6		keep
+溜進來	2	tubelex	455	1	1		keep
+溜進去	2	tubelex	462	2	1		keep
+溜過	1	tubelex	505	2	1		keep
+溜過來	2	essay	373		0		keep
+溜過去	2	essay	438		0		keep
 溜達	0	tubelex	1482	52	11		keep
 溜邊	2	tubelex	400	1	1		keep
 溜開	2	tubelex	380	1	1		keep
@@ -76643,31 +77747,58 @@ m	0	tubelex	0	839	161		keep
 溝	0	tubelex	5784	39	14		keep
 溝口	2	tubelex	0	7	1		keep
 溝回	2	ai-context	0		0	AI 判斷：較少使用但可辨識、可復用的書面或專門表達，保留並排後。	keep
+溝坑	2	essay	331		0		keep
 溝塹	2	tubelex	374	1	1		keep
 溝壑	1	tubelex	618	34	6		keep
 溝壑區	2	ai-context	0		0	AI 判斷：較少使用但可辨識、可復用的書面或專門表達，保留並排後。	keep
+溝壑縱橫	2	tubelex	0	4	2		keep
 溝底	2	tubelex	0	1	1		keep
 溝槽	1	tubelex	573	10	2		keep
+溝沿	2	essay	422		0		keep
 溝洫	2	essay	390		0		keep
 溝渠	1	tubelex	715	28	5		keep
+溝牀	2	essay	300		0		keep
 溝紋	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
 溝裏	1	tubelex	713	17	8		keep
 溝谷	1	essay	531		0		keep
 溝通	0	tubelex	12458	1114	135		keep
+溝通了解	2	tubelex	0	2	2		keep
+溝通交流	1	tubelex	0	14	6		keep
+溝通思想	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+溝通感情	2	tubelex	0	2	2		keep
+溝通模式	2	tubelex	0	1	1		keep
+溝通瞭解	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+溝通網絡	0	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：日常生活反覆使用的自然表達，列日常級；不是實測整詞次數。	keep
 溝道	1	essay	521		0		keep
+溝鼠	0	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：日常生活反覆使用的自然表達，列日常級；不是實測整詞次數。	keep
 溢	1	tubelex	177	9	7		keep
 溢位	2	tubelex	323	1	1		keep
 溢價	0	tubelex	1126	53	18		keep
 溢出	0	tubelex	177	95	21		keep
+溢出檢查	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
+溢利	2	essay	494		0		keep
 溢彩	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
+溢收	2	essay	166		0		keep
+溢於言外	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 溢於言表	1	tubelex	587	7	6		keep
+溢油	0	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：日常生活反覆使用的自然表達，列日常級；不是實測整詞次數。	keep
+溢洪	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+溢洪壩	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 溢洪道	1	tubelex	511	9	2		keep
+溢洪閘	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 溢流	1	tubelex	585	2	2		keep
 溢流壩	2	ai-context	0		0	AI 判斷：較少使用但可辨識、可復用的書面或專門表達，保留並排後。	keep
+溢流式	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
+溢流閥	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 溢滿	1	tubelex	610	3	1		keep
+溢灑	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 溢美	1	tubelex	547	1	1		keep
+溢美之言	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 溢美之詞	1	tubelex	518	5	3		keep
+溢美之語	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 溢美之辭	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
+溢血	2	tubelex	300	5	2		keep
+溢餘	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 溪	1	tubelex	355	131	10		keep
 溪口	1	essay	620		0		keep
 溪底	2	tubelex	0	1	1		keep
@@ -76677,60 +77808,90 @@ m	0	tubelex	0	839	161		keep
 溪畔	2	tubelex	0	20	3		keep
 溪谷	1	tubelex	604	14	5		keep
 溪邊	2	tubelex	1	17	2		keep
+溪釣	2	essay	376		0		keep
 溯	1	tubelex	754	15	5		keep
+溯本求源	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+溯水行舟	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
+溯江而上	2	essay	396		0		keep
+溯流	2	tubelex	471	1	1		keep
+溯流求源	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
+溯流而上	2	tubelex	430	1	1		keep
 溯源	1	tubelex	621	35	13		keep
 溱	1	tubelex	581	1	1		keep
 溴	1	tubelex	845	1	1		keep
 溴化物	2	essay	435		0		keep
+溴水	2	essay	402		0		keep
 溶	0	tubelex	2135	9	8		keep
 溶入	2	tubelex	177	2	2		keep
 溶劑	0	tubelex	1019	7	2		keep
+溶劑回收	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 溶劑型	2	ai-context	0		0	AI 判斷：較少使用但可辨識、可復用的書面或專門表達，保留並排後。	keep
+溶劑油	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+溶劑膠	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+溶劑萃取	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 溶化	1	tubelex	889	41	5		keep
 溶合	2	tubelex	498	4	2		keep
 溶媒	2	tubelex	479	3	1		keep
 溶度積	2	ai-context	0		0	AI 判斷：較少使用但可辨識、可復用的書面或專門表達，保留並排後。	keep
 溶於	1	tubelex	804	10	5		keep
+溶有	0	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：日常生活反覆使用的自然表達，列日常級；不是實測整詞次數。	keep
 溶洞	1	tubelex	757	24	3		keep
+溶洞羣	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 溶液	1	tubelex	88	37	13		keep
+溶液劑	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 溶膠	1	tubelex	624	1	1		keep
 溶菌酶	2	tubelex	0	3	2		keep
+溶血性	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 溶解	0	tubelex	177	55	23		keep
 溶解氧	2	tubelex	0	2	2		keep
 溶解熱	2	essay	329		0		keep
+溶解物	2	essay	359		0		keep
+溶解能力	0	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：日常生活反覆使用的自然表達，列日常級；不是實測整詞次數。	keep
 溶質	1	tubelex	546	1	1		keep
 溶雪	2	tubelex	0	2	1		keep
 溷濁	2	tubelex	360	1	1		keep
 溺	1	tubelex	444	22	7		keep
 溺嬰	2	tubelex	385	1	1		keep
+溺嬰罪	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 溺愛	1	tubelex	816	30	8		keep
 溺斃	2	tubelex	477	7	3		keep
 溺死	1	tubelex	570	26	7		keep
 溺水	1	tubelex	88	24	9		keep
 溺水者	2	tubelex	0	1	1		keep
+溺谷	2	essay	250		0		keep
 溽暑	2	essay	401		0		keep
 溽熱	2	essay	386		0		keep
 滂	2	tubelex	88	2	1		keep
 滂沱	2	tubelex	177	4	4		keep
 滂沱大雨	1	tubelex	512	3	2		keep
 滄桑	1	tubelex	177	55	10		keep
+滄桑之變	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 滄浪	1	tubelex	688	1	1		keep
 滄海	0	tubelex	1260	87	6		keep
 滄海一粟	1	tubelex	561	1	1		keep
 滄海桑田	1	tubelex	627	16	5		keep
 滄海橫流	2	tubelex	490	2	2		keep
+滄海笑	2	tubelex	0	2	1		keep
 滄茫	2	tubelex	382	1	1		keep
 滅	0	tubelex	444	274	33		keep
 滅亡	0	tubelex	622	513	32		keep
 滅口	1	tubelex	533	31	3		keep
+滅國	1	tubelex	177	27	9		keep
 滅團	2	tubelex	0	5	2		keep
+滅屍	2	essay	407		0		keep
 滅弧	2	ai-context	0		0	AI 判斷：較少使用但可辨識、可復用的書面或專門表達，保留並排後。	keep
+滅掉	1	tubelex	730	63	11		keep
 滅族	1	tubelex	563	15	4		keep
+滅殺	1	tubelex	584	18	3		keep
 滅火	0	tubelex	1064	39	10		keep
 滅火劑	1	tubelex	552	1	1		keep
 滅火器	1	tubelex	804	1	1		keep
+滅火彈	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
+滅火栓	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+滅火槍	2	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：較少用但一般讀者可辨識、可復用的書面表達，排在日常及通用詞之後。	keep
 滅火機	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
 滅火隊	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
+滅災	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
 滅種	2	tubelex	495	8	2		keep
 滅絕	0	tubelex	266	373	22		keep
 滅絕人性	1	tubelex	502	1	1		keep
@@ -108030,6 +109191,8 @@ m	0	tubelex	0	839	161		keep
 遊擊區	2	tubelex	0	1	1		keep
 遊擊戰	2	tubelex	0	4	4		keep
 遊擊戰爭	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
+遊擊戰術	1	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：熟悉且可復用的通用書面或填詞表達，列通用級；不是實測整詞次數。	keep
+遊擊手	0	ai-context	0		0	B48 整詞常用度為 AI 判斷；無 Essay／TUBELEX 整詞觀測次數。AI 判斷：日常生活反覆使用的自然表達，列日常級；不是實測整詞次數。	keep
 遊擊隊	2	tubelex	0	6	4		keep
 遊擊隊員	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
 遊方	1	tubelex	503	2	2		keep

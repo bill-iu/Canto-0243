@@ -4,10 +4,17 @@ import assert from 'node:assert/strict';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { buildRankingData, loadRankingData, parseEssayCorpus, parseWordPronRanks } from '../src/db/ranking-loader.node.ts';
-import { compareAuthoritativeReadings, compareSearchResults, pronRankSortValueForWord } from '../src/db/ranking.ts';
+import { compareAuthoritativeReadings, compareHeteronym, compareSearchResults, pronRankSortValueForWord } from '../src/db/ranking.ts';
 import { checkWordUsageRanking } from './ranking-word-usage-fixture.ts';
 
 rankingLogicSelfCheck();
+// Python sorts by code point; UTF-16 puts supplementary Han before U+FA0C.
+for (const compare of [compareSearchResults, compareHeteronym]) {
+  for (const prefix of ['', '字']) {
+    const rows = ['𠁆', '兀', '𠀀'].map(char => ({ char: prefix + char, jyutping: 'test1' }));
+    assert.deepEqual(rows.sort(compare).map(r => r.char), ['兀', '𠀀', '𠁆'].map(char => prefix + char));
+  }
+}
 assert.deepEqual(parseEssayCorpus('群體\t4426\n文件\t4360\n群體\t1601\n群組\t1394\n群組\t800\n'), {
   群體: 1601, 文件: 4360, 群組: 800,
 }); // Duplicate frequencies follow source order, rather than taking the maximum.

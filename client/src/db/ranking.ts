@@ -160,18 +160,32 @@ export function searchResultSortKey(row: WordRow): [number, number, number, numb
   ];
 }
 
+function compareRankPart(a: number | string, b: number | string): number {
+  if (a === b) return 0;
+  if (typeof a === 'string' && typeof b === 'string') {
+    // Match Python's Unicode scalar order, including supplementary Han.
+    let ai = 0;
+    let bi = 0;
+    while (ai < a.length && bi < b.length) {
+      const ac = a.codePointAt(ai)!;
+      const bc = b.codePointAt(bi)!;
+      if (ac !== bc) return ac - bc;
+      ai += ac > 0xffff ? 2 : 1;
+      bi += bc > 0xffff ? 2 : 1;
+    }
+    return a.length - b.length;
+  }
+  return a < b ? -1 : a > b ? 1 : 0;
+}
+
 export function compareSearchResults(a: WordRow, b: WordRow): number {
   const ka = searchResultSortKey(a);
   const kb = searchResultSortKey(b);
   for (let i = 0; i < ka.length; i++) {
     const av = ka[i]!;
     const bv = kb[i]!;
-    if (av < bv) {
-      return -1;
-    }
-    if (av > bv) {
-      return 1;
-    }
+    const order = compareRankPart(av, bv);
+    if (order) return order;
   }
   return 0;
 }
@@ -211,12 +225,8 @@ export function compareHeteronym(a: WordRow, b: WordRow): number {
   for (let i = 0; i < ka.length; i++) {
     const av = ka[i]!;
     const bv = kb[i]!;
-    if (av < bv) {
-      return -1;
-    }
-    if (av > bv) {
-      return 1;
-    }
+    const order = compareRankPart(av, bv);
+    if (order) return order;
   }
   return 0;
 }
