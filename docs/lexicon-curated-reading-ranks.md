@@ -635,3 +635,13 @@ mui1 女孩子泛稱未有二妹整詞根據，本批不擴入。
 病入骨髓 seoi5、白癜風 din6、百媚生 mei6 sang1、皇皇巨著 zyu3 與改正字形同步覆核；病一律 beng6。白茉莉的 lei2／lei6、番薯藤的 syu2／syu4 有完整詞根依據；百年偕老 gaai1 優先、haai4 現代又讀較後。戰犯 faan2、和尚 soeng2 及茄克 gaa1 hak1 按完整詞核對，沒有因孤字缺項把正常整詞列作罕見。
 
 完整字形、碼、依據與順位見[B52 審核](../data/lexicon/reviews/2026-11-06-written-b52-supplement.tsv)和[B52 最終驗證](../data/lexicon/reviews/2026-11-06-written-b52-validation.json)。無實測整詞順位明示為 AI 判斷，與詞語本身的常用度獨立。
+
+## 第五十三批整詞讀音終審（2026-11-07）
+
+新增 **908 組讀音分級**，累計 **64,117 組來源讀音**；原有 63,209 個分級物件逐欄保留。盡其所長的[長](https://words.hk/zidin/長)採專長 coeng4，里為距離 leoi5，相忍為國取目的義 wai6；正字修正同步音節與數字碼。監聽的[聽](https://jyut.net/query?q=聽)保留 teng1／ting1，不加入任憑 ting3。
+
+[睫](https://words.hk/zidin/睫)有現代完整眼睫毛 zit3 詞例，[化妝教學](https://www.cantoneseclass101.com/lesson/absolute-beginner-cantonese-for-every-day-81-10-mustknow-words-about-make-up-products)亦有睫毛液 zit6。本批四個化妝詞採 zit3 先、zit6 後，舊假睫毛 zit3 不動；不把裸字表未列等同整詞無效。[睜](https://jyut.net/query?q=睜)保留 zaang1 語音與 zang1 文讀；[眯](https://jyut.net/query?q=眯)保留 mei1 與同義 mai4，不套灰沙入眼 mai5。[研](https://jyut.net/query?q=研)的細磨義 jin4 有現代研磨、研成細末詞例，另保留 ngaan4 碾磨又讀，不套硯古寫 jin6。
+
+著作、著名、著述與衣着、着色、着重按[著字詞義](https://jyut.net/query?q=著)分音。隸書 dai6／lai6、睥睨 pai5／pei5／bei6、盤子 pun2／pun4 及結膜 mok6／mok2 分別依現代同義詞例保留先後；不按來源字典數量判整詞高低頻。舊冥思苦想 ming5 有[完整詞學術比較](https://www.ny.edu.hk/web/cht/hkbc_journal/HKBC_11th%20Journal/489-583.pdf)支持；瞑思苦想原形較少用，按詞語常用度撤回，沒有改冥字製作新詞源。
+
+字面、讀音、碼、依據與先後見[B53 審核](../data/lexicon/reviews/2026-11-06-written-b53-supplement.tsv)和[B53 最終驗證](../data/lexicon/reviews/2026-11-06-written-b53-validation.json)。無整詞頻率者明示 AI 判斷，與詞語本身的常用度獨立。

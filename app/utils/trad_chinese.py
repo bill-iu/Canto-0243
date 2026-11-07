@@ -117,6 +117,8 @@ _CONTEXTUAL_RESTORE: dict[str, str] = {
     "濾鬥": "濾斗",
     "煙鬥架": "煙斗架",
     "煙鬥絲": "煙斗絲",
+    "直麪人生": "直面人生",
+    "相隔萬裏": "相隔萬里",
 }
 
 # Bare word senses: preserve the input, since the converted form can have its
