@@ -114,6 +114,7 @@ _CONTEXTUAL_RESTORE: dict[str, str] = {
     "煙鬥": "煙斗",
     "準建證": "准建證",
     "準遷證": "准遷證",
+    "濾鬥": "濾斗",
 }
 
 # Bare word senses: preserve the input, since the converted form can have its
@@ -133,6 +134,7 @@ _PRESERVE_LITERALS = {
     "游進去": "游進去", "游进去": "游進去",
     "游過來": "游過來", "游过来": "游過來",
     "游過去": "游過去", "游过去": "游過去",
+    "潛游": "潛游", "潜游": "潛游",
 }
 
 

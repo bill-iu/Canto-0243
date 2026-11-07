@@ -1,20 +1,20 @@
 {
   "date": "2026-11-06",
   "reviewer": "AI-assisted whole-word commonness review; not measured corpus frequency or human item-by-item approval",
-  "curated_rows": 58691,
-  "curated_sha256": "4e919fba6af18af14cbc911d4adaac858bf177cabdae280633c6a09fa1a13b1c",
+  "curated_rows": 60095,
+  "curated_sha256": "db288ae7d7ded46303a7fed0f81bb58f2b1b3a4a1fe5abc8b645c34e21f25506",
   "rime_char_sha256": "868937c3ebbcaf47170a80a43bd063b20f6699a884e39110154fd91bba9d195d",
-  "ranks_sha256": "0b7fe6ca39ddb78bda3177e85886f20c478d811af257d15348d98525ab309cf7",
+  "ranks_sha256": "1151c59d85fd3209348245ee8b27d3cad1c42e035d7c0f942727733c5218603f",
   "grades": {
-    "預設": 51332,
-    "常用": 7273,
+    "預設": 52507,
+    "常用": 7502,
     "罕見": 83,
     "棄用": 3
   },
   "basis": {
-    "rime-components": 52264,
-    "rime-orthographic": 90,
-    "ai-context": 6337
+    "rime-components": 53359,
+    "rime-orthographic": 92,
+    "ai-context": 6644
   },
   "grade_order": [
     "預設",
@@ -38,102 +38,130 @@
     "爲": "為"
   },
   "validation": {
-    "merged_rows": 237689,
-    "merged_literals": 220645,
-    "unique_triples": 237687,
-    "baseline_rows": 236424,
-    "all_previous_rows_and_multiplicities_retained": true,
-    "old_word_grades_preserved": 119816,
-    "new_source_readings": 1265,
+    "merged_rows": 239091,
+    "merged_literals": 221907,
+    "unique_triples": 239089,
+    "baseline_rows": 237689,
+    "all_previous_rows_except_one_exact_wrong_sense_retained": true,
+    "confirmed_old_wrong_sense_readings_removed": 1,
+    "all_accepted_primary_reading_checks": 1266,
+    "old_word_grades_preserved": 120979,
+    "new_source_readings": 1404,
     "new_pairs_retained": true,
-    "search_checks": 297,
-    "preferred_reading_checks": 102,
-    "word_usage_keys": 120979,
+    "search_checks": 346,
+    "preferred_reading_checks": 124,
+    "word_usage_keys": 122242,
     "withdrawn_curated_literals": 2051,
     "live_db_unchanged": true,
     "backend_pwa_essay_frequency_keys": 266884,
     "essay_frequency_tables_equal": true,
-    "backend_pwa_word_grade_keys": 120979,
-    "backend_pwa_curated_reading_grade_keys": 59407,
+    "backend_pwa_word_grade_keys": 122242,
+    "backend_pwa_curated_reading_grade_keys": 60823,
     "word_grade_tables_equal": true,
     "curated_reading_grade_tables_equal": true,
-    "old_source_rows_preserved": 57426,
-    "old_reading_grades_preserved": 57426,
-    "old_usage_rows_preserved": 119816,
-    "old_judgments_preserved": 15429,
-    "new_source_forms": 1166,
-    "new_merged_forms": 1162,
+    "old_source_rows_preserved": 58691,
+    "old_reading_grades_preserved": 58691,
+    "old_usage_rows_preserved": 120979,
+    "old_judgments_preserved": 15901,
+    "new_source_forms": 1266,
+    "new_merged_forms": 1262,
     "existing_merged_forms_with_new_readings": [
-      "淡妝濃抹",
-      "淡藍色",
-      "深仇大恨",
-      "談不上"
+      "嘔心瀝血",
+      "滋事分子",
+      "濃妝豔抹",
+      "烘焙"
     ],
-    "unrelated_user_files_unchanged": false,
-    "raw_source_forms": 56740,
-    "normalized_source_forms": 56738,
-    "new_word_usage_judgments": 472,
-    "unrelated_user_files_preserved": true,
-    "concurrent_unrelated_file_changes": [
-      "client/src/db/ranking-index-browser.ts",
-      "client/scripts/ranking-index-browser-self-check.ts"
-    ],
+    "unrelated_user_files_unchanged": true,
+    "raw_source_forms": 58005,
+    "normalized_source_forms": 58003,
+    "new_word_usage_judgments": 443,
+    "previous_overlay_bytes_preserved": true,
+    "exact_existing_wrong_sense_overlay_deletions": 1,
     "client_query_engine_with_new_dictionary": {
-      "checks": 42,
+      "checks": 51,
       "modes": 3,
       "new_dictionary_loaded_in_client_engine": true,
       "preferred_readings_equal": true
     },
-    "new_merged_readings": 1265,
+    "new_merged_readings": 1403,
+    "new_merged_readings_net": 1402,
+    "existing_runtime_readings_mirrored": 1,
     "heteronym_full_pool_ranking_equal": true,
     "non_han_tiers_match_backend": true,
     "unicode_scalar_tiebreak_parity": true,
-    "supplementary_han_and_prefixed_literals_regression": true,
     "new_exact_literal_restorations": {
-      "準建證": "准建證",
-      "準遷證": "准遷證"
+      "濾鬥": "濾斗"
     },
     "normalization_impact": {
       "new_exact_restorations": {
-        "準建證": "准建證",
-        "準遷證": "准遷證"
+        "濾鬥": "濾斗"
       },
       "new_preserved_literal_senses": [
-        "游來",
-        "游來游去",
-        "游進去",
-        "游過來",
-        "游過去"
+        "潛游"
       ],
-      "new_preserved_input_keys": 10,
-      "exact_restorations_total": 91,
-      "preserved_literal_senses_total": 14,
-      "preserved_literal_input_keys_total": 26,
+      "new_preserved_input_keys": 2,
+      "exact_restorations_total": 92,
+      "preserved_literal_senses_total": 15,
+      "preserved_literal_input_keys_total": 28,
       "prior_runtime_matches": 0,
       "prior_curated_matches": 0,
       "prior_reading_rank_matches": 0,
       "prior_word_usage_matches": 0,
       "prior_word_usage_judgment_matches": 0,
       "stored_relation_source_files_checked": 222,
-      "stored_relation_source_hits": [],
-      "stored_relation_literal_keys_migrated": 0,
-      "cache_format": "28",
+      "stored_relation_source_hits": [
+        {
+          "path": "data/cilin/new_cilin.txt",
+          "previous_sha256": "d923e8b663a94cf3a5e072048bffcad890e289ed93d318f563bca8873e0e1bfd",
+          "sha256": "25eca50c06888d7f0957c3e82eaddae2922eac99246a06ee62b4eb55cac04c06",
+          "group": "Bo08A06= 漏子 漏斗 濾斗",
+          "previous_literal": "濾鬥",
+          "literal": "濾斗",
+          "other_content_unchanged": true
+        },
+        {
+          "path": "data/thesaurus/dict_synonym.txt",
+          "previous_sha256": "b3b6302d50660b03ac8dd625add42359ebb01e51ad2585cc8d8da89663fe936e",
+          "sha256": "5a78accfa48f1400ece36f8bc8c0afdd579dc60260f023dabcca9429c3a7f4d3",
+          "group": "Bo08A06= 漏斗 漏子 濾斗",
+          "previous_literal": "濾鬥",
+          "literal": "濾斗",
+          "other_content_unchanged": true
+        }
+      ],
+      "stored_relation_literal_keys_migrated": 2,
+      "relation_migration_complete": true,
+      "cache_format": "29",
       "previous_runtime_rows_preserved": true
+    },
+    "stored_relation_validation": {
+      "backend_and_client_canonical_group_keys": true,
+      "other_group_members_preserved": true,
+      "client_indexes": {
+        "static-cilin-syn-index.json": {
+          "canonical_key": true,
+          "bidirectional_group_membership": true
+        },
+        "static-syn-index.json": {
+          "canonical_key": true,
+          "bidirectional_group_membership": true
+        }
+      }
     },
     "prior_runtime_rows_affected_by_new_normalization": 0,
     "prior_word_usage_records_affected_by_new_normalization": 0,
-    "prior_stored_relation_keys_affected_by_new_normalization": 0,
-    "previous_word_usage_records_preserved": 119816,
-    "previous_word_usage_judgments_preserved": 15429,
+    "prior_stored_relation_keys_migrated": 2,
+    "previous_word_usage_records_preserved": 120979,
+    "previous_word_usage_judgments_preserved": 15901,
     "full_pool_parity_queries": 54,
-    "full_pool_parity_rows": 73618,
+    "full_pool_parity_rows": 76034,
     "full_pool_ranking_equal": true,
-    "previous_reading_grades_preserved": 57426,
-    "previous_source_rows_preserved": 57426,
+    "previous_reading_grades_preserved": 58691,
+    "previous_source_rows_preserved": 58691,
     "explicit_previous_reading_grade_repairs": 0,
     "new_word_normalization_idempotent": true,
-    "smoke_tests": 326,
-    "smoke_passed": 322,
+    "smoke_tests": 327,
+    "smoke_passed": 323,
     "smoke_skipped": 4,
     "seam_tests": 89,
     "seam_passed": 83,
@@ -146,7 +174,7 @@
     "ranking_and_lookup_self_checks": true,
     "targeted_node_typecheck": true,
     "pwa_artifact_guard": true,
-    "layer_cache_format": "28",
+    "layer_cache_format": "29",
     "layer_cache_cold_misses": 8,
     "layer_cache_warm_hits": 8,
     "layer_cache_counter_matches_uncached_db": true,
@@ -160,1516 +188,2012 @@
     "final_reading_audit": {
       "whole_word_review_complete": true,
       "reviewed_candidates": 2000,
-      "accepted_reading_candidates_inspected": 1217,
+      "accepted_reading_candidates_inspected": 1350,
       "reading_changes": [
         {
-          "id": 90003,
-          "char": "活到",
-          "previous_jyutping": "wut6 dou2",
-          "jyutping": "wut6 dou3",
-          "alternatives": [],
-          "note": "到在此表示抵達、達到年齡／地點／程度，取 dou3；不把測到、湊到等成功結果的 dou2 一律改掉。",
+          "id": 92049,
+          "char": "滑到",
+          "previous_jyutping": "waat6 dou2",
+          "jyutping": "waat6 dou3",
+          "alternatives": [
+            "waat6 dou2"
+          ],
+          "note": "抵達地點／達到程度讀 dou3 優先；成功做到的日常結果用法 dou2 另留，兩者按語境分先後，不一律刪除。",
           "reference": "https://jyut.net/query?q=到"
         },
         {
-          "id": 90105,
-          "char": "派到",
-          "previous_jyutping": "paai3 dou2",
-          "jyutping": "paai3 dou3",
-          "alternatives": [],
-          "note": "到在此表示抵達、達到年齡／地點／程度，取 dou3；不把測到、湊到等成功結果的 dou2 一律改掉。",
+          "id": 92136,
+          "char": "滲到",
+          "previous_jyutping": "sam3 dou2",
+          "jyutping": "sam3 dou3",
+          "alternatives": [
+            "sam3 dou2"
+          ],
+          "note": "抵達地點／達到程度讀 dou3 優先；成功做到的日常結果用法 dou2 另留，兩者按語境分先後，不一律刪除。",
           "reference": "https://jyut.net/query?q=到"
         },
         {
-          "id": 90147,
-          "char": "流到",
-          "previous_jyutping": "lau4 dou2",
-          "jyutping": "lau4 dou3",
-          "alternatives": [],
-          "note": "到在此表示抵達、達到年齡／地點／程度，取 dou3；不把測到、湊到等成功結果的 dou2 一律改掉。",
+          "id": 92164,
+          "char": "滴到",
+          "previous_jyutping": "dik6 dou2",
+          "jyutping": "dik6 dou3",
+          "alternatives": [
+            "dik6 dou2"
+          ],
+          "note": "抵達地點／達到程度讀 dou3 優先；成功做到的日常結果用法 dou2 另留，兩者按語境分先後，不一律刪除。",
           "reference": "https://jyut.net/query?q=到"
         },
         {
-          "id": 90237,
-          "char": "流竄到",
-          "previous_jyutping": "lau4 cyun3 dou2",
-          "jyutping": "lau4 cyun3 dou3",
-          "alternatives": [],
-          "note": "到在此表示抵達、達到年齡／地點／程度，取 dou3；不把測到、湊到等成功結果的 dou2 一律改掉。",
+          "id": 92218,
+          "char": "滾到",
+          "previous_jyutping": "gwan2 dou2",
+          "jyutping": "gwan2 dou3",
+          "alternatives": [
+            "gwan2 dou2"
+          ],
+          "note": "抵達地點／達到程度讀 dou3 優先；成功做到的日常結果用法 dou2 另留，兩者按語境分先後，不一律刪除。",
           "reference": "https://jyut.net/query?q=到"
         },
         {
-          "id": 91443,
-          "char": "減弱到",
-          "previous_jyutping": "gaam2 joek6 dou2",
-          "jyutping": "gaam2 joek6 dou3",
-          "alternatives": [],
-          "note": "到在此表示抵達、達到年齡／地點／程度，取 dou3；不把測到、湊到等成功結果的 dou2 一律改掉。",
+          "id": 92256,
+          "char": "滿到",
+          "previous_jyutping": "mun5 dou2",
+          "jyutping": "mun5 dou3",
+          "alternatives": [
+            "mun5 dou2"
+          ],
+          "note": "抵達地點／達到程度讀 dou3 優先；成功做到的日常結果用法 dou2 另留，兩者按語境分先後，不一律刪除。",
           "reference": "https://jyut.net/query?q=到"
         },
         {
-          "id": 91466,
-          "char": "減縮到",
-          "previous_jyutping": "gaam2 suk1 dou2",
-          "jyutping": "gaam2 suk1 dou3",
-          "alternatives": [],
-          "note": "到在此表示抵達、達到年齡／地點／程度，取 dou3；不把測到、湊到等成功結果的 dou2 一律改掉。",
+          "id": 92355,
+          "char": "漂到",
+          "previous_jyutping": "piu1 dou2",
+          "jyutping": "piu1 dou3",
+          "alternatives": [
+            "piu1 dou2"
+          ],
+          "note": "抵達地點／達到程度讀 dou3 優先；成功做到的日常結果用法 dou2 另留，兩者按語境分先後，不一律刪除。",
           "reference": "https://jyut.net/query?q=到"
         },
         {
-          "id": 90036,
-          "char": "活性部位",
-          "previous_jyutping": "wut6 sing3 bou6 wai2",
-          "jyutping": "wut6 sing3 bou6 wai2",
+          "id": 92464,
+          "char": "演到",
+          "previous_jyutping": "jin2 dou2",
+          "jyutping": "jin2 dou3",
           "alternatives": [
-            "wut6 sing3 bou6 wai6"
+            "jin2 dou2"
           ],
-          "note": "部位／單位／測位為名詞，先列日常 wai2，保留未變調 wai6。",
-          "reference": "https://jyut.net/query?q=位"
+          "note": "抵達地點／達到程度讀 dou3 優先；成功做到的日常結果用法 dou2 另留，兩者按語境分先後，不一律刪除。",
+          "reference": "https://jyut.net/query?q=到"
         },
         {
-          "id": 90707,
-          "char": "涉外單位",
-          "previous_jyutping": "sip3 ngoi6 daan1 wai2",
-          "jyutping": "sip3 ngoi6 daan1 wai2",
+          "id": 92674,
+          "char": "潑到",
+          "previous_jyutping": "put3 dou2",
+          "jyutping": "put3 dou3",
           "alternatives": [
-            "sip3 ngoi6 daan1 wai6"
+            "put3 dou2"
           ],
-          "note": "部位／單位／測位為名詞，先列日常 wai2，保留未變調 wai6。",
-          "reference": "https://jyut.net/query?q=位"
+          "note": "抵達地點／達到程度讀 dou3 優先；成功做到的日常結果用法 dou2 另留，兩者按語境分先後，不一律刪除。",
+          "reference": "https://jyut.net/query?q=到"
         },
         {
-          "id": 90768,
-          "char": "液位計",
-          "previous_jyutping": "jik6 wai2 gai3",
-          "jyutping": "jik6 wai2 gai3",
+          "id": 92725,
+          "char": "潛到",
+          "previous_jyutping": "cim4 dou2",
+          "jyutping": "cim4 dou3",
           "alternatives": [
-            "jik6 wai6 gai3"
+            "cim4 dou2"
           ],
-          "note": "部位／單位／測位為名詞，先列日常 wai2，保留未變調 wai6。",
-          "reference": "https://jyut.net/query?q=位"
+          "note": "抵達地點／達到程度讀 dou3 優先；成功做到的日常結果用法 dou2 另留，兩者按語境分先後，不一律刪除。",
+          "reference": "https://jyut.net/query?q=到"
         },
         {
-          "id": 91565,
-          "char": "測位",
-          "previous_jyutping": "caak1 wai2",
-          "jyutping": "caak1 wai2",
+          "id": 93090,
+          "char": "瀉到",
+          "previous_jyutping": "se3 dou2",
+          "jyutping": "se3 dou3",
           "alternatives": [
-            "caak1 wai6"
+            "se3 dou2"
           ],
-          "note": "部位／單位／測位為名詞，先列日常 wai2，保留未變調 wai6。",
-          "reference": "https://jyut.net/query?q=位"
+          "note": "抵達地點／達到程度讀 dou3 優先；成功做到的日常結果用法 dou2 另留，兩者按語境分先後，不一律刪除。",
+          "reference": "https://jyut.net/query?q=到"
         },
         {
-          "id": 91566,
-          "char": "測位器",
-          "previous_jyutping": "caak1 wai2 hei3",
-          "jyutping": "caak1 wai2 hei3",
+          "id": 93144,
+          "char": "灌到",
+          "previous_jyutping": "gun3 dou2",
+          "jyutping": "gun3 dou3",
           "alternatives": [
-            "caak1 wai6 hei3"
+            "gun3 dou2"
           ],
-          "note": "部位／單位／測位為名詞，先列日常 wai2，保留未變調 wai6。",
-          "reference": "https://jyut.net/query?q=位"
+          "note": "抵達地點／達到程度讀 dou3 優先；成功做到的日常結果用法 dou2 另留，兩者按語境分先後，不一律刪除。",
+          "reference": "https://jyut.net/query?q=到"
         },
         {
-          "id": 90083,
-          "char": "活頁夾",
-          "previous_jyutping": "wut6 jip6 gaap3",
-          "jyutping": "wut6 jip6 gaap2",
-          "alternatives": [
-            "wut6 jip6 gaap3"
-          ],
-          "note": "活頁夾的夾為文具名詞，先列日常 gaap2，保留 gaap3；不擴及夾取動詞。",
-          "reference": "https://words.hk/zidin/文件夾"
-        },
-        {
-          "id": 90088,
-          "char": "活餌料",
-          "previous_jyutping": "wut6 nei6 liu2",
-          "jyutping": "wut6 nei6 liu2",
+          "id": 92316,
+          "char": "滿量程",
+          "previous_jyutping": "mun5 loeng4 cing4",
+          "jyutping": "mun5 loeng6 cing4",
           "alternatives": [],
-          "note": "活餌料的餌 nei6 為現代字書讀音，料名詞 liu2；不沿用動詞料想的 liu6。",
-          "reference": "https://jyut.net/query?q=餌"
+          "note": "滿量程的量表示測量範圍的數量名詞 loeng6，非估量動詞 loeng4。",
+          "reference": "AI:whole-word-context"
         },
         {
-          "id": 90155,
-          "char": "流動比率",
-          "previous_jyutping": "lau4 dung6 bei2 leot6",
-          "jyutping": "lau4 dung6 bei2 leot2",
-          "alternatives": [
-            "lau4 dung6 bei2 leot6"
-          ],
-          "note": "比率完整詞有 leot6*2 變調詞例；日常 leot2 先列，保留 leot6，不能以孤字率讀 leot6 誤刪變調。",
-          "reference": "https://cantonese.sheik.co.uk/dictionary/characters/674/?full=true"
+          "id": 92457,
+          "char": "露面",
+          "previous_jyutping": "lau6 min6",
+          "jyutping": "lou6 min6",
+          "alternatives": [],
+          "note": "漏面正字為露面，改字後重核露 lou6；不能沿漏 lau6。",
+          "reference": "https://jyut.net/query?q=露"
         },
         {
-          "id": 90202,
-          "char": "流氓軟件",
-          "previous_jyutping": "lau4 man4 jyun5 gin6",
-          "jyutping": "lau4 man4 jyun5 gin2",
-          "alternatives": [
-            "lau4 man4 jyun5 gin6"
-          ],
-          "note": "軟件、事件、零件的件，先列日常 gin2，保留 gin6 文讀。",
-          "reference": "https://words.hk/zidin/軟件 ; https://words.hk/zidin/案件"
+          "id": 92562,
+          "char": "瞞天過海",
+          "previous_jyutping": "maan4 tin1 gwo3 hoi2",
+          "jyutping": "mun4 tin1 gwo3 hoi2",
+          "alternatives": [],
+          "note": "漫天過海正字為瞞天過海；瞞取隱瞞的 mun4，不由漫 maan6 猜成 maan4，現代建議音有直接根據。",
+          "reference": "https://jyut.net/query?q=瞞"
         },
         {
-          "id": 90254,
-          "char": "流血事件",
-          "previous_jyutping": "lau4 hyut3 si6 gin6",
-          "jyutping": "lau4 hyut3 si6 gin2",
-          "alternatives": [
-            "lau4 hyut3 si6 gin6"
-          ],
-          "note": "軟件、事件、零件的件，先列日常 gin2，保留 gin6 文讀。",
-          "reference": "https://words.hk/zidin/軟件 ; https://words.hk/zidin/案件"
+          "id": 93095,
+          "char": "洩氣",
+          "previous_jyutping": "se3 hei3",
+          "jyutping": "sit3 hei3",
+          "alternatives": [],
+          "note": "瀉氣正字為洩氣；洩取洩氣 sit3，不能沿瀉 se3。已有完整詞例按正式正規化查重。",
+          "reference": "https://jyut.net/query?q=洩 ; https://www.newlonkong.com/English/wp-content/uploads/2024/05/yes-cedictvs-JMCL4.pdf"
         },
         {
-          "id": 90775,
-          "char": "液壓件",
-          "previous_jyutping": "jik6 aat3 gin2",
-          "jyutping": "jik6 aat3 gin2",
-          "alternatives": [
-            "jik6 aat3 gin6"
-          ],
-          "note": "軟件、事件、零件的件，先列日常 gin2，保留 gin6 文讀。",
-          "reference": "https://words.hk/zidin/軟件 ; https://words.hk/zidin/案件"
+          "id": 93222,
+          "char": "火花塞",
+          "previous_jyutping": "fo2 faa3 sak1",
+          "jyutping": "fo2 faa1 sak1",
+          "alternatives": [],
+          "note": "火化塞正字火花塞，花 faa1，不能沿化 faa3。",
+          "reference": "AI:whole-word-context"
         },
         {
-          "id": 90211,
-          "char": "流水聲",
-          "previous_jyutping": "lau4 seoi2 sing1",
-          "jyutping": "lau4 seoi2 seng1",
+          "id": 93778,
+          "char": "無印痕",
+          "previous_jyutping": "mou4 jan3 han6",
+          "jyutping": "mou4 jan3 han4",
+          "alternatives": [],
+          "note": "無印痕的痕取痕跡 han4，非孤字拼接 han6。",
+          "reference": "https://jyut.net/query?q=痕"
+        },
+        {
+          "id": 93348,
+          "char": "灰髮飄飄",
+          "previous_jyutping": "fui1 faat3 piu1 piu1",
+          "jyutping": "fui1 faat3 piu1 piu1",
+          "alternatives": [],
+          "note": "灰發飄飄的發為頭髮義，正字灰髮飄飄，保留來源字，非發出義；按同詞字形查重。",
+          "reference": "AI:whole-word-context"
+        },
+        {
+          "id": 92289,
+          "char": "滿眶",
+          "previous_jyutping": "mun5 kwaang1",
+          "jyutping": "mun5 hong1",
           "alternatives": [
-            "lau4 seoi2 sing1"
+            "mun5 kwaang1"
           ],
-          "note": "流水聲／海浪聲先列日常聲響 seng1，保留 sing1 文讀；不套用於混聲等專門複合詞。",
+          "note": "滿眶的眶取眼眶整詞日常 hong1 優先，現代完整眼眶 kwaang1 亦保留，不一概判錯。",
+          "reference": "https://jyut.net/query?q=眶"
+        },
+        {
+          "id": 92523,
+          "char": "嘔心瀝血",
+          "previous_jyutping": "au2 sam1 lik6 hyut3",
+          "jyutping": "au2 sam1 lik1 hyut3",
+          "alternatives": [
+            "au2 sam1 lik6 hyut3"
+          ],
+          "note": "嘔心瀝血已有完整 au2 sam1 lik1 hyut3 詞例，保留其日常讀法優先；現代字書瀝血 lik6 亦明載，保留較後，不把 lik1 誤判作只限古音。",
+          "reference": "https://jyut.net/query?q=瀝"
+        },
+        {
+          "id": 93123,
+          "char": "瀝血",
+          "previous_jyutping": "lik1 hyut3",
+          "jyutping": "lik1 hyut3",
+          "alternatives": [
+            "lik6 hyut3"
+          ],
+          "note": "瀝 lik1 有現代字書支持，沿完整詞草稿保留優先；lik6 為現代建議及瀝血／瀝青明確詞例，另留，不以孤字罕用度剔除。",
+          "reference": "https://jyut.net/query?q=瀝"
+        },
+        {
+          "id": 93127,
+          "char": "瀝酒",
+          "previous_jyutping": "lik1 zau2",
+          "jyutping": "lik1 zau2",
+          "alternatives": [
+            "lik6 zau2"
+          ],
+          "note": "瀝 lik1 有現代字書支持，沿完整詞草稿保留優先；lik6 為現代建議及瀝血／瀝青明確詞例，另留，不以孤字罕用度剔除。",
+          "reference": "https://jyut.net/query?q=瀝"
+        },
+        {
+          "id": 93131,
+          "char": "瀝青路面",
+          "previous_jyutping": "lik1 cing1 lou6 min6",
+          "jyutping": "lik1 cing1 lou6 min6",
+          "alternatives": [
+            "lik6 cing1 lou6 min6"
+          ],
+          "note": "瀝 lik1 有現代字書支持，沿完整詞草稿保留優先；lik6 為現代建議及瀝血／瀝青明確詞例，另留，不以孤字罕用度剔除。",
+          "reference": "https://jyut.net/query?q=瀝"
+        },
+        {
+          "id": 92159,
+          "char": "滴下",
+          "previous_jyutping": "dik6 haa6",
+          "jyutping": "dik6 haa6",
+          "alternatives": [
+            "dik1 haa6"
+          ],
+          "note": "滴 dik6 與 dik1 均有現代字書的滴水／滴眼藥同義用法，保留原完整詞讀法為先及另一讀法；不採只見舊書的 dik3。",
+          "reference": "https://jyut.net/query?q=滴"
+        },
+        {
+          "id": 92160,
+          "char": "滴下來",
+          "previous_jyutping": "dik6 haa6 loi4",
+          "jyutping": "dik6 haa6 loi4",
+          "alternatives": [
+            "dik1 haa6 loi4"
+          ],
+          "note": "滴 dik6 與 dik1 均有現代字書的滴水／滴眼藥同義用法，保留原完整詞讀法為先及另一讀法；不採只見舊書的 dik3。",
+          "reference": "https://jyut.net/query?q=滴"
+        },
+        {
+          "id": 92161,
+          "char": "滴下去",
+          "previous_jyutping": "dik6 haa6 heoi3",
+          "jyutping": "dik6 haa6 heoi3",
+          "alternatives": [
+            "dik1 haa6 heoi3"
+          ],
+          "note": "滴 dik6 與 dik1 均有現代字書的滴水／滴眼藥同義用法，保留原完整詞讀法為先及另一讀法；不採只見舊書的 dik3。",
+          "reference": "https://jyut.net/query?q=滴"
+        },
+        {
+          "id": 92162,
+          "char": "滴出",
+          "previous_jyutping": "dik6 ceot1",
+          "jyutping": "dik6 ceot1",
+          "alternatives": [
+            "dik1 ceot1"
+          ],
+          "note": "滴 dik6 與 dik1 均有現代字書的滴水／滴眼藥同義用法，保留原完整詞讀法為先及另一讀法；不採只見舊書的 dik3。",
+          "reference": "https://jyut.net/query?q=滴"
+        },
+        {
+          "id": 92163,
+          "char": "滴出來",
+          "previous_jyutping": "dik6 ceot1 loi4",
+          "jyutping": "dik6 ceot1 loi4",
+          "alternatives": [
+            "dik1 ceot1 loi4"
+          ],
+          "note": "滴 dik6 與 dik1 均有現代字書的滴水／滴眼藥同義用法，保留原完整詞讀法為先及另一讀法；不採只見舊書的 dik3。",
+          "reference": "https://jyut.net/query?q=滴"
+        },
+        {
+          "id": 92164,
+          "char": "滴到",
+          "previous_jyutping": "dik6 dou3",
+          "jyutping": "dik6 dou3",
+          "alternatives": [
+            "dik1 dou3"
+          ],
+          "note": "滴 dik6 與 dik1 均有現代字書的滴水／滴眼藥同義用法，保留原完整詞讀法為先及另一讀法；不採只見舊書的 dik3。",
+          "reference": "https://jyut.net/query?q=滴"
+        },
+        {
+          "id": 92165,
+          "char": "滴向",
+          "previous_jyutping": "dik6 hoeng3",
+          "jyutping": "dik6 hoeng3",
+          "alternatives": [
+            "dik1 hoeng3"
+          ],
+          "note": "滴 dik6 與 dik1 均有現代字書的滴水／滴眼藥同義用法，保留原完整詞讀法為先及另一讀法；不採只見舊書的 dik3。",
+          "reference": "https://jyut.net/query?q=滴"
+        },
+        {
+          "id": 92167,
+          "char": "滴定儀",
+          "previous_jyutping": "dik6 ding6 ji4",
+          "jyutping": "dik6 ding6 ji4",
+          "alternatives": [
+            "dik1 ding6 ji4"
+          ],
+          "note": "滴 dik6 與 dik1 均有現代字書的滴水／滴眼藥同義用法，保留原完整詞讀法為先及另一讀法；不採只見舊書的 dik3。",
+          "reference": "https://jyut.net/query?q=滴"
+        },
+        {
+          "id": 92168,
+          "char": "滴定劑",
+          "previous_jyutping": "dik6 ding6 zai1",
+          "jyutping": "dik6 ding6 zai1",
+          "alternatives": [
+            "dik1 ding6 zai1"
+          ],
+          "note": "滴 dik6 與 dik1 均有現代字書的滴水／滴眼藥同義用法，保留原完整詞讀法為先及另一讀法；不採只見舊書的 dik3。",
+          "reference": "https://jyut.net/query?q=滴"
+        },
+        {
+          "id": 92169,
+          "char": "滴定法",
+          "previous_jyutping": "dik6 ding6 faat3",
+          "jyutping": "dik6 ding6 faat3",
+          "alternatives": [
+            "dik1 ding6 faat3"
+          ],
+          "note": "滴 dik6 與 dik1 均有現代字書的滴水／滴眼藥同義用法，保留原完整詞讀法為先及另一讀法；不採只見舊書的 dik3。",
+          "reference": "https://jyut.net/query?q=滴"
+        },
+        {
+          "id": 92171,
+          "char": "滴水之恩",
+          "previous_jyutping": "dik1 seoi2 zi1 jan1",
+          "jyutping": "dik1 seoi2 zi1 jan1",
+          "alternatives": [
+            "dik6 seoi2 zi1 jan1"
+          ],
+          "note": "滴 dik6 與 dik1 均有現代字書的滴水／滴眼藥同義用法，保留原完整詞讀法為先及另一讀法；不採只見舊書的 dik3。",
+          "reference": "https://jyut.net/query?q=滴"
+        },
+        {
+          "id": 92173,
+          "char": "滴水洞",
+          "previous_jyutping": "dik6 seoi2 dung6",
+          "jyutping": "dik6 seoi2 dung6",
+          "alternatives": [
+            "dik1 seoi2 dung6"
+          ],
+          "note": "滴 dik6 與 dik1 均有現代字書的滴水／滴眼藥同義用法，保留原完整詞讀法為先及另一讀法；不採只見舊書的 dik3。",
+          "reference": "https://jyut.net/query?q=滴"
+        },
+        {
+          "id": 92174,
+          "char": "滴水獸",
+          "previous_jyutping": "dik1 seoi2 sau3",
+          "jyutping": "dik1 seoi2 sau3",
+          "alternatives": [
+            "dik6 seoi2 sau3"
+          ],
+          "note": "滴 dik6 與 dik1 均有現代字書的滴水／滴眼藥同義用法，保留原完整詞讀法為先及另一讀法；不採只見舊書的 dik3。",
+          "reference": "https://jyut.net/query?q=滴"
+        },
+        {
+          "id": 92176,
+          "char": "滴汗",
+          "previous_jyutping": "dik6 hon6",
+          "jyutping": "dik6 hon6",
+          "alternatives": [
+            "dik1 hon6"
+          ],
+          "note": "滴 dik6 與 dik1 均有現代字書的滴水／滴眼藥同義用法，保留原完整詞讀法為先及另一讀法；不採只見舊書的 dik3。",
+          "reference": "https://jyut.net/query?q=滴"
+        },
+        {
+          "id": 92178,
+          "char": "滴油",
+          "previous_jyutping": "dik6 jau4",
+          "jyutping": "dik6 jau4",
+          "alternatives": [
+            "dik1 jau4"
+          ],
+          "note": "滴 dik6 與 dik1 均有現代字書的滴水／滴眼藥同義用法，保留原完整詞讀法為先及另一讀法；不採只見舊書的 dik3。",
+          "reference": "https://jyut.net/query?q=滴"
+        },
+        {
+          "id": 92179,
+          "char": "滴注",
+          "previous_jyutping": "dik6 zyu3",
+          "jyutping": "dik6 zyu3",
+          "alternatives": [
+            "dik1 zyu3"
+          ],
+          "note": "滴 dik6 與 dik1 均有現代字書的滴水／滴眼藥同義用法，保留原完整詞讀法為先及另一讀法；不採只見舊書的 dik3。",
+          "reference": "https://jyut.net/query?q=滴"
+        },
+        {
+          "id": 92180,
+          "char": "滴淚",
+          "previous_jyutping": "dik6 leoi6",
+          "jyutping": "dik6 leoi6",
+          "alternatives": [
+            "dik1 leoi6"
+          ],
+          "note": "滴 dik6 與 dik1 均有現代字書的滴水／滴眼藥同義用法，保留原完整詞讀法為先及另一讀法；不採只見舊書的 dik3。",
+          "reference": "https://jyut.net/query?q=滴"
+        },
+        {
+          "id": 92183,
+          "char": "滴滴",
+          "previous_jyutping": "dik6 dik6",
+          "jyutping": "dik6 dik6",
+          "alternatives": [
+            "dik1 dik1"
+          ],
+          "note": "滴 dik6 與 dik1 均有現代字書的滴水／滴眼藥同義用法，保留原完整詞讀法為先及另一讀法；不採只見舊書的 dik3。",
+          "reference": "https://jyut.net/query?q=滴"
+        },
+        {
+          "id": 92184,
+          "char": "滴滴嗒嗒",
+          "previous_jyutping": "dik6 dik6 taap3 taap3",
+          "jyutping": "dik6 dik6 taap3 taap3",
+          "alternatives": [
+            "dik1 dik1 taap3 taap3"
+          ],
+          "note": "滴 dik6 與 dik1 均有現代字書的滴水／滴眼藥同義用法，保留原完整詞讀法為先及另一讀法；不採只見舊書的 dik3。",
+          "reference": "https://jyut.net/query?q=滴"
+        },
+        {
+          "id": 92185,
+          "char": "滴漏式",
+          "previous_jyutping": "dik1 lau6 sik1",
+          "jyutping": "dik1 lau6 sik1",
+          "alternatives": [
+            "dik6 lau6 sik1"
+          ],
+          "note": "滴 dik6 與 dik1 均有現代字書的滴水／滴眼藥同義用法，保留原完整詞讀法為先及另一讀法；不採只見舊書的 dik3。",
+          "reference": "https://jyut.net/query?q=滴"
+        },
+        {
+          "id": 92187,
+          "char": "滴狀",
+          "previous_jyutping": "dik6 zong6",
+          "jyutping": "dik6 zong6",
+          "alternatives": [
+            "dik1 zong6"
+          ],
+          "note": "滴 dik6 與 dik1 均有現代字書的滴水／滴眼藥同義用法，保留原完整詞讀法為先及另一讀法；不採只見舊書的 dik3。",
+          "reference": "https://jyut.net/query?q=滴"
+        },
+        {
+          "id": 92189,
+          "char": "滴眼劑",
+          "previous_jyutping": "dik6 ngaan5 zai1",
+          "jyutping": "dik6 ngaan5 zai1",
+          "alternatives": [
+            "dik1 ngaan5 zai1"
+          ],
+          "note": "滴 dik6 與 dik1 均有現代字書的滴水／滴眼藥同義用法，保留原完整詞讀法為先及另一讀法；不採只見舊書的 dik3。",
+          "reference": "https://jyut.net/query?q=滴"
+        },
+        {
+          "id": 92190,
+          "char": "滴答作響",
+          "previous_jyutping": "dik1 daap3 zok3 hoeng2",
+          "jyutping": "dik1 daap3 zok3 hoeng2",
+          "alternatives": [
+            "dik6 daap3 zok3 hoeng2"
+          ],
+          "note": "滴 dik6 與 dik1 均有現代字書的滴水／滴眼藥同義用法，保留原完整詞讀法為先及另一讀法；不採只見舊書的 dik3。",
+          "reference": "https://jyut.net/query?q=滴"
+        },
+        {
+          "id": 92191,
+          "char": "滴答響",
+          "previous_jyutping": "dik1 daap3 hoeng2",
+          "jyutping": "dik1 daap3 hoeng2",
+          "alternatives": [
+            "dik6 daap3 hoeng2"
+          ],
+          "note": "滴 dik6 與 dik1 均有現代字書的滴水／滴眼藥同義用法，保留原完整詞讀法為先及另一讀法；不採只見舊書的 dik3。",
+          "reference": "https://jyut.net/query?q=滴"
+        },
+        {
+          "id": 92193,
+          "char": "滴蟲性",
+          "previous_jyutping": "dik6 cung4 sing3",
+          "jyutping": "dik6 cung4 sing3",
+          "alternatives": [
+            "dik1 cung4 sing3"
+          ],
+          "note": "滴 dik6 與 dik1 均有現代字書的滴水／滴眼藥同義用法，保留原完整詞讀法為先及另一讀法；不採只見舊書的 dik3。",
+          "reference": "https://jyut.net/query?q=滴"
+        },
+        {
+          "id": 92194,
+          "char": "滴血",
+          "previous_jyutping": "dik6 hyut3",
+          "jyutping": "dik6 hyut3",
+          "alternatives": [
+            "dik1 hyut3"
+          ],
+          "note": "滴 dik6 與 dik1 均有現代字書的滴水／滴眼藥同義用法，保留原完整詞讀法為先及另一讀法；不採只見舊書的 dik3。",
+          "reference": "https://jyut.net/query?q=滴"
+        },
+        {
+          "id": 92198,
+          "char": "滴雨",
+          "previous_jyutping": "dik6 jyu5",
+          "jyutping": "dik6 jyu5",
+          "alternatives": [
+            "dik1 jyu5"
+          ],
+          "note": "滴 dik6 與 dik1 均有現代字書的滴水／滴眼藥同義用法，保留原完整詞讀法為先及另一讀法；不採只見舊書的 dik3。",
+          "reference": "https://jyut.net/query?q=滴"
+        },
+        {
+          "id": 92599,
+          "char": "漲出",
+          "previous_jyutping": "zoeng3 ceot1",
+          "jyutping": "zoeng3 ceot1",
+          "alternatives": [
+            "zoeng2 ceot1"
+          ],
+          "note": "漲價、漲潮及膨脹的 zoeng3／zoeng2 均有現代同義詞例；沿既存漲價、漲潮的 zoeng3 優先，保留 zoeng2，不僵硬分成互斥詞義或只按國語調值判音。",
+          "reference": "https://jyut.net/query?q=漲"
+        },
+        {
+          "id": 92600,
+          "char": "漲到",
+          "previous_jyutping": "zoeng2 dou3",
+          "jyutping": "zoeng3 dou3",
+          "alternatives": [
+            "zoeng2 dou3"
+          ],
+          "note": "漲價、漲潮及膨脹的 zoeng3／zoeng2 均有現代同義詞例；沿既存漲價、漲潮的 zoeng3 優先，保留 zoeng2，不僵硬分成互斥詞義或只按國語調值判音。",
+          "reference": "https://jyut.net/query?q=漲"
+        },
+        {
+          "id": 92601,
+          "char": "漲升",
+          "previous_jyutping": "zoeng2 sing1",
+          "jyutping": "zoeng3 sing1",
+          "alternatives": [
+            "zoeng2 sing1"
+          ],
+          "note": "漲價、漲潮及膨脹的 zoeng3／zoeng2 均有現代同義詞例；沿既存漲價、漲潮的 zoeng3 優先，保留 zoeng2，不僵硬分成互斥詞義或只按國語調值判音。",
+          "reference": "https://jyut.net/query?q=漲"
+        },
+        {
+          "id": 92602,
+          "char": "漲回",
+          "previous_jyutping": "zoeng2 wui4",
+          "jyutping": "zoeng3 wui4",
+          "alternatives": [
+            "zoeng2 wui4"
+          ],
+          "note": "漲價、漲潮及膨脹的 zoeng3／zoeng2 均有現代同義詞例；沿既存漲價、漲潮的 zoeng3 優先，保留 zoeng2，不僵硬分成互斥詞義或只按國語調值判音。",
+          "reference": "https://jyut.net/query?q=漲"
+        },
+        {
+          "id": 92603,
+          "char": "漲回來",
+          "previous_jyutping": "zoeng2 wui4 loi4",
+          "jyutping": "zoeng3 wui4 loi4",
+          "alternatives": [
+            "zoeng2 wui4 loi4"
+          ],
+          "note": "漲價、漲潮及膨脹的 zoeng3／zoeng2 均有現代同義詞例；沿既存漲價、漲潮的 zoeng3 優先，保留 zoeng2，不僵硬分成互斥詞義或只按國語調值判音。",
+          "reference": "https://jyut.net/query?q=漲"
+        },
+        {
+          "id": 92604,
+          "char": "漲回去",
+          "previous_jyutping": "zoeng2 wui4 heoi3",
+          "jyutping": "zoeng3 wui4 heoi3",
+          "alternatives": [
+            "zoeng2 wui4 heoi3"
+          ],
+          "note": "漲價、漲潮及膨脹的 zoeng3／zoeng2 均有現代同義詞例；沿既存漲價、漲潮的 zoeng3 優先，保留 zoeng2，不僵硬分成互斥詞義或只按國語調值判音。",
+          "reference": "https://jyut.net/query?q=漲"
+        },
+        {
+          "id": 92605,
+          "char": "漲大",
+          "previous_jyutping": "zoeng3 daai6",
+          "jyutping": "zoeng3 daai6",
+          "alternatives": [
+            "zoeng2 daai6"
+          ],
+          "note": "漲價、漲潮及膨脹的 zoeng3／zoeng2 均有現代同義詞例；沿既存漲價、漲潮的 zoeng3 優先，保留 zoeng2，不僵硬分成互斥詞義或只按國語調值判音。",
+          "reference": "https://jyut.net/query?q=漲"
+        },
+        {
+          "id": 92606,
+          "char": "漲大起來",
+          "previous_jyutping": "zoeng3 daai6 hei2 loi4",
+          "jyutping": "zoeng3 daai6 hei2 loi4",
+          "alternatives": [
+            "zoeng2 daai6 hei2 loi4"
+          ],
+          "note": "漲價、漲潮及膨脹的 zoeng3／zoeng2 均有現代同義詞例；沿既存漲價、漲潮的 zoeng3 優先，保留 zoeng2，不僵硬分成互斥詞義或只按國語調值判音。",
+          "reference": "https://jyut.net/query?q=漲"
+        },
+        {
+          "id": 92607,
+          "char": "漲工資",
+          "previous_jyutping": "zoeng2 gung1 zi1",
+          "jyutping": "zoeng3 gung1 zi1",
+          "alternatives": [
+            "zoeng2 gung1 zi1"
+          ],
+          "note": "漲價、漲潮及膨脹的 zoeng3／zoeng2 均有現代同義詞例；沿既存漲價、漲潮的 zoeng3 優先，保留 zoeng2，不僵硬分成互斥詞義或只按國語調值判音。",
+          "reference": "https://jyut.net/query?q=漲"
+        },
+        {
+          "id": 92608,
+          "char": "漲成",
+          "previous_jyutping": "zoeng3 sing4",
+          "jyutping": "zoeng3 sing4",
+          "alternatives": [
+            "zoeng2 sing4"
+          ],
+          "note": "漲價、漲潮及膨脹的 zoeng3／zoeng2 均有現代同義詞例；沿既存漲價、漲潮的 zoeng3 優先，保留 zoeng2，不僵硬分成互斥詞義或只按國語調值判音。",
+          "reference": "https://jyut.net/query?q=漲"
+        },
+        {
+          "id": 92609,
+          "char": "漲法",
+          "previous_jyutping": "zoeng3 faat3",
+          "jyutping": "zoeng3 faat3",
+          "alternatives": [
+            "zoeng2 faat3"
+          ],
+          "note": "漲價、漲潮及膨脹的 zoeng3／zoeng2 均有現代同義詞例；沿既存漲價、漲潮的 zoeng3 優先，保留 zoeng2，不僵硬分成互斥詞義或只按國語調值判音。",
+          "reference": "https://jyut.net/query?q=漲"
+        },
+        {
+          "id": 92611,
+          "char": "漲漲跌跌",
+          "previous_jyutping": "zoeng2 zoeng2 dit3 dit3",
+          "jyutping": "zoeng3 zoeng3 dit3 dit3",
+          "alternatives": [
+            "zoeng2 zoeng2 dit3 dit3"
+          ],
+          "note": "漲價、漲潮及膨脹的 zoeng3／zoeng2 均有現代同義詞例；沿既存漲價、漲潮的 zoeng3 優先，保留 zoeng2，不僵硬分成互斥詞義或只按國語調值判音。",
+          "reference": "https://jyut.net/query?q=漲"
+        },
+        {
+          "id": 92612,
+          "char": "漲潮水位",
+          "previous_jyutping": "zoeng3 ciu4 seoi2 wai6",
+          "jyutping": "zoeng3 ciu4 seoi2 wai6",
+          "alternatives": [
+            "zoeng2 ciu4 seoi2 wai6"
+          ],
+          "note": "漲價、漲潮及膨脹的 zoeng3／zoeng2 均有現代同義詞例；沿既存漲價、漲潮的 zoeng3 優先，保留 zoeng2，不僵硬分成互斥詞義或只按國語調值判音。",
+          "reference": "https://jyut.net/query?q=漲"
+        },
+        {
+          "id": 92613,
+          "char": "漲率",
+          "previous_jyutping": "zoeng2 leot2",
+          "jyutping": "zoeng3 leot2",
+          "alternatives": [
+            "zoeng2 leot2"
+          ],
+          "note": "漲價、漲潮及膨脹的 zoeng3／zoeng2 均有現代同義詞例；沿既存漲價、漲潮的 zoeng3 優先，保留 zoeng2，不僵硬分成互斥詞義或只按國語調值判音。",
+          "reference": "https://jyut.net/query?q=漲"
+        },
+        {
+          "id": 92614,
+          "char": "漲紅",
+          "previous_jyutping": "zoeng3 hung4",
+          "jyutping": "zoeng3 hung4",
+          "alternatives": [
+            "zoeng2 hung4"
+          ],
+          "note": "漲價、漲潮及膨脹的 zoeng3／zoeng2 均有現代同義詞例；沿既存漲價、漲潮的 zoeng3 優先，保留 zoeng2，不僵硬分成互斥詞義或只按國語調值判音。",
+          "reference": "https://jyut.net/query?q=漲"
+        },
+        {
+          "id": 92615,
+          "char": "漲紅了臉",
+          "previous_jyutping": "zoeng3 hung4 liu5 lim5",
+          "jyutping": "zoeng3 hung4 liu5 lim5",
+          "alternatives": [
+            "zoeng2 hung4 liu5 lim5"
+          ],
+          "note": "漲價、漲潮及膨脹的 zoeng3／zoeng2 均有現代同義詞例；沿既存漲價、漲潮的 zoeng3 優先，保留 zoeng2，不僵硬分成互斥詞義或只按國語調值判音。",
+          "reference": "https://jyut.net/query?q=漲"
+        },
+        {
+          "id": 92616,
+          "char": "漲落起伏",
+          "previous_jyutping": "zoeng3 lok6 hei2 fuk6",
+          "jyutping": "zoeng3 lok6 hei2 fuk6",
+          "alternatives": [
+            "zoeng2 lok6 hei2 fuk6"
+          ],
+          "note": "漲價、漲潮及膨脹的 zoeng3／zoeng2 均有現代同義詞例；沿既存漲價、漲潮的 zoeng3 優先，保留 zoeng2，不僵硬分成互斥詞義或只按國語調值判音。",
+          "reference": "https://jyut.net/query?q=漲"
+        },
+        {
+          "id": 92617,
+          "char": "漲起",
+          "previous_jyutping": "zoeng2 hei2",
+          "jyutping": "zoeng3 hei2",
+          "alternatives": [
+            "zoeng2 hei2"
+          ],
+          "note": "漲價、漲潮及膨脹的 zoeng3／zoeng2 均有現代同義詞例；沿既存漲價、漲潮的 zoeng3 優先，保留 zoeng2，不僵硬分成互斥詞義或只按國語調值判音。",
+          "reference": "https://jyut.net/query?q=漲"
+        },
+        {
+          "id": 92618,
+          "char": "漲起來",
+          "previous_jyutping": "zoeng2 hei2 loi4",
+          "jyutping": "zoeng3 hei2 loi4",
+          "alternatives": [
+            "zoeng2 hei2 loi4"
+          ],
+          "note": "漲價、漲潮及膨脹的 zoeng3／zoeng2 均有現代同義詞例；沿既存漲價、漲潮的 zoeng3 優先，保留 zoeng2，不僵硬分成互斥詞義或只按國語調值判音。",
+          "reference": "https://jyut.net/query?q=漲"
+        },
+        {
+          "id": 92619,
+          "char": "漲跌互現",
+          "previous_jyutping": "zoeng2 dit3 wu6 jin6",
+          "jyutping": "zoeng3 dit3 wu6 jin6",
+          "alternatives": [
+            "zoeng2 dit3 wu6 jin6"
+          ],
+          "note": "漲價、漲潮及膨脹的 zoeng3／zoeng2 均有現代同義詞例；沿既存漲價、漲潮的 zoeng3 優先，保留 zoeng2，不僵硬分成互斥詞義或只按國語調值判音。",
+          "reference": "https://jyut.net/query?q=漲"
+        },
+        {
+          "id": 92620,
+          "char": "漲跌互見",
+          "previous_jyutping": "zoeng2 dit3 wu6 gin3",
+          "jyutping": "zoeng3 dit3 wu6 gin3",
+          "alternatives": [
+            "zoeng2 dit3 wu6 gin3"
+          ],
+          "note": "漲價、漲潮及膨脹的 zoeng3／zoeng2 均有現代同義詞例；沿既存漲價、漲潮的 zoeng3 優先，保留 zoeng2，不僵硬分成互斥詞義或只按國語調值判音。",
+          "reference": "https://jyut.net/query?q=漲"
+        },
+        {
+          "id": 92621,
+          "char": "漲過了頭",
+          "previous_jyutping": "zoeng3 gwo3 liu5 tau4",
+          "jyutping": "zoeng3 gwo3 liu5 tau4",
+          "alternatives": [
+            "zoeng2 gwo3 liu5 tau4"
+          ],
+          "note": "漲價、漲潮及膨脹的 zoeng3／zoeng2 均有現代同義詞例；沿既存漲價、漲潮的 zoeng3 優先，保留 zoeng2，不僵硬分成互斥詞義或只按國語調值判音。",
+          "reference": "https://jyut.net/query?q=漲"
+        },
+        {
+          "id": 92622,
+          "char": "漲風",
+          "previous_jyutping": "zoeng2 fung1",
+          "jyutping": "zoeng3 fung1",
+          "alternatives": [
+            "zoeng2 fung1"
+          ],
+          "note": "漲價、漲潮及膨脹的 zoeng3／zoeng2 均有現代同義詞例；沿既存漲價、漲潮的 zoeng3 優先，保留 zoeng2，不僵硬分成互斥詞義或只按國語調值判音。",
+          "reference": "https://jyut.net/query?q=漲"
+        },
+        {
+          "id": 92612,
+          "char": "漲潮水位",
+          "previous_jyutping": "zoeng3 ciu4 seoi2 wai6",
+          "jyutping": "zoeng3 ciu4 seoi2 wai2",
+          "alternatives": [
+            "zoeng2 ciu4 seoi2 wai2",
+            "zoeng3 ciu4 seoi2 wai6"
+          ],
+          "note": "漲潮保留現代三聲優先及二聲；水位為名詞 wai2 優先，保留文讀 wai6；只收經判斷的完整組合，不拼所有調值排列。",
+          "reference": "https://jyut.net/query?q=漲 ; https://jyut.net/query?q=位"
+        },
+        {
+          "id": 93105,
+          "char": "瀕危動物",
+          "previous_jyutping": "pan4 ngai4 dung6 mat6",
+          "jyutping": "pan4 ngai4 dung6 mat6",
+          "alternatives": [],
+          "note": "瀕取臨近、接近危險義，先用現代明確瀕危／瀕臨詞例 pan4；不把水邊 ban1 的另一義直接推入本搭配。",
+          "reference": "https://jyut.net/query?q=瀕"
+        },
+        {
+          "id": 93106,
+          "char": "瀕於絕境",
+          "previous_jyutping": "ban1 jyu1 zyut6 ging2",
+          "jyutping": "pan4 jyu1 zyut6 ging2",
+          "alternatives": [],
+          "note": "瀕取臨近、接近危險義，先用現代明確瀕危／瀕臨詞例 pan4；不把水邊 ban1 的另一義直接推入本搭配。",
+          "reference": "https://jyut.net/query?q=瀕"
+        },
+        {
+          "id": 93107,
+          "char": "瀕於絕種",
+          "previous_jyutping": "ban1 jyu1 zyut6 zung2",
+          "jyutping": "pan4 jyu1 zyut6 zung2",
+          "alternatives": [],
+          "note": "瀕取臨近、接近危險義，先用現代明確瀕危／瀕臨詞例 pan4；不把水邊 ban1 的另一義直接推入本搭配。",
+          "reference": "https://jyut.net/query?q=瀕"
+        },
+        {
+          "id": 93109,
+          "char": "瀕臨滅絕",
+          "previous_jyutping": "pan4 lam4 mit6 zyut6",
+          "jyutping": "pan4 lam4 mit6 zyut6",
+          "alternatives": [],
+          "note": "瀕取臨近、接近危險義，先用現代明確瀕危／瀕臨詞例 pan4；不把水邊 ban1 的另一義直接推入本搭配。",
+          "reference": "https://jyut.net/query?q=瀕"
+        },
+        {
+          "id": 93110,
+          "char": "瀕臨破產",
+          "previous_jyutping": "pan4 lam4 po3 caan2",
+          "jyutping": "pan4 lam4 po3 caan2",
+          "alternatives": [],
+          "note": "瀕取臨近、接近危險義，先用現代明確瀕危／瀕臨詞例 pan4；不把水邊 ban1 的另一義直接推入本搭配。",
+          "reference": "https://jyut.net/query?q=瀕"
+        },
+        {
+          "id": 93111,
+          "char": "瀕臨絕境",
+          "previous_jyutping": "pan4 lam4 zyut6 ging2",
+          "jyutping": "pan4 lam4 zyut6 ging2",
+          "alternatives": [],
+          "note": "瀕取臨近、接近危險義，先用現代明確瀕危／瀕臨詞例 pan4；不把水邊 ban1 的另一義直接推入本搭配。",
+          "reference": "https://jyut.net/query?q=瀕"
+        },
+        {
+          "id": 93137,
+          "char": "瀰漫着",
+          "previous_jyutping": "nei4 maan6 zoek6",
+          "jyutping": "nei4 maan6 zoek6",
+          "alternatives": [
+            "mei4 maan6 zoek6"
+          ],
+          "note": "瀰漫完整現代詞例有 nei4 與 mei4，保留 nei4 日常優先及 mei4 文讀；非只有一音。",
+          "reference": "https://jyut.net/query?q=瀰"
+        },
+        {
+          "id": 93463,
+          "char": "炫耀性",
+          "previous_jyutping": "jyun4 jiu6 sing3",
+          "jyutping": "jyun4 jiu6 sing3",
+          "alternatives": [
+            "jyun6 jiu6 sing3"
+          ],
+          "note": "炫耀 jyun4 與 jyun6 均有現代完整詞例，保留原 jyun4 優先及 jyun6 又讀，不誤說 jyun4 只限舊音。",
+          "reference": "https://jyut.net/query?q=炫"
+        },
+        {
+          "id": 93464,
+          "char": "炫耀着",
+          "previous_jyutping": "jyun4 jiu6 zoek6",
+          "jyutping": "jyun4 jiu6 zoek6",
+          "alternatives": [
+            "jyun6 jiu6 zoek6"
+          ],
+          "note": "炫耀 jyun4 與 jyun6 均有現代完整詞例，保留原 jyun4 優先及 jyun6 又讀，不誤說 jyun4 只限舊音。",
+          "reference": "https://jyut.net/query?q=炫"
+        },
+        {
+          "id": 93579,
+          "char": "烘乾器",
+          "previous_jyutping": "hung3 gon1 hei3",
+          "jyutping": "hung3 gon1 hei3",
+          "alternatives": [
+            "hung1 gon1 hei3",
+            "hung4 gon1 hei3"
+          ],
+          "note": "烘 hung3 為現代建議音；hung1 現代同義亦見，保留。加熱、焙乾詞另保留現代字書習讀 hung4；烘托比喻未機械推入該讀法。",
+          "reference": "https://jyut.net/query?q=烘"
+        },
+        {
+          "id": 93580,
+          "char": "烘乾爐",
+          "previous_jyutping": "hung3 gon1 lou4",
+          "jyutping": "hung3 gon1 lou4",
+          "alternatives": [
+            "hung1 gon1 lou4",
+            "hung4 gon1 lou4"
+          ],
+          "note": "烘 hung3 為現代建議音；hung1 現代同義亦見，保留。加熱、焙乾詞另保留現代字書習讀 hung4；烘托比喻未機械推入該讀法。",
+          "reference": "https://jyut.net/query?q=烘"
+        },
+        {
+          "id": 93581,
+          "char": "烘來烘去",
+          "previous_jyutping": "hung3 loi4 hung3 heoi3",
+          "jyutping": "hung3 loi4 hung3 heoi3",
+          "alternatives": [
+            "hung1 loi4 hung1 heoi3",
+            "hung4 loi4 hung4 heoi3"
+          ],
+          "note": "烘 hung3 為現代建議音；hung1 現代同義亦見，保留。加熱、焙乾詞另保留現代字書習讀 hung4；烘托比喻未機械推入該讀法。",
+          "reference": "https://jyut.net/query?q=烘"
+        },
+        {
+          "id": 93582,
+          "char": "烘到",
+          "previous_jyutping": "hung3 dou2",
+          "jyutping": "hung3 dou2",
+          "alternatives": [
+            "hung1 dou2",
+            "hung4 dou2"
+          ],
+          "note": "烘 hung3 為現代建議音；hung1 現代同義亦見，保留。加熱、焙乾詞另保留現代字書習讀 hung4；烘托比喻未機械推入該讀法。",
+          "reference": "https://jyut.net/query?q=烘"
+        },
+        {
+          "id": 93583,
+          "char": "烘焙",
+          "previous_jyutping": "hung3 bui6",
+          "jyutping": "hung3 bui6",
+          "alternatives": [
+            "hung1 bui6",
+            "hung4 bui6"
+          ],
+          "note": "烘 hung3 為現代建議音；hung1 現代同義亦見，保留。加熱、焙乾詞另保留現代字書習讀 hung4；烘托比喻未機械推入該讀法。",
+          "reference": "https://jyut.net/query?q=烘"
+        },
+        {
+          "id": 93584,
+          "char": "烘得",
+          "previous_jyutping": "hung3 dak1",
+          "jyutping": "hung3 dak1",
+          "alternatives": [
+            "hung1 dak1",
+            "hung4 dak1"
+          ],
+          "note": "烘 hung3 為現代建議音；hung1 現代同義亦見，保留。加熱、焙乾詞另保留現代字書習讀 hung4；烘托比喻未機械推入該讀法。",
+          "reference": "https://jyut.net/query?q=烘"
+        },
+        {
+          "id": 93585,
+          "char": "烘成",
+          "previous_jyutping": "hung3 sing4",
+          "jyutping": "hung3 sing4",
+          "alternatives": [
+            "hung1 sing4",
+            "hung4 sing4"
+          ],
+          "note": "烘 hung3 為現代建議音；hung1 現代同義亦見，保留。加熱、焙乾詞另保留現代字書習讀 hung4；烘托比喻未機械推入該讀法。",
+          "reference": "https://jyut.net/query?q=烘"
+        },
+        {
+          "id": 93586,
+          "char": "烘手",
+          "previous_jyutping": "hung3 sau2",
+          "jyutping": "hung3 sau2",
+          "alternatives": [
+            "hung1 sau2",
+            "hung4 sau2"
+          ],
+          "note": "烘 hung3 為現代建議音；hung1 現代同義亦見，保留。加熱、焙乾詞另保留現代字書習讀 hung4；烘托比喻未機械推入該讀法。",
+          "reference": "https://jyut.net/query?q=烘"
+        },
+        {
+          "id": 93587,
+          "char": "烘托出",
+          "previous_jyutping": "hung3 tok3 ceot1",
+          "jyutping": "hung3 tok3 ceot1",
+          "alternatives": [
+            "hung1 tok3 ceot1"
+          ],
+          "note": "烘 hung3 為現代建議音；hung1 現代同義亦見，保留。加熱、焙乾詞另保留現代字書習讀 hung4；烘托比喻未機械推入該讀法。",
+          "reference": "https://jyut.net/query?q=烘"
+        },
+        {
+          "id": 93588,
+          "char": "烘托渲染",
+          "previous_jyutping": "hung3 tok3 hyun1 jim5",
+          "jyutping": "hung3 tok3 hyun1 jim5",
+          "alternatives": [
+            "hung1 tok3 hyun1 jim5"
+          ],
+          "note": "烘 hung3 為現代建議音；hung1 現代同義亦見，保留。加熱、焙乾詞另保留現代字書習讀 hung4；烘托比喻未機械推入該讀法。",
+          "reference": "https://jyut.net/query?q=烘"
+        },
+        {
+          "id": 93589,
+          "char": "烘板",
+          "previous_jyutping": "hung3 baan2",
+          "jyutping": "hung3 baan2",
+          "alternatives": [
+            "hung1 baan2",
+            "hung4 baan2"
+          ],
+          "note": "烘 hung3 為現代建議音；hung1 現代同義亦見，保留。加熱、焙乾詞另保留現代字書習讀 hung4；烘托比喻未機械推入該讀法。",
+          "reference": "https://jyut.net/query?q=烘"
+        },
+        {
+          "id": 93590,
+          "char": "烘漆",
+          "previous_jyutping": "hung3 cat1",
+          "jyutping": "hung3 cat1",
+          "alternatives": [
+            "hung1 cat1",
+            "hung4 cat1"
+          ],
+          "note": "烘 hung3 為現代建議音；hung1 現代同義亦見，保留。加熱、焙乾詞另保留現代字書習讀 hung4；烘托比喻未機械推入該讀法。",
+          "reference": "https://jyut.net/query?q=烘"
+        },
+        {
+          "id": 93591,
+          "char": "烘烘手",
+          "previous_jyutping": "hung3 hung3 sau2",
+          "jyutping": "hung3 hung3 sau2",
+          "alternatives": [
+            "hung1 hung1 sau2",
+            "hung4 hung4 sau2"
+          ],
+          "note": "烘 hung3 為現代建議音；hung1 現代同義亦見，保留。加熱、焙乾詞另保留現代字書習讀 hung4；烘托比喻未機械推入該讀法。",
+          "reference": "https://jyut.net/query?q=烘"
+        },
+        {
+          "id": 93592,
+          "char": "烘焦",
+          "previous_jyutping": "hung3 ziu1",
+          "jyutping": "hung3 ziu1",
+          "alternatives": [
+            "hung1 ziu1",
+            "hung4 ziu1"
+          ],
+          "note": "烘 hung3 為現代建議音；hung1 現代同義亦見，保留。加熱、焙乾詞另保留現代字書習讀 hung4；烘托比喻未機械推入該讀法。",
+          "reference": "https://jyut.net/query?q=烘"
+        },
+        {
+          "id": 93593,
+          "char": "烘燻",
+          "previous_jyutping": "hung3 fan1",
+          "jyutping": "hung3 fan1",
+          "alternatives": [
+            "hung1 fan1",
+            "hung4 fan1"
+          ],
+          "note": "烘 hung3 為現代建議音；hung1 現代同義亦見，保留。加熱、焙乾詞另保留現代字書習讀 hung4；烘托比喻未機械推入該讀法。",
+          "reference": "https://jyut.net/query?q=烘"
+        },
+        {
+          "id": 93597,
+          "char": "烘起來",
+          "previous_jyutping": "hung3 hei2 loi4",
+          "jyutping": "hung3 hei2 loi4",
+          "alternatives": [
+            "hung1 hei2 loi4",
+            "hung4 hei2 loi4"
+          ],
+          "note": "烘 hung3 為現代建議音；hung1 現代同義亦見，保留。加熱、焙乾詞另保留現代字書習讀 hung4；烘托比喻未機械推入該讀法。",
+          "reference": "https://jyut.net/query?q=烘"
+        },
+        {
+          "id": 93598,
+          "char": "烘過",
+          "previous_jyutping": "hung3 gwo3",
+          "jyutping": "hung3 gwo3",
+          "alternatives": [
+            "hung1 gwo3",
+            "hung4 gwo3"
+          ],
+          "note": "烘 hung3 為現代建議音；hung1 現代同義亦見，保留。加熱、焙乾詞另保留現代字書習讀 hung4；烘托比喻未機械推入該讀法。",
+          "reference": "https://jyut.net/query?q=烘"
+        },
+        {
+          "id": 93601,
+          "char": "烘青",
+          "previous_jyutping": "hung3 cing1",
+          "jyutping": "hung3 cing1",
+          "alternatives": [
+            "hung1 cing1",
+            "hung4 cing1"
+          ],
+          "note": "烘 hung3 為現代建議音；hung1 現代同義亦見，保留。加熱、焙乾詞另保留現代字書習讀 hung4；烘托比喻未機械推入該讀法。",
+          "reference": "https://jyut.net/query?q=烘"
+        },
+        {
+          "id": 93255,
+          "char": "火焊",
+          "previous_jyutping": "fo2 hon2",
+          "jyutping": "fo2 hon6",
+          "alternatives": [
+            "fo2 hon2"
+          ],
+          "note": "焊接取現代字書 hon6 優先；建造業語言教材的已索引完整焊接 hon2 zip3 支持 hon2 現代工友用法，亦保留。PDF 本輪直接擷取失敗，未冒稱逐頁核驗；次序為 AI 整詞判斷，不由孤字把 hon2 硬刪。",
+          "reference": "https://jyut.net/query?q=焊 ; https://fts.webruns.net/pdf_files/student_info/welding_handbook.pdf"
+        },
+        {
+          "id": 93654,
+          "char": "焊上",
+          "previous_jyutping": "hon2 soeng5",
+          "jyutping": "hon6 soeng5",
+          "alternatives": [
+            "hon2 soeng5"
+          ],
+          "note": "焊接取現代字書 hon6 優先；建造業語言教材的已索引完整焊接 hon2 zip3 支持 hon2 現代工友用法，亦保留。PDF 本輪直接擷取失敗，未冒稱逐頁核驗；次序為 AI 整詞判斷，不由孤字把 hon2 硬刪。",
+          "reference": "https://jyut.net/query?q=焊 ; https://fts.webruns.net/pdf_files/student_info/welding_handbook.pdf"
+        },
+        {
+          "id": 93655,
+          "char": "焊上去",
+          "previous_jyutping": "hon2 soeng5 heoi3",
+          "jyutping": "hon6 soeng5 heoi3",
+          "alternatives": [
+            "hon2 soeng5 heoi3"
+          ],
+          "note": "焊接取現代字書 hon6 優先；建造業語言教材的已索引完整焊接 hon2 zip3 支持 hon2 現代工友用法，亦保留。PDF 本輪直接擷取失敗，未冒稱逐頁核驗；次序為 AI 整詞判斷，不由孤字把 hon2 硬刪。",
+          "reference": "https://jyut.net/query?q=焊 ; https://fts.webruns.net/pdf_files/student_info/welding_handbook.pdf"
+        },
+        {
+          "id": 93656,
+          "char": "焊了",
+          "previous_jyutping": "hon2 liu5",
+          "jyutping": "hon6 liu5",
+          "alternatives": [
+            "hon2 liu5"
+          ],
+          "note": "焊接取現代字書 hon6 優先；建造業語言教材的已索引完整焊接 hon2 zip3 支持 hon2 現代工友用法，亦保留。PDF 本輪直接擷取失敗，未冒稱逐頁核驗；次序為 AI 整詞判斷，不由孤字把 hon2 硬刪。",
+          "reference": "https://jyut.net/query?q=焊 ; https://fts.webruns.net/pdf_files/student_info/welding_handbook.pdf"
+        },
+        {
+          "id": 93657,
+          "char": "焊入",
+          "previous_jyutping": "hon2 jap6",
+          "jyutping": "hon6 jap6",
+          "alternatives": [
+            "hon2 jap6"
+          ],
+          "note": "焊接取現代字書 hon6 優先；建造業語言教材的已索引完整焊接 hon2 zip3 支持 hon2 現代工友用法，亦保留。PDF 本輪直接擷取失敗，未冒稱逐頁核驗；次序為 AI 整詞判斷，不由孤字把 hon2 硬刪。",
+          "reference": "https://jyut.net/query?q=焊 ; https://fts.webruns.net/pdf_files/student_info/welding_handbook.pdf"
+        },
+        {
+          "id": 93658,
+          "char": "焊出",
+          "previous_jyutping": "hon2 ceot1",
+          "jyutping": "hon6 ceot1",
+          "alternatives": [
+            "hon2 ceot1"
+          ],
+          "note": "焊接取現代字書 hon6 優先；建造業語言教材的已索引完整焊接 hon2 zip3 支持 hon2 現代工友用法，亦保留。PDF 本輪直接擷取失敗，未冒稱逐頁核驗；次序為 AI 整詞判斷，不由孤字把 hon2 硬刪。",
+          "reference": "https://jyut.net/query?q=焊 ; https://fts.webruns.net/pdf_files/student_info/welding_handbook.pdf"
+        },
+        {
+          "id": 93659,
+          "char": "焊到",
+          "previous_jyutping": "hon2 dou2",
+          "jyutping": "hon6 dou2",
+          "alternatives": [
+            "hon2 dou2"
+          ],
+          "note": "焊接取現代字書 hon6 優先；建造業語言教材的已索引完整焊接 hon2 zip3 支持 hon2 現代工友用法，亦保留。PDF 本輪直接擷取失敗，未冒稱逐頁核驗；次序為 AI 整詞判斷，不由孤字把 hon2 硬刪。",
+          "reference": "https://jyut.net/query?q=焊 ; https://fts.webruns.net/pdf_files/student_info/welding_handbook.pdf"
+        },
+        {
+          "id": 93660,
+          "char": "焊割",
+          "previous_jyutping": "hon2 got3",
+          "jyutping": "hon6 got3",
+          "alternatives": [
+            "hon2 got3"
+          ],
+          "note": "焊接取現代字書 hon6 優先；建造業語言教材的已索引完整焊接 hon2 zip3 支持 hon2 現代工友用法，亦保留。PDF 本輪直接擷取失敗，未冒稱逐頁核驗；次序為 AI 整詞判斷，不由孤字把 hon2 硬刪。",
+          "reference": "https://jyut.net/query?q=焊 ; https://fts.webruns.net/pdf_files/student_info/welding_handbook.pdf"
+        },
+        {
+          "id": 93661,
+          "char": "焊得",
+          "previous_jyutping": "hon2 dak1",
+          "jyutping": "hon6 dak1",
+          "alternatives": [
+            "hon2 dak1"
+          ],
+          "note": "焊接取現代字書 hon6 優先；建造業語言教材的已索引完整焊接 hon2 zip3 支持 hon2 現代工友用法，亦保留。PDF 本輪直接擷取失敗，未冒稱逐頁核驗；次序為 AI 整詞判斷，不由孤字把 hon2 硬刪。",
+          "reference": "https://jyut.net/query?q=焊 ; https://fts.webruns.net/pdf_files/student_info/welding_handbook.pdf"
+        },
+        {
+          "id": 93662,
+          "char": "焊成",
+          "previous_jyutping": "hon2 sing4",
+          "jyutping": "hon6 sing4",
+          "alternatives": [
+            "hon2 sing4"
+          ],
+          "note": "焊接取現代字書 hon6 優先；建造業語言教材的已索引完整焊接 hon2 zip3 支持 hon2 現代工友用法，亦保留。PDF 本輪直接擷取失敗，未冒稱逐頁核驗；次序為 AI 整詞判斷，不由孤字把 hon2 硬刪。",
+          "reference": "https://jyut.net/query?q=焊 ; https://fts.webruns.net/pdf_files/student_info/welding_handbook.pdf"
+        },
+        {
+          "id": 93663,
+          "char": "焊接工",
+          "previous_jyutping": "hon6 zip3 gung1",
+          "jyutping": "hon6 zip3 gung1",
+          "alternatives": [
+            "hon2 zip3 gung1"
+          ],
+          "note": "焊接取現代字書 hon6 優先；建造業語言教材的已索引完整焊接 hon2 zip3 支持 hon2 現代工友用法，亦保留。PDF 本輪直接擷取失敗，未冒稱逐頁核驗；次序為 AI 整詞判斷，不由孤字把 hon2 硬刪。",
+          "reference": "https://jyut.net/query?q=焊 ; https://fts.webruns.net/pdf_files/student_info/welding_handbook.pdf"
+        },
+        {
+          "id": 93664,
+          "char": "焊接機",
+          "previous_jyutping": "hon2 zip3 gei1",
+          "jyutping": "hon6 zip3 gei1",
+          "alternatives": [
+            "hon2 zip3 gei1"
+          ],
+          "note": "焊接取現代字書 hon6 優先；建造業語言教材的已索引完整焊接 hon2 zip3 支持 hon2 現代工友用法，亦保留。PDF 本輪直接擷取失敗，未冒稱逐頁核驗；次序為 AI 整詞判斷，不由孤字把 hon2 硬刪。",
+          "reference": "https://jyut.net/query?q=焊 ; https://fts.webruns.net/pdf_files/student_info/welding_handbook.pdf"
+        },
+        {
+          "id": 93665,
+          "char": "焊接設備",
+          "previous_jyutping": "hon6 zip3 cit3 bei6",
+          "jyutping": "hon6 zip3 cit3 bei6",
+          "alternatives": [
+            "hon2 zip3 cit3 bei6"
+          ],
+          "note": "焊接取現代字書 hon6 優先；建造業語言教材的已索引完整焊接 hon2 zip3 支持 hon2 現代工友用法，亦保留。PDF 本輪直接擷取失敗，未冒稱逐頁核驗；次序為 AI 整詞判斷，不由孤字把 hon2 硬刪。",
+          "reference": "https://jyut.net/query?q=焊 ; https://fts.webruns.net/pdf_files/student_info/welding_handbook.pdf"
+        },
+        {
+          "id": 93666,
+          "char": "焊接車間",
+          "previous_jyutping": "hon6 zip3 ce1 gaan1",
+          "jyutping": "hon6 zip3 ce1 gaan1",
+          "alternatives": [
+            "hon2 zip3 ce1 gaan1"
+          ],
+          "note": "焊接取現代字書 hon6 優先；建造業語言教材的已索引完整焊接 hon2 zip3 支持 hon2 現代工友用法，亦保留。PDF 本輪直接擷取失敗，未冒稱逐頁核驗；次序為 AI 整詞判斷，不由孤字把 hon2 硬刪。",
+          "reference": "https://jyut.net/query?q=焊 ; https://fts.webruns.net/pdf_files/student_info/welding_handbook.pdf"
+        },
+        {
+          "id": 93667,
+          "char": "焊機",
+          "previous_jyutping": "hon2 gei1",
+          "jyutping": "hon6 gei1",
+          "alternatives": [
+            "hon2 gei1"
+          ],
+          "note": "焊接取現代字書 hon6 優先；建造業語言教材的已索引完整焊接 hon2 zip3 支持 hon2 現代工友用法，亦保留。PDF 本輪直接擷取失敗，未冒稱逐頁核驗；次序為 AI 整詞判斷，不由孤字把 hon2 硬刪。",
+          "reference": "https://jyut.net/query?q=焊 ; https://fts.webruns.net/pdf_files/student_info/welding_handbook.pdf"
+        },
+        {
+          "id": 93669,
+          "char": "焊痕",
+          "previous_jyutping": "hon2 han4",
+          "jyutping": "hon6 han4",
+          "alternatives": [
+            "hon2 han4"
+          ],
+          "note": "焊接取現代字書 hon6 優先；建造業語言教材的已索引完整焊接 hon2 zip3 支持 hon2 現代工友用法，亦保留。PDF 本輪直接擷取失敗，未冒稱逐頁核驗；次序為 AI 整詞判斷，不由孤字把 hon2 硬刪。",
+          "reference": "https://jyut.net/query?q=焊 ; https://fts.webruns.net/pdf_files/student_info/welding_handbook.pdf"
+        },
+        {
+          "id": 93670,
+          "char": "焊着",
+          "previous_jyutping": "hon2 zoek6",
+          "jyutping": "hon6 zoek6",
+          "alternatives": [
+            "hon2 zoek6"
+          ],
+          "note": "焊接取現代字書 hon6 優先；建造業語言教材的已索引完整焊接 hon2 zip3 支持 hon2 現代工友用法，亦保留。PDF 本輪直接擷取失敗，未冒稱逐頁核驗；次序為 AI 整詞判斷，不由孤字把 hon2 硬刪。",
+          "reference": "https://jyut.net/query?q=焊 ; https://fts.webruns.net/pdf_files/student_info/welding_handbook.pdf"
+        },
+        {
+          "id": 93671,
+          "char": "焊管",
+          "previous_jyutping": "hon2 gun2",
+          "jyutping": "hon6 gun2",
+          "alternatives": [
+            "hon2 gun2"
+          ],
+          "note": "焊接取現代字書 hon6 優先；建造業語言教材的已索引完整焊接 hon2 zip3 支持 hon2 現代工友用法，亦保留。PDF 本輪直接擷取失敗，未冒稱逐頁核驗；次序為 AI 整詞判斷，不由孤字把 hon2 硬刪。",
+          "reference": "https://jyut.net/query?q=焊 ; https://fts.webruns.net/pdf_files/student_info/welding_handbook.pdf"
+        },
+        {
+          "id": 93673,
+          "char": "焊過",
+          "previous_jyutping": "hon2 gwo3",
+          "jyutping": "hon6 gwo3",
+          "alternatives": [
+            "hon2 gwo3"
+          ],
+          "note": "焊接取現代字書 hon6 優先；建造業語言教材的已索引完整焊接 hon2 zip3 支持 hon2 現代工友用法，亦保留。PDF 本輪直接擷取失敗，未冒稱逐頁核驗；次序為 AI 整詞判斷，不由孤字把 hon2 硬刪。",
+          "reference": "https://jyut.net/query?q=焊 ; https://fts.webruns.net/pdf_files/student_info/welding_handbook.pdf"
+        },
+        {
+          "id": 93675,
+          "char": "焊錫條",
+          "previous_jyutping": "hon6 sek3 tiu4",
+          "jyutping": "hon6 sek3 tiu4",
+          "alternatives": [
+            "hon2 sek3 tiu4"
+          ],
+          "note": "焊接取現代字書 hon6 優先；建造業語言教材的已索引完整焊接 hon2 zip3 支持 hon2 現代工友用法，亦保留。PDF 本輪直接擷取失敗，未冒稱逐頁核驗；次序為 AI 整詞判斷，不由孤字把 hon2 硬刪。",
+          "reference": "https://jyut.net/query?q=焊 ; https://fts.webruns.net/pdf_files/student_info/welding_handbook.pdf"
+        },
+        {
+          "id": 93676,
+          "char": "焊頭",
+          "previous_jyutping": "hon2 tau4",
+          "jyutping": "hon6 tau4",
+          "alternatives": [
+            "hon2 tau4"
+          ],
+          "note": "焊接取現代字書 hon6 優先；建造業語言教材的已索引完整焊接 hon2 zip3 支持 hon2 現代工友用法，亦保留。PDF 本輪直接擷取失敗，未冒稱逐頁核驗；次序為 AI 整詞判斷，不由孤字把 hon2 硬刪。",
+          "reference": "https://jyut.net/query?q=焊 ; https://fts.webruns.net/pdf_files/student_info/welding_handbook.pdf"
+        },
+        {
+          "id": 93677,
+          "char": "焊點",
+          "previous_jyutping": "hon2 dim2",
+          "jyutping": "hon6 dim2",
+          "alternatives": [
+            "hon2 dim2"
+          ],
+          "note": "焊接取現代字書 hon6 優先；建造業語言教材的已索引完整焊接 hon2 zip3 支持 hon2 現代工友用法，亦保留。PDF 本輪直接擷取失敗，未冒稱逐頁核驗；次序為 AI 整詞判斷，不由孤字把 hon2 硬刪。",
+          "reference": "https://jyut.net/query?q=焊 ; https://fts.webruns.net/pdf_files/student_info/welding_handbook.pdf"
+        },
+        {
+          "id": 93383,
+          "char": "灼焦",
+          "previous_jyutping": "coek3 ziu1",
+          "jyutping": "coek3 ziu1",
+          "alternatives": [
+            "zoek3 ziu1"
+          ],
+          "note": "灼 coek3 為現代習讀，保留優先；zoek3 為現代建議及同義燒炙音，保留較後。",
+          "reference": "https://jyut.net/query?q=灼"
+        },
+        {
+          "id": 93384,
+          "char": "灼熟",
+          "previous_jyutping": "coek3 suk6",
+          "jyutping": "coek3 suk6",
+          "alternatives": [
+            "zoek3 suk6"
+          ],
+          "note": "灼 coek3 為現代習讀，保留優先；zoek3 為現代建議及同義燒炙音，保留較後。",
+          "reference": "https://jyut.net/query?q=灼"
+        },
+        {
+          "id": 93385,
+          "char": "灼燙",
+          "previous_jyutping": "coek3 tong3",
+          "jyutping": "coek3 tong3",
+          "alternatives": [
+            "zoek3 tong3"
+          ],
+          "note": "灼 coek3 為現代習讀，保留優先；zoek3 為現代建議及同義燒炙音，保留較後。",
+          "reference": "https://jyut.net/query?q=灼"
+        },
+        {
+          "id": 93386,
+          "char": "灼爛",
+          "previous_jyutping": "coek3 laan6",
+          "jyutping": "coek3 laan6",
+          "alternatives": [
+            "zoek3 laan6"
+          ],
+          "note": "灼 coek3 為現代習讀，保留優先；zoek3 為現代建議及同義燒炙音，保留較後。",
+          "reference": "https://jyut.net/query?q=灼"
+        },
+        {
+          "id": 93390,
+          "char": "灼燙",
+          "previous_jyutping": "coek3 tong3",
+          "jyutping": "coek3 tong3",
+          "alternatives": [
+            "zoek3 tong3"
+          ],
+          "note": "灼 coek3 為現代習讀，保留優先；zoek3 為現代建議及同義燒炙音，保留較後。",
+          "reference": "https://jyut.net/query?q=灼"
+        },
+        {
+          "id": 93480,
+          "char": "炮烙之刑",
+          "previous_jyutping": "paau4 lok3 zi1 jing4",
+          "jyutping": "paau3 lok3 zi1 jing4",
+          "alternatives": [
+            "paau4 lok3 zi1 jing4"
+          ],
+          "note": "炮烙的 paau3 有現代完整酷刑詞例及俗讀支持，保留日常優先；paau4 文讀保留，不誤說 paau3 只限炮彈。",
+          "reference": "https://jyut.net/query?q=炮 ; https://www.ny.edu.hk/web/cht/hkbc_journal/HKBC_11th%20Journal/421-487.pdf"
+        },
+        {
+          "id": 92824,
+          "char": "潮聲",
+          "previous_jyutping": "ciu4 sing1",
+          "jyutping": "ciu4 seng1",
+          "alternatives": [
+            "ciu4 sing1"
+          ],
+          "note": "潮聲／灘聲取聲響名詞，日常 seng1 優先，sing1 文讀保留。",
           "reference": "https://jyut.net/query?q=聲"
         },
         {
-          "id": 90524,
-          "char": "海浪聲",
-          "previous_jyutping": "hoi2 long6 sing1",
-          "jyutping": "hoi2 long6 seng1",
+          "id": 93208,
+          "char": "灘聲",
+          "previous_jyutping": "taan1 sing1",
+          "jyutping": "taan1 seng1",
           "alternatives": [
-            "hoi2 long6 sing1"
+            "taan1 sing1"
           ],
-          "note": "流水聲／海浪聲先列日常聲響 seng1，保留 sing1 文讀；不套用於混聲等專門複合詞。",
+          "note": "潮聲／灘聲取聲響名詞，日常 seng1 優先，sing1 文讀保留。",
           "reference": "https://jyut.net/query?q=聲"
         },
         {
-          "id": 90216,
-          "char": "流汗浹背",
-          "previous_jyutping": "lau4 hon6 gaap3 bui3",
-          "jyutping": "lau4 hon6 zip3 bui3",
-          "alternatives": [
-            "lau4 hon6 gaap3 bui3"
-          ],
-          "note": "流汗浹背先列建議 zip3，現代字書 gaap3 亦有浹背同義詞例，保留較後。",
-          "reference": "https://jyut.net/query?q=浹"
-        },
-        {
-          "id": 90288,
-          "char": "流通證券",
-          "previous_jyutping": "lau4 tung1 zing3 gyun3",
-          "jyutping": "lau4 tung1 zing3 hyun3",
-          "alternatives": [
-            "lau4 tung1 zing3 gyun3"
-          ],
-          "note": "證券的券先列現代建議 hyun3，保留現代 gyun3 又讀。",
-          "reference": "https://jyut.net/query?q=券"
-        },
-        {
-          "id": 90324,
-          "char": "流風餘韻",
-          "previous_jyutping": "lau4 fung1 jyu4 wan5",
-          "jyutping": "lau4 fung1 jyu4 wan6",
-          "alternatives": [
-            "lau4 fung1 jyu4 wan5"
-          ],
-          "note": "餘韻的韻先列 wan6，現代字書 wan5 亦見同義，保留較後。",
-          "reference": "https://jyut.net/query?q=韻"
-        },
-        {
-          "id": 90342,
-          "char": "浩浩湯湯",
-          "previous_jyutping": "hou6 hou6 tong1 tong1",
-          "jyutping": "hou6 hou6 soeng1 soeng1",
+          "id": 92895,
+          "char": "激光視盤",
+          "previous_jyutping": "gik1 gwong1 si6 pun2",
+          "jyutping": "gik1 gwong1 si6 pun4",
           "alternatives": [],
-          "note": "浩浩湯湯形容水勢盛大，湯湯讀 soeng1 soeng1，不取湯水 tong1；香港岳陽樓記教學有直接整詞標音。",
-          "reference": "https://www.npc.edu.hk/sites/default/files/homework/no5/chis4ex7.pdf ; https://www.tcss.edu.hk/chinese/lai/2012/qisi.pdf"
+          "note": "激光視盤的視盤為影音碟片，採完整書面盤 pun4，不把托盤 pun2 的詞級變調擴至所有盤字。",
+          "reference": "https://jyut.net/query?q=盤"
         },
         {
-          "id": 90497,
-          "char": "海景房",
-          "previous_jyutping": "hoi2 ging2 fong4",
-          "jyutping": "hoi2 ging2 fong2",
+          "id": 92864,
+          "char": "澎湃洶湧",
+          "previous_jyutping": "paang4 baai3 hung1 jung2",
+          "jyutping": "paang4 baai3 hung1 jung2",
           "alternatives": [
-            "hoi2 ging2 fong4"
+            "paang1 paai3 hung1 jung2"
           ],
-          "note": "海景房為房間名詞，先列日常 fong2，保留未變調 fong4。",
-          "reference": "https://words.hk/zidin/房"
+          "note": "澎湃完整現代既存詞例 paang4 baai3 優先，另留 paang1 paai3 整組，未交叉拼成所有聲調組合。",
+          "reference": "AI:whole-word-context"
         },
         {
-          "id": 90498,
-          "char": "海景畫",
-          "previous_jyutping": "hoi2 ging2 waa2",
-          "jyutping": "hoi2 ging2 waa2",
+          "id": 92962,
+          "char": "濃妝淡抹",
+          "previous_jyutping": "nung4 zong1 daam6 mut3",
+          "jyutping": "nung4 zong1 daam6 mut3",
           "alternatives": [
-            "hoi2 ging2 waa6"
+            "nung4 zong1 taam5 mut3"
           ],
-          "note": "海景畫為畫作名詞，先列 waa2，保留 waa6 文讀，非繪畫 waak6。",
-          "reference": "https://jyut.net/query?q=畫"
-        },
-        {
-          "id": 90636,
-          "char": "消毒片",
-          "previous_jyutping": "siu1 duk6 pin3",
-          "jyutping": "siu1 duk6 pin2",
-          "alternatives": [
-            "siu1 duk6 pin3"
-          ],
-          "note": "消毒片指片劑，先列日常 pin2，保留 pin3 文讀。",
-          "reference": "https://words.hk/zidin/藥片"
-        },
-        {
-          "id": 90714,
-          "char": "涉水而行",
-          "previous_jyutping": "sip3 seoi2 ji4 haang4",
-          "jyutping": "sip3 seoi2 ji4 haang4",
-          "alternatives": [
-            "sip3 seoi2 ji4 hang4"
-          ],
-          "note": "涉水而行是實際步行，haang4 日常動詞保留優先，hang4 書面讀法保留較後。",
-          "reference": "https://jyut.net/query?q=行"
-        },
-        {
-          "id": 90766,
-          "char": "涮鍋",
-          "previous_jyutping": "saan3 wo1",
-          "jyutping": "saan3 wo1",
-          "alternatives": [],
-          "note": "限通用烹調的涮鍋用法，涮取現代 saan3；不收入北方洗刷義的涮洗。",
-          "reference": "https://jyut.net/query?q=涮"
-        },
-        {
-          "id": 90792,
-          "char": "液晶面板",
-          "previous_jyutping": "jik6 zing1 min6 baan2",
-          "jyutping": "jik6 zing1 min2 baan2",
-          "alternatives": [
-            "jik6 zing1 min6 baan2"
-          ],
-          "note": "液晶面板為設備名詞，面板 min2 baan2 日常音先列，保留 min6 文讀。",
-          "reference": "https://words.hk/zidin/面板"
-        },
-        {
-          "id": 90804,
-          "char": "含意",
-          "previous_jyutping": "haam4 ji3",
-          "jyutping": "ham4 ji3",
-          "alternatives": [],
-          "note": "涵意正字為含意，改字後必須重核整詞；含意為 ham4 ji3，非沿用涵 haam4，現代含字資料亦以 ham4 為建議音。",
-          "reference": "https://words.hk/zidin/含意 ; https://jyut.net/query?q=含"
-        },
-        {
-          "id": 90805,
-          "char": "涵括",
-          "previous_jyutping": "haam4 gwaat3",
-          "jyutping": "haam4 kut3",
-          "alternatives": [
-            "haam4 kwut3"
-          ],
-          "note": "涵括的括取包含義 kut3，保留現代 kwut3；gwaat3 現代詞例屬挺括／搜括，未當成本詞包容義。",
-          "reference": "https://jyut.net/query?q=括"
-        },
-        {
-          "id": 90888,
-          "char": "淡味",
-          "previous_jyutping": "daam6 mei6",
-          "jyutping": "taam5 mei6",
-          "alternatives": [
-            "daam6 mei6"
-          ],
-          "note": "味淡／色淡的淡先列日常 taam5，現代字書 daam6 亦有同義詞例，保留文讀；不把兩音錯分成互斥詞義。",
-          "reference": "https://jyut.net/query?q=淡"
-        },
-        {
-          "id": 90890,
-          "char": "淡如水",
-          "previous_jyutping": "daam6 jyu4 seoi2",
-          "jyutping": "taam5 jyu4 seoi2",
-          "alternatives": [
-            "daam6 jyu4 seoi2"
-          ],
-          "note": "味淡／色淡的淡先列日常 taam5，現代字書 daam6 亦有同義詞例，保留文讀；不把兩音錯分成互斥詞義。",
-          "reference": "https://jyut.net/query?q=淡"
-        },
-        {
-          "id": 90903,
-          "char": "淡淡無味",
-          "previous_jyutping": "daam6 daam6 mou4 mei6",
-          "jyutping": "taam5 taam5 mou4 mei6",
-          "alternatives": [
-            "daam6 daam6 mou4 mei6"
-          ],
-          "note": "味淡／色淡的淡先列日常 taam5，現代字書 daam6 亦有同義詞例，保留文讀；不把兩音錯分成互斥詞義。",
-          "reference": "https://jyut.net/query?q=淡"
-        },
-        {
-          "id": 90904,
-          "char": "淡灰色",
-          "previous_jyutping": "daam6 fui1 sik1",
-          "jyutping": "taam5 fui1 sik1",
-          "alternatives": [
-            "daam6 fui1 sik1"
-          ],
-          "note": "味淡／色淡的淡先列日常 taam5，現代字書 daam6 亦有同義詞例，保留文讀；不把兩音錯分成互斥詞義。",
-          "reference": "https://jyut.net/query?q=淡"
-        },
-        {
-          "id": 90908,
-          "char": "淡藍色",
-          "previous_jyutping": "daam6 laan4 sik1",
-          "jyutping": "taam5 laan4 sik1",
-          "alternatives": [
-            "daam6 laan4 sik1"
-          ],
-          "note": "味淡／色淡的淡先列日常 taam5，現代字書 daam6 亦有同義詞例，保留文讀；不把兩音錯分成互斥詞義。",
-          "reference": "https://jyut.net/query?q=淡"
-        },
-        {
-          "id": 90910,
-          "char": "淡褐",
-          "previous_jyutping": "daam6 hot3",
-          "jyutping": "taam5 hot3",
-          "alternatives": [
-            "daam6 hot3"
-          ],
-          "note": "味淡／色淡的淡先列日常 taam5，現代字書 daam6 亦有同義詞例，保留文讀；不把兩音錯分成互斥詞義。",
-          "reference": "https://jyut.net/query?q=淡"
-        },
-        {
-          "id": 90912,
-          "char": "淡食",
-          "previous_jyutping": "daam6 sik6",
-          "jyutping": "taam5 sik6",
-          "alternatives": [
-            "daam6 sik6"
-          ],
-          "note": "味淡／色淡的淡先列日常 taam5，現代字書 daam6 亦有同義詞例，保留文讀；不把兩音錯分成互斥詞義。",
-          "reference": "https://jyut.net/query?q=淡"
-        },
-        {
-          "id": 90913,
-          "char": "淡飯",
-          "previous_jyutping": "daam6 faan6",
-          "jyutping": "taam5 faan6",
-          "alternatives": [
-            "daam6 faan6"
-          ],
-          "note": "味淡／色淡的淡先列日常 taam5，現代字書 daam6 亦有同義詞例，保留文讀；不把兩音錯分成互斥詞義。",
-          "reference": "https://jyut.net/query?q=淡"
-        },
-        {
-          "id": 90914,
-          "char": "淡鹽水",
-          "previous_jyutping": "daam6 jim4 seoi2",
-          "jyutping": "taam5 jim4 seoi2",
-          "alternatives": [
-            "daam6 jim4 seoi2"
-          ],
-          "note": "味淡／色淡的淡先列日常 taam5，現代字書 daam6 亦有同義詞例，保留文讀；不把兩音錯分成互斥詞義。",
-          "reference": "https://jyut.net/query?q=淡"
-        },
-        {
-          "id": 90915,
-          "char": "淡黃色",
-          "previous_jyutping": "daam6 wong4 sik1",
-          "jyutping": "taam5 wong4 sik1",
-          "alternatives": [
-            "daam6 wong4 sik1"
-          ],
-          "note": "味淡／色淡的淡先列日常 taam5，現代字書 daam6 亦有同義詞例，保留文讀；不把兩音錯分成互斥詞義。",
-          "reference": "https://jyut.net/query?q=淡"
-        },
-        {
-          "id": 90891,
-          "char": "淡如逝水",
-          "previous_jyutping": "daam6 jyu4 sai6 seoi2",
-          "jyutping": "daam6 jyu4 sai6 seoi2",
-          "alternatives": [
-            "taam5 jyu4 sai6 seoi2"
-          ],
-          "note": "淡如逝水取書面填詞短語，daam6 先列並有原歌曲標音，現代 taam5 同義讀法保留；副歌次數不作日常詞頻。",
-          "reference": "https://jyut.net/query?q=淡"
-        },
-        {
-          "id": 90900,
-          "char": "淡妝濃抹",
-          "previous_jyutping": "daam6 jyu5 nung4 maat3",
-          "jyutping": "daam6 zong1 nung4 mut3",
-          "alternatives": [
-            "taam5 zong1 nung4 mut3"
-          ],
-          "note": "淡汝濃抹為淡妝濃抹的直接字誤，妝讀 zong1，抹取塗抹 mut3；保留淡的現代 taam5 同義音，不沿原稿汝 jyu5。",
+          "note": "淡 daam6 與 taam5 現代同義均支持，保留原書面完整讀法優先及日常又讀；抹取塗抹 mut3。",
           "reference": "https://jyut.net/query?q=淡 ; https://jyut.net/query?q=抹"
         },
         {
-          "id": 90892,
-          "char": "淡妝輕抹",
-          "previous_jyutping": "daam6 zong1 hing1 maat3",
-          "jyutping": "daam6 zong1 hing1 mut3",
+          "id": 92975,
+          "char": "濃抹淡妝",
+          "previous_jyutping": "nung4 mut3 daam6 zong1",
+          "jyutping": "nung4 mut3 daam6 zong1",
+          "alternatives": [
+            "nung4 mut3 taam5 zong1"
+          ],
+          "note": "淡 daam6 與 taam5 現代同義均支持，保留原書面完整讀法優先及日常又讀；抹取塗抹 mut3。",
+          "reference": "https://jyut.net/query?q=淡 ; https://jyut.net/query?q=抹"
+        },
+        {
+          "id": 92981,
+          "char": "濃淡適中",
+          "previous_jyutping": "nung4 daam6 sik1 zung1",
+          "jyutping": "nung4 daam6 sik1 zung1",
+          "alternatives": [
+            "nung4 taam5 sik1 zung1"
+          ],
+          "note": "淡 daam6 與 taam5 現代同義均支持，保留原書面完整讀法優先及日常又讀；抹取塗抹 mut3。",
+          "reference": "https://jyut.net/query?q=淡 ; https://jyut.net/query?q=抹"
+        },
+        {
+          "id": 93812,
+          "char": "無堅不陷",
+          "previous_jyutping": "mou4 gin1 bat1 haam6",
+          "jyutping": "mou4 gin1 bat1 haam6",
+          "alternatives": [
+            "mou4 gin1 bat1 ham6"
+          ],
+          "note": "陷 haam6 現代音優先，保留現代標準音字彙 ham6 又讀；不誤刪有據異音。",
+          "reference": "https://jyut.net/query?q=陷"
+        },
+        {
+          "id": 93860,
+          "char": "毋庸贅述",
+          "previous_jyutping": "mou4 jung4 zeoi3 seot6",
+          "jyutping": "mou4 jung4 zeoi6 seot6",
+          "alternatives": [
+            "mou4 jung4 zeoi3 seot6"
+          ],
+          "note": "毋庸贅述沿用既存完整詞級 zeoi6 優先，保留現代 zeoi3 又讀；不改任何舊分級。",
+          "reference": "https://jyut.net/query?q=贅"
+        },
+        {
+          "id": 93933,
+          "char": "無接縫",
+          "previous_jyutping": "mou4 zip3 fung6",
+          "jyutping": "mou4 zip3 fung6",
+          "alternatives": [
+            "mou4 zip3 fung4"
+          ],
+          "note": "接縫名詞 fung6 有現代完整詞支持；fung4 亦見既存有接縫完整用法，保留較後，不把詞義單靠孤字分級判斷。",
+          "reference": "https://jyut.net/query?q=縫"
+        },
+        {
+          "id": 92539,
+          "char": "漢字部件",
+          "previous_jyutping": "hon3 zi6 bou6 gin2",
+          "jyutping": "hon3 zi6 bou6 gin2",
+          "alternatives": [
+            "hon3 zi6 bou6 gin6"
+          ],
+          "note": "部件為名詞 gin2 優先，保留 gin6 文讀。",
+          "reference": "https://words.hk/zidin/零件"
+        },
+        {
+          "id": 92457,
+          "char": "露面",
+          "previous_jyutping": "lou6 min6",
+          "jyutping": "lou6 min6",
           "alternatives": [],
-          "note": "淡妝輕抹的抹取塗抹妝色 mut3；不沿抹拭語音機械拼入。",
-          "reference": "https://jyut.net/query?q=抹"
+          "note": "露面為 lou6 min6 的完整動作詞，保留 min6，不把臉面名詞 min2 一律套入此動詞。",
+          "reference": "https://words.hk/zidin/露面"
         },
         {
-          "id": 90990,
-          "char": "深仇重怨",
-          "previous_jyutping": "sam1 sau4 cung4 jyun3",
-          "jyutping": "sam1 sau4 cung5 jyun3",
+          "id": 93082,
+          "char": "濾斗",
+          "previous_jyutping": "leoi6 dau2",
+          "jyutping": "leoi6 dau2",
           "alternatives": [],
-          "note": "深仇重怨為深重仇怨，重取輕重程度 cung5，非重複 cung4。",
-          "reference": "https://jyut.net/query?q=重"
+          "note": "直接正字修訂後按完整詞義重核字音及 394052 碼，保留原字與建議正字可追溯。",
+          "reference": "AI:whole-word-context"
         },
         {
-          "id": 91055,
-          "char": "深惡",
-          "previous_jyutping": "sam1 ok3",
-          "jyutping": "sam1 wu3",
+          "id": 93319,
+          "char": "灰分",
+          "previous_jyutping": "fui1 fan6",
+          "jyutping": "fui1 fan6",
           "alternatives": [],
-          "note": "深惡取深深厭惡之意，惡為厭惡動詞 wu3，非邪惡 ok3。",
-          "reference": "https://jyut.net/query?q=惡"
+          "note": "直接正字修訂後按完整詞義重核字音及 394052 碼，保留原字與建議正字可追溯。",
+          "reference": "AI:whole-word-context"
         },
         {
-          "id": 91104,
-          "char": "深仇大恨",
-          "previous_jyutping": "sam1 cau4 daai6 han6",
-          "jyutping": "sam1 sau4 daai6 han6",
-          "alternatives": [
-            "sam1 cau4 daai6 han6"
-          ],
-          "note": "讎通行作仇；完整深仇大恨先列 sau4，現代字書 cau4 亦有仇恨義，保留較後，不能誤說 cau4 只限姓氏。",
-          "reference": "https://jyut.net/query?q=仇"
-        },
-        {
-          "id": 91109,
-          "char": "深銘肺腑",
-          "previous_jyutping": "sam1 ming4 fai3 fu2",
-          "jyutping": "sam1 ming5 fai3 fu2",
-          "alternatives": [
-            "sam1 ming4 fai3 fu2"
-          ],
-          "note": "銘記的銘 ming5 與 ming4 均見現代完整詞例，保留原稿 ming5 優先及 ming4 異讀；不以姓名語音臆斷 ming5 不合此義。",
-          "reference": "https://jyut.net/query?q=銘"
-        },
-        {
-          "id": 91205,
-          "char": "渾身解數",
-          "previous_jyutping": "wan4 san1 haai6 sou3",
-          "jyutping": "wan6 san1 gaai2 sou3",
-          "alternatives": [
-            "wan4 san1 gaai2 sou3"
-          ],
-          "note": "混身解數正字渾身解數；粵典施展渾身解數有 wan6 san1 gaai2 sou3 整詞，渾 wan4 同義亦保留；解數讀 gaai2，不按普通話 xiè 猜成 haai6。",
-          "reference": "https://words.hk/zidin/施展 ; https://jyut.net/query?q=渾"
-        },
-        {
-          "id": 91222,
-          "char": "奄奄一息",
-          "previous_jyutping": "jim2 jim2 jat1 sik1",
-          "jyutping": "jim1 jim1 jat1 sik1",
+          "id": 93465,
+          "char": "碳刷",
+          "previous_jyutping": "taan3 caat3",
+          "jyutping": "taan3 caat3",
           "alternatives": [],
-          "note": "奄奄一息形容氣息微弱，現代字書有 jim1 jim1 直接整詞；jim2 覆蓋義不套用於這個成語。",
-          "reference": "https://jyut.net/query?q=奄 ; https://cantonese.sheik.co.uk/dictionary/characters/1121/?full=true"
+          "note": "直接正字修訂後按完整詞義重核字音及 394052 碼，保留原字與建議正字可追溯。",
+          "reference": "AI:whole-word-context"
         },
         {
-          "id": 91382,
-          "char": "清茶淡飯",
-          "previous_jyutping": "cing1 caa4 daam6 faan6",
-          "jyutping": "cing1 caa4 daam6 faan6",
-          "alternatives": [
-            "cing1 caa4 taam5 faan6"
-          ],
-          "note": "清茶淡飯是通用書面熟語，保留 daam6 文讀優先及 taam5 現代同義音；次序為整詞判斷，非孤字實測次數。",
-          "reference": "https://jyut.net/query?q=淡"
-        },
-        {
-          "id": 91482,
-          "char": "減速慢行",
-          "previous_jyutping": "gaam2 cuk1 maan6 haang4",
-          "jyutping": "gaam2 cuk1 maan6 hang4",
-          "alternatives": [
-            "gaam2 cuk1 maan6 haang4"
-          ],
-          "note": "減速慢行為通行告示，先列行進 hang4 文讀，保留實際步行 haang4；不把後者視作錯讀。",
-          "reference": "https://jyut.net/query?q=行"
-        },
-        {
-          "id": 91535,
-          "char": "温書假",
-          "previous_jyutping": "wan1 syu1 gaa3",
-          "jyutping": "wan1 syu1 gaa3",
+          "id": 93473,
+          "char": "碳纖維",
+          "previous_jyutping": "taan3 cim1 wai4",
+          "jyutping": "taan3 cim1 wai4",
           "alternatives": [],
-          "note": "温書假指考試前休假，假讀 gaa3，不能以真假 gaa2 拼讀；完整詞義優先於孤字等級。",
-          "reference": "https://words.hk/zidin/假"
+          "note": "直接正字修訂後按完整詞義重核字音及 394052 碼，保留原字與建議正字可追溯。",
+          "reference": "AI:whole-word-context"
         },
         {
-          "id": 91565,
-          "char": "測位",
-          "previous_jyutping": "caak1 wai2",
-          "jyutping": "caak1 wai2",
-          "alternatives": [
-            "cak1 wai2"
-          ],
-          "note": "測的現代 caak1 與 cak1 均有支持，整詞先列日常 caak1，保留 cak1；測到等成功結果仍保留 dou2。",
-          "reference": "https://jyut.net/query?q=測"
-        },
-        {
-          "id": 91566,
-          "char": "測位器",
-          "previous_jyutping": "caak1 wai2 hei3",
-          "jyutping": "caak1 wai2 hei3",
-          "alternatives": [
-            "cak1 wai2 hei3"
-          ],
-          "note": "測的現代 caak1 與 cak1 均有支持，整詞先列日常 caak1，保留 cak1；測到等成功結果仍保留 dou2。",
-          "reference": "https://jyut.net/query?q=測"
-        },
-        {
-          "id": 91567,
-          "char": "測到",
-          "previous_jyutping": "caak1 dou2",
-          "jyutping": "caak1 dou2",
-          "alternatives": [
-            "cak1 dou2"
-          ],
-          "note": "測的現代 caak1 與 cak1 均有支持，整詞先列日常 caak1，保留 cak1；測到等成功結果仍保留 dou2。",
-          "reference": "https://jyut.net/query?q=測"
-        },
-        {
-          "id": 91568,
-          "char": "測功機",
-          "previous_jyutping": "caak1 gung1 gei1",
-          "jyutping": "caak1 gung1 gei1",
-          "alternatives": [
-            "cak1 gung1 gei1"
-          ],
-          "note": "測的現代 caak1 與 cak1 均有支持，整詞先列日常 caak1，保留 cak1；測到等成功結果仍保留 dou2。",
-          "reference": "https://jyut.net/query?q=測"
-        },
-        {
-          "id": 91569,
-          "char": "測厚儀",
-          "previous_jyutping": "caak1 hau5 ji4",
-          "jyutping": "caak1 hau5 ji4",
-          "alternatives": [
-            "cak1 hau5 ji4"
-          ],
-          "note": "測的現代 caak1 與 cak1 均有支持，整詞先列日常 caak1，保留 cak1；測到等成功結果仍保留 dou2。",
-          "reference": "https://jyut.net/query?q=測"
-        },
-        {
-          "id": 91573,
-          "char": "測定機",
-          "previous_jyutping": "caak1 ding6 gei1",
-          "jyutping": "caak1 ding6 gei1",
-          "alternatives": [
-            "cak1 ding6 gei1"
-          ],
-          "note": "測的現代 caak1 與 cak1 均有支持，整詞先列日常 caak1，保留 cak1；測到等成功結果仍保留 dou2。",
-          "reference": "https://jyut.net/query?q=測"
-        },
-        {
-          "id": 91574,
-          "char": "測定法",
-          "previous_jyutping": "caak1 ding6 faat3",
-          "jyutping": "caak1 ding6 faat3",
-          "alternatives": [
-            "cak1 ding6 faat3"
-          ],
-          "note": "測的現代 caak1 與 cak1 均有支持，整詞先列日常 caak1，保留 cak1；測到等成功結果仍保留 dou2。",
-          "reference": "https://jyut.net/query?q=測"
-        },
-        {
-          "id": 91576,
-          "char": "測序",
-          "previous_jyutping": "caak1 zeoi6",
-          "jyutping": "caak1 zeoi6",
-          "alternatives": [
-            "cak1 zeoi6"
-          ],
-          "note": "測的現代 caak1 與 cak1 均有支持，整詞先列日常 caak1，保留 cak1；測到等成功結果仍保留 dou2。",
-          "reference": "https://jyut.net/query?q=測"
-        },
-        {
-          "id": 91578,
-          "char": "測得",
-          "previous_jyutping": "caak1 dak1",
-          "jyutping": "caak1 dak1",
-          "alternatives": [
-            "cak1 dak1"
-          ],
-          "note": "測的現代 caak1 與 cak1 均有支持，整詞先列日常 caak1，保留 cak1；測到等成功結果仍保留 dou2。",
-          "reference": "https://jyut.net/query?q=測"
-        },
-        {
-          "id": 91581,
-          "char": "測微表",
-          "previous_jyutping": "caak1 mei4 biu2",
-          "jyutping": "caak1 mei4 biu2",
-          "alternatives": [
-            "cak1 mei4 biu2"
-          ],
-          "note": "測的現代 caak1 與 cak1 均有支持，整詞先列日常 caak1，保留 cak1；測到等成功結果仍保留 dou2。",
-          "reference": "https://jyut.net/query?q=測"
-        },
-        {
-          "id": 91583,
-          "char": "測數據",
-          "previous_jyutping": "caak1 sou3 geoi3",
-          "jyutping": "caak1 sou3 geoi3",
-          "alternatives": [
-            "cak1 sou3 geoi3"
-          ],
-          "note": "測的現代 caak1 與 cak1 均有支持，整詞先列日常 caak1，保留 cak1；測到等成功結果仍保留 dou2。",
-          "reference": "https://jyut.net/query?q=測"
-        },
-        {
-          "id": 91584,
-          "char": "測智商",
-          "previous_jyutping": "caak1 zi3 soeng1",
-          "jyutping": "caak1 zi3 soeng1",
-          "alternatives": [
-            "cak1 zi3 soeng1"
-          ],
-          "note": "測的現代 caak1 與 cak1 均有支持，整詞先列日常 caak1，保留 cak1；測到等成功結果仍保留 dou2。",
-          "reference": "https://jyut.net/query?q=測"
-        },
-        {
-          "id": 91586,
-          "char": "測流",
-          "previous_jyutping": "caak1 lau4",
-          "jyutping": "caak1 lau4",
-          "alternatives": [
-            "cak1 lau4"
-          ],
-          "note": "測的現代 caak1 與 cak1 均有支持，整詞先列日常 caak1，保留 cak1；測到等成功結果仍保留 dou2。",
-          "reference": "https://jyut.net/query?q=測"
-        },
-        {
-          "id": 91590,
-          "char": "測繪員",
-          "previous_jyutping": "cak1 kui2 jyun4",
-          "jyutping": "caak1 kui2 jyun4",
-          "alternatives": [
-            "cak1 kui2 jyun4"
-          ],
-          "note": "測的現代 caak1 與 cak1 均有支持，整詞先列日常 caak1，保留 cak1；測到等成功結果仍保留 dou2。",
-          "reference": "https://jyut.net/query?q=測"
-        },
-        {
-          "id": 91591,
-          "char": "測繪學",
-          "previous_jyutping": "cak1 kui2 hok6",
-          "jyutping": "caak1 kui2 hok6",
-          "alternatives": [
-            "cak1 kui2 hok6"
-          ],
-          "note": "測的現代 caak1 與 cak1 均有支持，整詞先列日常 caak1，保留 cak1；測到等成功結果仍保留 dou2。",
-          "reference": "https://jyut.net/query?q=測"
-        },
-        {
-          "id": 91592,
-          "char": "測航",
-          "previous_jyutping": "caak1 hong4",
-          "jyutping": "caak1 hong4",
-          "alternatives": [
-            "cak1 hong4"
-          ],
-          "note": "測的現代 caak1 與 cak1 均有支持，整詞先列日常 caak1，保留 cak1；測到等成功結果仍保留 dou2。",
-          "reference": "https://jyut.net/query?q=測"
-        },
-        {
-          "id": 91593,
-          "char": "測評師",
-          "previous_jyutping": "cak1 ping4 si1",
-          "jyutping": "caak1 ping4 si1",
-          "alternatives": [
-            "cak1 ping4 si1"
-          ],
-          "note": "測的現代 caak1 與 cak1 均有支持，整詞先列日常 caak1，保留 cak1；測到等成功結果仍保留 dou2。",
-          "reference": "https://jyut.net/query?q=測"
-        },
-        {
-          "id": 91594,
-          "char": "測試函數",
-          "previous_jyutping": "caak1 si3 haam4 sou3",
-          "jyutping": "caak1 si3 haam4 sou3",
-          "alternatives": [
-            "cak1 si3 haam4 sou3"
-          ],
-          "note": "測的現代 caak1 與 cak1 均有支持，整詞先列日常 caak1，保留 cak1；測到等成功結果仍保留 dou2。",
-          "reference": "https://jyut.net/query?q=測"
-        },
-        {
-          "id": 91596,
-          "char": "測試報告",
-          "previous_jyutping": "caak1 si3 bou3 gou3",
-          "jyutping": "caak1 si3 bou3 gou3",
-          "alternatives": [
-            "cak1 si3 bou3 gou3"
-          ],
-          "note": "測的現代 caak1 與 cak1 均有支持，整詞先列日常 caak1，保留 cak1；測到等成功結果仍保留 dou2。",
-          "reference": "https://jyut.net/query?q=測"
-        },
-        {
-          "id": 91597,
-          "char": "測試數據",
-          "previous_jyutping": "caak1 si3 sou3 geoi3",
-          "jyutping": "caak1 si3 sou3 geoi3",
-          "alternatives": [
-            "cak1 si3 sou3 geoi3"
-          ],
-          "note": "測的現代 caak1 與 cak1 均有支持，整詞先列日常 caak1，保留 cak1；測到等成功結果仍保留 dou2。",
-          "reference": "https://jyut.net/query?q=測"
-        },
-        {
-          "id": 91598,
-          "char": "測試期",
-          "previous_jyutping": "caak1 si3 kei4",
-          "jyutping": "caak1 si3 kei4",
-          "alternatives": [
-            "cak1 si3 kei4"
-          ],
-          "note": "測的現代 caak1 與 cak1 均有支持，整詞先列日常 caak1，保留 cak1；測到等成功結果仍保留 dou2。",
-          "reference": "https://jyut.net/query?q=測"
-        },
-        {
-          "id": 91599,
-          "char": "測試程序",
-          "previous_jyutping": "caak1 si3 cing4 zeoi6",
-          "jyutping": "caak1 si3 cing4 zeoi6",
-          "alternatives": [
-            "cak1 si3 cing4 zeoi6"
-          ],
-          "note": "測的現代 caak1 與 cak1 均有支持，整詞先列日常 caak1，保留 cak1；測到等成功結果仍保留 dou2。",
-          "reference": "https://jyut.net/query?q=測"
-        },
-        {
-          "id": 91602,
-          "char": "測試語言",
-          "previous_jyutping": "caak1 si3 jyu5 jin4",
-          "jyutping": "caak1 si3 jyu5 jin4",
-          "alternatives": [
-            "cak1 si3 jyu5 jin4"
-          ],
-          "note": "測的現代 caak1 與 cak1 均有支持，整詞先列日常 caak1，保留 cak1；測到等成功結果仍保留 dou2。",
-          "reference": "https://jyut.net/query?q=測"
-        },
-        {
-          "id": 91603,
-          "char": "測試通過",
-          "previous_jyutping": "caak1 si3 tung1 gwo3",
-          "jyutping": "caak1 si3 tung1 gwo3",
-          "alternatives": [
-            "cak1 si3 tung1 gwo3"
-          ],
-          "note": "測的現代 caak1 與 cak1 均有支持，整詞先列日常 caak1，保留 cak1；測到等成功結果仍保留 dou2。",
-          "reference": "https://jyut.net/query?q=測"
-        },
-        {
-          "id": 91604,
-          "char": "測量術",
-          "previous_jyutping": "caak1 loeng4 seot6",
-          "jyutping": "caak1 loeng4 seot6",
-          "alternatives": [
-            "cak1 loeng4 seot6"
-          ],
-          "note": "測的現代 caak1 與 cak1 均有支持，整詞先列日常 caak1，保留 cak1；測到等成功結果仍保留 dou2。",
-          "reference": "https://jyut.net/query?q=測"
-        },
-        {
-          "id": 91605,
-          "char": "測量計",
-          "previous_jyutping": "caak1 loeng4 gai3",
-          "jyutping": "caak1 loeng4 gai3",
-          "alternatives": [
-            "cak1 loeng4 gai3"
-          ],
-          "note": "測的現代 caak1 與 cak1 均有支持，整詞先列日常 caak1，保留 cak1；測到等成功結果仍保留 dou2。",
-          "reference": "https://jyut.net/query?q=測"
-        },
-        {
-          "id": 91606,
-          "char": "測量誤差",
-          "previous_jyutping": "caak1 loeng4 ng6 caa1",
-          "jyutping": "caak1 loeng4 ng6 caa1",
-          "alternatives": [
-            "cak1 loeng4 ng6 caa1"
-          ],
-          "note": "測的現代 caak1 與 cak1 均有支持，整詞先列日常 caak1，保留 cak1；測到等成功結果仍保留 dou2。",
-          "reference": "https://jyut.net/query?q=測"
-        },
-        {
-          "id": 91607,
-          "char": "測錄到",
-          "previous_jyutping": "caak1 luk6 dou2",
-          "jyutping": "caak1 luk6 dou2",
-          "alternatives": [
-            "cak1 luk6 dou2"
-          ],
-          "note": "測的現代 caak1 與 cak1 均有支持，整詞先列日常 caak1，保留 cak1；測到等成功結果仍保留 dou2。",
-          "reference": "https://jyut.net/query?q=測"
-        },
-        {
-          "id": 91609,
-          "char": "測震",
-          "previous_jyutping": "caak1 zan3",
-          "jyutping": "caak1 zan3",
-          "alternatives": [
-            "cak1 zan3"
-          ],
-          "note": "測的現代 caak1 與 cak1 均有支持，整詞先列日常 caak1，保留 cak1；測到等成功結果仍保留 dou2。",
-          "reference": "https://jyut.net/query?q=測"
-        },
-        {
-          "id": 91610,
-          "char": "測震儀",
-          "previous_jyutping": "caak1 zan3 ji4",
-          "jyutping": "caak1 zan3 ji4",
-          "alternatives": [
-            "cak1 zan3 ji4"
-          ],
-          "note": "測的現代 caak1 與 cak1 均有支持，整詞先列日常 caak1，保留 cak1；測到等成功結果仍保留 dou2。",
-          "reference": "https://jyut.net/query?q=測"
-        },
-        {
-          "id": 91611,
-          "char": "測音器",
-          "previous_jyutping": "caak1 jam1 hei3",
-          "jyutping": "caak1 jam1 hei3",
-          "alternatives": [
-            "cak1 jam1 hei3"
-          ],
-          "note": "測的現代 caak1 與 cak1 均有支持，整詞先列日常 caak1，保留 cak1；測到等成功結果仍保留 dou2。",
-          "reference": "https://jyut.net/query?q=測"
-        },
-        {
-          "id": 91612,
-          "char": "測音計",
-          "previous_jyutping": "caak1 jam1 gai3",
-          "jyutping": "caak1 jam1 gai3",
-          "alternatives": [
-            "cak1 jam1 gai3"
-          ],
-          "note": "測的現代 caak1 與 cak1 均有支持，整詞先列日常 caak1，保留 cak1；測到等成功結果仍保留 dou2。",
-          "reference": "https://jyut.net/query?q=測"
-        },
-        {
-          "id": 91613,
-          "char": "測驗分數",
-          "previous_jyutping": "caak1 jim6 fan1 sou3",
-          "jyutping": "caak1 jim6 fan1 sou3",
-          "alternatives": [
-            "cak1 jim6 fan1 sou3"
-          ],
-          "note": "測的現代 caak1 與 cak1 均有支持，整詞先列日常 caak1，保留 cak1；測到等成功結果仍保留 dou2。",
-          "reference": "https://jyut.net/query?q=測"
-        },
-        {
-          "id": 91614,
-          "char": "測驗法",
-          "previous_jyutping": "caak1 jim6 faat3",
-          "jyutping": "caak1 jim6 faat3",
-          "alternatives": [
-            "cak1 jim6 faat3"
-          ],
-          "note": "測的現代 caak1 與 cak1 均有支持，整詞先列日常 caak1，保留 cak1；測到等成功結果仍保留 dou2。",
-          "reference": "https://jyut.net/query?q=測"
-        },
-        {
-          "id": 91615,
-          "char": "測驗題",
-          "previous_jyutping": "caak1 jim6 tai4",
-          "jyutping": "caak1 jim6 tai4",
-          "alternatives": [
-            "cak1 jim6 tai4"
-          ],
-          "note": "測的現代 caak1 與 cak1 均有支持，整詞先列日常 caak1，保留 cak1；測到等成功結果仍保留 dou2。",
-          "reference": "https://jyut.net/query?q=測"
-        },
-        {
-          "id": 91616,
-          "char": "測高",
-          "previous_jyutping": "caak1 gou1",
-          "jyutping": "caak1 gou1",
-          "alternatives": [
-            "cak1 gou1"
-          ],
-          "note": "測的現代 caak1 與 cak1 均有支持，整詞先列日常 caak1，保留 cak1；測到等成功結果仍保留 dou2。",
-          "reference": "https://jyut.net/query?q=測"
-        },
-        {
-          "id": 91617,
-          "char": "測高度",
-          "previous_jyutping": "caak1 gou1 dou6",
-          "jyutping": "caak1 gou1 dou6",
-          "alternatives": [
-            "cak1 gou1 dou6"
-          ],
-          "note": "測的現代 caak1 與 cak1 均有支持，整詞先列日常 caak1，保留 cak1；測到等成功結果仍保留 dou2。",
-          "reference": "https://jyut.net/query?q=測"
-        },
-        {
-          "id": 91633,
-          "char": "港台片",
-          "previous_jyutping": "gong2 toi4 pin3",
-          "jyutping": "gong2 toi4 pin2",
-          "alternatives": [
-            "gong2 toi4 pin3"
-          ],
-          "note": "港片／港台片指電影作品名詞，先列日常 pin2，保留 pin3 文讀。",
-          "reference": "https://words.hk/zidin/影片"
-        },
-        {
-          "id": 91642,
-          "char": "港片",
-          "previous_jyutping": "gong2 pin3",
-          "jyutping": "gong2 pin2",
-          "alternatives": [
-            "gong2 pin3"
-          ],
-          "note": "港片／港台片指電影作品名詞，先列日常 pin2，保留 pin3 文讀。",
-          "reference": "https://words.hk/zidin/影片"
-        },
-        {
-          "id": 91654,
-          "char": "渲染器",
-          "previous_jyutping": "hyun1 jim5 hei3",
-          "jyutping": "hyun1 jim5 hei3",
-          "alternatives": [
-            "syun3 jim5 hei3"
-          ],
-          "note": "渲染的 hyun1 見現代字書語音，保留優先，另留 syun3 文讀；不由國語自行造 hyun3。",
-          "reference": "https://jyut.net/query?q=渲"
-        },
-        {
-          "id": 91655,
-          "char": "渲染法",
-          "previous_jyutping": "hyun1 jim5 faat3",
-          "jyutping": "hyun1 jim5 faat3",
-          "alternatives": [
-            "syun3 jim5 faat3"
-          ],
-          "note": "渲染的 hyun1 見現代字書語音，保留優先，另留 syun3 文讀；不由國語自行造 hyun3。",
-          "reference": "https://jyut.net/query?q=渲"
-        },
-        {
-          "id": 91707,
-          "char": "渾水",
-          "previous_jyutping": "wan6 seoi2",
-          "jyutping": "wan4 seoi2",
-          "alternatives": [
-            "wan6 seoi2"
-          ],
-          "note": "渾取全身或混濁義，先列 wan4；現代字書亦明載 wan6 渾身是汗／渾水同義詞例，保留，不把 wan6 一概判錯。",
-          "reference": "https://jyut.net/query?q=渾"
-        },
-        {
-          "id": 91711,
-          "char": "渾濁度",
-          "previous_jyutping": "wan6 zuk6 dou6",
-          "jyutping": "wan4 zuk6 dou6",
-          "alternatives": [
-            "wan6 zuk6 dou6"
-          ],
-          "note": "渾取全身或混濁義，先列 wan4；現代字書亦明載 wan6 渾身是汗／渾水同義詞例，保留，不把 wan6 一概判錯。",
-          "reference": "https://jyut.net/query?q=渾"
-        },
-        {
-          "id": 91718,
-          "char": "渾身是勁",
-          "previous_jyutping": "wan6 san1 si6 ging6",
-          "jyutping": "wan4 san1 si6 ging6",
-          "alternatives": [
-            "wan6 san1 si6 ging6"
-          ],
-          "note": "渾取全身或混濁義，先列 wan4；現代字書亦明載 wan6 渾身是汗／渾水同義詞例，保留，不把 wan6 一概判錯。",
-          "reference": "https://jyut.net/query?q=渾"
-        },
-        {
-          "id": 91719,
-          "char": "渾身是汗",
-          "previous_jyutping": "wan6 san1 si6 hon6",
-          "jyutping": "wan4 san1 si6 hon6",
-          "alternatives": [
-            "wan6 san1 si6 hon6"
-          ],
-          "note": "渾取全身或混濁義，先列 wan4；現代字書亦明載 wan6 渾身是汗／渾水同義詞例，保留，不把 wan6 一概判錯。",
-          "reference": "https://jyut.net/query?q=渾"
-        },
-        {
-          "id": 91720,
-          "char": "渾身發抖",
-          "previous_jyutping": "wan6 san1 faat3 dau2",
-          "jyutping": "wan4 san1 faat3 dau2",
-          "alternatives": [
-            "wan6 san1 faat3 dau2"
-          ],
-          "note": "渾取全身或混濁義，先列 wan4；現代字書亦明載 wan6 渾身是汗／渾水同義詞例，保留，不把 wan6 一概判錯。",
-          "reference": "https://jyut.net/query?q=渾"
-        },
-        {
-          "id": 91737,
-          "char": "湊興",
-          "previous_jyutping": "cau3 hing1",
-          "jyutping": "cau3 hing3",
+          "id": 93523,
+          "char": "為國捐軀",
+          "previous_jyutping": "wai6 gwok3 gyun1 keoi1",
+          "jyutping": "wai6 gwok3 gyun1 keoi1",
           "alternatives": [],
-          "note": "湊興取興致、助興之意，興讀 hing3，非興起 hing1。",
-          "reference": "https://jyut.net/query?q=興"
+          "note": "直接正字修訂後按完整詞義重核字音及 394052 碼，保留原字與建議正字可追溯。",
+          "reference": "AI:whole-word-context"
         },
         {
-          "id": 91776,
-          "char": "湮滅證據",
-          "previous_jyutping": "jin1 mit6 zing3 geoi3",
-          "jyutping": "jan1 mit6 zing3 geoi3",
-          "alternatives": [
-            "jin1 mit6 zing3 geoi3"
-          ],
-          "note": "湮滅證據先列建議 jan1，現代字書 jin1 亦有埋沒同義，保留較後；不誤刪原稿現代又讀。",
-          "reference": "https://jyut.net/query?q=湮"
-        },
-        {
-          "id": 91838,
-          "char": "溘然",
-          "previous_jyutping": "hap6 jin4",
-          "jyutping": "hap6 jin4",
+          "id": 93575,
+          "char": "烏飛兔走",
+          "previous_jyutping": "wu1 fei1 tou3 zau2",
+          "jyutping": "wu1 fei1 tou3 zau2",
           "alternatives": [],
-          "note": "溘然 hap6 jin4 有完整現代詞例，保留初稿 hap6；未僅因音表另列 hap1 就強改完整詞。",
-          "reference": "https://www.cantonese.sheik.co.uk/dictionary/characters/8942/ ; https://humanum.arts.cuhk.edu.hk/Lexis/lexi-can/pho-rel.php?s2=ap"
+          "note": "直接正字修訂後按完整詞義重核字音及 394052 碼，保留原字與建議正字可追溯。",
+          "reference": "AI:whole-word-context"
         },
         {
-          "id": 91839,
-          "char": "溘然而逝",
-          "previous_jyutping": "hap6 jin4 ji4 sai6",
-          "jyutping": "hap6 jin4 ji4 sai6",
+          "id": 93842,
+          "char": "無上",
+          "previous_jyutping": "mou4 soeng6",
+          "jyutping": "mou4 soeng6",
           "alternatives": [],
-          "note": "溘然 hap6 jin4 有完整現代詞例，保留初稿 hap6；未僅因音表另列 hap1 就強改完整詞。",
-          "reference": "https://www.cantonese.sheik.co.uk/dictionary/characters/8942/ ; https://humanum.arts.cuhk.edu.hk/Lexis/lexi-can/pho-rel.php?s2=ap"
+          "note": "直接正字修訂後按完整詞義重核字音及 394052 碼，保留原字與建議正字可追溯。",
+          "reference": "AI:whole-word-context"
         },
         {
-          "id": 91843,
-          "char": "溜上來",
-          "previous_jyutping": "lau4 soeng5 loi4",
-          "jyutping": "liu1 soeng5 loi4",
-          "alternatives": [
-            "lau6 soeng5 loi4"
-          ],
-          "note": "溜的偷偷離開／進入義取現代 liu1，滑行方向義另留 lau6；孤字 lau4 只見較舊部身字典，不自動推成此新搭配日常音；不取遛狗或閒逛的遛。",
-          "reference": "https://jyut.net/query?q=溜 ; https://words.hk/zidin/溜走"
-        },
-        {
-          "id": 91844,
-          "char": "溜上去",
-          "previous_jyutping": "lau4 soeng5 heoi3",
-          "jyutping": "liu1 soeng5 heoi3",
-          "alternatives": [
-            "lau6 soeng5 heoi3"
-          ],
-          "note": "溜的偷偷離開／進入義取現代 liu1，滑行方向義另留 lau6；孤字 lau4 只見較舊部身字典，不自動推成此新搭配日常音；不取遛狗或閒逛的遛。",
-          "reference": "https://jyut.net/query?q=溜 ; https://words.hk/zidin/溜走"
-        },
-        {
-          "id": 91845,
-          "char": "溜下",
-          "previous_jyutping": "lau4 haa6",
-          "jyutping": "liu1 haa6",
-          "alternatives": [
-            "lau6 haa6"
-          ],
-          "note": "溜的偷偷離開／進入義取現代 liu1，滑行方向義另留 lau6；孤字 lau4 只見較舊部身字典，不自動推成此新搭配日常音；不取遛狗或閒逛的遛。",
-          "reference": "https://jyut.net/query?q=溜 ; https://words.hk/zidin/溜走"
-        },
-        {
-          "id": 91846,
-          "char": "溜下來",
-          "previous_jyutping": "lau4 haa6 loi4",
-          "jyutping": "liu1 haa6 loi4",
-          "alternatives": [
-            "lau6 haa6 loi4"
-          ],
-          "note": "溜的偷偷離開／進入義取現代 liu1，滑行方向義另留 lau6；孤字 lau4 只見較舊部身字典，不自動推成此新搭配日常音；不取遛狗或閒逛的遛。",
-          "reference": "https://jyut.net/query?q=溜 ; https://words.hk/zidin/溜走"
-        },
-        {
-          "id": 91847,
-          "char": "溜下去",
-          "previous_jyutping": "lau4 haa6 heoi3",
-          "jyutping": "liu1 haa6 heoi3",
-          "alternatives": [
-            "lau6 haa6 heoi3"
-          ],
-          "note": "溜的偷偷離開／進入義取現代 liu1，滑行方向義另留 lau6；孤字 lau4 只見較舊部身字典，不自動推成此新搭配日常音；不取遛狗或閒逛的遛。",
-          "reference": "https://jyut.net/query?q=溜 ; https://words.hk/zidin/溜走"
-        },
-        {
-          "id": 91849,
-          "char": "溜來",
-          "previous_jyutping": "lau4 loi4",
-          "jyutping": "liu1 loi4",
-          "alternatives": [
-            "lau6 loi4"
-          ],
-          "note": "溜的偷偷離開／進入義取現代 liu1，滑行方向義另留 lau6；孤字 lau4 只見較舊部身字典，不自動推成此新搭配日常音；不取遛狗或閒逛的遛。",
-          "reference": "https://jyut.net/query?q=溜 ; https://words.hk/zidin/溜走"
-        },
-        {
-          "id": 91850,
-          "char": "溜來溜去",
-          "previous_jyutping": "lau4 loi4 lau4 heoi3",
-          "jyutping": "liu1 loi4 liu1 heoi3",
-          "alternatives": [
-            "lau6 loi4 lau6 heoi3"
-          ],
-          "note": "溜的偷偷離開／進入義取現代 liu1，滑行方向義另留 lau6；孤字 lau4 只見較舊部身字典，不自動推成此新搭配日常音；不取遛狗或閒逛的遛。",
-          "reference": "https://jyut.net/query?q=溜 ; https://words.hk/zidin/溜走"
-        },
-        {
-          "id": 91851,
-          "char": "溜出來",
-          "previous_jyutping": "lau4 ceot1 loi4",
-          "jyutping": "liu1 ceot1 loi4",
-          "alternatives": [
-            "lau6 ceot1 loi4"
-          ],
-          "note": "溜的偷偷離開／進入義取現代 liu1，滑行方向義另留 lau6；孤字 lau4 只見較舊部身字典，不自動推成此新搭配日常音；不取遛狗或閒逛的遛。",
-          "reference": "https://jyut.net/query?q=溜 ; https://words.hk/zidin/溜走"
-        },
-        {
-          "id": 91852,
-          "char": "溜出去",
-          "previous_jyutping": "lau4 ceot1 heoi3",
-          "jyutping": "liu1 ceot1 heoi3",
-          "alternatives": [
-            "lau6 ceot1 heoi3"
-          ],
-          "note": "溜的偷偷離開／進入義取現代 liu1，滑行方向義另留 lau6；孤字 lau4 只見較舊部身字典，不自動推成此新搭配日常音；不取遛狗或閒逛的遛。",
-          "reference": "https://jyut.net/query?q=溜 ; https://words.hk/zidin/溜走"
-        },
-        {
-          "id": 91854,
-          "char": "溜回",
-          "previous_jyutping": "lau4 wui4",
-          "jyutping": "liu1 wui4",
-          "alternatives": [
-            "lau6 wui4"
-          ],
-          "note": "溜的偷偷離開／進入義取現代 liu1，滑行方向義另留 lau6；孤字 lau4 只見較舊部身字典，不自動推成此新搭配日常音；不取遛狗或閒逛的遛。",
-          "reference": "https://jyut.net/query?q=溜 ; https://words.hk/zidin/溜走"
-        },
-        {
-          "id": 91855,
-          "char": "溜回來",
-          "previous_jyutping": "lau4 wui4 loi4",
-          "jyutping": "liu1 wui4 loi4",
-          "alternatives": [
-            "lau6 wui4 loi4"
-          ],
-          "note": "溜的偷偷離開／進入義取現代 liu1，滑行方向義另留 lau6；孤字 lau4 只見較舊部身字典，不自動推成此新搭配日常音；不取遛狗或閒逛的遛。",
-          "reference": "https://jyut.net/query?q=溜 ; https://words.hk/zidin/溜走"
-        },
-        {
-          "id": 91856,
-          "char": "溜回去",
-          "previous_jyutping": "lau4 wui4 heoi3",
-          "jyutping": "liu1 wui4 heoi3",
-          "alternatives": [
-            "lau6 wui4 heoi3"
-          ],
-          "note": "溜的偷偷離開／進入義取現代 liu1，滑行方向義另留 lau6；孤字 lau4 只見較舊部身字典，不自動推成此新搭配日常音；不取遛狗或閒逛的遛。",
-          "reference": "https://jyut.net/query?q=溜 ; https://words.hk/zidin/溜走"
-        },
-        {
-          "id": 91871,
-          "char": "溜進",
-          "previous_jyutping": "lau4 zeon3",
-          "jyutping": "liu1 zeon3",
-          "alternatives": [
-            "lau6 zeon3"
-          ],
-          "note": "溜的偷偷離開／進入義取現代 liu1，滑行方向義另留 lau6；孤字 lau4 只見較舊部身字典，不自動推成此新搭配日常音；不取遛狗或閒逛的遛。",
-          "reference": "https://jyut.net/query?q=溜 ; https://words.hk/zidin/溜走"
-        },
-        {
-          "id": 91872,
-          "char": "溜進來",
-          "previous_jyutping": "lau4 zeon3 loi4",
-          "jyutping": "liu1 zeon3 loi4",
-          "alternatives": [
-            "lau6 zeon3 loi4"
-          ],
-          "note": "溜的偷偷離開／進入義取現代 liu1，滑行方向義另留 lau6；孤字 lau4 只見較舊部身字典，不自動推成此新搭配日常音；不取遛狗或閒逛的遛。",
-          "reference": "https://jyut.net/query?q=溜 ; https://words.hk/zidin/溜走"
-        },
-        {
-          "id": 91873,
-          "char": "溜進去",
-          "previous_jyutping": "lau4 zeon3 heoi3",
-          "jyutping": "liu1 zeon3 heoi3",
-          "alternatives": [
-            "lau6 zeon3 heoi3"
-          ],
-          "note": "溜的偷偷離開／進入義取現代 liu1，滑行方向義另留 lau6；孤字 lau4 只見較舊部身字典，不自動推成此新搭配日常音；不取遛狗或閒逛的遛。",
-          "reference": "https://jyut.net/query?q=溜 ; https://words.hk/zidin/溜走"
-        },
-        {
-          "id": 91875,
-          "char": "溜過",
-          "previous_jyutping": "lau4 gwo3",
-          "jyutping": "liu1 gwo3",
-          "alternatives": [
-            "lau6 gwo3"
-          ],
-          "note": "溜的偷偷離開／進入義取現代 liu1，滑行方向義另留 lau6；孤字 lau4 只見較舊部身字典，不自動推成此新搭配日常音；不取遛狗或閒逛的遛。",
-          "reference": "https://jyut.net/query?q=溜 ; https://words.hk/zidin/溜走"
-        },
-        {
-          "id": 91876,
-          "char": "溜過來",
-          "previous_jyutping": "lau4 gwo3 loi4",
-          "jyutping": "liu1 gwo3 loi4",
-          "alternatives": [
-            "lau6 gwo3 loi4"
-          ],
-          "note": "溜的偷偷離開／進入義取現代 liu1，滑行方向義另留 lau6；孤字 lau4 只見較舊部身字典，不自動推成此新搭配日常音；不取遛狗或閒逛的遛。",
-          "reference": "https://jyut.net/query?q=溜 ; https://words.hk/zidin/溜走"
-        },
-        {
-          "id": 91877,
-          "char": "溜過去",
-          "previous_jyutping": "lau4 gwo3 heoi3",
-          "jyutping": "liu1 gwo3 heoi3",
-          "alternatives": [
-            "lau6 gwo3 heoi3"
-          ],
-          "note": "溜的偷偷離開／進入義取現代 liu1，滑行方向義另留 lau6；孤字 lau4 只見較舊部身字典，不自動推成此新搭配日常音；不取遛狗或閒逛的遛。",
-          "reference": "https://jyut.net/query?q=溜 ; https://words.hk/zidin/溜走"
-        },
-        {
-          "id": 91860,
-          "char": "溜完",
-          "previous_jyutping": "lau4 jyun4",
-          "jyutping": "lau6 jyun4",
+          "id": 93974,
+          "char": "無花果樹",
+          "previous_jyutping": "mou4 faa1 gwo2 syu6",
+          "jyutping": "mou4 faa1 gwo2 syu6",
           "alternatives": [],
-          "note": "溜完限完成溜冰等滑行運動，現代滑行義 lau6，不取遛狗／閒逛或舊孤字 lau4。",
-          "reference": "https://jyut.net/query?q=溜"
-        },
-        {
-          "id": 91894,
-          "char": "構造",
-          "previous_jyutping": "kau1 zou6",
-          "jyutping": "kau3 zou6",
-          "alternatives": [],
-          "note": "溝造正字構造，改字後整詞 kau3 zou6，不能繼續沿用溝 kau1。",
-          "reference": "https://words.hk/zidin/構造"
-        },
-        {
-          "id": 91971,
-          "char": "溺嬰罪",
-          "previous_jyutping": "nik1 jing1 zeoi6",
-          "jyutping": "nik6 jing1 zeoi6",
-          "alternatives": [
-            "nik1 jing1 zeoi6"
-          ],
-          "note": "溺水致死／淹沒義先列現代 nik6，商務等現代字書 nik1 同義亦見，保留較後；與小便 niu6 分開。",
-          "reference": "https://jyut.net/query?q=溺"
-        },
-        {
-          "id": 91976,
-          "char": "溺谷",
-          "previous_jyutping": "nik1 guk1",
-          "jyutping": "nik6 guk1",
-          "alternatives": [
-            "nik1 guk1"
-          ],
-          "note": "溺水致死／淹沒義先列現代 nik6，商務等現代字書 nik1 同義亦見，保留較後；與小便 niu6 分開。",
-          "reference": "https://jyut.net/query?q=溺"
-        },
-        {
-          "id": 90908,
-          "char": "淡藍色",
-          "previous_jyutping": "taam5 laan4 sik1",
-          "jyutping": "taam5 laam4 sik1",
-          "alternatives": [
-            "daam6 laam4 sik1"
-          ],
-          "note": "改字後重核藍 laam4。",
-          "reference": "https://jyut.net/query?q=藍"
+          "note": "直接正字修訂後按完整詞義重核字音及 394052 碼，保留原字與建議正字可追溯。",
+          "reference": "AI:whole-word-context"
         }
       ],
       "second_pass_familiarity_withdrawals": [
         {
-          "id": 91874,
-          "char": "溜遍",
-          "previous_jyutping": "lau4 pin3",
-          "reason": "溜遍語義不清，容易實為遛遍／逛遍；不把另一動詞字形靜默改造入庫。"
+          "id": 92145,
+          "char": "滲透係數",
+          "previous_jyutping": "sam3 tau3 hai6 sou3",
+          "reason": "終審常用度判斷：此完整表達屬罕用古語、少用變體、過窄術語或欠清楚通行整詞用法，本輪不收。"
         },
         {
-          "id": 90088,
-          "char": "活餌料",
-          "previous_jyutping": "wut6 nei6 liu2",
-          "reason": "第二輪整詞常用度審核：此完整表達屬冷僻舊語、罕用搭配或過窄專門術語，不適合本輪日常／一般書面及填詞補充。"
+          "id": 92231,
+          "char": "滾塗",
+          "previous_jyutping": "gwan2 tou4",
+          "reason": "終審常用度判斷：此完整表達屬罕用古語、少用變體、過窄術語或欠清楚通行整詞用法，本輪不收。"
         },
         {
-          "id": 90167,
-          "char": "流域形態",
-          "previous_jyutping": "lau4 wik6 jing4 taai3",
-          "reason": "第二輪整詞常用度審核：此完整表達屬冷僻舊語、罕用搭配或過窄專門術語，不適合本輪日常／一般書面及填詞補充。"
+          "id": 92249,
+          "char": "滾道",
+          "previous_jyutping": "gwan2 dou6",
+          "reason": "終審常用度判斷：此完整表達屬罕用古語、少用變體、過窄術語或欠清楚通行整詞用法，本輪不收。"
         },
         {
-          "id": 90206,
-          "char": "流水地貌",
-          "previous_jyutping": "lau4 seoi2 dei6 maau6",
-          "reason": "第二輪整詞常用度審核：此完整表達屬冷僻舊語、罕用搭配或過窄專門術語，不適合本輪日常／一般書面及填詞補充。"
+          "id": 92584,
+          "char": "漫記",
+          "previous_jyutping": "maan6 gei3",
+          "reason": "終審常用度判斷：此完整表達屬罕用古語、少用變體、過窄術語或欠清楚通行整詞用法，本輪不收。"
         },
         {
-          "id": 90388,
-          "char": "浮力秤",
-          "previous_jyutping": "fau4 lik6 cing3",
-          "reason": "第二輪整詞常用度審核：此完整表達屬冷僻舊語、罕用搭配或過窄專門術語，不適合本輪日常／一般書面及填詞補充。"
+          "id": 92585,
+          "char": "漫議",
+          "previous_jyutping": "maan6 ji5",
+          "reason": "終審常用度判斷：此完整表達屬罕用古語、少用變體、過窄術語或欠清楚通行整詞用法，本輪不收。"
         },
         {
-          "id": 90449,
-          "char": "浮體",
-          "previous_jyutping": "fau4 tai2",
-          "reason": "第二輪整詞常用度審核：此完整表達屬冷僻舊語、罕用搭配或過窄專門術語，不適合本輪日常／一般書面及填詞補充。"
+          "id": 92691,
+          "char": "潔己奉公",
+          "previous_jyutping": "git3 gei2 fung6 gung1",
+          "reason": "終審常用度判斷：此完整表達屬罕用古語、少用變體、過窄術語或欠清楚通行整詞用法，本輪不收。"
         },
         {
-          "id": 90566,
-          "char": "海馬結構",
-          "previous_jyutping": "hoi2 maa5 git3 kau3",
-          "reason": "第二輪整詞常用度審核：此完整表達屬冷僻舊語、罕用搭配或過窄專門術語，不適合本輪日常／一般書面及填詞補充。"
+          "id": 92693,
+          "char": "潔己愛人",
+          "previous_jyutping": "git3 gei2 oi3 jan4",
+          "reason": "終審常用度判斷：此完整表達屬罕用古語、少用變體、過窄術語或欠清楚通行整詞用法，本輪不收。"
         },
         {
-          "id": 90581,
-          "char": "浸染法",
-          "previous_jyutping": "zam3 jim5 faat3",
-          "reason": "第二輪整詞常用度審核：此完整表達屬冷僻舊語、罕用搭配或過窄專門術語，不適合本輪日常／一般書面及填詞補充。"
+          "id": 92715,
+          "char": "潛伏學習",
+          "previous_jyutping": "cim4 fuk6 hok6 zaap6",
+          "reason": "終審常用度判斷：此完整表達屬罕用古語、少用變體、過窄術語或欠清楚通行整詞用法，本輪不收。"
         },
         {
-          "id": 90687,
-          "char": "消防立管",
-          "previous_jyutping": "siu1 fong4 laap6 gun2",
-          "reason": "第二輪整詞常用度審核：此完整表達屬冷僻舊語、罕用搭配或過窄專門術語，不適合本輪日常／一般書面及填詞補充。"
+          "id": 92737,
+          "char": "潛形匿影",
+          "previous_jyutping": "cim4 jing4 nik1 jing2",
+          "reason": "終審常用度判斷：此完整表達屬罕用古語、少用變體、過窄術語或欠清楚通行整詞用法，本輪不收。"
         },
         {
-          "id": 90750,
-          "char": "涓滴之勞",
-          "previous_jyutping": "gyun1 dik6 zi1 lou4",
-          "reason": "第二輪整詞常用度審核：此完整表達屬冷僻舊語、罕用搭配或過窄專門術語，不適合本輪日常／一般書面及填詞補充。"
+          "id": 92738,
+          "char": "潛形匿跡",
+          "previous_jyutping": "cim4 jing4 nik1 zik1",
+          "reason": "終審常用度判斷：此完整表達屬罕用古語、少用變體、過窄術語或欠清楚通行整詞用法，本輪不收。"
         },
         {
-          "id": 90770,
-          "char": "液力傳動",
-          "previous_jyutping": "jik6 lik6 cyun4 dung6",
-          "reason": "第二輪整詞常用度審核：此完整表達屬冷僻舊語、罕用搭配或過窄專門術語，不適合本輪日常／一般書面及填詞補充。"
+          "id": 92772,
+          "char": "潛能模式",
+          "previous_jyutping": "cim4 nang4 mou4 sik1",
+          "reason": "終審常用度判斷：此完整表達屬罕用古語、少用變體、過窄術語或欠清楚通行整詞用法，本輪不收。"
         },
         {
-          "id": 90800,
-          "char": "液體動力",
-          "previous_jyutping": "jik6 tai2 dung6 lik6",
-          "reason": "第二輪整詞常用度審核：此完整表達屬冷僻舊語、罕用搭配或過窄專門術語，不適合本輪日常／一般書面及填詞補充。"
+          "id": 92806,
+          "char": "潤濕力",
+          "previous_jyutping": "jeon6 sap1 lik6",
+          "reason": "終審常用度判斷：此完整表達屬罕用古語、少用變體、過窄術語或欠清楚通行整詞用法，本輪不收。"
         },
         {
-          "id": 90896,
-          "char": "淡朱",
-          "previous_jyutping": "daam6 zyu1",
-          "reason": "第二輪整詞常用度審核：此完整表達屬冷僻舊語、罕用搭配或過窄專門術語，不適合本輪日常／一般書面及填詞補充。"
+          "id": 92859,
+          "char": "澇壩",
+          "previous_jyutping": "lou6 baa3",
+          "reason": "終審常用度判斷：此完整表達屬罕用古語、少用變體、過窄術語或欠清楚通行整詞用法，本輪不收。"
         },
         {
-          "id": 90897,
-          "char": "淡水交情",
-          "previous_jyutping": "daam6 seoi2 gaau1 cing4",
-          "reason": "第二輪整詞常用度審核：此完整表達屬冷僻舊語、罕用搭配或過窄專門術語，不適合本輪日常／一般書面及填詞補充。"
+          "id": 92901,
+          "char": "激勵函數",
+          "previous_jyutping": "gik1 lai6 haam4 sou3",
+          "reason": "終審常用度判斷：此完整表達屬罕用古語、少用變體、過窄術語或欠清楚通行整詞用法，本輪不收。"
         },
         {
-          "id": 90956,
-          "char": "淫佚",
-          "previous_jyutping": "jam4 jat6",
-          "reason": "第二輪整詞常用度審核：此完整表達屬冷僻舊語、罕用搭配或過窄專門術語，不適合本輪日常／一般書面及填詞補充。"
+          "id": 92902,
+          "char": "激勵單元",
+          "previous_jyutping": "gik1 lai6 daan1 jyun4",
+          "reason": "終審常用度判斷：此完整表達屬罕用古語、少用變體、過窄術語或欠清楚通行整詞用法，本輪不收。"
         },
         {
-          "id": 91162,
-          "char": "混合牙列",
-          "previous_jyutping": "wan6 hap6 ngaa4 lit6",
-          "reason": "第二輪整詞常用度審核：此完整表達屬冷僻舊語、罕用搭配或過窄專門術語，不適合本輪日常／一般書面及填詞補充。"
+          "id": 92907,
+          "char": "激子",
+          "previous_jyutping": "gik1 zi2",
+          "reason": "終審常用度判斷：此完整表達屬罕用古語、少用變體、過窄術語或欠清楚通行整詞用法，本輪不收。"
         },
         {
-          "id": 91173,
-          "char": "混合閥",
-          "previous_jyutping": "wan6 hap6 fat6",
-          "reason": "第二輪整詞常用度審核：此完整表達屬冷僻舊語、罕用搭配或過窄專門術語，不適合本輪日常／一般書面及填詞補充。"
+          "id": 92920,
+          "char": "激振器",
+          "previous_jyutping": "gik1 zan3 hei3",
+          "reason": "終審常用度判斷：此完整表達屬罕用古語、少用變體、過窄術語或欠清楚通行整詞用法，本輪不收。"
         },
         {
-          "id": 91235,
-          "char": "淺箱",
-          "previous_jyutping": "cin2 soeng1",
-          "reason": "第二輪整詞常用度審核：此完整表達屬冷僻舊語、罕用搭配或過窄專門術語，不適合本輪日常／一般書面及填詞補充。"
+          "id": 92924,
+          "char": "激波",
+          "previous_jyutping": "gik1 bo1",
+          "reason": "終審常用度判斷：此完整表達屬罕用古語、少用變體、過窄術語或欠清楚通行整詞用法，本輪不收。"
         },
         {
-          "id": 91377,
-          "char": "清聲",
-          "previous_jyutping": "cing1 sing1",
-          "reason": "第二輪整詞常用度審核：此完整表達屬冷僻舊語、罕用搭配或過窄專門術語，不適合本輪日常／一般書面及填詞補充。"
+          "id": 92989,
+          "char": "濃縮劑",
+          "previous_jyutping": "nung4 suk1 zai1",
+          "reason": "終審常用度判斷：此完整表達屬罕用古語、少用變體、過窄術語或欠清楚通行整詞用法，本輪不收。"
         },
         {
-          "id": 91713,
-          "char": "渾然無垠",
-          "previous_jyutping": "wan4 jin4 mou4 ngan4",
-          "reason": "第二輪整詞常用度審核：此完整表達屬冷僻舊語、罕用搭配或過窄專門術語，不適合本輪日常／一般書面及填詞補充。"
+          "id": 93014,
+          "char": "濕潤指數",
+          "previous_jyutping": "sap1 jeon6 zi2 sou3",
+          "reason": "終審常用度判斷：此完整表達屬罕用古語、少用變體、過窄術語或欠清楚通行整詞用法，本輪不收。"
         },
         {
-          "id": 91933,
-          "char": "溯源侵蝕",
-          "previous_jyutping": "sou3 jyun4 cam1 sik6",
-          "reason": "第二輪整詞常用度審核：此完整表達屬冷僻舊語、罕用搭配或過窄專門術語，不適合本輪日常／一般書面及填詞補充。"
+          "id": 93028,
+          "char": "濟寒賑貧",
+          "previous_jyutping": "zai3 hon4 zan3 pan4",
+          "reason": "終審常用度判斷：此完整表達屬罕用古語、少用變體、過窄術語或欠清楚通行整詞用法，本輪不收。"
         },
         {
-          "id": 91951,
-          "char": "溶度",
-          "previous_jyutping": "jung4 dou6",
-          "reason": "第二輪整詞常用度審核：此完整表達屬冷僻舊語、罕用搭配或過窄專門術語，不適合本輪日常／一般書面及填詞補充。"
+          "id": 93033,
+          "char": "濟苦憐貧",
+          "previous_jyutping": "zai3 fu2 lin4 pan4",
+          "reason": "終審常用度判斷：此完整表達屬罕用古語、少用變體、過窄術語或欠清楚通行整詞用法，本輪不收。"
         },
         {
-          "id": 91954,
-          "char": "溶水",
-          "previous_jyutping": "jung4 seoi2",
-          "reason": "第二輪整詞常用度審核：此完整表達屬冷僻舊語、罕用搭配或過窄專門術語，不適合本輪日常／一般書面及填詞補充。"
+          "id": 93034,
+          "char": "濟貧拔苦",
+          "previous_jyutping": "zai3 pan4 bat6 fu2",
+          "reason": "終審常用度判斷：此完整表達屬罕用古語、少用變體、過窄術語或欠清楚通行整詞用法，本輪不收。"
+        },
+        {
+          "id": 93077,
+          "char": "濾過性",
+          "previous_jyutping": "leoi6 gwo3 sing3",
+          "reason": "終審常用度判斷：此完整表達屬罕用古語、少用變體、過窄術語或欠清楚通行整詞用法，本輪不收。"
+        },
+        {
+          "id": 93097,
+          "char": "瀉流",
+          "previous_jyutping": "se3 lau4",
+          "reason": "終審常用度判斷：此完整表達屬罕用古語、少用變體、過窄術語或欠清楚通行整詞用法，本輪不收。"
+        },
+        {
+          "id": 93119,
+          "char": "瀝膽披肝",
+          "previous_jyutping": "lik1 daam2 pei1 gon1",
+          "reason": "終審常用度判斷：此完整表達屬罕用古語、少用變體、過窄術語或欠清楚通行整詞用法，本輪不收。"
+        },
+        {
+          "id": 93136,
+          "char": "瀰漫型",
+          "previous_jyutping": "nei4 maan6 jing4",
+          "reason": "終審常用度判斷：此完整表達屬罕用古語、少用變體、過窄術語或欠清楚通行整詞用法，本輪不收。"
+        },
+        {
+          "id": 93164,
+          "char": "灌法",
+          "previous_jyutping": "gun3 faat3",
+          "reason": "終審常用度判斷：此完整表達屬罕用古語、少用變體、過窄術語或欠清楚通行整詞用法，本輪不收。"
+        },
+        {
+          "id": 93207,
+          "char": "灘海",
+          "previous_jyutping": "taan1 hoi2",
+          "reason": "終審常用度判斷：此完整表達屬罕用古語、少用變體、過窄術語或欠清楚通行整詞用法，本輪不收。"
+        },
+        {
+          "id": 93225,
+          "char": "火宅",
+          "previous_jyutping": "fo2 zaak2",
+          "reason": "終審常用度判斷：此完整表達屬罕用古語、少用變體、過窄術語或欠清楚通行整詞用法，本輪不收。"
+        },
+        {
+          "id": 93275,
+          "char": "火盡灰冷",
+          "previous_jyutping": "fo2 zeon6 fui1 laang5",
+          "reason": "終審常用度判斷：此完整表達屬罕用古語、少用變體、過窄術語或欠清楚通行整詞用法，本輪不收。"
+        },
+        {
+          "id": 93276,
+          "char": "火盡薪傳",
+          "previous_jyutping": "fo2 zeon6 san1 cyun4",
+          "reason": "終審常用度判斷：此完整表達屬罕用古語、少用變體、過窄術語或欠清楚通行整詞用法，本輪不收。"
+        },
+        {
+          "id": 93281,
+          "char": "火禁",
+          "previous_jyutping": "fo2 gam3",
+          "reason": "終審常用度判斷：此完整表達屬罕用古語、少用變體、過窄術語或欠清楚通行整詞用法，本輪不收。"
+        },
+        {
+          "id": 93324,
+          "char": "灰土地面",
+          "previous_jyutping": "fui1 tou2 dei6 min6",
+          "reason": "終審常用度判斷：此完整表達屬罕用古語、少用變體、過窄術語或欠清楚通行整詞用法，本輪不收。"
+        },
+        {
+          "id": 93330,
+          "char": "灰度變換",
+          "previous_jyutping": "fui1 dou6 bin3 wun6",
+          "reason": "終審常用度判斷：此完整表達屬罕用古語、少用變體、過窄術語或欠清楚通行整詞用法，本輪不收。"
+        },
+        {
+          "id": 93336,
+          "char": "灰淥淥",
+          "previous_jyutping": "fui1 luk1 luk1",
+          "reason": "未取得通行粵語灰碌碌／灰淥淥的可靠整詞例，不以孤字讀音或形近字猜成日常表達。"
+        },
+        {
+          "id": 93353,
+          "char": "灰碌碌",
+          "previous_jyutping": "fui1 luk1 luk1",
+          "reason": "未取得通行粵語灰碌碌／灰淥淥的可靠整詞例，不以孤字讀音或形近字猜成日常表達。"
+        },
+        {
+          "id": 93355,
+          "char": "灰肥",
+          "previous_jyutping": "fui1 fei4",
+          "reason": "終審常用度判斷：此完整表達屬罕用古語、少用變體、過窄術語或欠清楚通行整詞用法，本輪不收。"
+        },
+        {
+          "id": 93378,
+          "char": "灸師",
+          "previous_jyutping": "gau3 si1",
+          "reason": "終審常用度判斷：此完整表達屬罕用古語、少用變體、過窄術語或欠清楚通行整詞用法，本輪不收。"
+        },
+        {
+          "id": 93412,
+          "char": "炎熾",
+          "previous_jyutping": "jim4 ci3",
+          "reason": "終審常用度判斷：此完整表達屬罕用古語、少用變體、過窄術語或欠清楚通行整詞用法，本輪不收。"
+        },
+        {
+          "id": 93468,
+          "char": "炭油",
+          "previous_jyutping": "taan3 jau4",
+          "reason": "終審常用度判斷：此完整表達屬罕用古語、少用變體、過窄術語或欠清楚通行整詞用法，本輪不收。"
+        },
+        {
+          "id": 93554,
+          "char": "烈暑",
+          "previous_jyutping": "lit6 syu2",
+          "reason": "終審常用度判斷：此完整表達屬罕用古語、少用變體、過窄術語或欠清楚通行整詞用法，本輪不收。"
+        },
+        {
+          "id": 93558,
+          "char": "烈火真金",
+          "previous_jyutping": "lit6 fo2 zan1 gam1",
+          "reason": "終審常用度判斷：此完整表達屬罕用古語、少用變體、過窄術語或欠清楚通行整詞用法，本輪不收。"
+        },
+        {
+          "id": 93594,
+          "char": "烘籃",
+          "previous_jyutping": "hung3 laam4",
+          "reason": "終審常用度判斷：此完整表達屬罕用古語、少用變體、過窄術語或欠清楚通行整詞用法，本輪不收。"
+        },
+        {
+          "id": 93596,
+          "char": "烘缸",
+          "previous_jyutping": "hung3 gong1",
+          "reason": "終審常用度判斷：此完整表達屬罕用古語、少用變體、過窄術語或欠清楚通行整詞用法，本輪不收。"
+        },
+        {
+          "id": 93612,
+          "char": "烤杯機",
+          "previous_jyutping": "haau1 bui1 gei1",
+          "reason": "終審常用度判斷：此完整表達屬罕用古語、少用變體、過窄術語或欠清楚通行整詞用法，本輪不收。"
+        },
+        {
+          "id": 93623,
+          "char": "烤缽",
+          "previous_jyutping": "haau1 but3",
+          "reason": "終審常用度判斷：此完整表達屬罕用古語、少用變體、過窄術語或欠清楚通行整詞用法，本輪不收。"
+        },
+        {
+          "id": 93672,
+          "char": "焊芯",
+          "previous_jyutping": "hon2 sam1",
+          "reason": "終審常用度判斷：此完整表達屬罕用古語、少用變體、過窄術語或欠清楚通行整詞用法，本輪不收。"
+        },
+        {
+          "id": 93674,
+          "char": "焊道",
+          "previous_jyutping": "hon2 dou6",
+          "reason": "終審常用度判斷：此完整表達屬罕用古語、少用變體、過窄術語或欠清楚通行整詞用法，本輪不收。"
+        },
+        {
+          "id": 93678,
+          "char": "焙燒爐",
+          "previous_jyutping": "bui6 siu1 lou4",
+          "reason": "終審常用度判斷：此完整表達屬罕用古語、少用變體、過窄術語或欠清楚通行整詞用法，本輪不收。"
+        },
+        {
+          "id": 93690,
+          "char": "焚林竭澤",
+          "previous_jyutping": "fan4 lam4 kit3 zaak6",
+          "reason": "終審常用度判斷：此完整表達屬罕用古語、少用變體、過窄術語或欠清楚通行整詞用法，本輪不收。"
+        },
+        {
+          "id": 93703,
+          "char": "焚香燒爐",
+          "previous_jyutping": "fan4 hoeng1 siu1 lou4",
+          "reason": "終審常用度判斷：此完整表達屬罕用古語、少用變體、過窄術語或欠清楚通行整詞用法，本輪不收。"
+        },
+        {
+          "id": 93706,
+          "char": "焚骨揚灰",
+          "previous_jyutping": "fan4 gwat1 joeng4 fui1",
+          "reason": "終審常用度判斷：此完整表達屬罕用古語、少用變體、過窄術語或欠清楚通行整詞用法，本輪不收。"
+        },
+        {
+          "id": 93750,
+          "char": "無偏無黨",
+          "previous_jyutping": "mou4 pin1 mou4 dong2",
+          "reason": "終審常用度判斷：此完整表達屬罕用古語、少用變體、過窄術語或欠清楚通行整詞用法，本輪不收。"
+        },
+        {
+          "id": 93785,
+          "char": "無可比倫",
+          "previous_jyutping": "mou4 ho2 bei2 leon4",
+          "reason": "終審常用度判斷：此完整表達屬罕用古語、少用變體、過窄術語或欠清楚通行整詞用法，本輪不收。"
+        },
+        {
+          "id": 93801,
+          "char": "無咎無譽",
+          "previous_jyutping": "mou4 gau3 mou4 jyu6",
+          "reason": "終審常用度判斷：此完整表達屬罕用古語、少用變體、過窄術語或欠清楚通行整詞用法，本輪不收。"
+        },
+        {
+          "id": 93832,
+          "char": "無孩",
+          "previous_jyutping": "mou4 haai4",
+          "reason": "終審常用度判斷：此完整表達屬罕用古語、少用變體、過窄術語或欠清楚通行整詞用法，本輪不收。"
         }
       ],
-      "restored_candidates": [
-        91702
-      ],
-      "lyric_observations_reviewed": 13,
-      "lyric_example_spans_reviewed": 25,
+      "lyric_observations_reviewed": 9,
+      "lyric_example_spans_reviewed": 12,
       "modern_variants_preserved": true,
       "verdicts": {
-        "accept": 1195,
-        "reject": 805
+        "accept": 1293,
+        "reject": 707
       },
-      "familiarity_finalized": true,
       "final_preference_reconciliation": [
         {
-          "id": 90900,
-          "char": "淡妝濃抹",
-          "preferred": "taam5 zong1 nung4 mut3",
-          "retained": "daam6 zong1 nung4 mut3",
+          "id": 93583,
+          "char": "烘焙",
+          "previous_jyutping": "hung3 bui6",
+          "jyutping": "hung3 pui4",
+          "alternatives": [
+            "hung3 bui6",
+            "hung1 bui6",
+            "hung4 bui6"
+          ],
+          "note": "現代完整香港詞例 pui4 日常用法保留，非只依焙的孤字文讀 bui6 判斷。",
+          "reference": "https://jyut.net/query?q=烘 ; https://cantonese.sheik.co.uk/dictionary/characters/8748/ ; https://products.innovativelanguage.com/books/CORE2000/Cantonese_CORE2000.pdf"
+        },
+        {
+          "id": 93583,
+          "char": "烘焙",
+          "jyutping": "hung3 bui6",
+          "retained": "hung3 pui4",
+          "mirror_existing_runtime_reading": true,
+          "note": "沿用既存完整詞級 bui6 的預設順位；現代香港 pui4 補常用級，保留全部舊讀音／分級。"
+        },
+        {
+          "id": 93000,
+          "char": "濃妝豔抹",
+          "jyutping": "nung4 zong1 jim6 maat3",
+          "retained": "nung4 zong1 jim6 mut3",
           "previous_grade_preserved": true,
-          "reason": "整詞日常 taam5 優先，保留原有 daam6 文讀及全部舊等級。"
+          "note": "既存通行語音保留，mut3 文讀排後；濃裝豔抹是官方現代辭典亦收的同詞寫法。"
         }
-      ]
+      ],
+      "existing_runtime_wrong_sense_deletions": [
+        {
+          "char": "滋事分子",
+          "old_jyutping": "zi1 si6 fan1 zi2",
+          "old_code": "3239",
+          "action": "delete",
+          "value": "",
+          "note": "2026-11-06-written-b49：人物身份義的分子 fan6，有粵典滋事分子的完整現代詞例；移除這一精確字面誤套分子結構／數學 fan1 的讀音，保留 fan6 及其餘字詞的 fan1。 https://words.hk/zidin/份子"
+        }
+      ],
+      "all_accepted_primary_readings_audited": true
     }
   },
   "source_attribution": {
@@ -1678,6 +2202,6 @@
     "license": "CC BY 4.0",
     "modifications": "Aggregated single-character grades for word readings; explicit glyph inheritance and AI contextual overrides are marked per row."
   },
-  "updated_through_batch": "2026-11-06-written-b48",
+  "updated_through_batch": "2026-11-06-written-b49",
   "updated_on": "2026-11-07"
 }

@@ -595,3 +595,13 @@ mui1 女孩子泛稱未有二妹整詞根據，本批不擴入。
 浩浩湯湯改 soeng1 soeng1、温書假 gaa3、湧上來 soeng5；涵意、淡蘭色及溝造改正字後分別重核 ham4、laam4、kau3。奄奄一息 jim1 與渾身解數 gaai2 有完整詞例，沒有按國語猜成 jim2 或 haai6。淡妝濃抹以日常 taam5 優先，保留既有 daam6 文讀及原等級。現代同義異讀的組合和次序標明為 AI 整詞判斷，沒有冒充實測次數。
 
 完整結果池排序、三種模式搜尋、兩端讀音分級與異讀次序、冷／熱快取及新詞庫實際客戶端查詢均見[B48 驗證](../data/lexicon/reviews/2026-11-06-written-b48-validation.json)。全池比對亦發現並修正前端以 UTF-16 排列擴展漢字的既有差異，統一為後端的 Unicode 碼位次序；一般排序及同音異讀排序共 54 個結果池、73,618 條記錄一致。
+
+## 第四十九批整詞讀音終審（2026-11-07）
+
+新增 1,404 組來源讀音分級，累計 60,095 組；原有 58,691 個分級物件逐欄保留。烘焙 hung3 pui4 已由其他來源覆蓋，本批顯式鏡像以寫入整詞等級，與原有 hung3 bui6 分先後；[香港詞例](https://cantonese.sheik.co.uk/dictionary/characters/8748/)支持 pui4，沒有以孤字缺項否定全詞。烘的 hung3 優先，現代 hung1／hung4 按烘乾等具體語境保留，未機械套進所有比喻詞。
+
+滴 dik6／dik1、漲 zoeng3／zoeng2、瀝 lik1／lik6、炫 jyun4／jyun6、灼 coek3／zoek3、瀰 nei4／mei4 均保留有現代同義根據的讀法，按完整詞分先後，未用國語聲調或過窄的孤字義概括刪音。炮烙之刑以現代俗讀 paau3 優先、保留 paau4 文讀；焊上等先列 hon6，保留有現代工程教材索引完整焊接詞例支持的 hon2。教材 PDF 未完成逐頁核實，證據層級在審核紀錄明示。
+
+滋事分子的人物義依[粵典完整詞例](https://words.hk/zidin/份子)採 fan6，精確過濾該詞既有 fan1 錯音，未影響數學、分子結構及水分子的 fan1。濃妝豔抹保留既有日常 maat3 優先，新增 mut3 文讀置後，沒有只憑擦拭／塗抹的孤字概括否定整詞。滿腔熱忱 sam4、瞞天過海 mun4、洩氣 sit3、火花塞 faa1、無彈性 taan4、無印痕 han4 均與正字及詞義同步核對。
+
+正式字面、草稿、0243 碼、現代來源、讀音先後及 AI 判斷理由見[B49 審核表](../data/lexicon/reviews/2026-11-06-written-b49-supplement.tsv)和[既有讀音修正](../data/lexicon/reviews/2026-11-06-written-b49-existing-readings.tsv)。完整主讀音、結果池排序、三種模式、新詞庫客戶端查詢及冷／熱快取見[B49 驗證](../data/lexicon/reviews/2026-11-06-written-b49-validation.json)。
