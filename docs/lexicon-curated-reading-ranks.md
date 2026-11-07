@@ -653,3 +653,13 @@ mui1 女孩子泛稱未有二妹整詞根據，本批不擴入。
 碌碌取庸碌 luk1，非礦物 luk6；種因、種過及種瓜取種植動詞 zung3；科學論斷取判定 dyun3。私放罪犯以名詞 faan2 先、faan6 文讀後，磅稱的稱採量重器物 cing3。豌豆原有日常 wun2 dau2 明確鏡錄為正常首讀，另保留 wun2 dau6、wun1 dau6；驗證中修正了新增較後讀法會排過舊首讀的問題，沒有增加 runtime 重複詞條。
 
 無實測整詞順位者明示 AI 判斷；同義原讀、語音及異讀保留依據，與詞語本身常用度獨立。完整字形、讀音、0243 碼、依據及驗證見[B54 審核](../data/lexicon/reviews/2026-11-06-written-b54-supplement.tsv)及[B54 最終驗證](../data/lexicon/reviews/2026-11-06-written-b54-validation.json)。
+
+## 第五十五批整詞讀音終審（2026-11-07）
+
+新增 **1,094 組來源讀音分級**，累計 **66,211 組**；原有 65,117 個分級物件逐欄保留。上升的 soeng6 與 soeng5、籠罩的 lung5 與 lung4、競的 ging6 與 ging3 都有現代依據，按完整詞語境排先後，沒有按孤字分義或書目數量刪有效舊音。
+
+[黏](https://words.hk/zidin/黏)的黏貼動詞 nim4、濃黏性質 nim1 分開處理；[粘](https://jyut.net/query?q=粘)是同字異體，香港中學生字典亦有粘住、粘貼 zim1，非粘米一義專用。粘住採 nim4 先、zim1 後，粘結性等性質詞保留 nim1；粘膜炎保留膜 mok6／mok2。[加油](https://words.hk/zidin/加油)的入油義有完整 jau2 詞例，另保留 LSHK 詞表的 jau4；空中加油沒有因 Rime 油字缺2而被判棄用。
+
+管理局長的長採職位 zoeng2，篤學好古的好採喜愛 hou3，篇數、節數採數量 sou3。簿記師 bou6 為記帳行業詞，簿本 bou2 為器物語音；竹簾子 lim4、粗花呢 nei4 與什麼 sam6 mo1 都是現代正常整詞語境，沒有讓裸字等級誤判其讀音罕見。窗簾杆、粗杆依簡體來源的棍棒義採同詞正體桿，gon2 先、gon1 後；竹杆保留杆原字 gon1，沒有換另一表達製作來源。
+
+完整字面、音節、碼、依據與排序見[B55 審核](../data/lexicon/reviews/2026-11-06-written-b55-supplement.tsv)及[B55 最終驗證](../data/lexicon/reviews/2026-11-06-written-b55-validation.json)。未有整詞實測先後者明示 AI 判斷，與詞語本身的常用度獨立。
