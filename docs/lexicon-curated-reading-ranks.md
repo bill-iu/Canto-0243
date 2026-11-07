@@ -605,3 +605,13 @@ mui1 女孩子泛稱未有二妹整詞根據，本批不擴入。
 滋事分子的人物義依[粵典完整詞例](https://words.hk/zidin/份子)採 fan6，精確過濾該詞既有 fan1 錯音，未影響數學、分子結構及水分子的 fan1。濃妝豔抹保留既有日常 maat3 優先，新增 mut3 文讀置後，沒有只憑擦拭／塗抹的孤字概括否定整詞。滿腔熱忱 sam4、瞞天過海 mun4、洩氣 sit3、火花塞 faa1、無彈性 taan4、無印痕 han4 均與正字及詞義同步核對。
 
 正式字面、草稿、0243 碼、現代來源、讀音先後及 AI 判斷理由見[B49 審核表](../data/lexicon/reviews/2026-11-06-written-b49-supplement.tsv)和[既有讀音修正](../data/lexicon/reviews/2026-11-06-written-b49-existing-readings.tsv)。完整主讀音、結果池排序、三種模式、新詞庫客戶端查詢及冷／熱快取見[B49 驗證](../data/lexicon/reviews/2026-11-06-written-b49-validation.json)。
+
+## 第五十批整詞讀音與異讀先後（2026-11-07）
+
+新增 1,244 組來源讀音分級，累計 61,339 組；原有 60,095 個分級物件逐欄保留。牛頓定律以[完整牛頓詞例](https://words.hk/zidin/牛頓)的 deon1 日常變調優先，另保留 deon6 文讀，撤回初審把 deon1 誤限於另一詞義的推測。牛腱採[香港完整詞例](https://www.cantonese.sheik.co.uk/dictionary/words/61258/)的 zin2 優先，保留 gin3 文讀；爺爺奶奶的奶奶依完整親屬詞採 naai4 naai2，不沿兩個奶的孤字 naai5 拼音。
+
+[熱情好客](https://words.hk/zidin/好客)取待客 hou3，與客量高的 hou2 分義；父為子隱取替子隱瞞 wai6；特賣會採活動名詞 wui2／wui6，未加入能力義 wui5。燒賣店先列 maai2、保留 maai6／maai5；燜牛肉先列 man1、保留 mun6；爭的 zang1 文讀與 zaang1 語音按具體整詞分先後。處理 cyu2／cyu5、熨衣 tong3／wan6、彌補 nei4／mei4 等現代讀法保留，組合及無實測順位明示為 AI 判斷。
+
+改字不能沿原音：物救必反的救 gau3 不套入極 gik6；煮豆燃箕的箕 gei1 不套入完整煮豆燃萁的豆莖 kei4。兩項原有正確詞音已覆蓋，沒有補入錯讀。煮茗先列現代建議 ming5，保留茶義 ming4 又讀；要求 jiu1、搖曳 jai6、呢喃 nei4 naam4 及抹灰 mut3 均按完整詞及現代詞義處理，不因孤字較後便把正常全詞列作罕見。
+
+讀音順位與詞語常用度獨立。新增來源、原字／正字、0243 碼及理由見[B50 審核表](../data/lexicon/reviews/2026-11-06-written-b50-supplement.tsv)；全部收錄候選首選音、一般與異讀全池排序、三種模式搜尋、新詞庫實際客戶端查詢及冷／熱快取見[B50 驗證](../data/lexicon/reviews/2026-11-06-written-b50-validation.json)。

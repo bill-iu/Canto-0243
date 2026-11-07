@@ -1,0 +1,2841 @@
+{
+  "batch": "2026-11-06-written-b50",
+  "date": "2026-11-07",
+  "reviewer": "AI-assisted word-form, sense and whole-word Cantonese review; not human item-by-item approval",
+  "source_repository": "https://github.com/fxsjy/jieba",
+  "source_commit": "67fa2e36e72f69d9134b8a1037b83fbb070b9775",
+  "source_license": "MIT",
+  "source_files": [
+    {
+      "path": "jieba/dict.txt",
+      "url": "https://raw.githubusercontent.com/fxsjy/jieba/67fa2e36e72f69d9134b8a1037b83fbb070b9775/jieba/dict.txt",
+      "sha256": "7197c3211ddd98962b036cdf40324d1ea2bfaa12bd028e68faa70111a88e12a8",
+      "bytes": 5071852
+    },
+    {
+      "path": "extra_dict/dict.txt.big",
+      "url": "https://raw.githubusercontent.com/fxsjy/jieba/67fa2e36e72f69d9134b8a1037b83fbb070b9775/extra_dict/dict.txt.big",
+      "sha256": "b16011275c42955ccd81fc1adecc93a59dbb7926af69d93fc95d4943d40f6aad",
+      "bytes": 8583143
+    },
+    {
+      "path": "LICENSE",
+      "url": "https://raw.githubusercontent.com/fxsjy/jieba/67fa2e36e72f69d9134b8a1037b83fbb070b9775/LICENSE",
+      "sha256": "18ba0984839f85853b29fadaf992f7dba8fd0ca0fbeae34de2b8735222dc7a37",
+      "bytes": 1075
+    }
+  ],
+  "input_git_commit": "34f7d8e71b70b885173d2d9afe48fab169533792",
+  "input_curated_sha256": "db288ae7d7ded46303a7fed0f81bb58f2b1b3a4a1fe5abc8b645c34e21f25506",
+  "input_curated_rows": 60095,
+  "input_db_sha256": "6175f4d4d43d4b44e7e4c3a7762d8a815dd2f554aaf95867d6ec1ae2666e5cf9",
+  "newly_reviewed_candidates": 2000,
+  "revisited_candidates": 0,
+  "review_rows": 2093,
+  "review_candidate_ids": 2000,
+  "review_verdict_rows": {
+    "reject": 814,
+    "accept": 1244,
+    "already_present": 35
+  },
+  "reading_repairs": 0,
+  "added_rows": 1244,
+  "added_literals": 1155,
+  "total_curated_rows": 61339,
+  "cumulative_reviewed_candidates": 95994,
+  "cumulative_candidate_decisions": {
+    "accept": 58606,
+    "reject": 36108,
+    "already_present": 1031,
+    "defer": 249
+  },
+  "candidate_pool": 146602,
+  "unreviewed_pool_candidates": 50608,
+  "regional_candidates_still_held": 924,
+  "selection": "Next 2000 individually reviewed candidates, offsets 89250:91250, IDs 93994–95993. All 1378 initial accepts inspected;193 overly obscure/narrow/unsupported expressions withdrawn and one source spelling restored for consistent same-word pipe-accessory decisions, leaving1186 before normalized duplicate detection. Five pinned Cantopop observations and all five supplied spans reviewed in original context; 閃照／過後 is not an independent 照過 frequency. Previous source, grades and decisions preserved. Final character-reading alignment catches one unexportable 極/gau3 draft; corrected gik6 is already covered, so no duplicate source row is admitted. Final same-glyph audit also replaces the 箕 draft gei1 with existing 煮豆燃萁 kei4 and adds preferred modern 茶茗 ming5 while retaining ming4.",
+  "lyric_corpus": {
+    "repository": "https://github.com/jasonleeubc/Cantopop-corpus",
+    "commit": "018e88540b917c40dc3f7248ed98908208544b54",
+    "license": "CC-BY-4.0",
+    "observations_policy": "Pinned local lyric-word observations only; not approved readings or everyday frequency. Full-word context reviewed separately."
+  },
+  "frequency_meaning": "Upstream dictionary weight, not measured corpus occurrences or a product ranking weight. Proposed usage rank is AI contextual judgment and is not substituted for available measured whole-word frequency.",
+  "normalization_policy": "s2hk plus94 exact-literal restorations and15 preserved literal senses across28 input keys. 煙斗架／煙斗絲 preserve the pipe-vessel 斗 with dau2. Cache30. Zero prior runtime, curated, rank, usage, judgment or stored relation keys affected;222 tracked relation sources checked, no migration.",
+  "second_pass_familiarity_withdrawals": 193,
+  "net_familiarity_withdrawals": 192,
+  "explicit_restored_candidates": [
+    94384
+  ],
+  "initial_accepted_candidates": 1378,
+  "final_accepted_candidates_before_dedup": 1186,
+  "reading_policy": "No automatic promotion of character-default drafts; whole-word review plus contextual high-risk and compound-reference audit; 病=beng6 only",
+  "original_curated_rows_preserved": 60095,
+  "previous_source_repairs_explicit": true,
+  "review_tsv_sha256": "f8969adc740ca31e3dd560a16950065147d23dbb144589904bc9e47cff873b7e",
+  "validation": {
+    "merged_rows": 240335,
+    "merged_literals": 223057,
+    "unique_triples": 240333,
+    "baseline_rows": 239091,
+    "all_previous_rows_and_multiplicities_retained": true,
+    "confirmed_old_wrong_sense_readings_removed": 0,
+    "all_accepted_primary_reading_checks": 1155,
+    "old_word_grades_preserved": 122242,
+    "new_source_readings": 1244,
+    "new_pairs_retained": true,
+    "search_checks": 336,
+    "preferred_reading_checks": 90,
+    "word_usage_keys": 123392,
+    "withdrawn_curated_literals": 2051,
+    "live_db_unchanged": true,
+    "backend_pwa_essay_frequency_keys": 266884,
+    "essay_frequency_tables_equal": true,
+    "backend_pwa_word_grade_keys": 123392,
+    "backend_pwa_curated_reading_grade_keys": 62085,
+    "word_grade_tables_equal": true,
+    "curated_reading_grade_tables_equal": true,
+    "old_source_rows_preserved": 60095,
+    "old_reading_grades_preserved": 60095,
+    "old_usage_rows_preserved": 122242,
+    "old_judgments_preserved": 16344,
+    "new_source_forms": 1155,
+    "new_merged_forms": 1150,
+    "existing_merged_forms_with_new_readings": [
+      "煙霧瀰漫",
+      "爭分奪秒",
+      "爭辯",
+      "爭風吃醋",
+      "練拳"
+    ],
+    "raw_source_forms": 59159,
+    "normalized_source_forms": 59157,
+    "new_word_usage_judgments": 379,
+    "unrelated_user_files_unchanged": true,
+    "previous_overlay_bytes_preserved": true,
+    "existing_runtime_readings_mirrored": 0,
+    "exact_existing_wrong_sense_overlay_deletions": 0,
+    "new_merged_readings": 1244,
+    "new_merged_readings_net": 1244,
+    "client_query_engine_with_new_dictionary": {
+      "checks": 60,
+      "modes": 3,
+      "new_dictionary_loaded_in_client_engine": true,
+      "preferred_readings_equal": true
+    },
+    "heteronym_full_pool_ranking_equal": true,
+    "non_han_tiers_match_backend": true,
+    "unicode_scalar_tiebreak_parity": true,
+    "new_exact_literal_restorations": {
+      "煙鬥架": "煙斗架",
+      "煙鬥絲": "煙斗絲"
+    },
+    "normalization_impact": {
+      "new_exact_restorations": {
+        "煙鬥架": "煙斗架",
+        "煙鬥絲": "煙斗絲"
+      },
+      "exact_restorations_total": 94,
+      "preserved_literal_senses_total": 15,
+      "preserved_literal_input_keys_total": 28,
+      "prior_runtime_matches": 0,
+      "prior_curated_matches": 0,
+      "prior_reading_rank_matches": 0,
+      "prior_word_usage_matches": 0,
+      "prior_word_usage_judgment_matches": 0,
+      "stored_relation_source_files_checked": 222,
+      "stored_relation_source_hits": [],
+      "stored_relation_literal_keys_migrated": 0,
+      "relation_migration_complete": true,
+      "cache_format": "30",
+      "previous_runtime_rows_preserved": true
+    },
+    "prior_runtime_rows_affected_by_new_normalization": 0,
+    "prior_word_usage_records_affected_by_new_normalization": 0,
+    "prior_stored_relation_keys_migrated": 0,
+    "previous_source_rows_preserved": 60095,
+    "previous_reading_grades_preserved": 60095,
+    "explicit_previous_reading_grade_repairs": 0,
+    "previous_word_usage_records_preserved": 122242,
+    "previous_word_usage_judgments_preserved": 16344,
+    "new_word_normalization_idempotent": true,
+    "full_pool_parity_queries": 61,
+    "full_pool_parity_rows": 78776,
+    "full_pool_ranking_equal": true,
+    "smoke_tests": 328,
+    "smoke_passed": 324,
+    "smoke_skipped": 4,
+    "seam_tests": 89,
+    "seam_passed": 83,
+    "seam_skipped": 6,
+    "guide_query_tests": 1,
+    "guide_query_tests_passed": true,
+    "pwa_build": true,
+    "portable_build": true,
+    "full_app_typecheck": true,
+    "ranking_and_lookup_self_checks": true,
+    "targeted_node_typecheck": true,
+    "pwa_artifact_guard": true,
+    "layer_cache_format": "30",
+    "layer_cache_cold_misses": 8,
+    "layer_cache_warm_hits": 8,
+    "layer_cache_counter_matches_uncached_db": true,
+    "paging_fixture": {
+      "total": 206,
+      "first_page": 200,
+      "second_page": 6,
+      "everyday_literal_inserted_last_ranks_first": true,
+      "modes": 3
+    },
+    "final_reading_audit": {
+      "whole_word_review_complete": true,
+      "reviewed_candidates": 2000,
+      "initial_accepted_candidates": 1378,
+      "accepted_reading_candidates_inspected": 1378,
+      "reading_changes": [
+        {
+          "id": 94198,
+          "char": "無記名",
+          "previous_jyutping": "mou4 gai3 ming4",
+          "jyutping": "mou4 gei3 ming4",
+          "alternatives": [],
+          "note": "無計名正字為無記名，記 gei3；改字後不能沿計 gai3。",
+          "reference": "AI:whole-word-context"
+        },
+        {
+          "id": 94012,
+          "char": "無法彌補",
+          "previous_jyutping": "mou4 faat3 nei4 bou2",
+          "jyutping": "mou4 faat3 nei4 bou2",
+          "alternatives": [
+            "mou4 faat3 mei4 bou2"
+          ],
+          "note": "完整彌補有 nei4／mei4 現代讀法；nei4 優先、mei4 保留，不因原音分類否定日常。",
+          "reference": "https://words.hk/zidin/彌補 ; https://jyut.net/query?q=彌"
+        },
+        {
+          "id": 94438,
+          "char": "煙霧瀰漫",
+          "previous_jyutping": "jin1 mou6 nei4 maan6",
+          "jyutping": "jin1 mou6 nei4 maan6",
+          "alternatives": [
+            "jin1 mou6 mei4 maan6"
+          ],
+          "note": "煙霧瀰漫的瀰 nei4 優先，mei4 為有據文讀；不沿迷漫草稿 mai4。",
+          "reference": "https://jyut.net/query?q=瀰"
+        },
+        {
+          "id": 94350,
+          "char": "煎到",
+          "previous_jyutping": "zin1 dou3",
+          "jyutping": "zin1 dou3",
+          "alternatives": [
+            "zin1 dou2"
+          ],
+          "note": "抵達地點／達到程度 dou3 優先，成功做到 dou2 按完整結果語境保留，不一律刪去。",
+          "reference": "https://jyut.net/query?q=到"
+        },
+        {
+          "id": 94732,
+          "char": "熟到",
+          "previous_jyutping": "suk6 dou3",
+          "jyutping": "suk6 dou3",
+          "alternatives": [
+            "suk6 dou2"
+          ],
+          "note": "抵達地點／達到程度 dou3 優先，成功做到 dou2 按完整結果語境保留，不一律刪去。",
+          "reference": "https://jyut.net/query?q=到"
+        },
+        {
+          "id": 95334,
+          "char": "爬到",
+          "previous_jyutping": "paa4 dou3",
+          "jyutping": "paa4 dou3",
+          "alternatives": [
+            "paa4 dou2"
+          ],
+          "note": "抵達地點／達到程度 dou3 優先，成功做到 dou2 按完整結果語境保留，不一律刪去。",
+          "reference": "https://jyut.net/query?q=到"
+        },
+        {
+          "id": 95871,
+          "char": "特地到",
+          "previous_jyutping": "dak6 dei6 dou3",
+          "jyutping": "dak6 dei6 dou3",
+          "alternatives": [
+            "dak6 dei6 dou2"
+          ],
+          "note": "抵達地點／達到程度 dou3 優先，成功做到 dou2 按完整結果語境保留，不一律刪去。",
+          "reference": "https://jyut.net/query?q=到"
+        },
+        {
+          "id": 94524,
+          "char": "照到",
+          "previous_jyutping": "ziu3 dou2",
+          "jyutping": "ziu3 dou3",
+          "alternatives": [
+            "ziu3 dou2"
+          ],
+          "note": "照到以光線到達或照相達到對象 dou3 優先，成功照到 dou2 保留。",
+          "reference": "https://jyut.net/query?q=到"
+        },
+        {
+          "id": 94039,
+          "char": "無焊縫",
+          "previous_jyutping": "mou4 hon6 fung6",
+          "jyutping": "mou4 hon6 fung6",
+          "alternatives": [
+            "mou4 hon2 fung6",
+            "mou4 hon6 fung4"
+          ],
+          "note": "焊 hon6／現代工程詞例 hon2、接縫 fung6／日常 fung4 分先後保留，非拼全調值排列。",
+          "reference": "https://fts.webruns.net/pdf_files/student_info/welding_handbook.pdf ; https://cantonese.sheik.co.uk/dictionary/characters/2871/?full=true"
+        },
+        {
+          "id": 94130,
+          "char": "無線連接",
+          "previous_jyutping": "mou4 sin3 lin4 zip3",
+          "jyutping": "mou4 sin3 lin4 zip3",
+          "alternatives": [
+            "mou4 sin3 lin6 zip3",
+            "mou4 sin3 lin2 zip3"
+          ],
+          "note": "完整連接的 lin4、lin6、lin2 有現代整詞來源，保留原全詞 lin4 優先及其他文讀／變調，不硬按連續義判錯。",
+          "reference": "https://jyutdictionary.com/dictionary/entry/連接"
+        },
+        {
+          "id": 94149,
+          "char": "無聲片",
+          "previous_jyutping": "mou4 sing1 pin3",
+          "jyutping": "mou4 sing1 pin2",
+          "alternatives": [
+            "mou4 sing1 pin3"
+          ],
+          "note": "無聲片取電影類名，片日常 pin2 優先、pin3 文讀保留；無聲沿完整詞 sing1，不任意生成另一聲母。",
+          "reference": "AI:whole-word-context"
+        },
+        {
+          "id": 94383,
+          "char": "煙斗架",
+          "previous_jyutping": "jin1 dau2 gaa3",
+          "jyutping": "jin1 dau2 gaa3",
+          "alternatives": [],
+          "note": "煙斗架還原器皿斗 dau2，字形須精確保留，不改鬥爭等其他詞義。",
+          "reference": "AI:whole-word-context"
+        },
+        {
+          "id": 94384,
+          "char": "煙斗絲",
+          "previous_jyutping": "jin1 dau2 si1",
+          "jyutping": "jin1 dau2 si1",
+          "alternatives": [],
+          "note": "煙斗絲與煙鬥絲為同一物料詞，斗 dau2、完整詞低熟悉度，兩形正式查重。",
+          "reference": "AI:whole-word-context"
+        },
+        {
+          "id": 94444,
+          "char": "煙斗架",
+          "previous_jyutping": "jin1 dau2 gaa3",
+          "jyutping": "jin1 dau2 gaa3",
+          "alternatives": [],
+          "note": "煙鬥架按同詞煙斗架查重，斗 dau2，不新增重複執行列。",
+          "reference": "AI:whole-word-context"
+        },
+        {
+          "id": 94445,
+          "char": "煙斗絲",
+          "previous_jyutping": "jin1 dau2 si1",
+          "jyutping": "jin1 dau2 si1",
+          "alternatives": [],
+          "note": "煙鬥絲按同詞煙斗絲查重，斗 dau2，與另一來源形同等低熟悉度。",
+          "reference": "AI:whole-word-context"
+        },
+        {
+          "id": 94677,
+          "char": "煸炒",
+          "previous_jyutping": "pin1 caau2",
+          "jyutping": "pin1 caau2",
+          "alternatives": [
+            "bin1 caau2"
+          ],
+          "note": "煸的 pin1 與 bin1 均有現代字書；通用烹調方法先保留原 pin1，bin1 排後，不把煸炒自動當北方方言。",
+          "reference": "https://jyut.net/query?q=煸"
+        },
+        {
+          "id": 94780,
+          "char": "熨衣工",
+          "previous_jyutping": "tong3 ji1 gung1",
+          "jyutping": "tong3 ji1 gung1",
+          "alternatives": [
+            "wan6 ji1 gung1"
+          ],
+          "note": "熨衣日常 tong3 優先，現代字書完整熨衣服亦收 wan6 文讀置後；不加入醫療敷貼義 wat1／wai3。",
+          "reference": "https://jyut.net/query?q=熨 ; https://cantonese.sheik.co.uk/dictionary/characters/2516/"
+        },
+        {
+          "id": 94781,
+          "char": "熬不住",
+          "previous_jyutping": "ngou4 bat1 zyu6",
+          "jyutping": "ngou4 bat1 zyu6",
+          "alternatives": [
+            "ngaau4 bat1 zyu6"
+          ],
+          "note": "熬的 ngou4 文讀及 ngaau4 現代語音均保留；明確熬煮食物的搭配先列 ngaau4，忍受等原完整用法保留 ngou4 優先；整詞組合與順位為 AI 判斷，非詞典實測次數。",
+          "reference": "https://jyut.net/query?q=熬"
+        },
+        {
+          "id": 94782,
+          "char": "熬不過",
+          "previous_jyutping": "ngou4 bat1 gwo3",
+          "jyutping": "ngou4 bat1 gwo3",
+          "alternatives": [
+            "ngaau4 bat1 gwo3"
+          ],
+          "note": "熬的 ngou4 文讀及 ngaau4 現代語音均保留；明確熬煮食物的搭配先列 ngaau4，忍受等原完整用法保留 ngou4 優先；整詞組合與順位為 AI 判斷，非詞典實測次數。",
+          "reference": "https://jyut.net/query?q=熬"
+        },
+        {
+          "id": 94783,
+          "char": "熬出",
+          "previous_jyutping": "ngou4 ceot1",
+          "jyutping": "ngou4 ceot1",
+          "alternatives": [
+            "ngaau4 ceot1"
+          ],
+          "note": "熬的 ngou4 文讀及 ngaau4 現代語音均保留；明確熬煮食物的搭配先列 ngaau4，忍受等原完整用法保留 ngou4 優先；整詞組合與順位為 AI 判斷，非詞典實測次數。",
+          "reference": "https://jyut.net/query?q=熬"
+        },
+        {
+          "id": 94784,
+          "char": "熬出來",
+          "previous_jyutping": "ngou4 ceot1 loi4",
+          "jyutping": "ngou4 ceot1 loi4",
+          "alternatives": [
+            "ngaau4 ceot1 loi4"
+          ],
+          "note": "熬的 ngou4 文讀及 ngaau4 現代語音均保留；明確熬煮食物的搭配先列 ngaau4，忍受等原完整用法保留 ngou4 優先；整詞組合與順位為 AI 判斷，非詞典實測次數。",
+          "reference": "https://jyut.net/query?q=熬"
+        },
+        {
+          "id": 94785,
+          "char": "熬到",
+          "previous_jyutping": "ngou4 dou2",
+          "jyutping": "ngou4 dou2",
+          "alternatives": [
+            "ngaau4 dou2"
+          ],
+          "note": "熬的 ngou4 文讀及 ngaau4 現代語音均保留；明確熬煮食物的搭配先列 ngaau4，忍受等原完整用法保留 ngou4 優先；整詞組合與順位為 AI 判斷，非詞典實測次數。",
+          "reference": "https://jyut.net/query?q=熬"
+        },
+        {
+          "id": 94786,
+          "char": "熬夜苦讀",
+          "previous_jyutping": "ngou4 je6 fu2 duk6",
+          "jyutping": "ngou4 je6 fu2 duk6",
+          "alternatives": [
+            "ngaau4 je6 fu2 duk6"
+          ],
+          "note": "熬的 ngou4 文讀及 ngaau4 現代語音均保留；明確熬煮食物的搭配先列 ngaau4，忍受等原完整用法保留 ngou4 優先；整詞組合與順位為 AI 判斷，非詞典實測次數。",
+          "reference": "https://jyut.net/query?q=熬"
+        },
+        {
+          "id": 94790,
+          "char": "熬日子",
+          "previous_jyutping": "ngou4 jat6 zi2",
+          "jyutping": "ngou4 jat6 zi2",
+          "alternatives": [
+            "ngaau4 jat6 zi2"
+          ],
+          "note": "熬的 ngou4 文讀及 ngaau4 現代語音均保留；明確熬煮食物的搭配先列 ngaau4，忍受等原完整用法保留 ngou4 優先；整詞組合與順位為 AI 判斷，非詞典實測次數。",
+          "reference": "https://jyut.net/query?q=熬"
+        },
+        {
+          "id": 94795,
+          "char": "熬煉",
+          "previous_jyutping": "ngou4 lin6",
+          "jyutping": "ngou4 lin6",
+          "alternatives": [
+            "ngaau4 lin6"
+          ],
+          "note": "熬的 ngou4 文讀及 ngaau4 現代語音均保留；明確熬煮食物的搭配先列 ngaau4，忍受等原完整用法保留 ngou4 優先；整詞組合與順位為 AI 判斷，非詞典實測次數。",
+          "reference": "https://jyut.net/query?q=熬"
+        },
+        {
+          "id": 94799,
+          "char": "熬藥湯",
+          "previous_jyutping": "ngou4 joek6 tong1",
+          "jyutping": "ngaau4 joek6 tong1",
+          "alternatives": [
+            "ngou4 joek6 tong1"
+          ],
+          "note": "熬的 ngou4 文讀及 ngaau4 現代語音均保留；明確熬煮食物的搭配先列 ngaau4，忍受等原完整用法保留 ngou4 優先；整詞組合與順位為 AI 判斷，非詞典實測次數。",
+          "reference": "https://jyut.net/query?q=熬"
+        },
+        {
+          "id": 94800,
+          "char": "熬起",
+          "previous_jyutping": "ngou4 hei2",
+          "jyutping": "ngaau4 hei2",
+          "alternatives": [
+            "ngou4 hei2"
+          ],
+          "note": "熬的 ngou4 文讀及 ngaau4 現代語音均保留；明確熬煮食物的搭配先列 ngaau4，忍受等原完整用法保留 ngou4 優先；整詞組合與順位為 AI 判斷，非詞典實測次數。",
+          "reference": "https://jyut.net/query?q=熬"
+        },
+        {
+          "id": 94801,
+          "char": "熬起來",
+          "previous_jyutping": "ngou4 hei2 loi4",
+          "jyutping": "ngaau4 hei2 loi4",
+          "alternatives": [
+            "ngou4 hei2 loi4"
+          ],
+          "note": "熬的 ngou4 文讀及 ngaau4 現代語音均保留；明確熬煮食物的搭配先列 ngaau4，忍受等原完整用法保留 ngou4 優先；整詞組合與順位為 AI 判斷，非詞典實測次數。",
+          "reference": "https://jyut.net/query?q=熬"
+        },
+        {
+          "id": 94802,
+          "char": "熬透",
+          "previous_jyutping": "ngou4 tau3",
+          "jyutping": "ngou4 tau3",
+          "alternatives": [
+            "ngaau4 tau3"
+          ],
+          "note": "熬的 ngou4 文讀及 ngaau4 現代語音均保留；明確熬煮食物的搭配先列 ngaau4，忍受等原完整用法保留 ngou4 優先；整詞組合與順位為 AI 判斷，非詞典實測次數。",
+          "reference": "https://jyut.net/query?q=熬"
+        },
+        {
+          "id": 94803,
+          "char": "熬過",
+          "previous_jyutping": "ngou4 gwo3",
+          "jyutping": "ngou4 gwo3",
+          "alternatives": [
+            "ngaau4 gwo3"
+          ],
+          "note": "熬的 ngou4 文讀及 ngaau4 現代語音均保留；明確熬煮食物的搭配先列 ngaau4，忍受等原完整用法保留 ngou4 優先；整詞組合與順位為 AI 判斷，非詞典實測次數。",
+          "reference": "https://jyut.net/query?q=熬"
+        },
+        {
+          "id": 94804,
+          "char": "熬過來",
+          "previous_jyutping": "ngou4 gwo3 loi4",
+          "jyutping": "ngou4 gwo3 loi4",
+          "alternatives": [
+            "ngaau4 gwo3 loi4"
+          ],
+          "note": "熬的 ngou4 文讀及 ngaau4 現代語音均保留；明確熬煮食物的搭配先列 ngaau4，忍受等原完整用法保留 ngou4 優先；整詞組合與順位為 AI 判斷，非詞典實測次數。",
+          "reference": "https://jyut.net/query?q=熬"
+        },
+        {
+          "id": 94805,
+          "char": "熬過去",
+          "previous_jyutping": "ngou4 gwo3 heoi3",
+          "jyutping": "ngou4 gwo3 heoi3",
+          "alternatives": [
+            "ngaau4 gwo3 heoi3"
+          ],
+          "note": "熬的 ngou4 文讀及 ngaau4 現代語音均保留；明確熬煮食物的搭配先列 ngaau4，忍受等原完整用法保留 ngou4 優先；整詞組合與順位為 AI 判斷，非詞典實測次數。",
+          "reference": "https://jyut.net/query?q=熬"
+        },
+        {
+          "id": 94865,
+          "char": "熱情好客",
+          "previous_jyutping": "jit6 cing4 hou2 haak3",
+          "jyutping": "jit6 cing4 hou3 haak3",
+          "alternatives": [],
+          "note": "熱情好客取殷勤待客義 hou3；粵典 hou2 好客另有客量高義，不把另一義套進本詞。",
+          "reference": "https://words.hk/zidin/好客"
+        },
+        {
+          "id": 94912,
+          "char": "熱溶膠",
+          "previous_jyutping": "jit6 jung4 gaau1",
+          "jyutping": "jit6 jung4 gaau1",
+          "alternatives": [],
+          "note": "熱溶膠為熱熔膠的直接混寫，採通行熔字，熔 jung4；與同批熱熔膠查重。",
+          "reference": "AI:whole-word-context"
+        },
+        {
+          "id": 95051,
+          "char": "燈盡油乾",
+          "previous_jyutping": "dang1 zeon6 jau4 gon1",
+          "jyutping": "dang1 zeon6 jau4 gon1",
+          "alternatives": [],
+          "note": "燈盡油乾的乾為乾燥／耗盡義 gon1，不沿原錯字幹 gon3；整詞較少用置後。",
+          "reference": "AI:whole-word-context"
+        },
+        {
+          "id": 95123,
+          "char": "燒賣店",
+          "previous_jyutping": "siu1 maai2 dim3",
+          "jyutping": "siu1 maai2 dim3",
+          "alternatives": [
+            "siu1 maai6 dim3",
+            "siu1 maai5 dim3"
+          ],
+          "note": "完整燒賣現代來源有 maai2、maai6、maai5；香港日常 maai2 優先，保留文讀，不能用孤字賣貨分級取代全詞。",
+          "reference": "https://words.hk/zidin/燒賣 ; https://jyutdictionary.com/dictionary/entry/燒賣"
+        },
+        {
+          "id": 95168,
+          "char": "燜牛肉",
+          "previous_jyutping": "mun6 ngau4 juk6",
+          "jyutping": "man1 ngau4 juk6",
+          "alternatives": [
+            "mun6 ngau4 juk6"
+          ],
+          "note": "粵典炆／燜完整炆牛腩支持日常 man1；燜牛肉同類烹調先列 man1，保留字書 mun6 文讀，不採只見舊書的 man2。",
+          "reference": "https://words.hk/zidin/炆 ; https://jyut.net/query?q=燜"
+        },
+        {
+          "id": 95356,
+          "char": "爭上游",
+          "previous_jyutping": "zang1 soeng6 jau4",
+          "jyutping": "zang1 soeng6 jau4",
+          "alternatives": [
+            "zaang1 soeng6 jau4"
+          ],
+          "note": "爭取、爭論、爭奪義的 zang1 文讀與 zaang1 現代口語同義；日常短語先列語音、完整書面詞沿原文讀，各保留另一音；不加入怎麼 zam2 或諍義 zaang3。",
+          "reference": "https://jyut.net/query?q=爭"
+        },
+        {
+          "id": 95357,
+          "char": "爭作",
+          "previous_jyutping": "zang1 zok3",
+          "jyutping": "zang1 zok3",
+          "alternatives": [
+            "zaang1 zok3"
+          ],
+          "note": "爭取、爭論、爭奪義的 zang1 文讀與 zaang1 現代口語同義；日常短語先列語音、完整書面詞沿原文讀，各保留另一音；不加入怎麼 zam2 或諍義 zaang3。",
+          "reference": "https://jyut.net/query?q=爭"
+        },
+        {
+          "id": 95358,
+          "char": "爭價",
+          "previous_jyutping": "zang1 gaa3",
+          "jyutping": "zang1 gaa3",
+          "alternatives": [
+            "zaang1 gaa3"
+          ],
+          "note": "爭取、爭論、爭奪義的 zang1 文讀與 zaang1 現代口語同義；日常短語先列語音、完整書面詞沿原文讀，各保留另一音；不加入怎麼 zam2 或諍義 zaang3。",
+          "reference": "https://jyut.net/query?q=爭"
+        },
+        {
+          "id": 95359,
+          "char": "爭優",
+          "previous_jyutping": "zang1 jau1",
+          "jyutping": "zang1 jau1",
+          "alternatives": [
+            "zaang1 jau1"
+          ],
+          "note": "爭取、爭論、爭奪義的 zang1 文讀與 zaang1 現代口語同義；日常短語先列語音、完整書面詞沿原文讀，各保留另一音；不加入怎麼 zam2 或諍義 zaang3。",
+          "reference": "https://jyut.net/query?q=爭"
+        },
+        {
+          "id": 95360,
+          "char": "爭先後",
+          "previous_jyutping": "zang1 sin1 hau6",
+          "jyutping": "zang1 sin1 hau6",
+          "alternatives": [
+            "zaang1 sin1 hau6"
+          ],
+          "note": "爭取、爭論、爭奪義的 zang1 文讀與 zaang1 現代口語同義；日常短語先列語音、完整書面詞沿原文讀，各保留另一音；不加入怎麼 zam2 或諍義 zaang3。",
+          "reference": "https://jyut.net/query?q=爭"
+        },
+        {
+          "id": 95361,
+          "char": "爭先發言",
+          "previous_jyutping": "zang1 sin1 faat3 jin4",
+          "jyutping": "zang1 sin1 faat3 jin4",
+          "alternatives": [
+            "zaang1 sin1 faat3 jin4"
+          ],
+          "note": "爭取、爭論、爭奪義的 zang1 文讀與 zaang1 現代口語同義；日常短語先列語音、完整書面詞沿原文讀，各保留另一音；不加入怎麼 zam2 或諍義 zaang3。",
+          "reference": "https://jyut.net/query?q=爭"
+        },
+        {
+          "id": 95362,
+          "char": "爭光榮",
+          "previous_jyutping": "zang1 gwong1 wing4",
+          "jyutping": "zang1 gwong1 wing4",
+          "alternatives": [
+            "zaang1 gwong1 wing4"
+          ],
+          "note": "爭取、爭論、爭奪義的 zang1 文讀與 zaang1 現代口語同義；日常短語先列語音、完整書面詞沿原文讀，各保留另一音；不加入怎麼 zam2 或諍義 zaang3。",
+          "reference": "https://jyut.net/query?q=爭"
+        },
+        {
+          "id": 95364,
+          "char": "爭分奪秒",
+          "previous_jyutping": "zang1 fan1 dyut6 miu5",
+          "jyutping": "zang1 fan1 dyut6 miu5",
+          "alternatives": [
+            "zaang1 fan1 dyut6 miu5"
+          ],
+          "note": "爭取、爭論、爭奪義的 zang1 文讀與 zaang1 現代口語同義；日常短語先列語音、完整書面詞沿原文讀，各保留另一音；不加入怎麼 zam2 或諍義 zaang3。",
+          "reference": "https://jyut.net/query?q=爭"
+        },
+        {
+          "id": 95365,
+          "char": "爭利",
+          "previous_jyutping": "zang1 lei6",
+          "jyutping": "zaang1 lei6",
+          "alternatives": [
+            "zang1 lei6"
+          ],
+          "note": "爭取、爭論、爭奪義的 zang1 文讀與 zaang1 現代口語同義；日常短語先列語音、完整書面詞沿原文讀，各保留另一音；不加入怎麼 zam2 或諍義 zaang3。",
+          "reference": "https://jyut.net/query?q=爭"
+        },
+        {
+          "id": 95366,
+          "char": "爭利益",
+          "previous_jyutping": "zang1 lei6 jik1",
+          "jyutping": "zaang1 lei6 jik1",
+          "alternatives": [
+            "zang1 lei6 jik1"
+          ],
+          "note": "爭取、爭論、爭奪義的 zang1 文讀與 zaang1 現代口語同義；日常短語先列語音、完整書面詞沿原文讀，各保留另一音；不加入怎麼 zam2 或諍義 zaang3。",
+          "reference": "https://jyut.net/query?q=爭"
+        },
+        {
+          "id": 95368,
+          "char": "爭功",
+          "previous_jyutping": "zang1 gung1",
+          "jyutping": "zaang1 gung1",
+          "alternatives": [
+            "zang1 gung1"
+          ],
+          "note": "爭取、爭論、爭奪義的 zang1 文讀與 zaang1 現代口語同義；日常短語先列語音、完整書面詞沿原文讀，各保留另一音；不加入怎麼 zam2 或諍義 zaang3。",
+          "reference": "https://jyut.net/query?q=爭"
+        },
+        {
+          "id": 95369,
+          "char": "爭功勞",
+          "previous_jyutping": "zang1 gung1 lou4",
+          "jyutping": "zaang1 gung1 lou4",
+          "alternatives": [
+            "zang1 gung1 lou4"
+          ],
+          "note": "爭取、爭論、爭奪義的 zang1 文讀與 zaang1 現代口語同義；日常短語先列語音、完整書面詞沿原文讀，各保留另一音；不加入怎麼 zam2 或諍義 zaang3。",
+          "reference": "https://jyut.net/query?q=爭"
+        },
+        {
+          "id": 95370,
+          "char": "爭功諉過",
+          "previous_jyutping": "zang1 gung1 wai2 gwo3",
+          "jyutping": "zang1 gung1 wai2 gwo3",
+          "alternatives": [
+            "zaang1 gung1 wai2 gwo3"
+          ],
+          "note": "爭取、爭論、爭奪義的 zang1 文讀與 zaang1 現代口語同義；日常短語先列語音、完整書面詞沿原文讀，各保留另一音；不加入怎麼 zam2 或諍義 zaang3。",
+          "reference": "https://jyut.net/query?q=爭"
+        },
+        {
+          "id": 95371,
+          "char": "爭勝好強",
+          "previous_jyutping": "zang1 sing3 hou3 koeng4",
+          "jyutping": "zang1 sing3 hou3 koeng4",
+          "alternatives": [
+            "zaang1 sing3 hou3 koeng4"
+          ],
+          "note": "爭取、爭論、爭奪義的 zang1 文讀與 zaang1 現代口語同義；日常短語先列語音、完整書面詞沿原文讀，各保留另一音；不加入怎麼 zam2 或諍義 zaang3。",
+          "reference": "https://jyut.net/query?q=爭"
+        },
+        {
+          "id": 95373,
+          "char": "爭取時間",
+          "previous_jyutping": "zang1 ceoi2 si4 gaan1",
+          "jyutping": "zang1 ceoi2 si4 gaan1",
+          "alternatives": [
+            "zaang1 ceoi2 si4 gaan1"
+          ],
+          "note": "爭取、爭論、爭奪義的 zang1 文讀與 zaang1 現代口語同義；日常短語先列語音、完整書面詞沿原文讀，各保留另一音；不加入怎麼 zam2 或諍義 zaang3。",
+          "reference": "https://jyut.net/query?q=爭"
+        },
+        {
+          "id": 95375,
+          "char": "爭名",
+          "previous_jyutping": "zang1 ming4",
+          "jyutping": "zaang1 ming4",
+          "alternatives": [
+            "zang1 ming4"
+          ],
+          "note": "爭取、爭論、爭奪義的 zang1 文讀與 zaang1 現代口語同義；日常短語先列語音、完整書面詞沿原文讀，各保留另一音；不加入怎麼 zam2 或諍義 zaang3。",
+          "reference": "https://jyut.net/query?q=爭"
+        },
+        {
+          "id": 95376,
+          "char": "爭名利",
+          "previous_jyutping": "zang1 ming4 lei6",
+          "jyutping": "zaang1 ming4 lei6",
+          "alternatives": [
+            "zang1 ming4 lei6"
+          ],
+          "note": "爭取、爭論、爭奪義的 zang1 文讀與 zaang1 現代口語同義；日常短語先列語音、完整書面詞沿原文讀，各保留另一音；不加入怎麼 zam2 或諍義 zaang3。",
+          "reference": "https://jyut.net/query?q=爭"
+        },
+        {
+          "id": 95377,
+          "char": "爭名競利",
+          "previous_jyutping": "zang1 ming4 ging3 lei6",
+          "jyutping": "zang1 ming4 ging3 lei6",
+          "alternatives": [
+            "zaang1 ming4 ging3 lei6"
+          ],
+          "note": "爭取、爭論、爭奪義的 zang1 文讀與 zaang1 現代口語同義；日常短語先列語音、完整書面詞沿原文讀，各保留另一音；不加入怎麼 zam2 或諍義 zaang3。",
+          "reference": "https://jyut.net/query?q=爭"
+        },
+        {
+          "id": 95378,
+          "char": "爭名謀位",
+          "previous_jyutping": "zang1 ming4 mau4 wai6",
+          "jyutping": "zang1 ming4 mau4 wai6",
+          "alternatives": [
+            "zaang1 ming4 mau4 wai6"
+          ],
+          "note": "爭取、爭論、爭奪義的 zang1 文讀與 zaang1 現代口語同義；日常短語先列語音、完整書面詞沿原文讀，各保留另一音；不加入怎麼 zam2 或諍義 zaang3。",
+          "reference": "https://jyut.net/query?q=爭"
+        },
+        {
+          "id": 95379,
+          "char": "爭吵不休",
+          "previous_jyutping": "zang1 caau2 bat1 jau1",
+          "jyutping": "zang1 caau2 bat1 jau1",
+          "alternatives": [
+            "zaang1 caau2 bat1 jau1"
+          ],
+          "note": "爭取、爭論、爭奪義的 zang1 文讀與 zaang1 現代口語同義；日常短語先列語音、完整書面詞沿原文讀，各保留另一音；不加入怎麼 zam2 或諍義 zaang3。",
+          "reference": "https://jyut.net/query?q=爭"
+        },
+        {
+          "id": 95383,
+          "char": "爭妍鬥勝",
+          "previous_jyutping": "zang1 jin4 dau3 sing3",
+          "jyutping": "zang1 jin4 dau3 sing3",
+          "alternatives": [
+            "zaang1 jin4 dau3 sing3"
+          ],
+          "note": "爭取、爭論、爭奪義的 zang1 文讀與 zaang1 現代口語同義；日常短語先列語音、完整書面詞沿原文讀，各保留另一音；不加入怎麼 zam2 或諍義 zaang3。",
+          "reference": "https://jyut.net/query?q=爭"
+        },
+        {
+          "id": 95384,
+          "char": "爭妍鬥豔",
+          "previous_jyutping": "zang1 jin4 dau3 jim6",
+          "jyutping": "zang1 jin4 dau3 jim6",
+          "alternatives": [
+            "zaang1 jin4 dau3 jim6"
+          ],
+          "note": "爭取、爭論、爭奪義的 zang1 文讀與 zaang1 現代口語同義；日常短語先列語音、完整書面詞沿原文讀，各保留另一音；不加入怎麼 zam2 或諍義 zaang3。",
+          "reference": "https://jyut.net/query?q=爭"
+        },
+        {
+          "id": 95385,
+          "char": "爭強",
+          "previous_jyutping": "zang1 koeng4",
+          "jyutping": "zaang1 koeng4",
+          "alternatives": [
+            "zang1 koeng4"
+          ],
+          "note": "爭取、爭論、爭奪義的 zang1 文讀與 zaang1 現代口語同義；日常短語先列語音、完整書面詞沿原文讀，各保留另一音；不加入怎麼 zam2 或諍義 zaang3。",
+          "reference": "https://jyut.net/query?q=爭"
+        },
+        {
+          "id": 95387,
+          "char": "爭強鬥狠",
+          "previous_jyutping": "zang1 koeng4 dau3 han2",
+          "jyutping": "zang1 koeng4 dau3 han2",
+          "alternatives": [
+            "zaang1 koeng4 dau3 han2"
+          ],
+          "note": "爭取、爭論、爭奪義的 zang1 文讀與 zaang1 現代口語同義；日常短語先列語音、完整書面詞沿原文讀，各保留另一音；不加入怎麼 zam2 或諍義 zaang3。",
+          "reference": "https://jyut.net/query?q=爭"
+        },
+        {
+          "id": 95388,
+          "char": "爭持不下",
+          "previous_jyutping": "zang1 ci4 bat1 haa6",
+          "jyutping": "zang1 ci4 bat1 haa6",
+          "alternatives": [
+            "zaang1 ci4 bat1 haa6"
+          ],
+          "note": "爭取、爭論、爭奪義的 zang1 文讀與 zaang1 現代口語同義；日常短語先列語音、完整書面詞沿原文讀，各保留另一音；不加入怎麼 zam2 或諍義 zaang3。",
+          "reference": "https://jyut.net/query?q=爭"
+        },
+        {
+          "id": 95391,
+          "char": "爭斤論兩",
+          "previous_jyutping": "zang1 gan1 leon6 loeng5",
+          "jyutping": "zang1 gan1 leon6 loeng5",
+          "alternatives": [
+            "zaang1 gan1 leon6 loeng5"
+          ],
+          "note": "爭取、爭論、爭奪義的 zang1 文讀與 zaang1 現代口語同義；日常短語先列語音、完整書面詞沿原文讀，各保留另一音；不加入怎麼 zam2 或諍義 zaang3。",
+          "reference": "https://jyut.net/query?q=爭"
+        },
+        {
+          "id": 95393,
+          "char": "爭權力",
+          "previous_jyutping": "zang1 kyun4 lik6",
+          "jyutping": "zaang1 kyun4 lik6",
+          "alternatives": [
+            "zang1 kyun4 lik6"
+          ],
+          "note": "爭取、爭論、爭奪義的 zang1 文讀與 zaang1 現代口語同義；日常短語先列語音、完整書面詞沿原文讀，各保留另一音；不加入怎麼 zam2 或諍義 zaang3。",
+          "reference": "https://jyut.net/query?q=爭"
+        },
+        {
+          "id": 95396,
+          "char": "爭產",
+          "previous_jyutping": "zang1 caan2",
+          "jyutping": "zaang1 caan2",
+          "alternatives": [
+            "zang1 caan2"
+          ],
+          "note": "爭取、爭論、爭奪義的 zang1 文讀與 zaang1 現代口語同義；日常短語先列語音、完整書面詞沿原文讀，各保留另一音；不加入怎麼 zam2 或諍義 zaang3。",
+          "reference": "https://jyut.net/query?q=爭"
+        },
+        {
+          "id": 95397,
+          "char": "爭相搶購",
+          "previous_jyutping": "zang1 soeng1 coeng2 kau3",
+          "jyutping": "zang1 soeng1 coeng2 kau3",
+          "alternatives": [
+            "zaang1 soeng1 coeng2 kau3"
+          ],
+          "note": "爭取、爭論、爭奪義的 zang1 文讀與 zaang1 現代口語同義；日常短語先列語音、完整書面詞沿原文讀，各保留另一音；不加入怎麼 zam2 或諍義 zaang3。",
+          "reference": "https://jyut.net/query?q=爭"
+        },
+        {
+          "id": 95398,
+          "char": "爭相羅致",
+          "previous_jyutping": "zang1 soeng1 lo4 zi3",
+          "jyutping": "zang1 soeng1 lo4 zi3",
+          "alternatives": [
+            "zaang1 soeng1 lo4 zi3"
+          ],
+          "note": "爭取、爭論、爭奪義的 zang1 文讀與 zaang1 現代口語同義；日常短語先列語音、完整書面詞沿原文讀，各保留另一音；不加入怎麼 zam2 或諍義 zaang3。",
+          "reference": "https://jyut.net/query?q=爭"
+        },
+        {
+          "id": 95401,
+          "char": "爭芳鬥豔",
+          "previous_jyutping": "zang1 fong1 dau3 jim6",
+          "jyutping": "zang1 fong1 dau3 jim6",
+          "alternatives": [
+            "zaang1 fong1 dau3 jim6"
+          ],
+          "note": "爭取、爭論、爭奪義的 zang1 文讀與 zaang1 現代口語同義；日常短語先列語音、完整書面詞沿原文讀，各保留另一音；不加入怎麼 zam2 或諍義 zaang3。",
+          "reference": "https://jyut.net/query?q=爭"
+        },
+        {
+          "id": 95402,
+          "char": "爭訟不已",
+          "previous_jyutping": "zang1 zung6 bat1 ji5",
+          "jyutping": "zang1 zung6 bat1 ji5",
+          "alternatives": [
+            "zaang1 zung6 bat1 ji5"
+          ],
+          "note": "爭取、爭論、爭奪義的 zang1 文讀與 zaang1 現代口語同義；日常短語先列語音、完整書面詞沿原文讀，各保留另一音；不加入怎麼 zam2 或諍義 zaang3。",
+          "reference": "https://jyut.net/query?q=爭"
+        },
+        {
+          "id": 95403,
+          "char": "爭論者",
+          "previous_jyutping": "zang1 leon6 ze2",
+          "jyutping": "zang1 leon6 ze2",
+          "alternatives": [
+            "zaang1 leon6 ze2"
+          ],
+          "note": "爭取、爭論、爭奪義的 zang1 文讀與 zaang1 現代口語同義；日常短語先列語音、完整書面詞沿原文讀，各保留另一音；不加入怎麼 zam2 或諍義 zaang3。",
+          "reference": "https://jyut.net/query?q=爭"
+        },
+        {
+          "id": 95404,
+          "char": "爭論點",
+          "previous_jyutping": "zang1 leon6 dim2",
+          "jyutping": "zang1 leon6 dim2",
+          "alternatives": [
+            "zaang1 leon6 dim2"
+          ],
+          "note": "爭取、爭論、爭奪義的 zang1 文讀與 zaang1 現代口語同義；日常短語先列語音、完整書面詞沿原文讀，各保留另一音；不加入怎麼 zam2 或諍義 zaang3。",
+          "reference": "https://jyut.net/query?q=爭"
+        },
+        {
+          "id": 95405,
+          "char": "爭議地區",
+          "previous_jyutping": "zang1 ji5 dei6 keoi1",
+          "jyutping": "zang1 ji5 dei6 keoi1",
+          "alternatives": [
+            "zaang1 ji5 dei6 keoi1"
+          ],
+          "note": "爭取、爭論、爭奪義的 zang1 文讀與 zaang1 現代口語同義；日常短語先列語音、完整書面詞沿原文讀，各保留另一音；不加入怎麼 zam2 或諍義 zaang3。",
+          "reference": "https://jyut.net/query?q=爭"
+        },
+        {
+          "id": 95408,
+          "char": "爭起",
+          "previous_jyutping": "zang1 hei2",
+          "jyutping": "zaang1 hei2",
+          "alternatives": [
+            "zang1 hei2"
+          ],
+          "note": "爭取、爭論、爭奪義的 zang1 文讀與 zaang1 現代口語同義；日常短語先列語音、完整書面詞沿原文讀，各保留另一音；不加入怎麼 zam2 或諍義 zaang3。",
+          "reference": "https://jyut.net/query?q=爭"
+        },
+        {
+          "id": 95409,
+          "char": "爭辦",
+          "previous_jyutping": "zang1 baan6",
+          "jyutping": "zang1 baan6",
+          "alternatives": [
+            "zaang1 baan6"
+          ],
+          "note": "爭取、爭論、爭奪義的 zang1 文讀與 zaang1 現代口語同義；日常短語先列語音、完整書面詞沿原文讀，各保留另一音；不加入怎麼 zam2 或諍義 zaang3。",
+          "reference": "https://jyut.net/query?q=爭"
+        },
+        {
+          "id": 95410,
+          "char": "爭辯",
+          "previous_jyutping": "zang1 bin6",
+          "jyutping": "zang1 bin6",
+          "alternatives": [
+            "zaang1 bin6"
+          ],
+          "note": "爭取、爭論、爭奪義的 zang1 文讀與 zaang1 現代口語同義；日常短語先列語音、完整書面詞沿原文讀，各保留另一音；不加入怎麼 zam2 或諍義 zaang3。",
+          "reference": "https://jyut.net/query?q=爭"
+        },
+        {
+          "id": 95411,
+          "char": "爭過",
+          "previous_jyutping": "zang1 gwo3",
+          "jyutping": "zaang1 gwo3",
+          "alternatives": [
+            "zang1 gwo3"
+          ],
+          "note": "爭取、爭論、爭奪義的 zang1 文讀與 zaang1 現代口語同義；日常短語先列語音、完整書面詞沿原文讀，各保留另一音；不加入怎麼 zam2 或諍義 zaang3。",
+          "reference": "https://jyut.net/query?q=爭"
+        },
+        {
+          "id": 95412,
+          "char": "爭風吃醋",
+          "previous_jyutping": "zang1 fung1 hek3 cou3",
+          "jyutping": "zang1 fung1 hek3 cou3",
+          "alternatives": [
+            "zaang1 fung1 hek3 cou3"
+          ],
+          "note": "爭取、爭論、爭奪義的 zang1 文讀與 zaang1 現代口語同義；日常短語先列語音、完整書面詞沿原文讀，各保留另一音；不加入怎麼 zam2 或諍義 zaang3。",
+          "reference": "https://jyut.net/query?q=爭"
+        },
+        {
+          "id": 95414,
+          "char": "爭長競短",
+          "previous_jyutping": "zang1 coeng4 ging3 dyun2",
+          "jyutping": "zang1 coeng4 ging3 dyun2",
+          "alternatives": [
+            "zaang1 coeng4 ging3 dyun2"
+          ],
+          "note": "爭取、爭論、爭奪義的 zang1 文讀與 zaang1 現代口語同義；日常短語先列語音、完整書面詞沿原文讀，各保留另一音；不加入怎麼 zam2 或諍義 zaang3。",
+          "reference": "https://jyut.net/query?q=爭"
+        },
+        {
+          "id": 95417,
+          "char": "爭霸戰",
+          "previous_jyutping": "zang1 baa3 zin3",
+          "jyutping": "zang1 baa3 zin3",
+          "alternatives": [
+            "zaang1 baa3 zin3"
+          ],
+          "note": "爭取、爭論、爭奪義的 zang1 文讀與 zaang1 現代口語同義；日常短語先列語音、完整書面詞沿原文讀，各保留另一音；不加入怎麼 zam2 或諍義 zaang3。",
+          "reference": "https://jyut.net/query?q=爭"
+        },
+        {
+          "id": 95418,
+          "char": "爭鬥不休",
+          "previous_jyutping": "zang1 dau3 bat1 jau1",
+          "jyutping": "zang1 dau3 bat1 jau1",
+          "alternatives": [
+            "zaang1 dau3 bat1 jau1"
+          ],
+          "note": "爭取、爭論、爭奪義的 zang1 文讀與 zaang1 現代口語同義；日常短語先列語音、完整書面詞沿原文讀，各保留另一音；不加入怎麼 zam2 或諍義 zaang3。",
+          "reference": "https://jyut.net/query?q=爭"
+        },
+        {
+          "id": 95419,
+          "char": "爭鮮鬥豔",
+          "previous_jyutping": "zang1 sin1 dau3 jim6",
+          "jyutping": "zang1 sin1 dau3 jim6",
+          "alternatives": [
+            "zaang1 sin1 dau3 jim6"
+          ],
+          "note": "爭取、爭論、爭奪義的 zang1 文讀與 zaang1 現代口語同義；日常短語先列語音、完整書面詞沿原文讀，各保留另一音；不加入怎麼 zam2 或諍義 zaang3。",
+          "reference": "https://jyut.net/query?q=爭"
+        },
+        {
+          "id": 95420,
+          "char": "爭點",
+          "previous_jyutping": "zang1 dim2",
+          "jyutping": "zaang1 dim2",
+          "alternatives": [
+            "zang1 dim2"
+          ],
+          "note": "爭取、爭論、爭奪義的 zang1 文讀與 zaang1 現代口語同義；日常短語先列語音、完整書面詞沿原文讀，各保留另一音；不加入怎麼 zam2 或諍義 zaang3。",
+          "reference": "https://jyut.net/query?q=爭"
+        },
+        {
+          "id": 95454,
+          "char": "父為子隱",
+          "previous_jyutping": "fu6 wai4 zi2 jan2",
+          "jyutping": "fu6 wai6 zi2 jan2",
+          "alternatives": [],
+          "note": "父為子隱的為為替子隱瞞 wai6，非成為／作為 wai4。",
+          "reference": "https://jyut.net/query?q=為"
+        },
+        {
+          "id": 95434,
+          "char": "父女之情",
+          "previous_jyutping": "fu6 neoi5 zi1 cing4",
+          "jyutping": "fu6 neoi5 zi1 cing4",
+          "alternatives": [
+            "fu6 neoi2 zi1 cing4"
+          ],
+          "note": "父女的女保留完整家庭稱謂 neoi5 優先、日常變調 neoi2；不按孤字原調一律剔除變調。",
+          "reference": "https://www.savepropercantonese.com/files/save-proper-cantonese-book-3ed.pdf"
+        },
+        {
+          "id": 95435,
+          "char": "父女倆",
+          "previous_jyutping": "fu6 neoi5 loeng5",
+          "jyutping": "fu6 neoi5 loeng5",
+          "alternatives": [
+            "fu6 neoi2 loeng5"
+          ],
+          "note": "父女的女保留完整家庭稱謂 neoi5 優先、日常變調 neoi2；不按孤字原調一律剔除變調。",
+          "reference": "https://www.savepropercantonese.com/files/save-proper-cantonese-book-3ed.pdf"
+        },
+        {
+          "id": 95436,
+          "char": "父女情",
+          "previous_jyutping": "fu6 neoi5 cing4",
+          "jyutping": "fu6 neoi5 cing4",
+          "alternatives": [
+            "fu6 neoi2 cing4"
+          ],
+          "note": "父女的女保留完整家庭稱謂 neoi5 優先、日常變調 neoi2；不按孤字原調一律剔除變調。",
+          "reference": "https://www.savepropercantonese.com/files/save-proper-cantonese-book-3ed.pdf"
+        },
+        {
+          "id": 95437,
+          "char": "父女關係",
+          "previous_jyutping": "fu6 neoi5 gwaan1 hai6",
+          "jyutping": "fu6 neoi5 gwaan1 hai6",
+          "alternatives": [
+            "fu6 neoi2 gwaan1 hai6"
+          ],
+          "note": "父女的女保留完整家庭稱謂 neoi5 優先、日常變調 neoi2；不按孤字原調一律剔除變調。",
+          "reference": "https://www.savepropercantonese.com/files/save-proper-cantonese-book-3ed.pdf"
+        },
+        {
+          "id": 95462,
+          "char": "爺爺奶奶",
+          "previous_jyutping": "je4 je4 naai5 naai5",
+          "jyutping": "je4 je4 naai4 naai2",
+          "alternatives": [],
+          "note": "祖母奶奶的現代完整詞例是 naai4 naai2，不能沿兩個奶的孤字 naai5 拼出祖母詞音；沒有擴大刪改裸奶奶的其他原來源。",
+          "reference": "https://www.cantonese.sheik.co.uk/dictionary/words/11337/"
+        },
+        {
+          "id": 95551,
+          "char": "版面設計",
+          "previous_jyutping": "baan2 min2 cit3 gai3",
+          "jyutping": "baan2 min2 cit3 gai3",
+          "alternatives": [
+            "baan2 min6 cit3 gai3"
+          ],
+          "note": "版面設計先列完整詞級 min2，保留現代 min6 文讀，不以詞語本身使用度取代讀音先後。",
+          "reference": "AI:whole-word-context"
+        },
+        {
+          "id": 95606,
+          "char": "牙疼",
+          "previous_jyutping": "ngaa4 tang4",
+          "jyutping": "ngaa4 tang4",
+          "alternatives": [
+            "ngaa4 tung3"
+          ],
+          "note": "香港中學生中文詞典直接牙疼 tang4；現代字書疼痛俗讀 tung3 亦保留較後，不把通用書面牙疼當成方言詞。",
+          "reference": "https://jyut.net/query?q=疼 ; https://jyutdictionary.com/dictionary/entry/牙疼"
+        },
+        {
+          "id": 95624,
+          "char": "牙線夾",
+          "previous_jyutping": "ngaa4 sin3 gaap3",
+          "jyutping": "ngaa4 sin3 gaap2",
+          "alternatives": [
+            "ngaa4 sin3 gaap3"
+          ],
+          "note": "牙線夾為夾持牙線的器具，先列器物名詞日常變調 gaap2，保留 gaap3 文讀；完整組合及先後為 AI 判斷，非字典整詞次數。",
+          "reference": "https://jyut.net/query?q=夾 ; https://swissparo.waca.tw/en/product/detail/1780662"
+        },
+        {
+          "id": 95625,
+          "char": "牙縫裏",
+          "previous_jyutping": "ngaa4 fung4 leoi5",
+          "jyutping": "ngaa4 fung4 leoi5",
+          "alternatives": [
+            "ngaa4 fung6 leoi5"
+          ],
+          "note": "完整牙縫、牙縫刷有現代 fung4 日常詞例；縫的裂隙義 fung6 文讀仍保留，不能把 fung4 限成縫紉動詞而誤刪。",
+          "reference": "https://cantonese.sheik.co.uk/dictionary/characters/2871/?full=true"
+        },
+        {
+          "id": 95697,
+          "char": "牛腱",
+          "previous_jyutping": "ngau4 gin3",
+          "jyutping": "ngau4 zin2",
+          "alternatives": [
+            "ngau4 gin3"
+          ],
+          "note": "牛腱的現代香港完整詞例 zin2 有 CantoDict 及中大詞項 ngau zin；gin3 為完整書面詞例亦保留，非把另一同義字的音臆套。",
+          "reference": "https://www.cantonese.sheik.co.uk/dictionary/words/61258/ ; https://apps.itsc.cuhk.edu.hk/hanyu/Page/Pinyin.aspx?target=ngau ; https://shyyp.net/hant/phrase/牛腱"
+        },
+        {
+          "id": 95711,
+          "char": "牛頓定律",
+          "previous_jyutping": "ngau4 deon6 ding6 leot6",
+          "jyutping": "ngau4 deon1 ding6 leot6",
+          "alternatives": [
+            "ngau4 deon6 ding6 leot6"
+          ],
+          "note": "初審把 deon1 誤限為叩首音的判斷已撤回；粵典完整牛頓人名及單位均收 deon1，先列既存日常變調，CantoDict deon6 文讀保留，未改舊裸詞或其分級。",
+          "reference": "https://words.hk/zidin/牛頓 ; https://www.cantonese.sheik.co.uk/dictionary/characters/3627/ ; https://jyutdictionary.com/dictionary/entry/牛頓"
+        },
+        {
+          "id": 95732,
+          "char": "牢繫",
+          "previous_jyutping": "lou4 hai6",
+          "jyutping": "lou4 hai6",
+          "alternatives": [],
+          "note": "牢系取牢固繫住義，正字牢繫 hai6；非機械系統的系，不全局替換。",
+          "reference": "AI:whole-word-context"
+        },
+        {
+          "id": 95747,
+          "char": "物以稀為貴",
+          "previous_jyutping": "mat6 ji5 hei1 gwai3",
+          "jyutping": "mat6 ji5 hei1 wai4 gwai3",
+          "alternatives": [],
+          "note": "物以稀貴補足完整慣用語物以稀為貴，加入為 wai4 音節並重算碼，原形留檔。",
+          "reference": "AI:whole-word-context"
+        },
+        {
+          "id": 95800,
+          "char": "物以稀為貴",
+          "previous_jyutping": "mat6 hei1 wai4 gwai3",
+          "jyutping": "mat6 ji5 hei1 wai4 gwai3",
+          "alternatives": [],
+          "note": "物稀為貴補足完整慣用語物以稀為貴，加入以 ji5 音節並重算碼，與同批正字查重。",
+          "reference": "AI:whole-word-context"
+        },
+        {
+          "id": 95787,
+          "char": "物理學家",
+          "previous_jyutping": "mat6 lei5 gaa1",
+          "jyutping": "mat6 lei5 hok6 gaa1",
+          "alternatives": [],
+          "note": "物理家按通行同義完整物理學家查重，補回學 hok6 音節；原縮寫留檔，不只改字不改音節。",
+          "reference": "AI:whole-word-context"
+        },
+        {
+          "id": 95753,
+          "char": "物價上漲",
+          "previous_jyutping": "mat6 gaa3 soeng6 zoeng3",
+          "jyutping": "mat6 gaa3 soeng6 zoeng3",
+          "alternatives": [
+            "mat6 gaa3 soeng6 zoeng2"
+          ],
+          "note": "上漲完整粵典詞例採 soeng6 zoeng3，另保留現代 zoeng2；不能只憑上是移動便改 soeng5。",
+          "reference": "https://jyutdictionary.com/dictionary/entry/上漲 ; https://cala.hk/assets/CRAT_Appendix2_bystroke_1.5.pdf"
+        },
+        {
+          "id": 95762,
+          "char": "物價飛漲",
+          "previous_jyutping": "mat6 gaa3 fei1 zoeng3",
+          "jyutping": "mat6 gaa3 fei1 zoeng3",
+          "alternatives": [
+            "mat6 gaa3 fei1 zoeng2"
+          ],
+          "note": "上漲完整粵典詞例採 soeng6 zoeng3，另保留現代 zoeng2；不能只憑上是移動便改 soeng5。",
+          "reference": "https://jyutdictionary.com/dictionary/entry/上漲 ; https://cala.hk/assets/CRAT_Appendix2_bystroke_1.5.pdf"
+        },
+        {
+          "id": 95912,
+          "char": "特案處理",
+          "previous_jyutping": "dak6 on3 cyu5 lei5",
+          "jyutping": "dak6 on3 cyu2 lei5",
+          "alternatives": [
+            "dak6 on3 cyu5 lei5"
+          ],
+          "note": "處理的 cyu2、cyu5 均有 LSHK 完整詞表，先列常見 cyu2、保留 cyu5；不一律視為錯音。",
+          "reference": "https://cala.hk/assets/CRAT_Appendix2_bystroke_1.5.pdf ; https://products.innovativelanguage.com/books/findaway_PDFs/Cantonese/cantonese_business_kobo_audiobook.pdf"
+        },
+        {
+          "id": 95958,
+          "char": "特等病房",
+          "previous_jyutping": "dak6 dang2 beng6 fong4",
+          "jyutping": "dak6 dang2 beng6 fong2",
+          "alternatives": [
+            "dak6 dang2 beng6 fong4"
+          ],
+          "note": "病房完整粵典採日常 fong2，文讀 fong4 保留較後；病一律 beng6。",
+          "reference": "https://words.hk/zidin/病房"
+        },
+        {
+          "id": 95984,
+          "char": "特賣會",
+          "previous_jyutping": "dak6 maai6 wui2",
+          "jyutping": "dak6 maai6 wui2",
+          "alternatives": [
+            "dak6 maai6 wui6"
+          ],
+          "note": "特賣會為活動名詞 wui2 優先、wui6 文讀保留，不採能力義 wui5。",
+          "reference": "AI:whole-word-context"
+        }
+      ],
+      "second_pass_familiarity_withdrawals": [
+        {
+          "id": 94036,
+          "char": "無為而成",
+          "previous_jyutping": "mou4 wai4 ji4 sing4",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94037,
+          "char": "無為自化",
+          "previous_jyutping": "mou4 wai4 zi6 faa3",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94038,
+          "char": "無為自成",
+          "previous_jyutping": "mou4 wai4 zi6 sing4",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94119,
+          "char": "無絕",
+          "previous_jyutping": "mou4 zyut6",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94121,
+          "char": "無給職",
+          "previous_jyutping": "mou4 kap1 zik1",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94141,
+          "char": "無罣無礙",
+          "previous_jyutping": "mou4 gwaa3 mou4 ngoi6",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94148,
+          "char": "無聊者",
+          "previous_jyutping": "mou4 liu4 ze2",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94155,
+          "char": "無能無力",
+          "previous_jyutping": "mou4 nang4 mou4 lik6",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94162,
+          "char": "無腸公子",
+          "previous_jyutping": "mou4 coeng4 gung1 zi2",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94181,
+          "char": "無補於世",
+          "previous_jyutping": "mou4 bou2 jyu1 sai3",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94182,
+          "char": "無補於時",
+          "previous_jyutping": "mou4 bou2 jyu1 si4",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94220,
+          "char": "無足稱道",
+          "previous_jyutping": "mou4 zuk1 cing1 dou6",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94221,
+          "char": "無跡可求",
+          "previous_jyutping": "mou4 zik1 ho2 kau4",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94228,
+          "char": "無遠不屆",
+          "previous_jyutping": "mou4 jyun5 bat1 gaai3",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94244,
+          "char": "無間冬夏",
+          "previous_jyutping": "mou4 gaan3 dung1 haa6",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94245,
+          "char": "無間可乘",
+          "previous_jyutping": "mou4 gaan3 ho2 sing4",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94294,
+          "char": "無黨",
+          "previous_jyutping": "mou4 dong2",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94295,
+          "char": "無黨無偏",
+          "previous_jyutping": "mou4 dong2 mou4 pin1",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94300,
+          "char": "焦切",
+          "previous_jyutping": "ziu1 cit3",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94316,
+          "char": "焦眉苦臉",
+          "previous_jyutping": "ziu1 mei4 fu2 lim5",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94335,
+          "char": "煅燒爐",
+          "previous_jyutping": "dyun3 siu1 lou4",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94336,
+          "char": "煅石灰",
+          "previous_jyutping": "dyun3 sek6 fui1",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94347,
+          "char": "煉製廠",
+          "previous_jyutping": "lin6 zai3 cong2",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94401,
+          "char": "煙燻保藏",
+          "previous_jyutping": "jin1 fan1 bou2 cong4",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94428,
+          "char": "煙雨夢",
+          "previous_jyutping": "jin1 jyu5 mung6",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94454,
+          "char": "煤制油",
+          "previous_jyutping": "mui4 zai3 jau4",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94476,
+          "char": "煤渣路",
+          "previous_jyutping": "mui4 zaa1 lou6",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94500,
+          "char": "煦和",
+          "previous_jyutping": "heoi2 wo4",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94534,
+          "char": "照射率",
+          "previous_jyutping": "ziu3 se6 leot2",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94552,
+          "char": "照明效應",
+          "previous_jyutping": "ziu3 ming4 haau6 jing3",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94555,
+          "char": "照明負荷",
+          "previous_jyutping": "ziu3 ming4 fu6 ho6",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94586,
+          "char": "照相版",
+          "previous_jyutping": "ziu3 soeng2 baan2",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94587,
+          "char": "照相製版",
+          "previous_jyutping": "ziu3 soeng2 zai3 baan2",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94606,
+          "char": "照虛",
+          "previous_jyutping": "ziu3 heoi1",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94632,
+          "char": "煩交",
+          "previous_jyutping": "faan4 gaau1",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94638,
+          "char": "煩忙",
+          "previous_jyutping": "faan4 mong4",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94648,
+          "char": "煩細",
+          "previous_jyutping": "faan4 sai3",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94702,
+          "char": "熏製廠",
+          "previous_jyutping": "fan1 zai3 cong2",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94703,
+          "char": "熒光法",
+          "previous_jyutping": "jing4 gwong1 faat3",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94712,
+          "char": "熔化期",
+          "previous_jyutping": "jung4 faa3 kei4",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94718,
+          "char": "熔度",
+          "previous_jyutping": "jung4 dou6",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94722,
+          "char": "熔池",
+          "previous_jyutping": "jung4 ci4",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94724,
+          "char": "熔窯",
+          "previous_jyutping": "jung4 jiu4",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94725,
+          "char": "熔融指數",
+          "previous_jyutping": "jung4 jung4 zi2 sou3",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94728,
+          "char": "熔鑄工",
+          "previous_jyutping": "jung4 zyu3 gung1",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94730,
+          "char": "熙和恬靜",
+          "previous_jyutping": "hei1 wo4 tim5 zing6",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94736,
+          "char": "熟念",
+          "previous_jyutping": "suk6 nim6",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94759,
+          "char": "熟視着",
+          "previous_jyutping": "suk6 si6 zoek6",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94760,
+          "char": "熟認",
+          "previous_jyutping": "suk6 jing6",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94777,
+          "char": "熠燿",
+          "previous_jyutping": "jap1 jiu6",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94778,
+          "char": "熨整",
+          "previous_jyutping": "tong3 zing2",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94787,
+          "char": "熬心",
+          "previous_jyutping": "ngou4 sam1",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94788,
+          "char": "熬心費力",
+          "previous_jyutping": "ngou4 sam1 fai3 lik6",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94796,
+          "char": "熬磨",
+          "previous_jyutping": "ngou4 mo4",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94809,
+          "char": "熱傳導液",
+          "previous_jyutping": "jit6 cyun4 dou6 jik6",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94822,
+          "char": "熱力過程",
+          "previous_jyutping": "jit6 lik6 gwo3 cing4",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94835,
+          "char": "熱噪聲",
+          "previous_jyutping": "jit6 cou3 sing1",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94837,
+          "char": "熱壓機",
+          "previous_jyutping": "jit6 aat3 gei1",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94842,
+          "char": "熱媒",
+          "previous_jyutping": "jit6 mui4",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94844,
+          "char": "熱定型",
+          "previous_jyutping": "jit6 ding6 jing4",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94861,
+          "char": "熱心快腸",
+          "previous_jyutping": "jit6 sam1 faai3 coeng4",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94863,
+          "char": "熱心苦口",
+          "previous_jyutping": "jit6 sam1 fu2 hau2",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94874,
+          "char": "熱意",
+          "previous_jyutping": "jit6 ji3",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94880,
+          "char": "熱應力",
+          "previous_jyutping": "jit6 jing3 lik6",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94882,
+          "char": "熱控制",
+          "previous_jyutping": "jit6 hung3 zai3",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94898,
+          "char": "熱氧化",
+          "previous_jyutping": "jit6 joeng5 faa3",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94899,
+          "char": "熱水平衡",
+          "previous_jyutping": "jit6 seoi2 ping4 hang4",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94900,
+          "char": "熱水機組",
+          "previous_jyutping": "jit6 seoi2 gei1 zou2",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94905,
+          "char": "熱油循環",
+          "previous_jyutping": "jit6 jau4 ceon4 waan4",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94906,
+          "char": "熱油泵",
+          "previous_jyutping": "jit6 jau4 bam1",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94936,
+          "char": "熱能設備",
+          "previous_jyutping": "jit6 nang4 cit3 bei6",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94942,
+          "char": "熱處理爐",
+          "previous_jyutping": "jit6 cyu5 lei5 lou4",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94952,
+          "char": "熱計量",
+          "previous_jyutping": "jit6 gai3 loeng4",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94958,
+          "char": "熱軋板",
+          "previous_jyutping": "jit6 aat3 baan2",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94962,
+          "char": "熱運轉",
+          "previous_jyutping": "jit6 wan6 zyun3",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94963,
+          "char": "熱酸處理",
+          "previous_jyutping": "jit6 syun1 cyu2 lei5",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94972,
+          "char": "熱鍛",
+          "previous_jyutping": "jit6 dyun3",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94978,
+          "char": "熱電器件",
+          "previous_jyutping": "jit6 din6 hei3 gin6",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94988,
+          "char": "熱鬧滾滾",
+          "previous_jyutping": "jit6 naau6 gwan2 gwan2",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94996,
+          "char": "熾燥",
+          "previous_jyutping": "ci3 cou3",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95050,
+          "char": "燈用煤油",
+          "previous_jyutping": "dang1 jung6 mui4 jau4",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95069,
+          "char": "燎髮",
+          "previous_jyutping": "liu4 faat3",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95115,
+          "char": "燒石膏",
+          "previous_jyutping": "siu1 sek6 gou1",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95118,
+          "char": "燒結焙燒",
+          "previous_jyutping": "siu1 git3 bui6 siu1",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95119,
+          "char": "燒結爐",
+          "previous_jyutping": "siu1 git3 lou4",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95120,
+          "char": "燒結磚",
+          "previous_jyutping": "siu1 git3 zyun1",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95150,
+          "char": "燙印機",
+          "previous_jyutping": "tong3 jan3 gei1",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95165,
+          "char": "燙金機",
+          "previous_jyutping": "tong3 gam1 gei1",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95170,
+          "char": "營具",
+          "previous_jyutping": "jing4 geoi6",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95174,
+          "char": "營區規劃",
+          "previous_jyutping": "jing4 keoi1 kwai1 waak6",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95182,
+          "char": "營房管理",
+          "previous_jyutping": "jing4 fong4 gun2 lei5",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95213,
+          "char": "營部文書",
+          "previous_jyutping": "jing4 bou6 man4 syu1",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95218,
+          "char": "營銷網",
+          "previous_jyutping": "jing4 siu1 mong5",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95222,
+          "char": "營養器官",
+          "previous_jyutping": "jing4 joeng5 hei3 gun1",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95223,
+          "char": "營養學分",
+          "previous_jyutping": "jing4 joeng5 hok6 fan1",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95247,
+          "char": "燥風",
+          "previous_jyutping": "cou3 fung1",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95248,
+          "char": "燦然一新",
+          "previous_jyutping": "caan3 jin4 jat1 san1",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95259,
+          "char": "燭罐",
+          "previous_jyutping": "zuk1 gun3",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95270,
+          "char": "燻製廠",
+          "previous_jyutping": "fan1 zai3 cong2",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95284,
+          "char": "爆發音",
+          "previous_jyutping": "baau3 faat3 jam1",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95291,
+          "char": "爆裂火焰",
+          "previous_jyutping": "baau3 lit6 fo2 jim6",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95301,
+          "char": "爐腔",
+          "previous_jyutping": "lou4 hong1",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95372,
+          "char": "爭勝行為",
+          "previous_jyutping": "zang1 sing3 hang4 wai4",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95380,
+          "char": "爭執性",
+          "previous_jyutping": "zang1 zap1 sing3",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95381,
+          "char": "爭多論少",
+          "previous_jyutping": "zang1 do1 leon6 siu2",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95394,
+          "char": "爭權攘利",
+          "previous_jyutping": "zang1 kyun4 joeng4 lei6",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95399,
+          "char": "爭短論長",
+          "previous_jyutping": "zang1 dyun2 leon6 coeng4",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95413,
+          "char": "爭長",
+          "previous_jyutping": "zang1 coeng4",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95480,
+          "char": "牆上泥皮",
+          "previous_jyutping": "coeng4 soeng6 nai4 pei4",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95487,
+          "char": "牆籬",
+          "previous_jyutping": "coeng4 lei4",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95497,
+          "char": "牆面而立",
+          "previous_jyutping": "coeng4 min6 ji4 laap6",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95498,
+          "char": "牆頭詩",
+          "previous_jyutping": "coeng4 tau4 si1",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95505,
+          "char": "片審",
+          "previous_jyutping": "pin3 sam2",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95516,
+          "char": "片目",
+          "previous_jyutping": "pin3 muk6",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95519,
+          "char": "片詞只句",
+          "previous_jyutping": "pin3 ci4 zi2 geoi3",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95521,
+          "char": "片語隻辭",
+          "previous_jyutping": "pin3 jyu5 zek3 ci4",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95522,
+          "char": "片鎖",
+          "previous_jyutping": "pin3 so2",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95528,
+          "char": "片鱗只甲",
+          "previous_jyutping": "pin3 leon4 zi2 gaap3",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95529,
+          "char": "片鱗殘甲",
+          "previous_jyutping": "pin3 leon4 caan4 gaap3",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95540,
+          "char": "版模",
+          "previous_jyutping": "baan2 mou4",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95544,
+          "char": "版聊",
+          "previous_jyutping": "baan2 liu4",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95550,
+          "char": "版間",
+          "previous_jyutping": "baan2 gaan1",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95574,
+          "char": "牙周膿腫",
+          "previous_jyutping": "ngaa4 zau1 nung4 zung2",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95576,
+          "char": "牙周袋",
+          "previous_jyutping": "ngaa4 zau1 doi6",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95579,
+          "char": "牙囊",
+          "previous_jyutping": "ngaa4 nong4",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95585,
+          "char": "牙式",
+          "previous_jyutping": "ngaa4 sik1",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95594,
+          "char": "牙根尖孔",
+          "previous_jyutping": "ngaa4 gan1 zim1 hung2",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95607,
+          "char": "牙痕舌",
+          "previous_jyutping": "ngaa4 han4 sit3",
+          "reason": "牙痕舌／牙發育為少用專科縮寫或不穩定術語，不直接擴寫成另一診斷名稱。"
+        },
+        {
+          "id": 95610,
+          "char": "牙發育",
+          "previous_jyutping": "ngaa4 faat3 juk6",
+          "reason": "牙痕舌／牙發育為少用專科縮寫或不穩定術語，不直接擴寫成另一診斷名稱。"
+        },
+        {
+          "id": 95614,
+          "char": "牙科鑿子",
+          "previous_jyutping": "ngaa4 fo1 zok6 zi2",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95615,
+          "char": "牙移植術",
+          "previous_jyutping": "ngaa4 ji4 zik6 seot6",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95644,
+          "char": "牙頸線",
+          "previous_jyutping": "ngaa4 geng2 sin3",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95645,
+          "char": "牙頸部",
+          "previous_jyutping": "ngaa4 geng2 bou6",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95646,
+          "char": "牙骨質",
+          "previous_jyutping": "ngaa4 gwat1 zat1",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95652,
+          "char": "牙髓壞疽",
+          "previous_jyutping": "ngaa4 seoi5 waai6 zeoi1",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95653,
+          "char": "牙髓失活",
+          "previous_jyutping": "ngaa4 seoi5 sat1 wut6",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95654,
+          "char": "牙髓息肉",
+          "previous_jyutping": "ngaa4 seoi5 sik1 juk6",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95655,
+          "char": "牙髓探針",
+          "previous_jyutping": "ngaa4 seoi5 taam3 zam1",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95659,
+          "char": "牙髓變性",
+          "previous_jyutping": "ngaa4 seoi5 bin3 sing3",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95663,
+          "char": "牙齦上皮",
+          "previous_jyutping": "ngaa4 ngan4 soeng6 pei4",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95664,
+          "char": "牙齦刀",
+          "previous_jyutping": "ngaa4 ngan4 dou1",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95665,
+          "char": "牙齦囊腫",
+          "previous_jyutping": "ngaa4 ngan4 nong4 zung2",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95669,
+          "char": "牙齦裂",
+          "previous_jyutping": "ngaa4 ngan4 lit6",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95678,
+          "char": "牛口之下",
+          "previous_jyutping": "ngau4 hau2 zi1 haa6",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95716,
+          "char": "牛驥同皂",
+          "previous_jyutping": "ngau4 kei3 tung4 zou6",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95717,
+          "char": "牛鼎烹雞",
+          "previous_jyutping": "ngau4 ding2 paang1 gai1",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95719,
+          "char": "牝雞",
+          "previous_jyutping": "pan5 gai1",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95721,
+          "char": "牝雞晨鳴",
+          "previous_jyutping": "pan5 gai1 san4 ming4",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95722,
+          "char": "牝雞牡鳴",
+          "previous_jyutping": "pan5 gai1 maau5 ming4",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95725,
+          "char": "牡荊",
+          "previous_jyutping": "maau5 ging1",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95738,
+          "char": "牧場草坪",
+          "previous_jyutping": "muk6 coeng4 cou2 ping4",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95749,
+          "char": "物位計",
+          "previous_jyutping": "mat6 wai6 gai3",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95752,
+          "char": "物候譜",
+          "previous_jyutping": "mat6 hau6 pou2",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95755,
+          "char": "物價工作",
+          "previous_jyutping": "mat6 gaa3 gung1 zok3",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95763,
+          "char": "物勒工名",
+          "previous_jyutping": "mat6 laak6 gung1 ming4",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95766,
+          "char": "物態參量",
+          "previous_jyutping": "mat6 taai3 caam1 loeng6",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95767,
+          "char": "物態方程",
+          "previous_jyutping": "mat6 taai3 fong1 cing4",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95770,
+          "char": "物景",
+          "previous_jyutping": "mat6 ging2",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95775,
+          "char": "物極將返",
+          "previous_jyutping": "mat6 gik6 zoeng1 faan2",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95785,
+          "char": "物理反映",
+          "previous_jyutping": "mat6 lei5 faan2 jing2",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95802,
+          "char": "物種學",
+          "previous_jyutping": "mat6 zung2 hok6",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95834,
+          "char": "牲禮",
+          "previous_jyutping": "sang1 lai5",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95849,
+          "char": "特別公積",
+          "previous_jyutping": "dak6 bit6 gung1 zik1",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95885,
+          "char": "特差",
+          "previous_jyutping": "dak6 caa1",
+          "reason": "程度副詞義有地域色彩，其他古官差義亦少用；未能支持通用常用詞收錄。"
+        },
+        {
+          "id": 95891,
+          "char": "特徵曲面",
+          "previous_jyutping": "dak6 zing1 kuk1 min6",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95903,
+          "char": "特效代碼",
+          "previous_jyutping": "dak6 haau6 doi6 maa5",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95910,
+          "char": "特服號",
+          "previous_jyutping": "dak6 fuk6 hou6",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95932,
+          "char": "特殊系",
+          "previous_jyutping": "dak6 syu4 hai6",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95938,
+          "char": "特派辦",
+          "previous_jyutping": "dak6 paai3 baan6",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95943,
+          "char": "特異說",
+          "previous_jyutping": "dak6 ji6 syut3",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95950,
+          "char": "特種泵",
+          "previous_jyutping": "dak6 zung2 bam1",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95956,
+          "char": "特稿部",
+          "previous_jyutping": "dak6 gou2 bou6",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95974,
+          "char": "特藥",
+          "previous_jyutping": "dak6 joek6",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95985,
+          "char": "特質焦慮",
+          "previous_jyutping": "dak6 zat1 ziu1 leoi6",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95992,
+          "char": "特項經費",
+          "previous_jyutping": "dak6 hong6 ging1 fai3",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94123,
+          "char": "無線台",
+          "previous_jyutping": "mou4 sin3 toi4",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94128,
+          "char": "無線調度",
+          "previous_jyutping": "mou4 sin3 diu6 dou6",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94226,
+          "char": "無載體",
+          "previous_jyutping": "mou4 zoi3 tai2",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94380,
+          "char": "煙感",
+          "previous_jyutping": "jin1 gam2",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94392,
+          "char": "煙毒犯",
+          "previous_jyutping": "jin1 duk6 faan6",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94430,
+          "char": "煙雨紅塵",
+          "previous_jyutping": "jin1 jyu5 hung4 can4",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94465,
+          "char": "煤毒",
+          "previous_jyutping": "mui4 duk6",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94585,
+          "char": "照相法",
+          "previous_jyutping": "ziu3 soeng2 faat3",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94650,
+          "char": "煩言碎語",
+          "previous_jyutping": "faan4 jin4 seoi3 jyu5",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94720,
+          "char": "熔於",
+          "previous_jyutping": "jung4 jyu1",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94731,
+          "char": "熙熙融融",
+          "previous_jyutping": "hei1 hei1 jung4 jung4",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94758,
+          "char": "熟視",
+          "previous_jyutping": "suk6 si6",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94843,
+          "char": "熱季",
+          "previous_jyutping": "jit6 gwai3",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 94938,
+          "char": "熱腸古道",
+          "previous_jyutping": "jit6 coeng4 gu2 dou6",
+          "reason": "熱腸古道為較少用倒置成語，不靜默重排製成另一詞；通行古道熱腸另有覆蓋。"
+        },
+        {
+          "id": 95095,
+          "char": "燒灰",
+          "previous_jyutping": "siu1 fui1",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        },
+        {
+          "id": 95107,
+          "char": "燒燒水",
+          "previous_jyutping": "siu1 siu1 seoi2",
+          "reason": "任意煮食動詞重疊及看尾綴較少作穩定完整表達使用，不由語法可生成就收錄。"
+        },
+        {
+          "id": 95108,
+          "char": "燒燒看",
+          "previous_jyutping": "siu1 siu1 hon3",
+          "reason": "任意煮食動詞重疊及看尾綴較少作穩定完整表達使用，不由語法可生成就收錄。"
+        },
+        {
+          "id": 95318,
+          "char": "爛額焦頭",
+          "previous_jyutping": "laan6 ngaak6 ziu1 tau4",
+          "reason": "終審常用度：完整用語較冷、變體罕用、用途過窄或缺乏清楚通行整詞用法，本輪退回，不因可拼字音就收錄。"
+        }
+      ],
+      "explicit_restored_candidates": [
+        94384
+      ],
+      "familiarity_regrades": [
+        {
+          "id": 94383,
+          "char": "煙斗架",
+          "previous_grade": 0,
+          "grade": 2
+        },
+        {
+          "id": 94384,
+          "char": "煙斗絲",
+          "previous_grade": 2,
+          "grade": 2
+        },
+        {
+          "id": 94444,
+          "char": "煙鬥架",
+          "previous_grade": 0,
+          "grade": 2
+        },
+        {
+          "id": 94445,
+          "char": "煙鬥絲",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 94137,
+          "char": "無縫管",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 94216,
+          "char": "無責",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 94343,
+          "char": "煉礦",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 94344,
+          "char": "煉糖",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 94386,
+          "char": "煙桿",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 94433,
+          "char": "煙雲過眼",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 94455,
+          "char": "煤區",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 94478,
+          "char": "煤炭工",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 94669,
+          "char": "煮茗",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 94685,
+          "char": "煽誘",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 94723,
+          "char": "熔焊",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 94727,
+          "char": "熔錫",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 94748,
+          "char": "熟眠",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 94750,
+          "char": "熟稔起來",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 94780,
+          "char": "熨衣工",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 94795,
+          "char": "熬煉",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 94802,
+          "char": "熬透",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 94825,
+          "char": "熱化學",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 94889,
+          "char": "熱昇華",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 94911,
+          "char": "熱淚潸潸",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 94961,
+          "char": "熱轉印",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 94981,
+          "char": "熱靴",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 94993,
+          "char": "熾天使",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 95041,
+          "char": "燈枯油盡",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 95049,
+          "char": "燈燭輝煌",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 95051,
+          "char": "燈盡油幹",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 95053,
+          "char": "燈蛾撲火",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 95114,
+          "char": "燒眉之急",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 95127,
+          "char": "燒錄卡",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 95166,
+          "char": "燙金紙",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 95202,
+          "char": "營私結黨",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 95220,
+          "char": "營銷處",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 95227,
+          "char": "營養片",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 95233,
+          "char": "營養缺乏症",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 95237,
+          "char": "營養醫師",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 95240,
+          "char": "營養障礙",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 95261,
+          "char": "燭蕊",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 95266,
+          "char": "燻殺",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 95267,
+          "char": "燻燒",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 95290,
+          "char": "爆裂性",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 95295,
+          "char": "爐壁",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 95309,
+          "char": "爛熳天真",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 95450,
+          "char": "父母之邦",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 95452,
+          "char": "父母恩勤",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 95460,
+          "char": "爺孃",
+          "previous_grade": 1,
+          "grade": 2
+        }
+      ],
+      "lyric_observations_reviewed": 5,
+      "lyric_example_spans_reviewed": 5,
+      "modern_variants_preserved": true,
+      "verdicts": {
+        "reject": 814,
+        "accept": 1186
+      },
+      "final_preference_reconciliation": [
+        {
+          "id": 95769,
+          "char": "物極必反",
+          "previous_jyutping": "mat6 gau3 bit1 faan2",
+          "correct_jyutping": "mat6 gik6 bit1 faan2",
+          "verdict": "already_present",
+          "note": "Changed glyph must change syllable; final alignment validation caught and removed the unvalidated draft from current batch. Existing runtime correct reading preserved."
+        },
+        {
+          "id": 94673,
+          "char": "煮豆燃萁",
+          "previous_jyutping": "zyu2 dau6 jin4 gei1",
+          "correct_jyutping": "zyu2 dau6 jin4 kei4",
+          "verdict": "already_present",
+          "note": "終審：現代完整煮豆燃萁採豆莖義 kei4，已有原合併詞庫覆蓋；不沿原箕 gei1 草稿入庫，不把萁的草名音與典故混淆。"
+        },
+        {
+          "id": 94669,
+          "char": "煮茗",
+          "previous_jyutping": "zyu2 ming4",
+          "jyutping": "zyu2 ming5",
+          "alternatives": [
+            "zyu2 ming4"
+          ],
+          "note": "終審：茶茗現代建議 ming5 優先，ming4 有現代字書同義又讀置後；詞語較少用與讀音順位分開。",
+          "reference": "https://jyut.net/query?q=茗"
+        },
+        {
+          "id": 94049,
+          "char": "無理要求",
+          "jyutping": "mou4 lei5 jiu1 kau4",
+          "whole_word_default_grade": 0,
+          "note": "完整要求 jiu1 kau4 為通行現代詞，無理要求不因孤字要 jiu1 低級變成罕見讀音。",
+          "reference": "https://jyutdictionary.com/dictionary/entry/要求"
+        },
+        {
+          "id": 95934,
+          "char": "特殊要求",
+          "jyutping": "dak6 syu4 jiu1 kau4",
+          "whole_word_default_grade": 0,
+          "note": "特殊要求的要求 jiu1 kau4 為通行全詞，不能以孤字分級取代整詞。",
+          "reference": "https://jyutdictionary.com/dictionary/entry/要求"
+        },
+        {
+          "id": 95039,
+          "char": "燈影搖曳",
+          "jyutping": "dang1 jing2 jiu4 jai6",
+          "whole_word_default_grade": 0,
+          "note": "完整搖曳 jiu4 jai6 有現代粵典詞例，jai6 是正常書面詞讀法，非罕用錯音。",
+          "reference": "https://jyutdictionary.com/dictionary/entry/搖曳 ; https://jyut.net/query?q=曳"
+        },
+        {
+          "id": 95140,
+          "char": "燕語呢喃",
+          "jyutping": "jin3 jyu5 nei4 naam4",
+          "whole_word_default_grade": 0,
+          "note": "呢喃的呢 nei4、喃 naam4 有現代詞義及字書根據，不把呢個 ni1 的孤字優先套進燕語呢喃。",
+          "reference": "https://jyut.net/query?q=喃 ; https://dict.concised.moe.edu.tw/dictView.jsp?ID=12564&la=0&powerMode=0"
+        },
+        {
+          "id": 95494,
+          "char": "牆面抹灰",
+          "jyutping": "coeng4 min6 mut3 fui1",
+          "whole_word_default_grade": 0,
+          "note": "完整抹灰 mut3 fui1 及現代抹字泥灰塗牆詞義有據，不能把低孤字順位當全詞罕見。",
+          "reference": "https://jyutdictionary.com/dictionary/entry/抹灰 ; https://jyut.net/query?q=抹"
+        }
+      ]
+    }
+  }
+}
