@@ -15,1052 +15,1464 @@
     "冷僻退回"
   ],
   "automatic_bands": "0: subtitle channels>=20 or Essay>=1000; 1: channels>=5 or Essay>=500; otherwise 2. Absence alone never withdraws a word.",
-  "curated_sha256": "8c8f8c62fc0038aa33f8d8ac51f3903b30c446c2b2b8d195b8ab26837188dece",
-  "output_sha256": "a439b5e3311d61ff0a2029da7e96fe2200fe2277c8de02430204ad5c2138d30e",
-  "judgments_sha256": "8f455d1f330c9b44b03afe02c07f2d211b1f05c09824a8a19badbff41ebdae3b",
-  "curated_literals": 76009,
-  "observed_literals": 103738,
-  "graded_literals": 140242,
-  "contextual_judgments": 21955,
+  "curated_sha256": "7384ba43b61912ea04ccecc27e86fd787a801f351a2596cfc111ebdf55bb37fe",
+  "output_sha256": "d47f45a5adb035479d1d3ca55d3a3ef8f183e7df5f3a4924f0b439507001ce49",
+  "judgments_sha256": "12f951d3dab36d98165f2ec27e1b5fc10c82242aaa8d36a58948accdc154c039",
+  "curated_literals": 76794,
+  "observed_literals": 104104,
+  "graded_literals": 141027,
+  "contextual_judgments": 22187,
   "pending_curated_literals": 0,
   "curated_grades": {
-    "0": 5665,
-    "1": 31133,
+    "0": 5689,
+    "1": 31492,
     "3": 2051,
-    "2": 37160
+    "2": 37562
   },
   "withdrawn_curated_literals": 2051,
   "withdrawn_curated_readings": 2117,
   "validation": {
-    "merged_rows": 258642,
-    "merged_literals": 239902,
-    "unique_triples": 258640,
-    "baseline_rows": 257726,
+    "merged_rows": 259463,
+    "merged_literals": 240687,
+    "unique_triples": 259461,
+    "baseline_rows": 258642,
     "all_previous_rows_and_multiplicities_retained_with_exact_reading_replacements": true,
     "all_previous_source_flags_retained_with_exact_reading_replacements": true,
-    "explicit_existing_word_preference_checks": 1,
+    "explicit_existing_word_preference_checks": 0,
     "explicit_runtime_literal_migrations": 0,
     "existing_runtime_readings_mirrored": 0,
-    "new_existing_word_readings": 1,
-    "confirmed_old_wrong_sense_readings_removed": 1,
-    "explicit_existing_reading_replacements": 1,
-    "all_accepted_primary_reading_checks": 891,
-    "old_word_grades_preserved": 139350,
-    "new_source_readings": 916,
+    "new_existing_word_readings": 0,
+    "confirmed_old_wrong_sense_readings_removed": 0,
+    "explicit_existing_reading_replacements": 0,
+    "all_accepted_primary_reading_checks": 785,
+    "old_word_grades_preserved": 140242,
+    "new_source_readings": 821,
     "new_pairs_retained": true,
-    "search_checks": 495,
-    "preferred_reading_checks": 24,
-    "word_usage_keys": 140242,
+    "search_checks": 488,
+    "preferred_reading_checks": 32,
+    "word_usage_keys": 141027,
     "withdrawn_curated_literals": 2051,
     "live_db_unchanged": true,
-    "old_source_rows_preserved": 78739,
-    "old_reading_grades_preserved": 78739,
+    "old_source_rows_preserved": 79655,
+    "old_reading_grades_preserved": 79655,
     "explicit_previous_source_repairs": 0,
     "explicit_previous_reading_grade_repairs": 0,
-    "old_usage_rows_preserved": 139350,
-    "old_judgments_preserved": 21609,
-    "new_source_forms": 892,
-    "new_merged_forms": 891,
-    "new_merged_readings": 916,
+    "old_usage_rows_preserved": 140242,
+    "old_judgments_preserved": 21955,
+    "new_source_forms": 785,
+    "new_merged_forms": 785,
+    "new_merged_readings": 821,
     "old_runtime_readings_deleted": 0,
-    "old_runtime_readings_replaced": 1,
-    "new_merged_readings_net": 916,
-    "raw_source_forms": 76011,
-    "normalized_source_forms": 76009,
-    "new_word_usage_judgments": 346,
-    "active_curated_forms": 73958,
-    "active_curated_readings": 77538,
+    "old_runtime_readings_replaced": 0,
+    "new_merged_readings_net": 821,
+    "raw_source_forms": 76796,
+    "normalized_source_forms": 76794,
+    "new_word_usage_judgments": 232,
+    "active_curated_forms": 74743,
+    "active_curated_readings": 78359,
     "unrelated_user_files_unchanged": true,
     "previous_overlay_bytes_preserved": true,
-    "old_overlay_rows_added": 1,
-    "prior_candidate_decisions_preserved": 131994,
+    "old_overlay_rows_added": 0,
+    "prior_candidate_decisions_preserved": 133994,
     "explicit_prior_candidate_adjustments": 0,
     "all_review_source_locations_verified": true,
     "normalizer_bytes_unchanged": true,
     "layer_cache_bytes_unchanged": true,
     "existing_source_reading_audit": {
-      "scanned_runtime_rows": 257726,
-      "candidate_rows": 154,
+      "scanned_runtime_rows": 258642,
+      "candidate_rows": 229,
       "candidates": [
         {
-          "char": "3A電池",
-          "jyutping": "saam1 ei1 din6 ci4",
-          "code": "3?20",
-          "source_flags": 32
+          "char": "上漲",
+          "jyutping": "soeng6 zoeng3",
+          "code": "24",
+          "source_flags": 49
         },
         {
-          "char": "中位數",
-          "jyutping": "zung1 wai2 sou3",
-          "code": "394",
-          "source_flags": 48
-        },
-        {
-          "char": "乾電池",
-          "jyutping": "gon1 din6 ci4",
-          "code": "320",
+          "char": "乾坤",
+          "jyutping": "kin4 kwan1",
+          "code": "03",
           "source_flags": 50
         },
         {
-          "char": "位數",
-          "jyutping": "wai2 sou3",
-          "code": "94",
+          "char": "內有乾坤",
+          "jyutping": "noi6 jau5 kin4 kwan1",
+          "code": "2503",
+          "source_flags": 32
+        },
+        {
+          "char": "出乎預料",
+          "jyutping": "ceot1 fu4 jyu6 liu2",
+          "code": "3029",
           "source_flags": 48
         },
         {
-          "char": "力量",
-          "jyutping": "lik6 loeng6",
-          "code": "22",
+          "char": "古典音樂",
+          "jyutping": "gu2 din2 jam1 ngok6",
+          "code": "9932",
+          "source_flags": 50
+        },
+        {
+          "char": "嚤囉差玩音樂",
+          "jyutping": "mo1 lo1 caa1 waan2 jam1 ngok6",
+          "code": "333932",
+          "source_flags": 48
+        },
+        {
+          "char": "扭轉乾坤",
+          "jyutping": "nau2 zyun2 kin4 kwan1",
+          "code": "9903",
+          "source_flags": 32
+        },
+        {
+          "char": "摩囉差玩音樂",
+          "jyutping": "mo1 lo1 caa1 waan2 jam1 ngok6",
+          "code": "333932",
+          "source_flags": 48
+        },
+        {
+          "char": "會議",
+          "jyutping": "wui6 ji5",
+          "code": "25",
           "source_flags": 51
         },
         {
-          "char": "寸步難行",
-          "jyutping": "cyun3 bou6 naan4 hang4",
-          "code": "4200",
-          "source_flags": 48
-        },
-        {
-          "char": "寸步難行",
-          "jyutping": "cyun3 bou6 naan4 haang4",
-          "code": "4200",
-          "source_flags": 34
-        },
-        {
-          "char": "干擾",
-          "jyutping": "gon1 jiu2",
-          "code": "39",
-          "source_flags": 50
-        },
-        {
-          "char": "干擾",
-          "jyutping": "gon1 jiu5",
-          "code": "35",
-          "source_flags": 49
-        },
-        {
-          "char": "承重",
-          "jyutping": "sing4 cung5",
-          "code": "05",
-          "source_flags": 32
-        },
-        {
-          "char": "相處",
-          "jyutping": "soeng1 cyu3",
-          "code": "34",
-          "source_flags": 49
-        },
-        {
-          "char": "相處",
-          "jyutping": "soeng1 cyu5",
-          "code": "35",
-          "source_flags": 34
-        },
-        {
-          "char": "翅膀",
-          "jyutping": "ci3 pong4",
-          "code": "40",
-          "source_flags": 49
-        },
-        {
-          "char": "舊電池",
-          "jyutping": "gau6 din6 ci4",
-          "code": "220",
-          "source_flags": 32
-        },
-        {
-          "char": "蓄電池",
-          "jyutping": "cuk1 din6 ci4",
-          "code": "320",
-          "source_flags": 50
-        },
-        {
-          "char": "鋰電池",
-          "jyutping": "lei5 din6 ci4",
-          "code": "520",
-          "source_flags": 32
-        },
-        {
-          "char": "集會",
-          "jyutping": "zaap6 wui2",
-          "code": "29",
-          "source_flags": 50
-        },
-        {
-          "char": "電池",
-          "jyutping": "din6 ci4",
-          "code": "20",
-          "source_flags": 51
-        },
-        {
-          "char": "電池水",
-          "jyutping": "din6 ci4 seoi2",
-          "code": "209",
-          "source_flags": 48
-        },
-        {
-          "char": "電錶",
-          "jyutping": "din6 biu1",
-          "code": "23",
-          "source_flags": 50
-        },
-        {
-          "char": "非分之想",
-          "jyutping": "fei1 fan6 zi1 soeng2",
-          "code": "3239",
-          "source_flags": 48
-        },
-        {
-          "char": "飼料",
-          "jyutping": "zi6 liu2",
-          "code": "29",
-          "source_flags": 49
-        },
-        {
-          "char": "不定冠詞",
-          "jyutping": "bat1 ding6 gun3 ci4",
-          "code": "3240",
-          "source_flags": 18
-        },
-        {
-          "char": "翅膀",
-          "jyutping": "ci3 bong2",
+          "char": "桌面",
+          "jyutping": "coek3 min2",
           "code": "49",
-          "source_flags": 2
+          "source_flags": 48
         },
         {
-          "char": "粗飼料",
-          "jyutping": "cou1 zi6 liu6",
-          "code": "322",
-          "source_flags": 2
+          "char": "桌面",
+          "jyutping": "zoek3 min2",
+          "code": "49",
+          "source_flags": 32
         },
         {
-          "char": "多位數",
-          "jyutping": "do1 wai6 sou3",
-          "code": "324",
-          "source_flags": 18
+          "char": "潮州音樂",
+          "jyutping": "ciu4 zau1 jam1 ngok6",
+          "code": "0332",
+          "source_flags": 50
         },
         {
-          "char": "化學電池",
-          "jyutping": "faa3 hok6 din6 ci4",
-          "code": "4220",
-          "source_flags": 2
+          "char": "皮帶",
+          "jyutping": "pei4 daai2",
+          "code": "09",
+          "source_flags": 51
         },
         {
-          "char": "光電池",
-          "jyutping": "gwong1 din6 ci4",
-          "code": "320",
-          "source_flags": 18
+          "char": "背景音樂",
+          "jyutping": "bui3 ging2 jam1 ngok6",
+          "code": "4932",
+          "source_flags": 48
         },
         {
-          "char": "知難行易",
-          "jyutping": "zi1 naan4 hang4 ji6",
-          "code": "3002",
-          "source_flags": 2
+          "char": "行政會議",
+          "jyutping": "hang4 zing3 wui6 ji5",
+          "code": "0425",
+          "source_flags": 48
         },
         {
-          "char": "飼料",
-          "jyutping": "zi6 liu6",
-          "code": "22",
-          "source_flags": 2
+          "char": "輪廓",
+          "jyutping": "leon4 kwok3",
+          "code": "04",
+          "source_flags": 51
         },
         {
-          "char": "武裝力量",
-          "jyutping": "mou5 zong1 lik6 loeng6",
-          "code": "5322",
-          "source_flags": 2
+          "char": "雷厲風行",
+          "jyutping": "leoi4 lai6 fung1 hang4",
+          "code": "0230",
+          "source_flags": 50
         },
         {
-          "char": "三位數",
-          "jyutping": "saam1 wai6 sou3",
-          "code": "324",
-          "source_flags": 2
-        },
-        {
-          "char": "太陽電池",
-          "jyutping": "taai3 joeng4 din6 ci4",
-          "code": "4020",
-          "source_flags": 18
-        },
-        {
-          "char": "團結就是力量",
-          "jyutping": "tyun4 git3 zau6 si6 lik6 loeng6",
-          "code": "042222",
-          "source_flags": 18
-        },
-        {
-          "char": "有生力量",
-          "jyutping": "jau5 sang1 lik6 loeng6",
-          "code": "5322",
-          "source_flags": 0
-        },
-        {
-          "char": "和睦相處",
-          "jyutping": "wo4 muk6 soeng1 cyu2",
-          "code": "0239",
-          "source_flags": 0
-        },
-        {
-          "char": "是非分明",
-          "jyutping": "si6 fei1 fan1 ming4",
-          "code": "2330",
-          "source_flags": 0
-        },
-        {
-          "char": "核力量",
-          "jyutping": "hat6 lik6 loeng6",
-          "code": "222",
-          "source_flags": 0
-        },
-        {
-          "char": "抗干擾",
-          "jyutping": "kong3 gon1 jiu2",
-          "code": "439",
-          "source_flags": 0
-        },
-        {
-          "char": "干擾素",
-          "jyutping": "gon1 jiu2 sou3",
-          "code": "394",
-          "source_flags": 0
-        },
-        {
-          "char": "非分",
-          "jyutping": "fei1 fan6",
+          "char": "音樂",
+          "jyutping": "jam1 ngok6",
           "code": "32",
-          "source_flags": 0
+          "source_flags": 51
         },
         {
-          "char": "干擾機",
-          "jyutping": "gon1 jiu2 gei1",
-          "code": "393",
-          "source_flags": 0
+          "char": "音樂人",
+          "jyutping": "jam1 ngok6 jan4",
+          "code": "320",
+          "source_flags": 32
         },
         {
-          "char": "新生力量",
-          "jyutping": "san1 sang1 lik6 loeng6",
-          "code": "3322",
-          "source_flags": 0
+          "char": "音樂劇",
+          "jyutping": "jam1 ngok6 kek6",
+          "code": "322",
+          "source_flags": 48
         },
         {
-          "char": "飼料廠",
-          "jyutping": "zi6 liu2 cong2",
-          "code": "299",
-          "source_flags": 0
+          "char": "音樂家",
+          "jyutping": "jam1 ngok6 gaa1",
+          "code": "323",
+          "source_flags": 34
         },
         {
-          "char": "一霎那",
-          "jyutping": "jat1 saap3 naa5",
-          "code": "345",
-          "source_flags": 0
-        },
-        {
-          "char": "精飼料",
-          "jyutping": "zing1 zi6 liu2",
+          "char": "音樂感",
+          "jyutping": "jam1 ngok6 gam2",
           "code": "329",
-          "source_flags": 0
+          "source_flags": 48
         },
         {
-          "char": "冠詞",
-          "jyutping": "gun3 ci4",
-          "code": "40",
-          "source_flags": 0
+          "char": "音樂會",
+          "jyutping": "jam1 ngok6 wui2",
+          "code": "329",
+          "source_flags": 50
         },
         {
-          "char": "干擾源",
-          "jyutping": "gon1 jiu2 jyun4",
-          "code": "390",
-          "source_flags": 0
+          "char": "音樂盒",
+          "jyutping": "jam1 ngok6 hap2",
+          "code": "329",
+          "source_flags": 32
         },
         {
-          "char": "電池板",
-          "jyutping": "din6 ci4 baan2",
+          "char": "音樂盒",
+          "jyutping": "jam1 ngok6 haap2",
+          "code": "329",
+          "source_flags": 32
+        },
+        {
+          "char": "響應",
+          "jyutping": "hoeng2 jing3",
+          "code": "94",
+          "source_flags": 50
+        },
+        {
+          "char": "順應",
+          "jyutping": "seon6 jing3",
+          "code": "24",
+          "source_flags": 51
+        },
+        {
+          "char": "預料",
+          "jyutping": "jyu6 liu6",
+          "code": "22",
+          "source_flags": 51
+        },
+        {
+          "char": "領會",
+          "jyutping": "ling5 wui6",
+          "code": "52",
+          "source_flags": 51
+        },
+        {
+          "char": "領隊",
+          "jyutping": "ling5 deoi2",
+          "code": "59",
+          "source_flags": 49
+        },
+        {
+          "char": "顆粒",
+          "jyutping": "fo2 nap1",
+          "code": "93",
+          "source_flags": 50
+        },
+        {
+          "char": "顯著",
+          "jyutping": "hin2 zyu3",
+          "code": "94",
+          "source_flags": 49
+        },
+        {
+          "char": "風行",
+          "jyutping": "fung1 hang4",
+          "code": "30",
+          "source_flags": 50
+        },
+        {
+          "char": "辦公會議",
+          "jyutping": "baan6 gung1 wui6 ji5",
+          "code": "2325",
+          "source_flags": 2
+        },
+        {
+          "char": "標題音樂",
+          "jyutping": "biu1 tai4 jam1 ngok6",
+          "code": "3032",
+          "source_flags": 2
+        },
+        {
+          "char": "電視會議",
+          "jyutping": "din6 si6 wui6 ji5",
+          "code": "2225",
+          "source_flags": 2
+        },
+        {
+          "char": "電話會議",
+          "jyutping": "din6 waa2 wui6 ji5",
+          "code": "2925",
+          "source_flags": 2
+        },
+        {
+          "char": "顆粒狀",
+          "jyutping": "fo2 nap1 zong6",
+          "code": "932",
+          "source_flags": 2
+        },
+        {
+          "char": "國會議員",
+          "jyutping": "gwok3 wui6 ji5 jyun4",
+          "code": "4250",
+          "source_flags": 2
+        },
+        {
+          "char": "輕音樂",
+          "jyutping": "hing1 jam1 ngok6",
+          "code": "332",
+          "source_flags": 2
+        },
+        {
+          "char": "爵士音樂",
+          "jyutping": "zoek3 si6 jam1 ngok6",
+          "code": "4232",
+          "source_flags": 2
+        },
+        {
+          "char": "攬皮帶",
+          "jyutping": "laam6 pei4 daai2",
           "code": "209",
+          "source_flags": 2
+        },
+        {
+          "char": "流行音樂",
+          "jyutping": "lau4 hang4 jam1 ngok6",
+          "code": "0032",
+          "source_flags": 2
+        },
+        {
+          "char": "聯席會議",
+          "jyutping": "lyun4 zik6 wui6 ji5",
+          "code": "0225",
+          "source_flags": 2
+        },
+        {
+          "char": "皮帶輪",
+          "jyutping": "pei4 daai3 leon4",
+          "code": "040",
+          "source_flags": 2
+        },
+        {
+          "char": "上漲",
+          "jyutping": "soeng6 zoeng2",
+          "code": "29",
+          "source_flags": 2
+        },
+        {
+          "char": "旋轉乾坤",
+          "jyutping": "syun4 zyun2 kin4 kwan1",
+          "code": "0903",
+          "source_flags": 18
+        },
+        {
+          "char": "旋轉乾坤之力",
+          "jyutping": "syun4 zyun2 kin4 kwan1 zi1 lik6",
+          "code": "090332",
+          "source_flags": 18
+        },
+        {
+          "char": "會議室",
+          "jyutping": "wui6 ji5 sat1",
+          "code": "253",
+          "source_flags": 2
+        },
+        {
+          "char": "音樂團體",
+          "jyutping": "jam1 ngok6 tyun4 tai2",
+          "code": "3209",
+          "source_flags": 18
+        },
+        {
+          "char": "圓桌會議",
+          "jyutping": "jyun4 coek3 wui6 ji5",
+          "code": "0425",
+          "source_flags": 2
+        },
+        {
+          "char": "頂上",
+          "jyutping": "ding2 soeng6",
+          "code": "92",
           "source_flags": 0
         },
         {
-          "char": "抗干擾性",
-          "jyutping": "kong3 gon1 jiu2 sing3",
-          "code": "4394",
+          "char": "難以預料",
+          "jyutping": "naan4 ji5 jyu6 liu6",
+          "code": "0522",
           "source_flags": 0
         },
         {
-          "char": "霎那間",
-          "jyutping": "saap3 naa5 gaan1",
-          "code": "453",
+          "char": "風行一時",
+          "jyutping": "fung1 hang4 jat1 si4",
+          "code": "3030",
           "source_flags": 0
         },
         {
-          "char": "個位數",
-          "jyutping": "go3 wai2 sou3",
-          "code": "494",
+          "char": "音樂堂",
+          "jyutping": "jam1 ngok6 tong4",
+          "code": "320",
           "source_flags": 0
         },
         {
-          "char": "青飼料",
-          "jyutping": "cing1 zi6 liu2",
+          "char": "部長會議",
+          "jyutping": "bou6 zoeng2 wui6 ji5",
+          "code": "2925",
+          "source_flags": 0
+        },
+        {
+          "char": "音樂聲",
+          "jyutping": "jam1 ngok6 sing1",
+          "code": "323",
+          "source_flags": 0
+        },
+        {
+          "char": "學術會議",
+          "jyutping": "hok6 seot6 wui6 ji5",
+          "code": "2225",
+          "source_flags": 0
+        },
+        {
+          "char": "會議廳",
+          "jyutping": "wui6 ji5 teng1",
+          "code": "253",
+          "source_flags": 0
+        },
+        {
+          "char": "音樂系",
+          "jyutping": "jam1 ngok6 hai6",
+          "code": "322",
+          "source_flags": 0
+        },
+        {
+          "char": "顆粒物",
+          "jyutping": "fo2 nap1 mat6",
+          "code": "932",
+          "source_flags": 0
+        },
+        {
+          "char": "音樂節",
+          "jyutping": "jam1 ngok6 zit3",
+          "code": "324",
+          "source_flags": 0
+        },
+        {
+          "char": "音樂史",
+          "jyutping": "jam1 ngok6 si2",
           "code": "329",
           "source_flags": 0
         },
         {
-          "char": "五方雜處",
-          "jyutping": "ng5 fong1 zaap6 cyu5",
-          "code": "5325",
+          "char": "會議桌",
+          "jyutping": "wui6 ji5 coek3",
+          "code": "254",
           "source_flags": 0
         },
         {
-          "char": "力量型",
-          "jyutping": "lik6 loeng6 jing4",
-          "code": "220",
+          "char": "音樂指導",
+          "jyutping": "jam1 ngok6 zi2 dou6",
+          "code": "3292",
           "source_flags": 0
         },
         {
-          "char": "干擾能力",
-          "jyutping": "gon1 jiu2 nang4 lik6",
-          "code": "3902",
+          "char": "交響音樂",
+          "jyutping": "gaau1 hoeng2 jam1 ngok6",
+          "code": "3932",
           "source_flags": 0
         },
         {
-          "char": "節約電池",
-          "jyutping": "zit3 joek3 din6 ci4",
-          "code": "4420",
+          "char": "電子音樂",
+          "jyutping": "din6 zi2 jam1 ngok6",
+          "code": "2932",
           "source_flags": 0
         },
         {
-          "char": "一位數",
-          "jyutping": "jat1 wai2 sou3",
-          "code": "394",
+          "char": "音樂界",
+          "jyutping": "jam1 ngok6 gaai3",
+          "code": "324",
           "source_flags": 0
         },
         {
-          "char": "七位數",
-          "jyutping": "cat1 wai2 sou3",
-          "code": "394",
+          "char": "音樂性",
+          "jyutping": "jam1 ngok6 sing3",
+          "code": "324",
           "source_flags": 0
         },
         {
-          "char": "中國飼料",
-          "jyutping": "zung1 gwok3 zi6 liu2",
-          "code": "3429",
+          "char": "上漲率",
+          "jyutping": "soeng6 zoeng2 leot6",
+          "code": "292",
           "source_flags": 0
         },
         {
-          "char": "主導力量",
-          "jyutping": "zyu2 dou6 lik6 loeng6",
-          "code": "9222",
+          "char": "上漲率",
+          "jyutping": "soeng6 zoeng3 leot6",
+          "code": "242",
           "source_flags": 0
         },
         {
-          "char": "九位數",
-          "jyutping": "gau2 wai2 sou3",
-          "code": "994",
+          "char": "音樂季",
+          "jyutping": "jam1 ngok6 gwai3",
+          "code": "324",
           "source_flags": 0
         },
         {
-          "char": "二位數",
-          "jyutping": "ji6 wai2 sou3",
-          "code": "294",
+          "char": "響應者",
+          "jyutping": "hoeng2 jing3 ze2",
+          "code": "949",
           "source_flags": 0
         },
         {
-          "char": "五位數",
-          "jyutping": "ng5 wai2 sou3",
-          "code": "594",
+          "char": "會議費",
+          "jyutping": "wui6 ji5 fai3",
+          "code": "254",
           "source_flags": 0
         },
         {
-          "char": "交流干擾",
-          "jyutping": "gaau1 lau4 gon1 jiu2",
-          "code": "3039",
+          "char": "電視電話會議",
+          "jyutping": "din6 si6 din6 waa6 wui6 ji5",
+          "code": "222225",
           "source_flags": 0
         },
         {
-          "char": "充電電池",
-          "jyutping": "cung1 din6 din6 ci4",
-          "code": "3220",
+          "char": "交響音樂會",
+          "jyutping": "gaau1 hoeng2 jam1 ngok6 wui6",
+          "code": "39322",
           "source_flags": 0
         },
         {
-          "char": "兩位數",
-          "jyutping": "loeng5 wai2 sou3",
-          "code": "594",
+          "char": "音樂片",
+          "jyutping": "jam1 ngok6 pin3",
+          "code": "324",
           "source_flags": 0
         },
         {
-          "char": "八位數",
-          "jyutping": "baat3 wai2 sou3",
-          "code": "494",
+          "char": "可吸入顆粒物",
+          "jyutping": "ho2 kap1 jap6 fo2 nap1 mat6",
+          "code": "932932",
           "source_flags": 0
         },
         {
-          "char": "六位數",
-          "jyutping": "luk6 wai2 sou3",
-          "code": "294",
+          "char": "桌面處理器",
+          "jyutping": "coek3 min2 cyu5 lei5 hei3",
+          "code": "49554",
           "source_flags": 0
         },
         {
-          "char": "力量之源",
-          "jyutping": "lik6 loeng6 zi1 jyun4",
-          "code": "2230",
+          "char": "音樂課",
+          "jyutping": "jam1 ngok6 fo3",
+          "code": "324",
           "source_flags": 0
         },
         {
-          "char": "力量對比",
-          "jyutping": "lik6 loeng6 deoi3 bei2",
-          "code": "2249",
-          "source_flags": 0
-        },
-        {
-          "char": "力量懸殊",
-          "jyutping": "lik6 loeng6 jyun4 syu4",
-          "code": "2200",
-          "source_flags": 0
-        },
-        {
-          "char": "力量薄弱",
-          "jyutping": "lik6 loeng6 bok6 joek6",
-          "code": "2222",
-          "source_flags": 0
-        },
-        {
-          "char": "力量雄厚",
-          "jyutping": "lik6 loeng6 hung4 hau5",
-          "code": "2205",
-          "source_flags": 0
-        },
-        {
-          "char": "加強力量",
-          "jyutping": "gaa1 koeng4 lik6 loeng6",
+          "char": "出人預料",
+          "jyutping": "ceot1 jan4 jyu6 liu6",
           "code": "3022",
           "source_flags": 0
         },
         {
-          "char": "十位數",
-          "jyutping": "sap6 wai2 sou3",
-          "code": "294",
+          "char": "圓桌面",
+          "jyutping": "jyun4 coek3 min6",
+          "code": "042",
           "source_flags": 0
         },
         {
-          "char": "原電池",
-          "jyutping": "jyun4 din6 ci4",
-          "code": "020",
+          "char": "響應分析",
+          "jyutping": "hoeng2 jing3 fan1 sik1",
+          "code": "9433",
           "source_flags": 0
         },
         {
-          "char": "友好相處",
-          "jyutping": "jau5 hou2 soeng1 cyu5",
-          "code": "5935",
+          "char": "音樂室",
+          "jyutping": "jam1 ngok6 sat1",
+          "code": "323",
           "source_flags": 0
         },
         {
-          "char": "友好相處",
-          "jyutping": "jau5 hou2 soeng1 cyu2",
-          "code": "5939",
+          "char": "一擲乾坤",
+          "jyutping": "jat1 zaak6 kin4 kwan1",
+          "code": "3203",
           "source_flags": 0
         },
         {
-          "char": "和平相處",
-          "jyutping": "wo4 ping4 soeng1 cyu5",
-          "code": "0035",
+          "char": "上漲幅度",
+          "jyutping": "soeng6 zoeng2 fuk1 dou6",
+          "code": "2932",
           "source_flags": 0
         },
         {
-          "char": "和平相處",
-          "jyutping": "wo4 ping4 soeng1 cyu2",
-          "code": "0039",
+          "char": "主持會議",
+          "jyutping": "zyu2 ci4 wui6 ji5",
+          "code": "9025",
           "source_flags": 0
         },
         {
-          "char": "嚇阻力量",
-          "jyutping": "haak3 zo2 lik6 loeng4",
-          "code": "4920",
+          "char": "價格上漲",
+          "jyutping": "gaa3 gaak3 soeng5 zoeng2",
+          "code": "4459",
           "source_flags": 0
         },
         {
-          "char": "四位數",
-          "jyutping": "sei3 wai2 sou3",
-          "code": "494",
+          "char": "價格上漲",
+          "jyutping": "gaa3 gaak3 soeng5 zoeng3",
+          "code": "4454",
           "source_flags": 0
         },
         {
-          "char": "國防力量",
-          "jyutping": "gwok3 fong4 lik6 loeng6",
-          "code": "4022",
+          "char": "免費音樂",
+          "jyutping": "min5 fai3 jam1 ngok6",
+          "code": "5432",
           "source_flags": 0
         },
         {
-          "char": "巨大力量",
-          "jyutping": "geoi6 daai6 lik6 loeng6",
-          "code": "2222",
+          "char": "兒童音樂",
+          "jyutping": "ji4 tung4 jam1 ngok6",
+          "code": "0032",
           "source_flags": 0
         },
         {
-          "char": "席位數",
-          "jyutping": "zik6 wai2 sou3",
-          "code": "294",
+          "char": "內閣會議",
+          "jyutping": "noi6 gok3 wui6 ji5",
+          "code": "2425",
           "source_flags": 0
         },
         {
-          "char": "席位數",
-          "jyutping": "zik6 wai6 sou3",
-          "code": "224",
+          "char": "全體會議",
+          "jyutping": "cyun4 tai2 wui6 ji5",
+          "code": "0925",
           "source_flags": 0
         },
         {
-          "char": "帶電池",
-          "jyutping": "daai3 din6 ci4",
+          "char": "出席會議",
+          "jyutping": "ceot1 zik6 wui6 ji5",
+          "code": "3225",
+          "source_flags": 0
+        },
+        {
+          "char": "列席會議",
+          "jyutping": "lit6 zik6 wui6 ji5",
+          "code": "2225",
+          "source_flags": 0
+        },
+        {
+          "char": "副領隊",
+          "jyutping": "fu3 ling5 deoi2",
+          "code": "459",
+          "source_flags": 0
+        },
+        {
+          "char": "動態桌面",
+          "jyutping": "dung6 taai3 coek3 min6",
+          "code": "2442",
+          "source_flags": 0
+        },
+        {
+          "char": "協商會議",
+          "jyutping": "hip3 soeng1 wui6 ji5",
+          "code": "4325",
+          "source_flags": 0
+        },
+        {
+          "char": "協調會議",
+          "jyutping": "hip3 tiu4 wui6 ji5",
+          "code": "4025",
+          "source_flags": 0
+        },
+        {
+          "char": "在線音樂",
+          "jyutping": "zoi6 sin3 jam1 ngok6",
+          "code": "2432",
+          "source_flags": 0
+        },
+        {
+          "char": "地下音樂",
+          "jyutping": "dei6 haa6 jam1 ngok6",
+          "code": "2232",
+          "source_flags": 0
+        },
+        {
+          "char": "宗教音樂",
+          "jyutping": "zung1 gaau3 jam1 ngok6",
+          "code": "3432",
+          "source_flags": 0
+        },
+        {
+          "char": "審查會議",
+          "jyutping": "sam2 caa4 wui6 ji5",
+          "code": "9025",
+          "source_flags": 0
+        },
+        {
+          "char": "專題會議",
+          "jyutping": "zyun1 tai4 wui6 ji5",
+          "code": "3025",
+          "source_flags": 0
+        },
+        {
+          "char": "小組會議",
+          "jyutping": "siu2 zou2 wui6 ji5",
+          "code": "9925",
+          "source_flags": 0
+        },
+        {
+          "char": "層峯會議",
+          "jyutping": "cang4 fung1 wui6 ji5",
+          "code": "0325",
+          "source_flags": 0
+        },
+        {
+          "char": "工業皮帶",
+          "jyutping": "gung1 jip6 pei4 daai2",
+          "code": "3209",
+          "source_flags": 0
+        },
+        {
+          "char": "常務會議",
+          "jyutping": "soeng4 mou6 wui6 ji5",
+          "code": "0225",
+          "source_flags": 0
+        },
+        {
+          "char": "影視音樂",
+          "jyutping": "jing2 si6 jam1 ngok6",
+          "code": "9232",
+          "source_flags": 0
+        },
+        {
+          "char": "御前會議",
+          "jyutping": "jyu6 cin4 wui6 ji5",
+          "code": "2025",
+          "source_flags": 0
+        },
+        {
+          "char": "復調音樂",
+          "jyutping": "fuk6 diu6 jam1 ngok6",
+          "code": "2232",
+          "source_flags": 0
+        },
+        {
+          "char": "愛好音樂",
+          "jyutping": "oi3 hou3 jam1 ngok6",
+          "code": "4432",
+          "source_flags": 0
+        },
+        {
+          "char": "成效顯著",
+          "jyutping": "sing4 haau6 hin2 zyu3",
+          "code": "0294",
+          "source_flags": 0
+        },
+        {
+          "char": "搖滾音樂",
+          "jyutping": "jiu4 gwan2 jam1 ngok6",
+          "code": "0932",
+          "source_flags": 0
+        },
+        {
+          "char": "效果顯著",
+          "jyutping": "haau6 gwo2 hin2 zyu3",
+          "code": "2994",
+          "source_flags": 0
+        },
+        {
+          "char": "教務會議",
+          "jyutping": "gaau3 mou6 wui6 ji5",
+          "code": "4225",
+          "source_flags": 0
+        },
+        {
+          "char": "會議主題",
+          "jyutping": "wui6 ji5 zyu2 tai4",
+          "code": "2590",
+          "source_flags": 0
+        },
+        {
+          "char": "會議紀要",
+          "jyutping": "wui6 ji5 gei2 jiu3",
+          "code": "2594",
+          "source_flags": 0
+        },
+        {
+          "char": "會議記錄",
+          "jyutping": "wui6 ji5 gei3 luk6",
+          "code": "2542",
+          "source_flags": 0
+        },
+        {
+          "char": "會議議程",
+          "jyutping": "wui6 ji5 ji5 cing4",
+          "code": "2550",
+          "source_flags": 0
+        },
+        {
+          "char": "朗朗乾坤",
+          "jyutping": "long5 long5 kin4 kwan1",
+          "code": "5503",
+          "source_flags": 0
+        },
+        {
+          "char": "望風響應",
+          "jyutping": "mong6 fung1 hoeng2 jing3",
+          "code": "2394",
+          "source_flags": 0
+        },
+        {
+          "char": "未預料到",
+          "jyutping": "mei6 jyu6 liu6 dou2",
+          "code": "2229",
+          "source_flags": 0
+        },
+        {
+          "char": "未預料到",
+          "jyutping": "mei6 jyu6 liu6 dou3",
+          "code": "2224",
+          "source_flags": 0
+        },
+        {
+          "char": "桌面上",
+          "jyutping": "coek3 min2 soeng6",
+          "code": "492",
+          "source_flags": 0
+        },
+        {
+          "char": "桌面上",
+          "jyutping": "coek3 min6 soeng6",
+          "code": "422",
+          "source_flags": 0
+        },
+        {
+          "char": "桌面主題",
+          "jyutping": "coek3 min2 zyu2 tai4",
+          "code": "4990",
+          "source_flags": 0
+        },
+        {
+          "char": "桌面主題",
+          "jyutping": "coek3 min6 zyu2 tai4",
+          "code": "4290",
+          "source_flags": 0
+        },
+        {
+          "char": "桌面圖",
+          "jyutping": "coek3 min2 tou4",
+          "code": "490",
+          "source_flags": 0
+        },
+        {
+          "char": "桌面圖",
+          "jyutping": "coek3 min6 tou4",
           "code": "420",
           "source_flags": 0
         },
         {
-          "char": "干擾力",
-          "jyutping": "gon1 jiu2 lik6",
-          "code": "392",
+          "char": "桌面圖標",
+          "jyutping": "coek3 min2 tou4 biu1",
+          "code": "4903",
           "source_flags": 0
         },
         {
-          "char": "干擾哨聲",
-          "jyutping": "gon1 jiu2 saau3 sing1",
-          "code": "3943",
+          "char": "桌面圖標",
+          "jyutping": "coek3 min6 tou4 biu1",
+          "code": "4203",
           "source_flags": 0
         },
         {
-          "char": "干擾器",
-          "jyutping": "gon1 jiu2 hei3",
-          "code": "394",
+          "char": "桌面圖片",
+          "jyutping": "coek3 min2 tou4 pin2",
+          "code": "4909",
           "source_flags": 0
         },
         {
-          "char": "幾位數",
-          "jyutping": "gei2 wai2 sou3",
-          "code": "994",
+          "char": "桌面圖片",
+          "jyutping": "coek3 min6 tou4 pin2",
+          "code": "4209",
           "source_flags": 0
         },
         {
-          "char": "牀位數",
-          "jyutping": "cong4 wai2 sou3",
+          "char": "桌面壁紙",
+          "jyutping": "coek3 min2 bik1 zi2",
+          "code": "4939",
+          "source_flags": 0
+        },
+        {
+          "char": "桌面壁紙",
+          "jyutping": "coek3 min6 bik1 zi2",
+          "code": "4239",
+          "source_flags": 0
+        },
+        {
+          "char": "桌面式",
+          "jyutping": "coek3 min2 sik1",
+          "code": "493",
+          "source_flags": 0
+        },
+        {
+          "char": "桌面式",
+          "jyutping": "coek3 min6 sik1",
+          "code": "423",
+          "source_flags": 0
+        },
+        {
+          "char": "桌面操作系統",
+          "jyutping": "coek3 min2 cou1 zok3 hai6 tung2",
+          "code": "493429",
+          "source_flags": 0
+        },
+        {
+          "char": "桌面操作系統",
+          "jyutping": "coek3 min6 cou1 zok3 hai6 tung2",
+          "code": "423429",
+          "source_flags": 0
+        },
+        {
+          "char": "桌面牆紙",
+          "jyutping": "coek3 min2 coeng4 zi2",
+          "code": "4909",
+          "source_flags": 0
+        },
+        {
+          "char": "桌面牆紙",
+          "jyutping": "coek3 min6 coeng4 zi2",
+          "code": "4209",
+          "source_flags": 0
+        },
+        {
+          "char": "桌面版",
+          "jyutping": "coek3 min2 baan2",
+          "code": "499",
+          "source_flags": 0
+        },
+        {
+          "char": "桌面版",
+          "jyutping": "coek3 min6 baan2",
+          "code": "429",
+          "source_flags": 0
+        },
+        {
+          "char": "桌面背景",
+          "jyutping": "coek3 min2 bui3 ging2",
+          "code": "4949",
+          "source_flags": 0
+        },
+        {
+          "char": "桌面背景",
+          "jyutping": "coek3 min6 bui3 ging2",
+          "code": "4249",
+          "source_flags": 0
+        },
+        {
+          "char": "樓頂上",
+          "jyutping": "lau4 ding2 soeng6",
+          "code": "092",
+          "source_flags": 0
+        },
+        {
+          "char": "樹頂上",
+          "jyutping": "syu6 ding2 soeng6",
+          "code": "292",
+          "source_flags": 0
+        },
+        {
+          "char": "比較顯著",
+          "jyutping": "bei2 gaau3 hin2 zyu3",
+          "code": "9494",
+          "source_flags": 0
+        },
+        {
+          "char": "民族音樂",
+          "jyutping": "man4 zuk6 jam1 ngok6",
+          "code": "0232",
+          "source_flags": 0
+        },
+        {
+          "char": "沒有響應",
+          "jyutping": "mut6 jau5 hoeng2 jing3",
+          "code": "2594",
+          "source_flags": 0
+        },
+        {
+          "char": "深刻領會",
+          "jyutping": "sam1 hak1 ling5 wui6",
+          "code": "3352",
+          "source_flags": 0
+        },
+        {
+          "char": "熱烈響應",
+          "jyutping": "jit6 lit6 hoeng2 jing3",
+          "code": "2294",
+          "source_flags": 0
+        },
+        {
+          "char": "熱門音樂",
+          "jyutping": "jit6 mun4 jam1 ngok6",
+          "code": "2032",
+          "source_flags": 0
+        },
+        {
+          "char": "牛皮帶",
+          "jyutping": "ngau4 pei4 daai3",
+          "code": "004",
+          "source_flags": 0
+        },
+        {
+          "char": "物價上漲",
+          "jyutping": "mat6 gaa3 soeng6 zoeng3",
+          "code": "2424",
+          "source_flags": 0
+        },
+        {
+          "char": "物價上漲",
+          "jyutping": "mat6 gaa3 soeng6 zoeng2",
+          "code": "2429",
+          "source_flags": 0
+        },
+        {
+          "char": "療效顯著",
+          "jyutping": "liu4 haau6 hin2 zyu3",
+          "code": "0294",
+          "source_flags": 0
+        },
+        {
+          "char": "皮帶傳動",
+          "jyutping": "pei4 daai2 cyun4 dung6",
+          "code": "0902",
+          "source_flags": 0
+        },
+        {
+          "char": "皮帶扣",
+          "jyutping": "pei4 daai2 kau3",
           "code": "094",
           "source_flags": 0
         },
         {
-          "char": "牀位數",
-          "jyutping": "cong4 wai6 sou3",
-          "code": "024",
+          "char": "社會議論",
+          "jyutping": "se5 wui2 ji5 leon6",
+          "code": "5952",
           "source_flags": 0
         },
         {
-          "char": "座位數",
-          "jyutping": "zo6 wai2 sou3",
-          "code": "294",
+          "char": "秘密會議",
+          "jyutping": "bei3 mat6 wui6 ji5",
+          "code": "4225",
           "source_flags": 0
         },
         {
-          "char": "座位數",
-          "jyutping": "zo6 wai6 sou3",
-          "code": "224",
+          "char": "積極響應",
+          "jyutping": "zik1 gik6 hoeng2 jing3",
+          "code": "3294",
           "source_flags": 0
         },
         {
-          "char": "廢舊電池",
-          "jyutping": "fai3 gau6 din6 ci4",
-          "code": "4220",
+          "char": "節節上漲",
+          "jyutping": "zit3 zit3 soeng6 zoeng3",
+          "code": "4424",
           "source_flags": 0
         },
         {
-          "char": "廢電池",
-          "jyutping": "fai3 din6 ci4",
-          "code": "420",
+          "char": "節節上漲",
+          "jyutping": "zit3 zit3 soeng5 zoeng3",
+          "code": "4454",
           "source_flags": 0
         },
         {
-          "char": "後備力量",
-          "jyutping": "hau6 bei6 lik6 loeng6",
-          "code": "2222",
+          "char": "節節上漲",
+          "jyutping": "zit3 zit3 soeng5 zoeng2",
+          "code": "4459",
           "source_flags": 0
         },
         {
-          "char": "扇動翅膀",
-          "jyutping": "sin3 dung6 ci3 pong4",
-          "code": "4240",
+          "char": "籌備會議",
+          "jyutping": "cau4 bei6 wui6 ji5",
+          "code": "0225",
           "source_flags": 0
         },
         {
-          "char": "手機電池",
-          "jyutping": "sau2 gei1 din6 ci4",
-          "code": "9320",
+          "char": "精彩音樂",
+          "jyutping": "zing1 coi2 jam1 ngok6",
+          "code": "3932",
           "source_flags": 0
         },
         {
-          "char": "抵抗力量",
-          "jyutping": "dai2 kong3 lik6 loeng6",
-          "code": "9422",
+          "char": "純音樂",
+          "jyutping": "seon4 jam1 ngok6",
+          "code": "032",
           "source_flags": 0
         },
         {
-          "char": "排除干擾",
-          "jyutping": "paai4 ceoi4 gon1 jiu2",
-          "code": "0039",
+          "char": "經典音樂",
+          "jyutping": "ging1 din2 jam1 ngok6",
+          "code": "3932",
           "source_flags": 0
         },
         {
-          "char": "水產飼料",
-          "jyutping": "seoi2 caan2 zi6 liu2",
-          "code": "9929",
+          "char": "緊急會議",
+          "jyutping": "gan2 gap1 wui6 ji5",
+          "code": "9325",
           "source_flags": 0
         },
         {
-          "char": "滯礙難行",
-          "jyutping": "zai6 ngoi6 naan4 hang4",
-          "code": "2200",
+          "char": "總領隊",
+          "jyutping": "zung2 ling5 deoi6",
+          "code": "952",
           "source_flags": 0
         },
         {
-          "char": "潛在力量",
-          "jyutping": "cim4 zoi6 lik6 loeng6",
-          "code": "0222",
+          "char": "聞風響應",
+          "jyutping": "man4 fung1 hoeng2 jing3",
+          "code": "0394",
           "source_flags": 0
         },
         {
-          "char": "燃料電池",
-          "jyutping": "jin4 liu2 din6 ci4",
-          "code": "0920",
+          "char": "脈衝響應",
+          "jyutping": "mak6 cung1 hoeng2 jing3",
+          "code": "2394",
           "source_flags": 0
         },
         {
-          "char": "物質力量",
-          "jyutping": "mat6 zat1 lik6 loeng6",
-          "code": "2322",
+          "char": "華語音樂",
+          "jyutping": "waa4 jyu5 jam1 ngok6",
+          "code": "0532",
           "source_flags": 0
         },
         {
-          "char": "百位數",
-          "jyutping": "baak3 wai2 sou3",
-          "code": "494",
+          "char": "逆勢上漲",
+          "jyutping": "jik6 sai3 soeng6 zoeng2",
+          "code": "2429",
           "source_flags": 0
         },
         {
-          "char": "相處更好",
-          "jyutping": "soeng1 cyu2 gang3 hou2",
-          "code": "3949",
+          "char": "逆勢上漲",
+          "jyutping": "jik6 sai3 soeng6 zoeng3",
+          "code": "2424",
           "source_flags": 0
         },
         {
-          "char": "相處更好",
-          "jyutping": "soeng1 cyu5 gang3 hou2",
-          "code": "3549",
+          "char": "連皮帶肉",
+          "jyutping": "lin4 pei4 daai3 juk6",
+          "code": "0042",
           "source_flags": 0
         },
         {
-          "char": "窒礙難行",
-          "jyutping": "zat6 ngoi6 naan4 hang4",
-          "code": "2200",
+          "char": "連皮帶骨",
+          "jyutping": "lin4 pei4 daai3 gwat1",
+          "code": "0043",
           "source_flags": 0
         },
         {
-          "char": "竭盡力量",
-          "jyutping": "kit3 zeon6 lik6 loeng6",
-          "code": "4222",
+          "char": "遊戲音樂",
+          "jyutping": "jau4 hei3 jam1 ngok6",
+          "code": "0432",
           "source_flags": 0
         },
         {
-          "char": "精神力量",
-          "jyutping": "zing1 san4 lik6 loeng6",
-          "code": "3022",
+          "char": "鄉村音樂",
+          "jyutping": "hoeng1 cyun1 jam1 ngok6",
+          "code": "3332",
           "source_flags": 0
         },
         {
-          "char": "艱難行進",
-          "jyutping": "gaan1 naan4 haang4 zeon3",
-          "code": "3004",
-          "source_flags": 0
-        },
-        {
-          "char": "變相處理",
-          "jyutping": "bin3 soeng3 cyu2 lei5",
-          "code": "4495",
-          "source_flags": 0
-        },
-        {
-          "char": "變相處理",
-          "jyutping": "bin3 soeng3 cyu5 lei5",
-          "code": "4455",
-          "source_flags": 0
-        },
-        {
-          "char": "豬飼料",
-          "jyutping": "zyu1 zi6 liu2",
-          "code": "329",
-          "source_flags": 0
-        },
-        {
-          "char": "貢獻力量",
-          "jyutping": "gung3 hin3 lik6 loeng6",
-          "code": "4422",
-          "source_flags": 0
-        },
-        {
-          "char": "軍事力量",
-          "jyutping": "gwan1 si6 lik6 loeng6",
-          "code": "3222",
-          "source_flags": 0
-        },
-        {
-          "char": "進步力量",
-          "jyutping": "zeon3 bou6 lik6 loeng6",
-          "code": "4222",
-          "source_flags": 0
-        },
-        {
-          "char": "配製飼料",
-          "jyutping": "pui3 zai3 zi6 liu2",
-          "code": "4429",
-          "source_flags": 0
-        },
-        {
-          "char": "鎳氫電池",
-          "jyutping": "nip1 hing1 din6 ci4",
-          "code": "3320",
-          "source_flags": 0
-        },
-        {
-          "char": "鎳氫電池",
-          "jyutping": "nip6 hing1 din6 ci4",
-          "code": "2320",
-          "source_flags": 0
-        },
-        {
-          "char": "一號電池",
-          "jyutping": "jat1 hou6 din6 ci4",
-          "code": "3220",
+          "char": "三角皮帶",
+          "jyutping": "saam1 gok3 pei4 daai2",
+          "code": "3409",
           "source_flags": 16
         },
         {
-          "char": "七號電池",
-          "jyutping": "cat1 hou6 din6 ci4",
-          "code": "3220",
+          "char": "中國人民政治協商會議",
+          "jyutping": "zung1 gwok3 jan4 man4 zing3 zi6 hip3 soeng1 wui6 ji5",
+          "code": "3400424325",
           "source_flags": 16
         },
         {
-          "char": "三號電池",
-          "jyutping": "saam1 hou6 din6 ci4",
-          "code": "3220",
+          "char": "伊斯蘭會議組織",
+          "jyutping": "ji1 si1 laan4 wui6 ji5 zou2 zik1",
+          "code": "3302593",
           "source_flags": 16
         },
         {
-          "char": "中堅力量",
-          "jyutping": "zung1 gin1 lik6 loeng6",
-          "code": "3322",
+          "char": "全國人大會議",
+          "jyutping": "cyun4 gwok3 jan4 daai6 wui6 ji5",
+          "code": "040225",
           "source_flags": 16
         },
         {
-          "char": "二號電池",
-          "jyutping": "ji6 hou6 din6 ci4",
-          "code": "2220",
+          "char": "全球會議",
+          "jyutping": "cyun4 kau4 wui6 ji5",
+          "code": "0025",
           "source_flags": 16
         },
         {
-          "char": "公眾集會",
-          "jyutping": "gung1 zung3 zaap6 wui2",
-          "code": "3429",
+          "char": "公司會議",
+          "jyutping": "gung1 si1 wui6 ji5",
+          "code": "3325",
           "source_flags": 16
         },
         {
-          "char": "力量均衡",
-          "jyutping": "lik6 loeng6 gwan1 hang4",
-          "code": "2230",
+          "char": "出神音樂",
+          "jyutping": "ceot1 san4 jam1 ngok6",
+          "code": "3032",
           "source_flags": 16
         },
         {
-          "char": "動物性飼料",
-          "jyutping": "dung6 mat6 sing3 zi6 liu2",
-          "code": "22429",
+          "char": "分泌顆粒",
+          "jyutping": "fan1 bei3 fo2 lap1",
+          "code": "3493",
           "source_flags": 16
         },
         {
-          "char": "四號電池",
-          "jyutping": "sei3 hou6 din6 ci4",
-          "code": "4220",
+          "char": "印度音樂",
+          "jyutping": "jan3 dou6 jam1 ngok6",
+          "code": "4232",
           "source_flags": 16
         },
         {
-          "char": "太陽能電池",
-          "jyutping": "taai3 joeng4 nang4 din6 ci4",
-          "code": "40020",
+          "char": "員工會議",
+          "jyutping": "jyun4 gung1 wui6 ji5",
+          "code": "0325",
           "source_flags": 16
         },
         {
-          "char": "太陽電池板",
-          "jyutping": "taai3 joeng4 din6 ci4 baan2",
-          "code": "40209",
+          "char": "天津會議專條",
+          "jyutping": "tin1 zeon1 wui6 ji5 zyun1 tiu4",
+          "code": "332530",
           "source_flags": 16
         },
         {
-          "char": "威懾力量",
-          "jyutping": "wai1 sip3 lik6 loeng6",
-          "code": "3422",
+          "char": "委員會會議",
+          "jyutping": "wai2 jyun4 wui2 wui6 ji5",
+          "code": "90925",
           "source_flags": 16
         },
         {
-          "char": "定冠詞",
-          "jyutping": "ding6 gun3 ci4",
-          "code": "240",
+          "char": "影像會議",
+          "jyutping": "jing2 zoeng6 wui6 ji5",
+          "code": "9225",
           "source_flags": 16
         },
         {
-          "char": "愛港力量",
-          "jyutping": "oi3 gong2 lik6 loeng6",
-          "code": "4922",
+          "char": "摩羅差玩音樂",
+          "jyutping": "mo1 lo1 caa1 waan2 jam1 ngok6",
+          "code": "333932",
           "source_flags": 16
         },
         {
-          "char": "戰略核力量",
-          "jyutping": "zin3 loek6 hat6 lik6 loeng6",
-          "code": "42222",
+          "char": "會議展覽",
+          "jyutping": "wui6 ji5 zin2 laam5",
+          "code": "2595",
           "source_flags": 16
         },
         {
-          "char": "打擊軍事力量",
-          "jyutping": "daa2 gik1 gwan1 si6 lik6 loeng6",
-          "code": "933222",
+          "char": "月份會議",
+          "jyutping": "jyut6 fan6 wui6 ji5",
+          "code": "2225",
           "source_flags": 16
         },
         {
-          "char": "扣式電池",
-          "jyutping": "kau3 sik1 din6 ci4",
-          "code": "4320",
+          "char": "桌面系統",
+          "jyutping": "coek3 min2 hai6 tung2",
+          "code": "4929",
           "source_flags": 16
         },
         {
-          "char": "異性相處",
-          "jyutping": "ji6 sing3 soeng1 cyu2",
-          "code": "2439",
+          "char": "桌面開發",
+          "jyutping": "coek3 min2 hoi1 faat3",
+          "code": "4934",
           "source_flags": 16
         },
         {
-          "char": "相處",
-          "jyutping": "soeng1 cyu2",
-          "code": "39",
+          "char": "橡皮帶",
+          "jyutping": "zoeng6 pei4 daai3",
+          "code": "204",
           "source_flags": 16
         },
         {
-          "char": "與人相處",
-          "jyutping": "jyu5 jan4 soeng3 cyu2",
+          "char": "波茨坦會議",
+          "jyutping": "bo1 ci4 taan2 wui6 ji5",
+          "code": "30925",
+          "source_flags": 16
+        },
+        {
+          "char": "活動桌面",
+          "jyutping": "wut6 dung6 coek3 min2",
+          "code": "2249",
+          "source_flags": 16
+        },
+        {
+          "char": "現場會議",
+          "jyutping": "jin6 coeng4 wui6 ji5",
+          "code": "2025",
+          "source_flags": 16
+        },
+        {
+          "char": "皮帶運輸機",
+          "jyutping": "pei4 daai2 wan6 syu1 gei1",
+          "code": "09233",
+          "source_flags": 16
+        },
+        {
+          "char": "皮帶釦",
+          "jyutping": "pei4 daai2 kau3",
+          "code": "094",
+          "source_flags": 16
+        },
+        {
+          "char": "粘皮帶骨",
+          "jyutping": "nim1 pei4 daai3 gwat1",
+          "code": "3043",
+          "source_flags": 16
+        },
+        {
+          "char": "細顆粒物",
+          "jyutping": "sai3 fo2 lap1 mat6",
+          "code": "4932",
+          "source_flags": 16
+        },
+        {
+          "char": "線上音樂",
+          "jyutping": "sin3 soeng6 jam1 ngok6",
+          "code": "4232",
+          "source_flags": 16
+        },
+        {
+          "char": "聲調輪廓",
+          "jyutping": "sing1 diu6 leon4 kwok3",
+          "code": "3204",
+          "source_flags": 16
+        },
+        {
+          "char": "至愛音樂",
+          "jyutping": "zi3 oi3 jam1 ngok6",
+          "code": "4432",
+          "source_flags": 16
+        },
+        {
+          "char": "舞台音樂",
+          "jyutping": "mou5 toi4 jam1 ngok6",
+          "code": "5032",
+          "source_flags": 16
+        },
+        {
+          "char": "華納音樂集團",
+          "jyutping": "waa4 naap6 jam1 ngok6 zaap6 tyun4",
+          "code": "023220",
+          "source_flags": 16
+        },
+        {
+          "char": "視頻會議",
+          "jyutping": "si6 pan4 wui6 ji5",
+          "code": "2025",
+          "source_flags": 16
+        },
+        {
+          "char": "輪廓線",
+          "jyutping": "leon4 kwok3 sin3",
+          "code": "044",
+          "source_flags": 16
+        },
+        {
+          "char": "輪廓鮮明",
+          "jyutping": "leon4 kwok3 sin1 ming4",
+          "code": "0430",
+          "source_flags": 16
+        },
+        {
+          "char": "遠程桌面",
+          "jyutping": "jyun5 cing4 coek3 min2",
           "code": "5049",
           "source_flags": 16
         },
         {
-          "char": "鉛酸蓄電池",
-          "jyutping": "jyun4 syun1 cuk1 din6 ci4",
-          "code": "03320",
+          "char": "部長級會議",
+          "jyutping": "bou6 zoeng2 kap1 wui6 ji5",
+          "code": "29325",
           "source_flags": 16
         },
         {
-          "char": "鋰離子電池",
-          "jyutping": "lei5 lei4 zi2 din6 ci4",
-          "code": "50920",
+          "char": "非常會議",
+          "jyutping": "fei1 soeng4 wui6 ji5",
+          "code": "3025",
           "source_flags": 16
         },
         {
-          "char": "集會",
-          "jyutping": "zaap6 wui6",
-          "code": "22",
-          "source_flags": 17
-        },
-        {
-          "char": "集會現場",
-          "jyutping": "zaap6 wui2 jin6 coeng4",
-          "code": "2920",
+          "char": "音樂之聲",
+          "jyutping": "jam1 ngok6 zi1 sing1",
+          "code": "3233",
           "source_flags": 16
         },
         {
-          "char": "電池座",
-          "jyutping": "din6 ci4 zo6",
-          "code": "202",
+          "char": "音樂卡",
+          "jyutping": "jam1 ngok6 kaat1",
+          "code": "323",
           "source_flags": 16
         },
         {
-          "char": "電池組",
-          "jyutping": "din6 ci4 zou2",
-          "code": "209",
+          "char": "音樂碟",
+          "jyutping": "jam1 ngok6 dip2",
+          "code": "329",
           "source_flags": 16
         },
         {
-          "char": "非分之念",
-          "jyutping": "fei1 fan6 zi1 nim6",
-          "code": "3232",
+          "char": "響應時間",
+          "jyutping": "hoeng2 jing3 si4 gaan3",
+          "code": "9404",
           "source_flags": 16
         },
         {
-          "char": "黨派集會",
-          "jyutping": "dong2 paai3 zaap6 wui2",
-          "code": "9429",
+          "char": "順應不良",
+          "jyutping": "seon6 jing3 bat1 loeng4",
+          "code": "2430",
           "source_flags": 16
         },
         {
-          "char": "相處咗",
-          "jyutping": "soeng1 cyu3 zo2",
-          "code": "349",
+          "char": "順應天時",
+          "jyutping": "seon6 jing3 tin1 si4",
+          "code": "2430",
           "source_flags": 16
         },
         {
-          "char": "朝夕相處",
-          "jyutping": "ziu1 zik6 soeng1 cyu3",
-          "code": "3234",
+          "char": "顯著優勢",
+          "jyutping": "hin2 zyu3 jau1 sai3",
+          "code": "9434",
+          "source_flags": 16
+        },
+        {
+          "char": "饒舌音樂",
+          "jyutping": "jiu4 sit6 jam1 ngok6",
+          "code": "0232",
+          "source_flags": 16
+        },
+        {
+          "char": "高登音樂台",
+          "jyutping": "gou1 dang1 jam1 ngok6 toi4",
+          "code": "33320",
+          "source_flags": 16
+        },
+        {
+          "char": "喺會議室",
+          "jyutping": "hai2 wui6 ji5 sat1",
+          "code": "9253",
+          "source_flags": 16
+        },
+        {
+          "char": "音樂會",
+          "jyutping": "jam1 ngok6 wui6",
+          "code": "322",
           "source_flags": 1
         }
       ],
-      "exact_reading_replacements": [
-        {
-          "char": "與人相處",
-          "previous_jyutping": "jyu5 jan4 soeng3 cyu2",
-          "jyutping": "jyu5 jan4 soeng1 cyu2",
-          "source_file": "data/lexicon/raw/rime-cantonese-upstream/word.csv",
-          "source_line": 69759,
-          "source_sha256": "b7f2561ccd222358cd7d04f2a349b986831aa8d61adf60d8584d6ffc5dd6f27a",
-          "source_license": "CC-BY-4.0",
-          "reference": "https://jyutdictionary.com/dictionary/entry/相處 ; https://lshk.org/wp-content/uploads/2022/11/CRAT_Appendix2_bystroke_1.3.pdf",
-          "note": "與他人相處的相為互相soeng1，非相貌／相片soeng3；完整相處及與他人交流的現代詞例、LSHK詞表均用1。只精確改本詞原供3，不改相處cyu3有效又讀，亦不改其他相字。",
-          "previous_code": "5049",
-          "code": "5039"
-        }
-      ],
-      "all_other_context_rows_retained": 153,
+      "exact_reading_replacements": [],
+      "all_other_context_rows_retained": 229,
       "old_runtime_readings_deleted": 0,
-      "old_runtime_readings_replaced": 1,
+      "old_runtime_readings_replaced": 0,
       "old_curated_source_rows_changed": 0,
-      "prior_reading_additions": [
-        {
-          "id": "existing-與人相處:1",
-          "char": "與人相處",
-          "jyutping": "jyu5 jan4 soeng1 cyu5",
-          "pron_rank": 0,
-          "kind": "missing-reading",
-          "source_literal": "與人相處",
-          "source_file": "data/lexicon/raw/rime-cantonese-upstream/word.csv",
-          "source_line": 69759,
-          "source_sha256": "b7f2561ccd222358cd7d04f2a349b986831aa8d61adf60d8584d6ffc5dd6f27a",
-          "source_reading": "jyu5 jan4 soeng3 cyu2",
-          "evidence": "rime-upstream:sha256=b7f2561ccd222358cd7d04f2a349b986831aa8d61adf60d8584d6ffc5dd6f27a:word.csv#L69759;AI:reading-supplement",
-          "reference": "https://jyutdictionary.com/dictionary/entry/相處 ; https://lshk.org/wp-content/uploads/2022/11/CRAT_Appendix2_bystroke_1.3.pdf",
-          "note": "完整相處soeng1cyu5以LSHK及粵典現代用例為據，與人前綴的整詞配音及5優先次序明列AI，不冒稱Rime原供此音。",
-          "word_usage_rank": 1,
-          "word_usage_note": "若有Essay／TUBELEX完整詞觀測沿用；否則通用表達的第1級為AI判斷，非實測頻次。"
-        }
-      ],
+      "prior_reading_additions": [],
       "valid_readings_retained": [
-        "雞翅膀gai1ci3pong4：原始粵典完整詞及CantoDict皆供，非必須bong2。",
-        "集會wui2及wui6*2完整詞有效；新詞2先6後。",
-        "相處cyu5、cyu3、cyu2均有完整現代用例；不能把3當處所義一概刪除。",
-        "承重sing4cung5為粵典及CantoDict完整供音；非承重牆保留5。",
-        "電錶din6biu1完整粵典例，計量義亦用1。",
-        "冠詞gun3為完整定冠詞／不定冠詞供音，不據頭冠名詞誤改1。",
-        "雄渾wan6及wan4均有完整供音；新雄渾有力6先4後。",
-        "飼料liu2及liu6、時間gaan3及gaan1完整現代詞音保留。"
+        "上漲6/3與5/3及6/2均有完整供應；不能據國語或漲大義刪3。",
+        "桌面coek3／zoek3、min2／6現代完整又讀均有效。",
+        "會議wui6ji5正常，音樂會wui2／6有效，不把所有名詞會強制2。",
+        "領會wui6正常，領隊deoi2／6完整變調／書讀均保留。",
+        "預料動詞liu6，出乎預料名詞liu2，未預料到dou2／3都有效。",
+        "顆粒nap1口語與lap1書讀、皮帶daai2／3、輪廓kwok3各按完整詞處理。",
+        "完整CantoDict付訖直接供fu6ngat6，2007正音字典ngat6同樣解完畢；1992教育署建議ngat6、gat1又讀。gat1亦有同音字彙完整收訖／付訖／驗訖例。兩音均為現代有效，不能將ngat6一概視為迄義誤讀；新詞6優先、1後列是AI整詞判斷。"
       ],
-      "policy": "Whole-word modern sources precede component semantics, source flags, or Mandarin analogy. Preserve raw inputs and all other old records and grades.",
-      "rank_mirror_withdrawn_before_final_build": {
-        "char": "與人相處",
-        "jyutping": "jyu5 jan4 soeng1 cyu2",
-        "reason": "Exact original-source overlay supplies corrected2 and its source flags. Redundant mirror would duplicate it. Existing Rime cyu2 grade retained; curated preferred5 has explicit0."
-      }
+      "policy": "Keep all229 existing contextual rows and flags. Correct only new accepted candidates; no added candidate discovery, no old-source or normalization changes."
     },
     "fixed_remaining_scope": {
       "user_objective": "把剩餘的12608個候選詞審核到完成就可以收尾，不新增新候選詞",
@@ -1081,32 +1493,32 @@
       "regional_holds_outside_remaining_pool": 924,
       "note": "User narrowed the finish line to the frozen remaining candidate pool. Do not discover or append candidates, or extend completion to historical/regional holds. Already reviewed B69 additions still require their pending final validation."
     },
-    "remaining_unreviewed": 12608,
+    "remaining_unreviewed": 10608,
     "backend_pwa_essay_frequency_keys": 266884,
     "essay_frequency_tables_equal": true,
-    "backend_pwa_word_grade_keys": 140242,
-    "backend_pwa_curated_reading_grade_keys": 80740,
+    "backend_pwa_word_grade_keys": 141027,
+    "backend_pwa_curated_reading_grade_keys": 81564,
     "word_grade_tables_equal": true,
     "curated_reading_grade_tables_equal": true,
-    "new_expressions": 891,
-    "existing_word_reading_additions": 1,
+    "new_expressions": 785,
+    "existing_word_reading_additions": 0,
     "full_final_inventory_rebuilt_and_compared": true,
     "client_query_engine_with_new_dictionary": {
-      "checks": 2754,
+      "checks": 2451,
       "modes": 3,
       "new_dictionary_loaded_in_client_engine": true,
       "preferred_readings_equal": true,
       "all_expected_cases_verified_exactly_once": true,
       "parallel_workers": 4
     },
-    "contextual_reading_pairs_checked": 158,
-    "full_pool_parity_queries": 128,
-    "full_pool_parity_rows": 131378,
+    "contextual_reading_pairs_checked": 156,
+    "full_pool_parity_queries": 131,
+    "full_pool_parity_rows": 134338,
     "full_pool_ranking_equal": true,
     "heteronym_full_pool_ranking_equal": true,
     "representative_top200_quality_review": {
       "43": {
-        "total_literals": 3740,
+        "total_literals": 3744,
         "top20": [
           "覺得",
           "發生",
@@ -1132,9 +1544,7 @@
         "top200_grades": {
           "0": 200
         },
-        "new_batch_in_top200": [
-          "靚妹"
-        ],
+        "new_batch_in_top200": [],
         "everyday_precedes_less_common": true
       },
       "243": {
@@ -1166,15 +1576,11 @@
           "1": 95,
           "2": 87
         },
-        "new_batch_in_top200": [
-          "露背裝",
-          "電喇叭",
-          "電教室"
-        ],
+        "new_batch_in_top200": [],
         "everyday_precedes_less_common": true
       },
       "33": {
-        "total_literals": 6687,
+        "total_literals": 6697,
         "top20": [
           "姐姐",
           "應該",
@@ -1204,7 +1610,7 @@
         "everyday_precedes_less_common": true
       },
       "333": {
-        "total_literals": 1093,
+        "total_literals": 1095,
         "top20": [
           "朱古力",
           "哈哈哈",
@@ -1235,7 +1641,7 @@
         "everyday_precedes_less_common": true
       },
       "3333": {
-        "total_literals": 367,
+        "total_literals": 368,
         "top20": [
           "哈哈哈哈",
           "公安機關",
@@ -1263,7 +1669,9 @@
           "1": 93,
           "2": 96
         },
-        "new_batch_in_top200": [],
+        "new_batch_in_top200": [
+          "風中之燭"
+        ],
         "everyday_precedes_less_common": true
       },
       "0000": {
@@ -1299,7 +1707,7 @@
         "everyday_precedes_less_common": true
       },
       "323": {
-        "total_literals": 580,
+        "total_literals": 583,
         "top20": [
           "一大堆",
           "科學家",
@@ -1324,16 +1732,16 @@
         ],
         "top200_grades": {
           "0": 30,
-          "1": 167,
-          "2": 3
+          "1": 168,
+          "2": 2
         },
         "new_batch_in_top200": [
-          "雙核心"
+          "風幕機"
         ],
         "everyday_precedes_less_common": true
       },
       "223": {
-        "total_literals": 496,
+        "total_literals": 503,
         "top20": [
           "電視機",
           "第二朝",
@@ -1357,23 +1765,17 @@
           "士大夫"
         ],
         "top200_grades": {
-          "0": 37,
-          "1": 163
+          "0": 38,
+          "1": 162
         },
         "new_batch_in_top200": [
-          "雜物箱",
-          "電話單",
-          "電視卡",
-          "電動窗",
-          "電焊機",
-          "電匯單",
-          "電熱梳",
-          "電熱絲"
+          "預訂單",
+          "預料中"
         ],
         "everyday_precedes_less_common": true
       },
       "39": {
-        "total_literals": 4515,
+        "total_literals": 4522,
         "top20": [
           "屋企",
           "開始",
@@ -1403,7 +1805,7 @@
         "everyday_precedes_less_common": true
       },
       "22": {
-        "total_literals": 4387,
+        "total_literals": 4399,
         "top20": [
           "但係",
           "係咪",
@@ -1433,8 +1835,8 @@
         "everyday_precedes_less_common": true
       }
     },
-    "smoke_tests": 349,
-    "smoke_passed": 345,
+    "smoke_tests": 351,
+    "smoke_passed": 347,
     "smoke_skipped": 4,
     "seam_tests": 89,
     "seam_passed": 83,
@@ -1451,1250 +1853,2267 @@
     "layer_cache_cold_misses": 8,
     "layer_cache_warm_hits": 8,
     "layer_cache_counter_matches_uncached_db": true,
-    "previous_runtime_rows_retained_without_change": 257725,
-    "previous_runtime_reading_replacements": 1,
+    "previous_runtime_rows_retained_without_change": 258642,
+    "previous_runtime_reading_replacements": 0,
     "final_reading_audit": {
       "newly_reviewed_candidates": 2000,
-      "initial_accepted_candidates": 1068,
+      "initial_accepted_candidates": 1130,
       "second_pass_familiarity_withdrawals": [
         {
-          "id": 132027,
-          "char": "雄武",
-          "previous_jyutping": "hung4 mou5",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 132048,
-          "char": "雄體",
-          "previous_jyutping": "hung4 tai2",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 132070,
-          "char": "集合競價",
-          "previous_jyutping": "zaap6 hap6 ging3 gaa3",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 132076,
-          "char": "集團型",
-          "previous_jyutping": "zaap6 tyun4 jing4",
+          "id": 133997,
+          "char": "非金屬性",
+          "previous_jyutping": "fei1 gam1 suk6 sing3",
           "previous_word_usage_rank": 1
         },
         {
-          "id": 132077,
-          "char": "集團式",
-          "previous_jyutping": "zaap6 tyun4 sik1",
+          "id": 134122,
+          "char": "面從腹誹",
+          "previous_jyutping": "min6 cung4 fuk1 fei2",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 134127,
+          "char": "面折廷爭",
+          "previous_jyutping": "min6 zit3 ting4 zang1",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 134151,
+          "char": "面稟",
+          "previous_jyutping": "min6 ban2",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 134164,
+          "char": "面諛背毀",
+          "previous_jyutping": "min6 jyu4 bui3 wai2",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 134165,
+          "char": "面謁",
+          "previous_jyutping": "min6 jit3",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 134167,
+          "char": "面譽背譭",
+          "previous_jyutping": "min6 jyu6 bui3 wai2",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 134193,
+          "char": "革命實踐",
+          "previous_jyutping": "gaak3 ming6 sat6 cin5",
           "previous_word_usage_rank": 1
         },
         {
-          "id": 132085,
-          "char": "集成材",
-          "previous_jyutping": "zaap6 sing4 coi4",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 132086,
-          "char": "集成板",
-          "previous_jyutping": "zaap6 sing4 baan2",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 132124,
-          "char": "集錦式",
-          "previous_jyutping": "zaap6 gam2 sik1",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 132139,
-          "char": "集體積累",
-          "previous_jyutping": "zaap6 tai2 zik1 leoi6",
+          "id": 134198,
+          "char": "革命烈火",
+          "previous_jyutping": "gaak3 ming6 lit6 fo2",
           "previous_word_usage_rank": 1
         },
         {
-          "id": 132153,
-          "char": "雌性花",
-          "previous_jyutping": "ci1 sing3 faa1",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 132172,
-          "char": "雌驢",
-          "previous_jyutping": "ci1 lou4",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 132175,
-          "char": "雌鼠",
-          "previous_jyutping": "ci1 syu2",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 132191,
-          "char": "雕塑學",
-          "previous_jyutping": "diu1 sou3 hok6",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 132199,
-          "char": "雕板",
-          "previous_jyutping": "diu1 baan2",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 132228,
-          "char": "雕飾品",
-          "previous_jyutping": "diu1 sik1 ban2",
+          "id": 134205,
+          "char": "革命聖地",
+          "previous_jyutping": "gaak3 ming6 sing3 dei6",
           "previous_word_usage_rank": 1
         },
         {
-          "id": 132230,
-          "char": "雕龍畫鳳",
-          "previous_jyutping": "diu1 lung4 waa2 fung6",
+          "id": 134219,
+          "char": "革故立新",
+          "previous_jyutping": "gaak3 gu3 laap6 san1",
           "previous_word_usage_rank": 2
         },
         {
-          "id": 132255,
-          "char": "雙制式",
-          "previous_jyutping": "soeng1 zai3 sik1",
+          "id": 134221,
+          "char": "革職留任",
+          "previous_jyutping": "gaak3 zik1 lau4 jam6",
           "previous_word_usage_rank": 2
         },
         {
-          "id": 132252,
-          "char": "雙內核",
-          "previous_jyutping": "soeng1 noi6 hat6",
+          "id": 134224,
+          "char": "革舊鼎新",
+          "previous_jyutping": "gaak3 gau6 ding2 san1",
           "previous_word_usage_rank": 2
         },
         {
-          "id": 132280,
-          "char": "雙後腰",
-          "previous_jyutping": "soeng1 hau6 jiu1",
+          "id": 134239,
+          "char": "靶細胞",
+          "previous_jyutping": "baa2 sai3 baau1",
           "previous_word_usage_rank": 2
         },
         {
-          "id": 132288,
-          "char": "雙杆",
-          "previous_jyutping": "soeng1 gon1",
+          "id": 134262,
+          "char": "鞍狀物",
+          "previous_jyutping": "on1 zong6 mat6",
           "previous_word_usage_rank": 2
         },
         {
-          "id": 132292,
-          "char": "雙桅",
-          "previous_jyutping": "soeng1 ngai4",
+          "id": 134263,
+          "char": "鞍轡",
+          "previous_jyutping": "on1 bei3",
           "previous_word_usage_rank": 2
         },
         {
-          "id": 132303,
-          "char": "雙片",
-          "previous_jyutping": "soeng1 pin3",
+          "id": 134265,
+          "char": "鞍馬之勞",
+          "previous_jyutping": "on1 maa5 zi1 lou4",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 134274,
+          "char": "鞣劑",
+          "previous_jyutping": "jau4 zai1",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 134276,
+          "char": "鞣質",
+          "previous_jyutping": "jau4 zat1",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 134287,
+          "char": "鞭杆",
+          "previous_jyutping": "bin1 gon1",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 134299,
+          "char": "鞭辟近裏",
+          "previous_jyutping": "bin1 pik1 gan6 leoi5",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 134301,
+          "char": "鞭長不及",
+          "previous_jyutping": "bin1 coeng4 bat1 kap6",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 134305,
+          "char": "鞭闢近裏",
+          "previous_jyutping": "bin1 pik1 gan6 leoi5",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 134318,
+          "char": "韜光隱晦",
+          "previous_jyutping": "tou1 gwong1 jan2 fui3",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 134323,
+          "char": "韜晦待時",
+          "previous_jyutping": "tou1 fui3 doi6 si4",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 134337,
+          "char": "音分",
+          "previous_jyutping": "jam1 fan1",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 134345,
+          "char": "音形",
+          "previous_jyutping": "jam1 jing4",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 134346,
+          "char": "音形碼",
+          "previous_jyutping": "jam1 jing4 maa5",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 134349,
+          "char": "音栓",
+          "previous_jyutping": "jam1 saan1",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 134390,
+          "char": "音綴",
+          "previous_jyutping": "jam1 zeoi6",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 134399,
+          "char": "音部",
+          "previous_jyutping": "jam1 bou6",
           "previous_word_usage_rank": 1
         },
         {
-          "id": 132307,
-          "char": "雙相",
-          "previous_jyutping": "soeng1 soeng3",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 132327,
-          "char": "雙耳瓶",
-          "previous_jyutping": "soeng1 ji5 ping4",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 132330,
-          "char": "雙股螺旋",
-          "previous_jyutping": "soeng1 gu2 lo4 syun4",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 132348,
-          "char": "雙車",
-          "previous_jyutping": "soeng1 ce1",
+          "id": 134355,
+          "char": "音樂屋",
+          "previous_jyutping": "jam1 ngok6 uk1",
           "previous_word_usage_rank": 1
         },
         {
-          "id": 132364,
-          "char": "雙金屬",
-          "previous_jyutping": "soeng1 gam1 suk6",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 132396,
-          "char": "雜合",
-          "previous_jyutping": "zaap6 hap6",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 132401,
-          "char": "雜技廳",
-          "previous_jyutping": "zaap6 gei6 teng1",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 132402,
-          "char": "雜技界",
-          "previous_jyutping": "zaap6 gei6 gaai3",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 132405,
-          "char": "雜業",
-          "previous_jyutping": "zaap6 jip6",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 132407,
-          "char": "雜波",
-          "previous_jyutping": "zaap6 bo1",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 132406,
-          "char": "雜樣",
-          "previous_jyutping": "zaap6 joeng6",
+          "id": 134357,
+          "char": "音樂手機",
+          "previous_jyutping": "jam1 ngok6 sau2 gei1",
           "previous_word_usage_rank": 1
         },
         {
-          "id": 132423,
-          "char": "雜言",
-          "previous_jyutping": "zaap6 jin4",
+          "id": 134361,
+          "char": "音樂書",
+          "previous_jyutping": "jam1 ngok6 syu1",
           "previous_word_usage_rank": 1
         },
         {
-          "id": 132424,
-          "char": "雜言雜語",
-          "previous_jyutping": "zaap6 jin4 zaap6 jyu5",
+          "id": 134370,
+          "char": "音樂盛典",
+          "previous_jyutping": "jam1 ngok6 sing6 din2",
           "previous_word_usage_rank": 1
         },
         {
-          "id": 132411,
-          "char": "雜用品",
-          "previous_jyutping": "zaap6 jung6 ban2",
+          "id": 134402,
+          "char": "音響器",
+          "previous_jyutping": "jam1 hoeng2 hei3",
           "previous_word_usage_rank": 1
         },
         {
-          "id": 132452,
-          "char": "雞場主",
-          "previous_jyutping": "gai1 coeng4 zyu2",
+          "id": 134415,
+          "char": "音頻芯片",
+          "previous_jyutping": "jam1 pan4 sam1 pin3",
           "previous_word_usage_rank": 1
         },
         {
-          "id": 132453,
-          "char": "雞姦者",
-          "previous_jyutping": "gai1 gaan1 ze2",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 132463,
-          "char": "雞爭鵝鬥",
-          "previous_jyutping": "gai1 zang1 ngo4 dau3",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 132465,
-          "char": "雞犬不聞",
-          "previous_jyutping": "gai1 hyun2 bat1 man4",
+          "id": 134419,
+          "char": "韶光荏苒",
+          "previous_jyutping": "siu4 gwong1 jam5 jim5",
           "previous_word_usage_rank": 1
         },
         {
-          "id": 132481,
-          "char": "雞腿大餐",
-          "previous_jyutping": "gai1 teoi2 daai6 caan1",
+          "id": 134422,
+          "char": "韻律操",
+          "previous_jyutping": "wan5 leot6 cou1",
           "previous_word_usage_rank": 1
         },
         {
-          "id": 132527,
-          "char": "離型紙",
-          "previous_jyutping": "lei4 jing4 zi2",
+          "id": 134431,
+          "char": "響應值",
+          "previous_jyutping": "hoeng2 jing3 zik6",
           "previous_word_usage_rank": 2
         },
         {
-          "id": 132542,
-          "char": "離子源",
-          "previous_jyutping": "lei4 zi2 jyun4",
+          "id": 134432,
+          "char": "響應函數",
+          "previous_jyutping": "hoeng2 jing3 haam4 sou3",
           "previous_word_usage_rank": 2
         },
         {
-          "id": 132555,
-          "char": "離差",
-          "previous_jyutping": "lei4 caa1",
+          "id": 134467,
+          "char": "頂升",
+          "previous_jyutping": "ding2 sing1",
           "previous_word_usage_rank": 2
         },
         {
-          "id": 132565,
-          "char": "離心管",
-          "previous_jyutping": "lei4 sam1 gun2",
+          "id": 134468,
+          "char": "頂名",
+          "previous_jyutping": "ding2 ming4",
           "previous_word_usage_rank": 2
         },
         {
-          "id": 132570,
-          "char": "離散系統",
-          "previous_jyutping": "lei4 saan3 hai6 tung2",
+          "id": 134485,
+          "char": "頂帳",
+          "previous_jyutping": "ding2 zoeng3",
           "previous_word_usage_rank": 2
         },
         {
-          "id": 132601,
-          "char": "離體保存",
-          "previous_jyutping": "lei4 tai2 bou2 cyun4",
+          "id": 134491,
+          "char": "頂死你",
+          "previous_jyutping": "ding2 sei2 nei5",
           "previous_word_usage_rank": 2
         },
         {
-          "id": 132664,
-          "char": "難民收容",
-          "previous_jyutping": "naan6 man4 sau1 jung4",
+          "id": 134494,
+          "char": "頂端優勢",
+          "previous_jyutping": "ding2 dyun1 jau1 sai3",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 134512,
+          "char": "頃接來信",
+          "previous_jyutping": "king2 zip3 loi4 seon3",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 134521,
+          "char": "項目法人",
+          "previous_jyutping": "hong6 muk6 faat3 jan4",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 134558,
+          "char": "順序回憶",
+          "previous_jyutping": "seon6 zeoi6 wui4 jik1",
           "previous_word_usage_rank": 1
         },
         {
-          "id": 132668,
-          "char": "難熔",
-          "previous_jyutping": "naan4 jung4",
+          "id": 134562,
+          "char": "順序效應",
+          "previous_jyutping": "seon6 zeoi6 haau6 jing3",
           "previous_word_usage_rank": 2
         },
         {
-          "id": 132670,
-          "char": "難症",
-          "previous_jyutping": "naan4 zing3",
+          "id": 134563,
+          "char": "順序程序",
+          "previous_jyutping": "seon6 zeoi6 cing4 zeoi6",
           "previous_word_usage_rank": 2
         },
         {
-          "id": 132716,
-          "char": "雨滴侵蝕",
-          "previous_jyutping": "jyu5 dik1 cam1 sik6",
+          "id": 134564,
+          "char": "順序索引",
+          "previous_jyutping": "seon6 zeoi6 sok3 jan5",
           "previous_word_usage_rank": 2
         },
         {
-          "id": 132747,
-          "char": "雪害",
-          "previous_jyutping": "syut3 hoi6",
+          "id": 134566,
+          "char": "順序進程",
+          "previous_jyutping": "seon6 zeoi6 zeon3 cing4",
           "previous_word_usage_rank": 2
         },
         {
-          "id": 132773,
-          "char": "雪鳥",
-          "previous_jyutping": "syut3 niu5",
+          "id": 134567,
+          "char": "順序量表",
+          "previous_jyutping": "seon6 zeoi6 loeng6 biu2",
           "previous_word_usage_rank": 2
         },
         {
-          "id": 132821,
-          "char": "雲髻",
-          "previous_jyutping": "wan4 gai3",
+          "id": 134596,
+          "char": "順磁性",
+          "previous_jyutping": "seon6 ci4 sing3",
           "previous_word_usage_rank": 2
         },
         {
-          "id": 132828,
-          "char": "零件庫",
-          "previous_jyutping": "ling4 gin6 fu3",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 132833,
-          "char": "零修",
-          "previous_jyutping": "ling4 sau1",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 132848,
-          "char": "零型",
-          "previous_jyutping": "ling4 jing4",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 132849,
-          "char": "零基",
-          "previous_jyutping": "ling4 gei1",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 132872,
-          "char": "零重碼",
-          "previous_jyutping": "ling4 cung4 maa5",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 132882,
-          "char": "零點能",
-          "previous_jyutping": "ling4 dim2 nang4",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 132888,
-          "char": "雷擊火",
-          "previous_jyutping": "leoi4 gik1 fo2",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 132900,
-          "char": "雷達遙感",
-          "previous_jyutping": "leoi4 daat6 jiu4 gam2",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 132910,
-          "char": "雹暴",
-          "previous_jyutping": "bok6 bou6",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 132915,
-          "char": "電位移",
-          "previous_jyutping": "din6 wai6 ji4",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 132916,
-          "char": "電位能",
-          "previous_jyutping": "din6 wai6 nang4",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 132934,
-          "char": "電刺激器",
-          "previous_jyutping": "din6 ci3 gik1 hei3",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 132947,
-          "char": "電動吊杆",
-          "previous_jyutping": "din6 dung6 diu3 gon1",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 132955,
-          "char": "電動絞盤",
-          "previous_jyutping": "din6 dung6 gaau2 pun4",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 132957,
-          "char": "電動葫蘆",
-          "previous_jyutping": "din6 dung6 wu4 lou4",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 132964,
-          "char": "電務處",
-          "previous_jyutping": "din6 mou6 cyu3",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 132965,
-          "char": "電勢差計",
-          "previous_jyutping": "din6 sai3 caa1 gai3",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 133007,
-          "char": "電子密度",
-          "previous_jyutping": "din6 zi2 mat6 dou6",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 133014,
-          "char": "電子探針",
-          "previous_jyutping": "din6 zi2 taam3 zam1",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 133015,
-          "char": "電子效應",
-          "previous_jyutping": "din6 zi2 haau6 jing3",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 133032,
-          "char": "電子禮炮",
-          "previous_jyutping": "din6 zi2 lai5 paau3",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 133036,
-          "char": "電子組態",
-          "previous_jyutping": "din6 zi2 zou2 taai3",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 133039,
-          "char": "電子自旋",
-          "previous_jyutping": "din6 zi2 zi6 syun4",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 133040,
-          "char": "電子衡器",
-          "previous_jyutping": "din6 zi2 hang4 hei3",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 133046,
-          "char": "電子負載",
-          "previous_jyutping": "din6 zi2 fu6 zoi3",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 133051,
-          "char": "電子陶瓷",
-          "previous_jyutping": "din6 zi2 tou4 ci4",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 133064,
-          "char": "電導計",
-          "previous_jyutping": "din6 dou6 gai3",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 133066,
-          "char": "電工儀表",
-          "previous_jyutping": "din6 gung1 ji4 biu2",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 133069,
-          "char": "電工機械",
-          "previous_jyutping": "din6 gung1 gei1 haai6",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 133075,
-          "char": "電弧爐",
-          "previous_jyutping": "din6 wu4 lou4",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 133104,
-          "char": "電控櫃",
-          "previous_jyutping": "din6 hung3 gwai6",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 133105,
-          "char": "電控箱",
-          "previous_jyutping": "din6 hung3 soeng1",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 133113,
-          "char": "電教館",
-          "previous_jyutping": "din6 gaau3 gun2",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 133123,
-          "char": "電極化",
-          "previous_jyutping": "din6 gik6 faa3",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 133130,
-          "char": "電機配件",
-          "previous_jyutping": "din6 gei1 pui3 gin6",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 133134,
-          "char": "電氣傳動",
-          "previous_jyutping": "din6 hei3 cyun4 dung6",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 133147,
-          "char": "電泳儀",
-          "previous_jyutping": "din6 wing6 ji4",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 133149,
-          "char": "電泳分離",
-          "previous_jyutping": "din6 wing6 fan1 lei4",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 133154,
-          "char": "電泳技術",
-          "previous_jyutping": "din6 wing6 gei6 seot6",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 133165,
-          "char": "電流密度",
-          "previous_jyutping": "din6 lau4 mat6 dou6",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 133167,
-          "char": "電流效率",
-          "previous_jyutping": "din6 lau4 haau6 leot2",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 133169,
-          "char": "電流線",
-          "previous_jyutping": "din6 lau4 sin3",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 133177,
-          "char": "電源模塊",
-          "previous_jyutping": "din6 jyun4 mou4 faai3",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 133188,
-          "char": "電焊網",
-          "previous_jyutping": "din6 hon6 mong5",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 133199,
-          "char": "電熱膜",
-          "previous_jyutping": "din6 jit6 mok2",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 133201,
-          "char": "電熱風爐",
-          "previous_jyutping": "din6 jit6 fung1 lou4",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 133211,
-          "char": "電磁線",
-          "previous_jyutping": "din6 ci4 sin3",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 133212,
-          "char": "電磁譜",
-          "previous_jyutping": "din6 ci4 pou2",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 133214,
-          "char": "電磁透鏡",
-          "previous_jyutping": "din6 ci4 tau3 geng3",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 133221,
-          "char": "電站設備",
-          "previous_jyutping": "din6 zaam6 cit3 bei6",
+          "id": 134571,
+          "char": "順情理",
+          "previous_jyutping": "seon6 cing4 lei5",
           "previous_word_usage_rank": 1
         },
         {
-          "id": 133223,
-          "char": "電算中心",
-          "previous_jyutping": "din6 syun3 zung1 sam1",
+          "id": 134578,
+          "char": "順承",
+          "previous_jyutping": "seon6 sing4",
           "previous_word_usage_rank": 1
         },
         {
-          "id": 133234,
-          "char": "電纜設備",
-          "previous_jyutping": "din6 laam6 cit3 bei6",
+          "id": 134582,
+          "char": "順時而動",
+          "previous_jyutping": "seon6 si4 ji4 dung6",
           "previous_word_usage_rank": 1
         },
         {
-          "id": 133272,
-          "char": "電致發光",
-          "previous_jyutping": "din6 zi3 faat3 gwong1",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 133274,
-          "char": "電荷分佈",
-          "previous_jyutping": "din6 ho6 fan1 bou3",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 133276,
-          "char": "電荷轉移",
-          "previous_jyutping": "din6 ho6 zyun2 ji4",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 133299,
-          "char": "電視病",
-          "previous_jyutping": "din6 si6 beng6",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 133316,
-          "char": "電解錳",
-          "previous_jyutping": "din6 gaai2 maang5",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 133343,
-          "char": "電透析",
-          "previous_jyutping": "din6 tau3 sik1",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 133352,
-          "char": "電鑄",
-          "previous_jyutping": "din6 zyu3",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 133355,
-          "char": "電阻加熱",
-          "previous_jyutping": "din6 zo2 gaa1 jit6",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 133356,
-          "char": "電阻爐",
-          "previous_jyutping": "din6 zo2 lou4",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 133357,
-          "char": "電阻箱",
-          "previous_jyutping": "din6 zo2 soeng1",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 133358,
-          "char": "電阻絲",
-          "previous_jyutping": "din6 zo2 si1",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 133359,
-          "char": "電阻表",
-          "previous_jyutping": "din6 zo2 biu2",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 133360,
-          "char": "電除塵",
-          "previous_jyutping": "din6 ceoi4 can4",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 133361,
-          "char": "電除塵器",
-          "previous_jyutping": "din6 ceoi4 can4 hei3",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 133371,
-          "char": "需加",
-          "previous_jyutping": "seoi1 gaa1",
+          "id": 134590,
+          "char": "順水行舟",
+          "previous_jyutping": "seon6 seoi2 hang4 zau1",
           "previous_word_usage_rank": 1
         },
         {
-          "id": 133372,
-          "char": "需將",
-          "previous_jyutping": "seoi1 zoeng1",
+          "id": 134592,
+          "char": "順水順風",
+          "previous_jyutping": "seon6 seoi2 seon6 fung1",
           "previous_word_usage_rank": 1
         },
         {
-          "id": 133376,
-          "char": "需有",
-          "previous_jyutping": "seoi1 jau5",
+          "id": 134610,
+          "char": "順適",
+          "previous_jyutping": "seon6 sik1",
           "previous_word_usage_rank": 1
         },
         {
-          "id": 133377,
-          "char": "需款",
-          "previous_jyutping": "seoi1 fun2",
+          "id": 134611,
+          "char": "順隨",
+          "previous_jyutping": "seon6 ceoi4",
           "previous_word_usage_rank": 1
         },
         {
-          "id": 133399,
-          "char": "震悸",
-          "previous_jyutping": "zan3 gwai3",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 133400,
-          "char": "震悼",
-          "previous_jyutping": "zan3 dou6",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 133402,
-          "char": "震懼",
-          "previous_jyutping": "zan3 geoi6",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 133411,
-          "char": "震盪性",
-          "previous_jyutping": "zan3 dong6 sing3",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 133488,
-          "char": "露地栽培",
-          "previous_jyutping": "lou6 dei6 zoi1 pui4",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 133498,
-          "char": "露屍",
-          "previous_jyutping": "lou6 si1",
+          "id": 134614,
+          "char": "順風使帆",
+          "previous_jyutping": "seon6 fung1 si2 faan4",
           "previous_word_usage_rank": 1
         },
         {
-          "id": 133519,
-          "char": "露蜂房",
-          "previous_jyutping": "lou6 fung1 fong4",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 133529,
-          "char": "露點儀",
-          "previous_jyutping": "lou6 dim2 ji4",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 133530,
-          "char": "露點圖",
-          "previous_jyutping": "lou6 dim2 tou4",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 133532,
-          "char": "露點照",
-          "previous_jyutping": "lou6 dim2 ziu3",
+          "id": 134616,
+          "char": "順風使船",
+          "previous_jyutping": "seon6 fung1 si2 syun4",
           "previous_word_usage_rank": 1
         },
         {
-          "id": 133526,
-          "char": "露頭腳",
-          "previous_jyutping": "lou6 tau4 goek3",
+          "id": 134621,
+          "char": "順風船",
+          "previous_jyutping": "seon6 fung1 syun4",
           "previous_word_usage_rank": 1
         },
         {
-          "id": 133539,
-          "char": "霸王槍",
-          "previous_jyutping": "baa3 wong4 coeng1",
+          "id": 134631,
+          "char": "須臾不離",
+          "previous_jyutping": "seoi1 jyu4 bat1 lei4",
           "previous_word_usage_rank": 1
         },
         {
-          "id": 133540,
-          "char": "霸王車",
-          "previous_jyutping": "baa3 wong4 ce1",
+          "id": 134634,
+          "char": "頌嘆",
+          "previous_jyutping": "zung6 taan3",
           "previous_word_usage_rank": 1
         },
         {
-          "id": 133548,
-          "char": "霹靂彈",
-          "previous_jyutping": "pik1 lik1 daan2",
+          "id": 134636,
+          "char": "頌揚備至",
+          "previous_jyutping": "zung6 joeng4 bei6 zi3",
           "previous_word_usage_rank": 1
         },
         {
-          "id": 133549,
-          "char": "霹靂火",
-          "previous_jyutping": "pik1 lik1 fo2",
+          "id": 134639,
+          "char": "頌聲",
+          "previous_jyutping": "zung6 sing1",
           "previous_word_usage_rank": 1
         },
         {
-          "id": 133550,
-          "char": "霹靂炮",
-          "previous_jyutping": "pik1 lik1 paau3",
+          "id": 134645,
+          "char": "預付資本",
+          "previous_jyutping": "jyu6 fu6 zi1 bun2",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 134649,
+          "char": "預備士官",
+          "previous_jyutping": "jyu6 bei6 si6 gun1",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 134658,
+          "char": "預備黨員",
+          "previous_jyutping": "jyu6 bei6 dong2 jyun4",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 134677,
+          "char": "預冷器",
+          "previous_jyutping": "jyu6 laang5 hei3",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 134686,
+          "char": "預埋件",
+          "previous_jyutping": "jyu6 maai4 gin2",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 134714,
+          "char": "預測器",
+          "previous_jyutping": "jyu6 caak1 hei3",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 134716,
+          "char": "預測間隔",
+          "previous_jyutping": "jyu6 caak1 gaan3 gaak3",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 134760,
+          "char": "預防劑",
+          "previous_jyutping": "jyu6 fong4 zai1",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 134665,
+          "char": "預先想定",
+          "previous_jyutping": "jyu6 sin1 soeng2 ding6",
           "previous_word_usage_rank": 1
         },
         {
-          "id": 133553,
-          "char": "霽月",
-          "previous_jyutping": "zai3 jyut6",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 133560,
-          "char": "靈壇",
-          "previous_jyutping": "ling4 taan4",
+          "id": 134667,
+          "char": "預先測驗",
+          "previous_jyutping": "jyu6 sin1 caak1 jim6",
           "previous_word_usage_rank": 1
         },
         {
-          "id": 133563,
-          "char": "靈學",
-          "previous_jyutping": "ling4 hok6",
+          "id": 134671,
+          "char": "預先設立",
+          "previous_jyutping": "jyu6 sin1 cit3 laap6",
           "previous_word_usage_rank": 1
         },
         {
-          "id": 133565,
-          "char": "靈幡",
-          "previous_jyutping": "ling4 faan1",
+          "id": 134672,
+          "char": "預先註定",
+          "previous_jyutping": "jyu6 sin1 zyu3 ding6",
           "previous_word_usage_rank": 1
         },
         {
-          "id": 133568,
-          "char": "靈座",
-          "previous_jyutping": "ling4 zo6",
+          "id": 134689,
+          "char": "預報地圖",
+          "previous_jyutping": "jyu6 bou3 dei6 tou4",
           "previous_word_usage_rank": 1
         },
         {
-          "id": 133571,
-          "char": "靈旛",
-          "previous_jyutping": "ling4 faan1",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 133572,
-          "char": "靈樞",
-          "previous_jyutping": "ling4 syu1",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 133590,
-          "char": "靈風",
-          "previous_jyutping": "ling4 fung1",
+          "id": 134694,
+          "char": "預定金",
+          "previous_jyutping": "jyu6 ding6 gam1",
           "previous_word_usage_rank": 1
         },
         {
-          "id": 133597,
-          "char": "青史傳名",
-          "previous_jyutping": "cing1 si2 cyun4 ming4",
+          "id": 134696,
+          "char": "預想出",
+          "previous_jyutping": "jyu6 soeng2 ceot1",
           "previous_word_usage_rank": 1
         },
         {
-          "id": 133644,
-          "char": "青眼相看",
-          "previous_jyutping": "cing1 ngaan5 soeng1 hon3",
+          "id": 134701,
+          "char": "預控",
+          "previous_jyutping": "jyu6 hung3",
           "previous_word_usage_rank": 1
         },
         {
-          "id": 133648,
-          "char": "青粗飼料",
-          "previous_jyutping": "cing1 cou1 zi6 liu6",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 133652,
-          "char": "青花魚",
-          "previous_jyutping": "cing1 faa1 jyu2",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 133659,
-          "char": "青蛤",
-          "previous_jyutping": "cing1 gap3",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 133661,
-          "char": "青蠅",
-          "previous_jyutping": "cing1 jing4",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 133668,
-          "char": "青貯飼料",
-          "previous_jyutping": "cing1 cyu5 zi6 liu2",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 133677,
-          "char": "青雀",
-          "previous_jyutping": "cing1 zoek3",
+          "id": 134707,
+          "char": "預料出",
+          "previous_jyutping": "jyu6 liu6 ceot1",
           "previous_word_usage_rank": 1
         },
         {
-          "id": 133682,
-          "char": "青驢",
-          "previous_jyutping": "cing1 lou4",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 133704,
-          "char": "靜地",
-          "previous_jyutping": "zing6 dei6",
+          "id": 134710,
+          "char": "預映",
+          "previous_jyutping": "jyu6 jing2",
           "previous_word_usage_rank": 1
         },
         {
-          "id": 133713,
-          "char": "靜影沉璧",
-          "previous_jyutping": "zing6 jing2 cam4 bik1",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 133719,
-          "char": "靜慮",
-          "previous_jyutping": "zing6 leoi6",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 133733,
-          "char": "靜脈瘤",
-          "previous_jyutping": "zing6 mak6 lau2",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 133745,
-          "char": "靜電勢",
-          "previous_jyutping": "zing6 din6 sai3",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 133746,
-          "char": "靜電印刷",
-          "previous_jyutping": "zing6 din6 jan3 caat3",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 133747,
-          "char": "靜電引力",
-          "previous_jyutping": "zing6 din6 jan5 lik6",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 133750,
-          "char": "靜電積累",
-          "previous_jyutping": "zing6 din6 zik1 leoi6",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 133751,
-          "char": "靜電能",
-          "previous_jyutping": "zing6 din6 nang4",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 133758,
-          "char": "非主業",
-          "previous_jyutping": "fei1 zyu2 jip6",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 133795,
-          "char": "非凡地",
-          "previous_jyutping": "fei1 faan4 dei6",
+          "id": 134711,
+          "char": "預有安排",
+          "previous_jyutping": "jyu6 jau5 on1 paai4",
           "previous_word_usage_rank": 1
         },
         {
-          "id": 133803,
-          "char": "非卿莫娶",
-          "previous_jyutping": "fei1 hing1 mok6 ceoi2",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 133812,
-          "char": "非君莫嫁",
-          "previous_jyutping": "fei1 gwan1 mok6 gaa3",
-          "previous_word_usage_rank": 2
-        },
-        {
-          "id": 133895,
-          "char": "非核",
-          "previous_jyutping": "fei1 hat6",
+          "id": 134718,
+          "char": "預熱爐",
+          "previous_jyutping": "jyu6 jit6 lou4",
           "previous_word_usage_rank": 1
         },
         {
-          "id": 133896,
-          "char": "非標",
-          "previous_jyutping": "fei1 biu1",
+          "id": 134719,
+          "char": "預燒",
+          "previous_jyutping": "jyu6 siu1",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 134720,
+          "char": "預產",
+          "previous_jyutping": "jyu6 caan2",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 134724,
+          "char": "預示性",
+          "previous_jyutping": "jyu6 si6 sing3",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 134732,
+          "char": "預籌",
+          "previous_jyutping": "jyu6 cau4",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 134736,
+          "char": "預考",
+          "previous_jyutping": "jyu6 haau2",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 134737,
+          "char": "預藏",
+          "previous_jyutping": "jyu6 cong4",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 134738,
+          "char": "預藏着",
+          "previous_jyutping": "jyu6 cong4 zoek6",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 134743,
+          "char": "預製廠",
+          "previous_jyutping": "jyu6 zai3 cong2",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 134748,
+          "char": "預言性",
+          "previous_jyutping": "jyu6 jin4 sing3",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 134753,
+          "char": "預設短信",
+          "previous_jyutping": "jyu6 cit3 dyun2 seon3",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 134773,
+          "char": "頑愚",
+          "previous_jyutping": "waan4 jyu4",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 134787,
+          "char": "頒佈者",
+          "previous_jyutping": "baan1 bou3 ze2",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 134803,
+          "char": "頓改",
+          "previous_jyutping": "deon6 goi2",
           "previous_word_usage_rank": 2
         },
         {
-          "id": 133897,
-          "char": "非標件",
-          "previous_jyutping": "fei1 biu1 gin6",
+          "id": 134802,
+          "char": "頓悟說",
+          "previous_jyutping": "deon6 ng6 syut3",
           "previous_word_usage_rank": 2
         },
         {
-          "id": 133938,
-          "char": "非特異",
-          "previous_jyutping": "fei1 dak6 ji6",
+          "id": 134808,
+          "char": "頓筆",
+          "previous_jyutping": "deon6 bat1",
           "previous_word_usage_rank": 2
         },
         {
-          "id": 133943,
-          "char": "非甾體",
-          "previous_jyutping": "fei1 zi1 tai2",
+          "id": 134816,
+          "char": "頓足搓手",
+          "previous_jyutping": "deon6 zuk1 co1 sau2",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 134817,
+          "char": "頓足搥胸",
+          "previous_jyutping": "deon6 zuk1 ceoi4 hung1",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 134845,
+          "char": "領事裁判",
+          "previous_jyutping": "ling5 si6 coi4 pun3",
           "previous_word_usage_rank": 2
         },
         {
-          "id": 133972,
-          "char": "非訟事件",
-          "previous_jyutping": "fei1 zung6 si6 gin6",
+          "id": 134870,
+          "char": "領域建模",
+          "previous_jyutping": "ling5 wik6 gin3 mou4",
           "previous_word_usage_rank": 2
         },
         {
-          "id": 133973,
-          "char": "非訴",
-          "previous_jyutping": "fei1 sou3",
+          "id": 134871,
+          "char": "領域規約",
+          "previous_jyutping": "ling5 wik6 kwai1 joek3",
           "previous_word_usage_rank": 2
+        },
+        {
+          "id": 134903,
+          "char": "領港費",
+          "previous_jyutping": "ling5 gong2 fai3",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 134913,
+          "char": "領航圖",
+          "previous_jyutping": "ling5 hong4 tou4",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 134914,
+          "char": "領航權",
+          "previous_jyutping": "ling5 hong4 kyun4",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 134920,
+          "char": "領袖慾",
+          "previous_jyutping": "ling5 zau6 juk6",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 134981,
+          "char": "頭孢類",
+          "previous_jyutping": "tau4 baau1 leoi6",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 134990,
+          "char": "頭文件",
+          "previous_jyutping": "tau4 man4 gin6",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 134848,
+          "char": "領來領去",
+          "previous_jyutping": "ling5 loi4 ling5 heoi3",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 134867,
+          "char": "領土毗連",
+          "previous_jyutping": "ling5 tou2 pei4 lin4",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 134869,
+          "char": "領域專家",
+          "previous_jyutping": "ling5 wik6 zyun1 gaa1",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 134878,
+          "char": "領導帶頭",
+          "previous_jyutping": "ling5 dou6 daai3 tau4",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 134880,
+          "char": "領導批示",
+          "previous_jyutping": "ling5 dou6 pai1 si6",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 134885,
+          "char": "領導集體",
+          "previous_jyutping": "ling5 dou6 zaap6 tai2",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 134904,
+          "char": "領照",
+          "previous_jyutping": "ling5 ziu3",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 134908,
+          "char": "領略出",
+          "previous_jyutping": "ling5 loek6 ceot1",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 134932,
+          "char": "領隊人",
+          "previous_jyutping": "ling5 deoi2 jan4",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 134971,
+          "char": "頭上腳下",
+          "previous_jyutping": "tau4 soeng6 goek3 haa6",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135010,
+          "char": "頭皮癬",
+          "previous_jyutping": "tau4 pei4 sin2",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135031,
+          "char": "頭蓋腔",
+          "previous_jyutping": "tau4 goi3 hong1",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135038,
+          "char": "頭足異處",
+          "previous_jyutping": "tau4 zuk1 ji6 cyu3",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135058,
+          "char": "頰腺",
+          "previous_jyutping": "gaap3 sin3",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135061,
+          "char": "頰面",
+          "previous_jyutping": "gaap3 min6",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135088,
+          "char": "頻率抖動",
+          "previous_jyutping": "pan4 leot2 dau2 dung6",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135095,
+          "char": "頻生",
+          "previous_jyutping": "pan4 saang1",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135100,
+          "char": "頻閃儀",
+          "previous_jyutping": "pan4 sim2 ji4",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135106,
+          "char": "顆粒機",
+          "previous_jyutping": "fo2 nap1 gei1",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135110,
+          "char": "顆粒飼料",
+          "previous_jyutping": "fo2 nap1 zi6 liu2",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135133,
+          "char": "額定量",
+          "previous_jyutping": "ngaak6 ding6 loeng6",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135140,
+          "char": "顎下腺",
+          "previous_jyutping": "ngok6 haa6 sin3",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135149,
+          "char": "顏色視覺",
+          "previous_jyutping": "ngaan4 sik1 si6 gok3",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135155,
+          "char": "顏面骨",
+          "previous_jyutping": "ngaan4 min6 gwat1",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135170,
+          "char": "顛仆",
+          "previous_jyutping": "din1 buk6",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135171,
+          "char": "顛仆流離",
+          "previous_jyutping": "din1 buk6 lau4 lei4",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135187,
+          "char": "顛茄草",
+          "previous_jyutping": "din1 ke2 cou2",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135202,
+          "char": "類化合物",
+          "previous_jyutping": "leoi6 faa3 hap6 mat6",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135206,
+          "char": "類型圖",
+          "previous_jyutping": "leoi6 jing4 tou4",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135207,
+          "char": "類型論",
+          "previous_jyutping": "leoi6 jing4 leon6",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135212,
+          "char": "類新星",
+          "previous_jyutping": "leoi6 san1 sing1",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135222,
+          "char": "類病毒",
+          "previous_jyutping": "leoi6 beng6 duk6",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135233,
+          "char": "類聚效應",
+          "previous_jyutping": "leoi6 zeoi6 haau6 jing3",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135237,
+          "char": "類脂",
+          "previous_jyutping": "leoi6 zi1",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135249,
+          "char": "類黃酮",
+          "previous_jyutping": "leoi6 wong4 tung4",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135274,
+          "char": "顫悸",
+          "previous_jyutping": "zin3 gwai3",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135278,
+          "char": "顯位",
+          "previous_jyutping": "hin2 wai6",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135279,
+          "char": "顯像劑",
+          "previous_jyutping": "hin2 zoeng6 zai1",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135280,
+          "char": "顯像液",
+          "previous_jyutping": "hin2 zoeng6 jik6",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135284,
+          "char": "顯型",
+          "previous_jyutping": "hin2 jing4",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135286,
+          "char": "顯妣",
+          "previous_jyutping": "hin2 bei2",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135292,
+          "char": "顯影力",
+          "previous_jyutping": "hin2 jing2 lik6",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135293,
+          "char": "顯影機",
+          "previous_jyutping": "hin2 jing2 gei1",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135295,
+          "char": "顯微學",
+          "previous_jyutping": "hin2 mei4 hok6",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135341,
+          "char": "風不鳴條",
+          "previous_jyutping": "fung1 bat1 ming4 tiu4",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135343,
+          "char": "風中秉燭",
+          "previous_jyutping": "fung1 zung1 bing2 zuk1",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135351,
+          "char": "風信年華",
+          "previous_jyutping": "fung1 seon3 nin4 waa4",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135352,
+          "char": "風信花",
+          "previous_jyutping": "fung1 seon3 faa1",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135355,
+          "char": "風光帶",
+          "previous_jyutping": "fung1 gwong1 daai3",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135356,
+          "char": "風光月霽",
+          "previous_jyutping": "fung1 gwong1 jyut6 zai3",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135366,
+          "char": "風化殼",
+          "previous_jyutping": "fung1 faa3 hok3",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135387,
+          "char": "風媒傳粉",
+          "previous_jyutping": "fung1 mui4 cyun4 fan2",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135392,
+          "char": "風平波息",
+          "previous_jyutping": "fung1 ping4 bo1 sik1",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135440,
+          "char": "風流跌宕",
+          "previous_jyutping": "fung1 lau4 dit3 dong6",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135442,
+          "char": "風淋室",
+          "previous_jyutping": "fung1 lam4 sat1",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135451,
+          "char": "風濕病學",
+          "previous_jyutping": "fung1 sap1 beng6 hok6",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135465,
+          "char": "風玫瑰圖",
+          "previous_jyutping": "fung1 mui4 gwai3 tou4",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135473,
+          "char": "風絮",
+          "previous_jyutping": "fung1 seoi5",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135483,
+          "char": "風虎雲龍",
+          "previous_jyutping": "fung1 fu2 wan4 lung4",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135484,
+          "char": "風蝕坑",
+          "previous_jyutping": "fung1 sik6 haang1",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135486,
+          "char": "風蝕窪地",
+          "previous_jyutping": "fung1 sik6 waa1 dei6",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135491,
+          "char": "風行水上",
+          "previous_jyutping": "fung1 hang4 seoi2 soeng6",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135018,
+          "char": "頭等功",
+          "previous_jyutping": "tau4 dang2 gung1",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135001,
+          "char": "頭漲",
+          "previous_jyutping": "tau4 zoeng3",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135042,
+          "char": "頭額",
+          "previous_jyutping": "tau4 ngaak6",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135099,
+          "char": "頻道欄目",
+          "previous_jyutping": "pan4 dou6 laan4 muk6",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135117,
+          "char": "題庫系統",
+          "previous_jyutping": "tai4 fu3 hai6 tung2",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135122,
+          "char": "題署",
+          "previous_jyutping": "tai4 cyu5",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135152,
+          "char": "顏貌",
+          "previous_jyutping": "ngaan4 maau6",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135166,
+          "char": "願為",
+          "previous_jyutping": "jyun6 wai4",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135167,
+          "char": "願聞",
+          "previous_jyutping": "jyun6 man4",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135256,
+          "char": "顧影慚形",
+          "previous_jyutping": "gu3 jing2 caam4 jing4",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135258,
+          "char": "顧後瞻前",
+          "previous_jyutping": "gu3 hau6 zim1 cin4",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135259,
+          "char": "顧恤",
+          "previous_jyutping": "gu3 seot1",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135265,
+          "char": "顧盼多姿",
+          "previous_jyutping": "gu3 paan3 do1 zi1",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135266,
+          "char": "顧盼生情",
+          "previous_jyutping": "gu3 paan3 sang1 cing4",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135267,
+          "char": "顧盼自得",
+          "previous_jyutping": "gu3 paan3 zi6 dak1",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135277,
+          "char": "顫筆",
+          "previous_jyutping": "zin3 bat1",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135282,
+          "char": "顯化",
+          "previous_jyutping": "hin2 faa3",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135283,
+          "char": "顯名",
+          "previous_jyutping": "hin2 ming4",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135287,
+          "char": "顯姓揚名",
+          "previous_jyutping": "hin2 sing3 joeng4 ming4",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135296,
+          "char": "顯微攝影",
+          "previous_jyutping": "hin2 mei4 sip3 jing2",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135300,
+          "char": "顯微結構",
+          "previous_jyutping": "hin2 mei4 git3 kau3",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135329,
+          "char": "顯身",
+          "previous_jyutping": "hin2 san1",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135361,
+          "char": "風前月下",
+          "previous_jyutping": "fung1 cin4 jyut6 haa6",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135375,
+          "char": "風嘴",
+          "previous_jyutping": "fung1 zeoi2",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135378,
+          "char": "風土誌",
+          "previous_jyutping": "fung1 tou2 zi3",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135383,
+          "char": "風塵女郎",
+          "previous_jyutping": "fung1 can4 neoi5 long4",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135386,
+          "char": "風媒",
+          "previous_jyutping": "fung1 mui4",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135419,
+          "char": "風月無涯",
+          "previous_jyutping": "fung1 jyut6 mou4 ngaai4",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135457,
+          "char": "風無痕",
+          "previous_jyutping": "fung1 mou4 han4",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135459,
+          "char": "風燭之年",
+          "previous_jyutping": "fung1 zuk1 zi1 nin4",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135466,
+          "char": "風琴手",
+          "previous_jyutping": "fung1 kam4 sau2",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135470,
+          "char": "風砂",
+          "previous_jyutping": "fung1 saa1",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135474,
+          "char": "風聞而來",
+          "previous_jyutping": "fung1 man4 ji4 loi4",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135475,
+          "char": "風聞而至",
+          "previous_jyutping": "fung1 man4 ji4 zi3",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135494,
+          "char": "風行草靡",
+          "previous_jyutping": "fung1 hang4 cou2 mei4",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135513,
+          "char": "風輕雲淨",
+          "previous_jyutping": "fung1 hing1 wan4 zing6",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135516,
+          "char": "風選",
+          "previous_jyutping": "fung1 syun2",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135528,
+          "char": "風雨對床",
+          "previous_jyutping": "fung1 jyu5 deoi3 cong4",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135531,
+          "char": "風雨時若",
+          "previous_jyutping": "fung1 jyu5 si4 joek6",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135533,
+          "char": "風雨蕭條",
+          "previous_jyutping": "fung1 jyu5 siu1 tiu4",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135540,
+          "char": "風雲月露",
+          "previous_jyutping": "fung1 wan4 jyut6 lou6",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135558,
+          "char": "風馳雨驟",
+          "previous_jyutping": "fung1 ci4 jyu5 zaau6",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135559,
+          "char": "風馳雲卷",
+          "previous_jyutping": "fung1 ci4 wan4 gyun2",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135568,
+          "char": "風骨峭峻",
+          "previous_jyutping": "fung1 gwat1 ciu3 zeon3",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135570,
+          "char": "風鬟霧鬢",
+          "previous_jyutping": "fung1 waan4 mou6 ban3",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135638,
+          "char": "飄風暴雨",
+          "previous_jyutping": "piu1 fung1 bou6 jyu5",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135639,
+          "char": "飄風苦雨",
+          "previous_jyutping": "piu1 fung1 fu2 jyu5",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135640,
+          "char": "飄風過耳",
+          "previous_jyutping": "piu1 fung1 gwo3 ji5",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135641,
+          "char": "飄風驟雨",
+          "previous_jyutping": "piu1 fung1 zaau6 jyu5",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135680,
+          "char": "飛書",
+          "previous_jyutping": "fei1 syu1",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135686,
+          "char": "飛檐走脊",
+          "previous_jyutping": "fei1 jim4 zau2 zek3",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135701,
+          "char": "飛符",
+          "previous_jyutping": "fei1 fu4",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135713,
+          "char": "飛蛾赴焰",
+          "previous_jyutping": "fei1 ngo4 fu6 jim6",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135714,
+          "char": "飛蛾赴燭",
+          "previous_jyutping": "fei1 ngo4 fu6 zuk1",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135717,
+          "char": "飛行士",
+          "previous_jyutping": "fei1 hang4 si6",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135715,
+          "char": "飛蜂浪蝶",
+          "previous_jyutping": "fei1 fung1 long6 dip6",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135747,
+          "char": "飛鳥依人",
+          "previous_jyutping": "fei1 niu5 ji1 jan4",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135749,
+          "char": "飛鳥驚蛇",
+          "previous_jyutping": "fei1 niu5 ging1 se4",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135752,
+          "char": "飛鷹走犬",
+          "previous_jyutping": "fei1 jing1 zau2 hyun2",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135753,
+          "char": "飛鷹走狗",
+          "previous_jyutping": "fei1 jing1 zau2 gau2",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135755,
+          "char": "飛龍乘雲",
+          "previous_jyutping": "fei1 lung4 sing4 wan4",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135761,
+          "char": "食不求飽",
+          "previous_jyutping": "sik6 bat1 kau4 baau2",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135811,
+          "char": "食火雞",
+          "previous_jyutping": "sik6 fo2 gai1",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135812,
+          "char": "食為天",
+          "previous_jyutping": "sik6 wai4 tin1",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135814,
+          "char": "食物嵌塞",
+          "previous_jyutping": "sik6 mat6 ham3 sak1",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135822,
+          "char": "食用大黃",
+          "previous_jyutping": "sik6 jung6 daai6 wong4",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135834,
+          "char": "食籃",
+          "previous_jyutping": "sik6 laam4",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135846,
+          "char": "食貨",
+          "previous_jyutping": "sik6 fo3",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135847,
+          "char": "食貨志",
+          "previous_jyutping": "sik6 fo3 zi3",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135852,
+          "char": "食鹽水",
+          "previous_jyutping": "sik6 jim4 seoi2",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135864,
+          "char": "飢火燒腸",
+          "previous_jyutping": "gei1 fo2 siu1 coeng4",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135862,
+          "char": "飢渴症",
+          "previous_jyutping": "gei1 hot3 zing3",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135895,
+          "char": "飲冰",
+          "previous_jyutping": "jam2 bing1",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135918,
+          "char": "飲水知源",
+          "previous_jyutping": "jam2 seoi2 zi1 jyun4",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135920,
+          "char": "飲水辨源",
+          "previous_jyutping": "jam2 seoi2 bin6 jyun4",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135930,
+          "char": "飲用水艙",
+          "previous_jyutping": "jam2 jung6 seoi2 cong1",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135971,
+          "char": "飽和劑",
+          "previous_jyutping": "baau2 wo4 zai1",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135972,
+          "char": "飽和器",
+          "previous_jyutping": "baau2 wo4 hei3",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135973,
+          "char": "飽和壓力",
+          "previous_jyutping": "baau2 wo4 aat3 lik6",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135974,
+          "char": "飽和帶",
+          "previous_jyutping": "baau2 wo4 daai3",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135975,
+          "char": "飽和水汽",
+          "previous_jyutping": "baau2 wo4 seoi2 hei3",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135976,
+          "char": "飽和濕度",
+          "previous_jyutping": "baau2 wo4 sap1 dou6",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135977,
+          "char": "飽和色",
+          "previous_jyutping": "baau2 wo4 sik1",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135979,
+          "char": "飽和量",
+          "previous_jyutping": "baau2 wo4 loeng6",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135981,
+          "char": "飽和電流",
+          "previous_jyutping": "baau2 wo4 din6 lau4",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135990,
+          "char": "飽諳世故",
+          "previous_jyutping": "baau2 am1 sai3 gu3",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 135495,
+          "char": "風行雨散",
+          "previous_jyutping": "fung1 hang4 jyu5 saan3",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135519,
+          "char": "風采飛揚",
+          "previous_jyutping": "fung1 coi2 fei1 joeng4",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135526,
+          "char": "風雨不測",
+          "previous_jyutping": "fung1 jyu5 bat1 caak1",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135532,
+          "char": "風雨滄桑",
+          "previous_jyutping": "fung1 jyu5 cong1 song1",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135539,
+          "char": "風雲之志",
+          "previous_jyutping": "fung1 wan4 zi1 zi3",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135546,
+          "char": "風雷動",
+          "previous_jyutping": "fung1 leoi4 dung6",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135548,
+          "char": "風雹",
+          "previous_jyutping": "fung1 bok6",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135550,
+          "char": "風頭甚健",
+          "previous_jyutping": "fung1 tau4 sam6 gin6",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135556,
+          "char": "風馳",
+          "previous_jyutping": "fung1 ci4",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135569,
+          "char": "風高放火",
+          "previous_jyutping": "fung1 gou1 fong3 fo2",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135577,
+          "char": "颳去",
+          "previous_jyutping": "gwaat3 heoi3",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135578,
+          "char": "颳得",
+          "previous_jyutping": "gwaat3 dak1",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135579,
+          "char": "颳着",
+          "previous_jyutping": "gwaat3 zoek6",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135593,
+          "char": "飄垂",
+          "previous_jyutping": "piu1 seoi4",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135594,
+          "char": "飄失",
+          "previous_jyutping": "piu1 sat1",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135598,
+          "char": "飄擺",
+          "previous_jyutping": "piu1 baai2",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135600,
+          "char": "飄晃",
+          "previous_jyutping": "piu1 fong2",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135605,
+          "char": "飄泊無定",
+          "previous_jyutping": "piu1 bok6 mou4 ding6",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135608,
+          "char": "飄灑自如",
+          "previous_jyutping": "piu1 saa2 zi6 jyu4",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135609,
+          "char": "飄然出世",
+          "previous_jyutping": "piu1 jin4 ceot1 sai3",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135626,
+          "char": "飄遊四海",
+          "previous_jyutping": "piu1 jau4 sei3 hoi2",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135657,
+          "char": "飛兵",
+          "previous_jyutping": "fei1 bing1",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135667,
+          "char": "飛報",
+          "previous_jyutping": "fei1 bou3",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135668,
+          "char": "飛天舞",
+          "previous_jyutping": "fei1 tin1 mou5",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135675,
+          "char": "飛影",
+          "previous_jyutping": "fei1 jing2",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135677,
+          "char": "飛成",
+          "previous_jyutping": "fei1 sing4",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135678,
+          "char": "飛揚浮躁",
+          "previous_jyutping": "fei1 joeng4 fau4 cou3",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135682,
+          "char": "飛機棚",
+          "previous_jyutping": "fei1 gei1 paang4",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135689,
+          "char": "飛沙揚礫",
+          "previous_jyutping": "fei1 saa1 joeng4 lik1",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135690,
+          "char": "飛沙走礫",
+          "previous_jyutping": "fei1 saa1 zau2 lik1",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135694,
+          "char": "飛火流星",
+          "previous_jyutping": "fei1 fo2 lau4 sing1",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135696,
+          "char": "飛直",
+          "previous_jyutping": "fei1 zik6",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135697,
+          "char": "飛眼傳情",
+          "previous_jyutping": "fei1 ngaan5 cyun4 cing4",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135698,
+          "char": "飛砂揚礫",
+          "previous_jyutping": "fei1 saa1 joeng4 lik1",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135711,
+          "char": "飛蓬隨風",
+          "previous_jyutping": "fei1 pung4 ceoi4 fung1",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135716,
+          "char": "飛行史",
+          "previous_jyutping": "fei1 hang4 si2",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135718,
+          "char": "飛行官",
+          "previous_jyutping": "fei1 hang4 gun1",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135724,
+          "char": "飛行道具",
+          "previous_jyutping": "fei1 hang4 dou6 geoi6",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135740,
+          "char": "飛靶",
+          "previous_jyutping": "fei1 baa2",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135742,
+          "char": "飛飛揚揚",
+          "previous_jyutping": "fei1 fei1 joeng4 joeng4",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135745,
+          "char": "飛駛",
+          "previous_jyutping": "fei1 sai2",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135746,
+          "char": "飛騎",
+          "previous_jyutping": "fei1 ke4",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135750,
+          "char": "飛鳶",
+          "previous_jyutping": "fei1 jyun1",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135768,
+          "char": "食人妖",
+          "previous_jyutping": "sik6 jan4 jiu2",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135776,
+          "char": "食品保藏",
+          "previous_jyutping": "sik6 ban2 bou2 cong4",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135782,
+          "char": "食品機械",
+          "previous_jyutping": "sik6 ban2 gei1 haai6",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135794,
+          "char": "食品部",
+          "previous_jyutping": "sik6 ban2 bou6",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135803,
+          "char": "食少事繁",
+          "previous_jyutping": "sik6 siu2 si6 faan4",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135825,
+          "char": "食用筍",
+          "previous_jyutping": "sik6 jung6 seon2",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135829,
+          "char": "食療方",
+          "previous_jyutping": "sik6 liu4 fong1",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135832,
+          "char": "食管炎",
+          "previous_jyutping": "sik6 gun2 jim4",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135844,
+          "char": "食衣住行",
+          "previous_jyutping": "sik6 ji1 zyu6 hang4",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135849,
+          "char": "食雜店",
+          "previous_jyutping": "sik6 zaap6 dim3",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135856,
+          "char": "飢困",
+          "previous_jyutping": "gei1 kwan3",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135857,
+          "char": "飢寒交切",
+          "previous_jyutping": "gei1 hon4 gaau1 cit3",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135869,
+          "char": "飢飽",
+          "previous_jyutping": "gei1 baau2",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135871,
+          "char": "飢餒",
+          "previous_jyutping": "gei1 neoi5",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135873,
+          "char": "飢鷹餓虎",
+          "previous_jyutping": "gei1 jing1 ngo6 fu2",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135888,
+          "char": "飯瓢",
+          "previous_jyutping": "faan6 piu4",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135892,
+          "char": "飯糰子",
+          "previous_jyutping": "faan6 tyun4 zi2",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135893,
+          "char": "飯豆",
+          "previous_jyutping": "faan6 dau6",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135908,
+          "char": "飲料水",
+          "previous_jyutping": "jam2 liu2 seoi2",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135921,
+          "char": "飲水難",
+          "previous_jyutping": "jam2 seoi2 naan4",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135926,
+          "char": "飲淚",
+          "previous_jyutping": "jam2 leoi6",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135937,
+          "char": "飲酒室",
+          "previous_jyutping": "jam2 zau2 sat1",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135954,
+          "char": "飼料作物",
+          "previous_jyutping": "zi6 liu2 zok3 mat6",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135955,
+          "char": "飼料原料",
+          "previous_jyutping": "zi6 liu2 jyun4 liu2",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135956,
+          "char": "飼料糧",
+          "previous_jyutping": "zi6 liu2 loeng4",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135957,
+          "char": "飼料行業",
+          "previous_jyutping": "zi6 liu2 hong4 jip6",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135958,
+          "char": "飼料雞",
+          "previous_jyutping": "zi6 liu2 gai1",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135963,
+          "char": "飼草料",
+          "previous_jyutping": "zi6 cou2 liu2",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135964,
+          "char": "飼養所",
+          "previous_jyutping": "zi6 joeng5 so2",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135965,
+          "char": "飼養標準",
+          "previous_jyutping": "zi6 joeng5 biu1 zeon2",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135967,
+          "char": "飽享",
+          "previous_jyutping": "baau2 hoeng2",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135983,
+          "char": "飽歷",
+          "previous_jyutping": "baau2 lik6",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135984,
+          "char": "飽經世變",
+          "previous_jyutping": "baau2 ging1 sai3 bin3",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135985,
+          "char": "飽經霜雪",
+          "previous_jyutping": "baau2 ging1 soeng1 syut3",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135989,
+          "char": "飽腹",
+          "previous_jyutping": "baau2 fuk1",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 135992,
+          "char": "飽食暖衣",
+          "previous_jyutping": "baau2 sik6 nyun5 ji1",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 134170,
+          "char": "面貼膜",
+          "previous_jyutping": "min6 tip3 mok2",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 134837,
+          "char": "頗見好評",
+          "previous_jyutping": "po2 gin3 hou2 ping4",
+          "previous_word_usage_rank": 1
         }
       ],
       "amendments": [
         {
-          "id": 132836,
-          "char": "零冠詞",
-          "previous_jyutping": "ling4 gun1 ci4",
-          "jyutping": "ling4 gun3 ci4",
-          "note": "冠詞為冠於名詞之前，完整定冠詞／不定冠詞均讀gun3，撤回憑頭冠語義類推的gun1。",
-          "reference": "https://zh.wiktionary.org/wiki/定冠詞"
+          "id": 134471,
+          "char": "頂呱呱",
+          "previous_jyutping": "ding2 gwek4 gwek2",
+          "jyutping": "ding2 gwaa1 gwaa1",
+          "note": "完整頂呱呱CantoDict與JMCL直接供ding2gwaa1gwaa1；呱呱嬰啼gwek4gwek2不適用於優秀義。",
+          "reference": "https://cantonese.sheik.co.uk/dictionary/words/18758/"
         },
         {
-          "id": 133349,
-          "char": "電錶箱",
-          "previous_jyutping": "din6 biu2 soeng1",
-          "jyutping": "din6 biu1 soeng1",
-          "note": "粵典完整電錶直接讀din6biu1，計量器同樣用1；撤回憑錶義類推的biu2。",
-          "reference": "https://cantowords.com/dictionary/錶"
+          "id": 135311,
+          "char": "顯示桌面",
+          "previous_jyutping": "hin2 si6 coek3 min2",
+          "jyutping": "hin2 si6 coek3 min2",
+          "note": "桌面完整現代詞明列coek3／zoek3及min6*2；兩聲母都有效，名詞變調2先。",
+          "reference": "https://cantonese.sheik.co.uk/dictionary/characters/2261/"
         },
         {
-          "id": 133872,
-          "char": "非承重牆",
-          "previous_jyutping": "fei1 sing4 zung6 coeng4",
-          "jyutping": "fei1 sing4 cung5 coeng4",
-          "note": "完整承重sing4cung5由粵典、CC-Canto及CantoDict直接提供，重量cung5保留；不強制換成zung6。",
-          "reference": "https://jyutdictionary.com/dictionary/entry/承重"
+          "id": 134541,
+          "char": "順勢上漲",
+          "previous_jyutping": "seon6 sai3 soeng6 zoeng3",
+          "jyutping": "seon6 sai3 soeng6 zoeng3",
+          "note": "完整上漲原始粵典及LSHK供6/3，漲3同樣指價格／水位上升；現代5/3及6/2亦有完整詞供應，保留後列。",
+          "reference": "https://jyutdictionary.com/dictionary/entry/上漲"
         },
         {
-          "id": 132622,
-          "char": "難以相處",
-          "previous_jyutping": "naan4 ji5 soeng1 cyu5",
-          "jyutping": "naan4 ji5 soeng1 cyu5",
-          "note": "相處現代完整5、3、2均有詞級及例句支持；5優先，原草稿3並非錯音，另列較後。",
-          "reference": "https://jyutdictionary.com/dictionary/entry/相處"
+          "id": 134704,
+          "char": "預料不到",
+          "previous_jyutping": "jyu6 liu6 bat1 dou3",
+          "jyutping": "jyu6 liu6 bat1 dou2",
+          "note": "預料作預測動詞liu6，成功預知結果的到dou2先；原詞庫完整未預料到已有2及3，保留書讀dou3。",
+          "reference": "data/lexicon/curated_lexicon.json：未預料到"
         },
         {
-          "id": 132495,
-          "char": "雞飼料",
-          "previous_jyutping": "gai1 zi6 liu6",
-          "jyutping": "gai1 zi6 liu2",
-          "note": "完整飼料zi6liu2及zi6liu6都有既有整詞供應；日常2先，不把2當誤讀。",
-          "reference": "https://jyutdictionary.com/dictionary/entry/飼料"
+          "id": 134708,
+          "char": "預料到",
+          "previous_jyutping": "jyu6 liu6 dou3",
+          "jyutping": "jyu6 liu6 dou2",
+          "note": "預料作預測動詞liu6，成功預知結果的到dou2先；原詞庫完整未預料到已有2及3，保留書讀dou3。",
+          "reference": "data/lexicon/curated_lexicon.json：未預料到"
         },
         {
-          "id": 132323,
-          "char": "雙網卡",
-          "previous_jyutping": "soeng1 mong5 kaa1",
-          "jyutping": "soeng1 mong5 kaat1",
-          "note": "網絡卡片kaat1日常先，kaa1現代又讀後；不是把kaa1全判錯。",
-          "reference": "https://jyutdictionary.com/dictionary/entry/網卡"
+          "id": 135250,
+          "char": "顧不到",
+          "previous_jyutping": "gu3 bat1 dou3",
+          "jyutping": "gu3 bat1 dou2",
+          "note": "無法兼顧的結果／能力補語dou2先，書讀dou3有效後列；不把原草稿3一律判錯。",
+          "reference": "AI:whole-word-context"
         },
         {
-          "id": 132720,
-          "char": "雨簾",
-          "previous_jyutping": "jyu5 lim4",
-          "jyutping": "jyu5 lim4",
-          "note": "完整雨簾子供lim4；雨幕lim4先，簾幕名詞lim2變調現代又讀保留。",
-          "reference": "https://en.wiktionary.org/wiki/雨簾子"
+          "id": 135252,
+          "char": "顧到",
+          "previous_jyutping": "gu3 dou2",
+          "jyutping": "gu3 dou3",
+          "note": "照顧／兼顧覆蓋到某處的dou3先；能夠顧得到的結果補語dou2另義保留。",
+          "reference": "AI:whole-word-context"
         },
         {
-          "id": 132093,
-          "char": "集會廣場",
-          "previous_jyutping": "zaap6 wui2 gwong2 coeng4",
-          "jyutping": "zaap6 wui2 gwong2 coeng4",
-          "note": "粵典完整集會及集會自由wui2優先；CantoDict完整集會wui6*2供有效書讀6，保留較後。",
-          "reference": "https://cantonese.sheik.co.uk/dictionary/words/4208/"
+          "id": 134896,
+          "char": "領會到",
+          "previous_jyutping": "ling5 wui6 dou2",
+          "jyutping": "ling5 wui6 dou2",
+          "note": "領會完整原始粵典wui6，不是可能wui5；成功領悟結果dou2先。",
+          "reference": "https://jyutdictionary.com/dictionary/entry/領會"
         },
         {
-          "id": 132094,
-          "char": "集會法",
-          "previous_jyutping": "zaap6 wui2 faat3",
-          "jyutping": "zaap6 wui2 faat3",
-          "note": "粵典完整集會及集會自由wui2優先；CantoDict完整集會wui6*2供有效書讀6，保留較後。",
-          "reference": "https://cantonese.sheik.co.uk/dictionary/words/4208/"
+          "id": 134705,
+          "char": "預料中",
+          "previous_jyutping": "jyu6 liu2 zung1",
+          "jyutping": "jyu6 liu2 zung1",
+          "note": "出乎預料完整現代粵典供名詞liu2，本詞預期範圍名詞按此語境判2先、書讀6後；本詞配音與先後明列AI。",
+          "reference": "https://jyutdictionary.com/dictionary/entry/預料"
         },
         {
-          "id": 132095,
-          "char": "集會結社",
-          "previous_jyutping": "zaap6 wui2 git3 se5",
-          "jyutping": "zaap6 wui2 git3 se5",
-          "note": "粵典完整集會及集會自由wui2優先；CantoDict完整集會wui6*2供有效書讀6，保留較後。",
-          "reference": "https://cantonese.sheik.co.uk/dictionary/words/4208/"
+          "id": 134706,
+          "char": "預料之中",
+          "previous_jyutping": "jyu6 liu2 zi1 zung1",
+          "jyutping": "jyu6 liu2 zi1 zung1",
+          "note": "出乎預料完整現代粵典供名詞liu2，本詞預期範圍名詞按此語境判2先、書讀6後；本詞配音與先後明列AI。",
+          "reference": "https://jyutdictionary.com/dictionary/entry/預料"
         },
         {
-          "id": 132096,
-          "char": "集會自由",
-          "previous_jyutping": "zaap6 wui2 zi6 jau4",
-          "jyutping": "zaap6 wui2 zi6 jau4",
-          "note": "粵典完整集會及集會自由wui2優先；CantoDict完整集會wui6*2供有效書讀6，保留較後。",
-          "reference": "https://cantonese.sheik.co.uk/dictionary/words/4208/"
+          "id": 134176,
+          "char": "面部輪廓",
+          "previous_jyutping": "min6 bou6 leon4 kwok3",
+          "jyutping": "min6 bou6 leon4 kwok3",
+          "note": "完整輪廓leon4kwok3為原始詞庫常用音；郭gwok3不直接套入廓。",
+          "reference": "https://jyutdictionary.com/dictionary/entry/輪廓"
         },
         {
-          "id": 132097,
-          "char": "集會遊行",
-          "previous_jyutping": "zaap6 wui2 jau4 hang4",
-          "jyutping": "zaap6 wui2 jau4 hang4",
-          "note": "粵典完整集會及集會自由wui2優先；CantoDict完整集會wui6*2供有效書讀6，保留較後。",
-          "reference": "https://cantonese.sheik.co.uk/dictionary/words/4208/"
+          "id": 135105,
+          "char": "顆粒感",
+          "previous_jyutping": "fo2 nap1 gam2",
+          "jyutping": "fo2 nap1 gam2",
+          "note": "完整顆粒fo2nap1有現代詞級供音，nap1日常先；粒lap1書讀亦保留。",
+          "reference": "https://jyutdictionary.com/dictionary/entry/顆粒"
         },
         {
-          "id": 132002,
-          "char": "雀蛋",
-          "previous_jyutping": "zoek3 daan2",
-          "jyutping": "zoek3 daan2",
-          "note": "蛋名詞口語daan2先，書讀daan6有效後列。",
-          "reference": "https://jyutdictionary.com/dictionary/entry/雞蛋"
+          "id": 135108,
+          "char": "顆粒無收",
+          "previous_jyutping": "fo2 nap1 mou4 sau1",
+          "jyutping": "fo2 nap1 mou4 sau1",
+          "note": "完整顆粒fo2nap1有現代詞級供音，nap1日常先；粒lap1書讀亦保留。",
+          "reference": "https://jyutdictionary.com/dictionary/entry/顆粒"
         },
         {
-          "id": 132486,
-          "char": "雞蛋糕",
-          "previous_jyutping": "gai1 daan2 gou1",
-          "jyutping": "gai1 daan2 gou1",
-          "note": "蛋名詞口語daan2先，書讀daan6有效後列。",
-          "reference": "https://jyutdictionary.com/dictionary/entry/雞蛋"
+          "id": 135402,
+          "char": "風扇皮帶",
+          "previous_jyutping": "fung1 sin3 pei4 daai2",
+          "jyutping": "fung1 sin3 pei4 daai2",
+          "note": "皮帶完整詞日常名詞變調daai2先，傳動皮帶daai3書讀保留。",
+          "reference": "https://jyutdictionary.com/dictionary/entry/皮帶"
         },
         {
-          "id": 133092,
-          "char": "電影膠片",
-          "previous_jyutping": "din6 jing2 gaau1 pin3",
-          "jyutping": "din6 jing2 gaau1 pin2",
-          "note": "膠片影像名詞pin2變調先，書讀pin3保留。",
-          "reference": "https://jyutdictionary.com/dictionary/entry/膠片"
+          "id": 135685,
+          "char": "飛機骨架",
+          "previous_jyutping": "fei1 gei1 gwat1 gaa2",
+          "jyutping": "fei1 gei1 gwat1 gaa2",
+          "note": "骨架完整詞名詞變調gaa2先，書讀gaa3另列。",
+          "reference": "https://jyutdictionary.com/dictionary/entry/骨架"
         },
         {
-          "id": 132281,
-          "char": "雙手柄",
-          "previous_jyutping": "soeng1 sau2 beng3",
-          "jyutping": "soeng1 sau2 beng3",
-          "note": "手柄完整現代詞beng3正常，不把柄的單字等級作罕見。",
-          "reference": ""
+          "id": 134455,
+          "char": "頂上來",
+          "previous_jyutping": "ding2 soeng5 loi4",
+          "jyutping": "ding2 soeng5 loi4",
+          "note": "頂往上方的方向補語soeng5，不套頂上名詞位置soeng6。",
+          "reference": "AI:whole-word-context"
         },
         {
-          "id": 133469,
-          "char": "霧笛",
-          "previous_jyutping": "mou6 dek2",
-          "jyutping": "mou6 dek2",
-          "note": "笛的名詞變調dek2先，書讀dek6有效後列。",
-          "reference": "https://jyutdictionary.com/dictionary/entry/笛"
+          "id": 134456,
+          "char": "頂上去",
+          "previous_jyutping": "ding2 soeng5 heoi3",
+          "jyutping": "ding2 soeng5 heoi3",
+          "note": "頂往上方的方向補語soeng5，不套頂上名詞位置soeng6。",
+          "reference": "AI:whole-word-context"
         },
         {
-          "id": 133709,
-          "char": "靜如處女",
-          "previous_jyutping": "zing6 jyu4 cyu5 neoi5",
-          "jyutping": "zing6 jyu4 cyu2 neoi5",
-          "note": "完整處女cyu2通常書讀優先，現代又讀cyu5保留；非處所cyu3。",
-          "reference": "https://jyutdictionary.com/dictionary/entry/處女"
+          "id": 134379,
+          "char": "音樂視聽",
+          "previous_jyutping": "jam1 ngok6 si6 ting3",
+          "jyutping": "jam1 ngok6 si6 ting3",
+          "note": "完整視聽si6ting3有原始粵典、LSHK詞表及混淆視聽／視聽享受完整例句；CantoDict完整視聽另列ting1與teng1，三者均有效。新詞先後明列AI，3先、1及口語teng1後，不把1視為錯音。",
+          "reference": "https://words.hk/zidin/視聽 ; https://cantonese.sheik.co.uk/scripts/showchar.php?full=true&id=546"
+        },
+        {
+          "id": 134660,
+          "char": "預先付訖",
+          "previous_jyutping": "jyu6 sin1 fu6 gat1",
+          "jyutping": "jyu6 sin1 fu6 ngat6",
+          "note": "完整CantoDict付訖直接供fu6ngat6，2007正音字典ngat6同樣解完畢；1992教育署建議ngat6、gat1又讀。gat1亦有同音字彙完整收訖／付訖／驗訖例。兩音均為現代有效，不能將ngat6一概視為迄義誤讀；新詞6優先、1後列是AI整詞判斷。",
+          "reference": "https://www.cantonese.sheik.co.uk/dictionary/characters/1339/?cf=1&full=true ; https://jyut.net/query?q=訖"
         }
       ],
-      "accepted_before_normalized_dedup": 891,
+      "accepted_before_normalized_dedup": 786,
       "all_2000_forms_reviewed": true,
       "all_selected_readings_reviewed_twice": true,
       "corpus_all_supplied_spans_and_wider_contexts_read": true,
-      "corpus_observations": 9,
-      "corpus_supplied_spans": 17,
-      "previous_decision_prefix_preserved": 131994,
+      "corpus_observations": 7,
+      "corpus_supplied_spans": 8,
+      "previous_decision_prefix_preserved": 133994,
       "reading_review_sealed": true,
-      "accepted_after_dedup": 891,
-      "final_source_readings_reviewed": 916,
+      "fixed_scope_remaining_unreviewed": 10608,
+      "accepted_after_dedup": 785,
+      "final_source_readings_reviewed": 821,
+      "final_word_level_seal": true,
       "same_word_orthographic_canonicalizations": [
         {
-          "id": 132874,
-          "source_form": "零關税",
-          "canonical_form": "零關稅"
+          "id": 134049,
+          "source_form": "靠窗户",
+          "canonical_form": "靠窗戶"
         },
         {
-          "id": 133703,
-          "source_form": "靜卧在",
-          "canonical_form": "靜臥在"
+          "id": 134388,
+          "source_form": "音畫脱節",
+          "canonical_form": "音畫脫節"
+        },
+        {
+          "id": 135323,
+          "source_form": "顯著標志",
+          "canonical_form": "顯著標誌"
+        },
+        {
+          "id": 135795,
+          "source_form": "食品鋪",
+          "canonical_form": "食品舖"
         }
       ],
-      "rank_mirror_withdrawn_before_final_build": {
-        "char": "與人相處",
-        "jyutping": "jyu5 jan4 soeng1 cyu2",
-        "reason": "Exact original-source overlay supplies corrected2 and its source flags. Redundant mirror would duplicate it. Existing Rime cyu2 grade retained; curated preferred5 has explicit0."
-      }
-    },
-    "initial_counter_failure_resolved": "Removed redundant unpublished corrected-reading rank mirror; exact old-source overlay already supplies that pair. Final rebuild preserves old source flags and multiplicities, no code changed."
+      "paid_word_modern_variants_sealed": true
+    }
   },
-  "updated_through_batch": "2026-11-06-written-b69"
+  "updated_through_batch": "2026-11-06-written-b70"
 }
