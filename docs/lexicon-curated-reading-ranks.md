@@ -695,3 +695,13 @@ mui1 女孩子泛稱未有二妹整詞根據，本批不擴入。
 [芒果](https://www.cantonese.sheik.co.uk/dictionary/words/3965/)的mong4本調有[理大借詞資料](https://chaaklau.github.io/elw/)完整詞據，新詞mong1日常先、4後，舊芒果樹4保留。參加會議jyu6建議音先，與會完整詞典另有jyu5同義讀法，舊與會者／與會國5亦保留；會議wui2語音先、wui6原讀後。檐sim4／jim4／jam4、茼蒿tong4 hou1／tong4 ou1／tung4 hou1、自縊ai3／ngai3、偕老haai4／gaai1、莞爾wun2／wun5均有現代字義或完整詞據，不因裸字Rime缺項就判棄用。
 
 落泊潦倒依完整詞例bok6，不能套泊船paak3或地名尼泊爾pok3；原譜字音不是核准詞庫讀音。記錄gei3沒有機械混入另一字紀的gei2。來源、0243碼與先後見[B59審核表](../data/lexicon/reviews/2026-11-06-written-b59-supplement.tsv)及[B59最終驗證](../data/lexicon/reviews/2026-11-06-written-b59-validation.json)。詞語常用度與讀音先後獨立處理。
+
+### B60：處理、虛擬與行字的整詞先後
+
+新增470組讀音，70,245個既有分級物件完整保留。「行數」是行列hong4及數量sou3；行俠好義是hang4、喜好hou3；行有行規取行業hong4；行行好取施善hang4，不用行業hong4或剛健貌hong6。處世、處理、處罰的cyu2與cyu5均有現代同義依據，先2後5，不套地方cyu3；虛擬ji5建議書讀先、ji4現代整詞語音後，不能因孤字表缺ji4判棄用。
+
+藥物中毒zung3、藥物製劑zai1、衣着打扮zoek3、血流量loeng6按語義修正。蓮花瓣faan6先baan6後、膜mok6先mok2後、蠶絲被bei2先bei6後、衍生jin2先hin2後、行情看漲zoeng3先zoeng2後；這些較後讀法有現代同義依據。藤傢俱geoi6日常先，完整CantoDict所列傢俱keoi1後，保留三個舊自建物件及四個舊runtime字面；不以單字類推全刪。原有Rime孤詞行將hang6未在此改寫；新增完整行將崩潰／滅亡用現代詞例hang4及較後haang4，舊孤詞須另作來源審核。
+
+廣東歌7個觀測的13段原文已核讀。相處／到、相處／得均跨詞；其餘完整命中按語境採音，歌譜與重複副歌不等於核准音或生活頻率。見[B60審核表](../data/lexicon/reviews/2026-11-06-written-b60-supplement.tsv)及[B60最終驗證](../data/lexicon/reviews/2026-11-06-written-b60-validation.json)。詞語常用度另行分級，不把少用詞自動判作讀音罕見。
+
+B60最終覆核補正：「表妹夫」依完整「妹夫」mui6fu1讀6，不把表妹末字mui2變調搬入組詞內。修正後重新重建完整隔離詞庫及428個首選讀音，重驗冷熱快取、受影響搜尋、網頁端及完整排序池；初次驗證結果另存，最終報告採修正後結果。

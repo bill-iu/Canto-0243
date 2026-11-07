@@ -1,0 +1,5160 @@
+{
+  "batch": "2026-11-06-written-b60",
+  "date": "2026-11-07",
+  "reviewer": "AI-assisted word-form, sense and whole-word Cantonese review; not human item-by-item approval",
+  "source_repository": "https://github.com/fxsjy/jieba",
+  "source_commit": "67fa2e36e72f69d9134b8a1037b83fbb070b9775",
+  "source_license": "MIT",
+  "source_files": [
+    {
+      "path": "jieba/dict.txt",
+      "url": "https://raw.githubusercontent.com/fxsjy/jieba/67fa2e36e72f69d9134b8a1037b83fbb070b9775/jieba/dict.txt",
+      "sha256": "7197c3211ddd98962b036cdf40324d1ea2bfaa12bd028e68faa70111a88e12a8",
+      "bytes": 5071852
+    },
+    {
+      "path": "extra_dict/dict.txt.big",
+      "url": "https://raw.githubusercontent.com/fxsjy/jieba/67fa2e36e72f69d9134b8a1037b83fbb070b9775/extra_dict/dict.txt.big",
+      "sha256": "b16011275c42955ccd81fc1adecc93a59dbb7926af69d93fc95d4943d40f6aad",
+      "bytes": 8583143
+    },
+    {
+      "path": "LICENSE",
+      "url": "https://raw.githubusercontent.com/fxsjy/jieba/67fa2e36e72f69d9134b8a1037b83fbb070b9775/LICENSE",
+      "sha256": "18ba0984839f85853b29fadaf992f7dba8fd0ca0fbeae34de2b8735222dc7a37",
+      "bytes": 1075
+    }
+  ],
+  "input_git_commit": "2be0f8555eef03aa9019c9ae79e2dfe5717c8d47",
+  "input_curated_sha256": "73da2fece4c10e18552947612fbd5eb3a70ec03cd6dc8e3aa7214824581ac3e8",
+  "input_curated_rows": 70245,
+  "input_db_sha256": "6175f4d4d43d4b44e7e4c3a7762d8a815dd2f554aaf95867d6ec1ae2666e5cf9",
+  "newly_reviewed_candidates": 2000,
+  "revisited_candidates": 0,
+  "review_rows": 2042,
+  "review_candidate_ids": 2000,
+  "review_verdict_rows": {
+    "accept": 470,
+    "reject": 1569,
+    "already_present": 3
+  },
+  "reading_repairs": 0,
+  "added_rows": 470,
+  "added_literals": 428,
+  "total_curated_rows": 70715,
+  "cumulative_reviewed_candidates": 115994,
+  "cumulative_candidate_decisions": {
+    "accept": 67362,
+    "reject": 47231,
+    "already_present": 1152,
+    "defer": 249
+  },
+  "candidate_pool": 146602,
+  "unreviewed_pool_candidates": 30608,
+  "regional_candidates_still_held": 924,
+  "selection": "Next 2000 individually reviewed candidates offsets109250:111250 IDs113994–115993. All749 initial accepts rechecked;318 cold/narrow/unstable expressions withdrawn, leaving431 before normalization and duplicate detection. Seven pinned Cantopop observations/all13 supplied spans read. Cross-word fragments and chorus repetitions are not whole-word frequency; previous source objects and decisions retained.",
+  "lyric_corpus": {
+    "repository": "https://github.com/jasonleeubc/Cantopop-corpus",
+    "commit": "018e88540b917c40dc3f7248ed98908208544b54",
+    "license": "CC-BY-4.0",
+    "observations_policy": "Pinned local lyric-word observations only; not approved readings or everyday frequency. Full-word context reviewed separately."
+  },
+  "frequency_meaning": "Upstream dictionary weight, not measured corpus occurrences or a product ranking weight. Proposed usage rank is AI contextual judgment and is not substituted for available measured whole-word frequency.",
+  "normalization_policy": "Existing s2hk plus103 exact-literal restorations and15 preserved senses across28 input keys; cache35 unchanged. No new normalizer edit or stored-key migration. Simplified source蓬头散发 canonicalized to same-word蓬頭散髮 with original provenance retained; duplicate detection uses canonical runtime keys. Prior source/readings/overlay and226 relation/support files preserved.",
+  "second_pass_familiarity_withdrawals": 318,
+  "net_familiarity_withdrawals": 318,
+  "explicit_restored_candidates": [],
+  "initial_accepted_candidates": 749,
+  "final_accepted_candidates_before_dedup": 431,
+  "reading_policy": "No automatic promotion of character-default drafts; whole-word review plus contextual high-risk and compound-reference audit; 病=beng6 only",
+  "original_curated_rows_preserved": 70245,
+  "previous_source_repairs_explicit": true,
+  "review_tsv_sha256": "09fd6c1b596f426efc17136220bdb0910a2b036f13874ec2ebbf3adc6afac92f",
+  "validation": {
+    "initial_search_checks_before_final_tone_fix": 573,
+    "final_tone_fix": "表妹夫 biu2 mui2 fu1 -> biu2 mui6 fu1",
+    "final_inventory_path": ".tmp/written-20261106/validation-b60-final.db",
+    "merged_rows": 249708,
+    "merged_literals": 231812,
+    "unique_triples": 249706,
+    "baseline_rows": 249238,
+    "all_previous_rows_and_multiplicities_retained": true,
+    "confirmed_old_wrong_sense_readings_removed": 0,
+    "all_accepted_primary_reading_checks": 428,
+    "old_word_grades_preserved": 131719,
+    "new_source_readings": 470,
+    "new_pairs_retained": true,
+    "search_checks": 129,
+    "preferred_reading_checks": 39,
+    "word_usage_keys": 132147,
+    "withdrawn_curated_literals": 2051,
+    "live_db_unchanged": true,
+    "backend_pwa_essay_frequency_keys": 266884,
+    "essay_frequency_tables_equal": true,
+    "backend_pwa_word_grade_keys": 132147,
+    "backend_pwa_curated_reading_grade_keys": 71663,
+    "word_grade_tables_equal": true,
+    "curated_reading_grade_tables_equal": true,
+    "old_source_rows_preserved": 70245,
+    "old_reading_grades_preserved": 70245,
+    "old_usage_rows_preserved": 131719,
+    "old_judgments_preserved": 19325,
+    "new_source_forms": 428,
+    "new_merged_forms": 428,
+    "existing_merged_forms_with_new_readings": [],
+    "raw_source_forms": 67915,
+    "normalized_source_forms": 67913,
+    "new_word_usage_judgments": 99,
+    "unrelated_user_files_unchanged": true,
+    "previous_overlay_bytes_preserved": true,
+    "existing_runtime_readings_mirrored": 0,
+    "exact_existing_wrong_sense_overlay_deletions": 0,
+    "new_merged_readings": 470,
+    "new_merged_readings_net": 470,
+    "full_final_inventory_rebuilt_and_compared": true,
+    "client_query_engine_with_new_dictionary": {
+      "checks": 492,
+      "modes": 3,
+      "new_dictionary_loaded_in_client_engine": true,
+      "preferred_readings_equal": true
+    },
+    "heteronym_full_pool_ranking_equal": true,
+    "non_han_tiers_match_backend": true,
+    "unicode_scalar_tiebreak_parity": true,
+    "new_exact_literal_restorations": {},
+    "normalization_impact": {
+      "new_exact_restorations": {},
+      "exact_restorations_total": 103,
+      "preserved_literal_senses_total": 15,
+      "preserved_literal_input_keys_total": 28,
+      "normalization_code_unchanged": true,
+      "relation_source_bytes_unchanged": true,
+      "stored_relation_literal_keys_migrated": 0,
+      "cache_format": "35",
+      "previous_runtime_rows_affected_by_normalization": 0,
+      "affected_previous_keys": 0,
+      "relation_and_supporting_files_scanned": 226,
+      "unchanged_code_sha256": {
+        "app/utils/trad_chinese.py": "14ce3a3f9d91a91eada4ca80b36540e8dc4e9bdf21fe0f89c1cd49d76a11a2d4",
+        "ingest/lexicon_layer_cache.py": "c0c19a3eaa5a1de520d5599e6f791c5b4b3745e876cba8c81f9b28d269dbd746"
+      },
+      "changed_code_sha256": {},
+      "relation_file_sha256": {
+        "data/antonym/.gitignore": "0c26250189ad7dc5f7ccc9576b0ab9a8357332917c5933c3d076af2ddbc44cc7",
+        "data/cilin/.gitignore": "a44e8b083c5a30f180c0565c4959f081a31636ea397cef1a328209967eb91950",
+        "data/cilin/new_cilin.txt": "25eca50c06888d7f0957c3e82eaddae2922eac99246a06ee62b4eb55cac04c06",
+        "data/relations/manual_relations.tsv": "cfaaeb616ff3906fb250d834c847fe393096d38d0cfb03f07b4ca8e9408dc88d",
+        "data/syn_ant/ant_syn_bridge_pairs.tsv": "6698ea435a1ca2c7207d022a03cef29bc84d0f0260a6c26a9925564187161f0a",
+        "data/syn_ant/campaign_final_audit.meta.json": "f619f5ddbb4d67bea16a0947016972d5ef9fb6a972b65a50e2a3590aa4e842df",
+        "data/syn_ant/campaign_len4.meta.json": "e469c9169d715ebc468bfe1ffbe8c4ddf364568229945dfdac1590686fcac196",
+        "data/syn_ant/campaign_len4.tsv": "3b81bae50d758e11a13bdb7c281cdf1bb59b96e3a9f46db2ac514365e42da285",
+        "data/syn_ant/campaign_len4_final_audit.meta.json": "9b67bcb91b3d29b53411179c2a2bee5139f651ab25209486ba09611be6f748eb",
+        "data/syn_ant/campaign_len4_no_natural.meta.json": "d0666f9417f100d21c96979bdb8ffb911c4c07cc72cef0e287533cb1b8bc51c5",
+        "data/syn_ant/campaign_len4_no_natural.tsv": "9f529ab982c03e51de806994e5f4f394c3b88c73e7270dcebb27a8698047ecf5",
+        "data/syn_ant/campaign_top5000.meta.json": "545802949cc9d74de75e31bf15931dc933c085ef8a281c0bbbf877a82d0ab7b8",
+        "data/syn_ant/campaign_top5000.tsv": "521b0a6305627c0a562ea83633c04f65404d8645eef5e9073dd06b97a1de4d72",
+        "data/syn_ant/compound_antonyms.txt": "fd8c45fb14c460edb2061759ca5be381fd311b4c66b923e5f5a4272fb1bca565",
+        "data/syn_ant/compound_synonyms.txt": "760301a8f8d303434a36c780b875ee57ceabbd5071111d73d4c58f97d75019c8",
+        "data/syn_ant/fixtures/antonym_sample.txt": "6656a61f577cb78212bf88cc7b0dd86fca8b72f0a6744909d965377060335314",
+        "data/syn_ant/fixtures/cilin_sample.txt": "3ee7f6adaed0f83531d426a0846dde3228b5de3b9690a323f70451d547c4b950",
+        "data/syn_ant/fixtures/cow_sample.txt": "b688f27ffe1a89aeef016fc9efe55c4cbc7adc0149671e3cfd565d5a8859be35",
+        "data/syn_ant/fixtures/guotong_noise_sample.txt": "2fb8fe2fbe632304f67aaf577873170f1c225e9c17a85c02392384ac54b11718",
+        "data/syn_ant/fixtures/len4_b01_accepted_draft.tsv": "9cc39036c46634afd206aee58b5d9ac3e1c6ab99645e7a1bb45a5c1e7239cc47",
+        "data/syn_ant/fixtures/len4_b01_all.txt": "fa20cd327d4640d39edff225df139713dbe709a1a06ee65e8099e58cf1b7dc4e",
+        "data/syn_ant/fixtures/len4_b01_dump.txt": "72b0bf0b5b149a32792b21b08babdf21f4bf2783ec6250b490bc4f9b5bef2b2c",
+        "data/syn_ant/fixtures/len4_b01_filtered.tsv": "5d32915f1ef944939b0030684d938678c2283b53f9e8abd0792677d5de054175",
+        "data/syn_ant/fixtures/len4_b01_no_natural_draft.tsv": "903de903b828de3c8805d812c70ce71ca4298c5800d4ae0f193492a84f36557c",
+        "data/syn_ant/fixtures/len4_b01_no_natural_final.tsv": "3fd66d7d6865af0d6927f3feab2b5b8462619b95f2b23501252df74e0b1ec566",
+        "data/syn_ant/fixtures/len4_b01_parent_pairs.tsv": "9cc39036c46634afd206aee58b5d9ac3e1c6ab99645e7a1bb45a5c1e7239cc47",
+        "data/syn_ant/fixtures/len4_b01_proposals.tsv": "c39a7146619e7de86b80499d91fcac5ba406b7794f621c575e98a53136d48758",
+        "data/syn_ant/fixtures/len4_b01_sample.tsv": "91e0a98548d6ce1bf40063776727a03b101e885c71e1200dd13b4d8e52c9be16",
+        "data/syn_ant/fixtures/len4_b01_sample.txt": "9ca90f574ceaa603d6413b6459771403110cd7fcd45747528e1fe10f85c83407",
+        "data/syn_ant/fixtures/len4_b01_unresolved.txt": "fa20cd327d4640d39edff225df139713dbe709a1a06ee65e8099e58cf1b7dc4e",
+        "data/syn_ant/fixtures/len4_b02_accepted_draft.tsv": "5189d507cb42fc9fd340d9dab2a99c878d50544490b2cf0970eb8af2554959aa",
+        "data/syn_ant/fixtures/len4_b02_filtered.tsv": "eaf9b8c9ed4260f73a3f90d2b984aa7e9c5f0125d835ff91db84a45b4c3dc82c",
+        "data/syn_ant/fixtures/len4_b02_heads.txt": "b2baa7924ef23b70b1405fb46a2bd6a067195146649b1fe3946ff37667fac803",
+        "data/syn_ant/fixtures/len4_b02_no_natural_draft.tsv": "b972ec7f17ffed4c7525ccdec917350187bdb10da8b32788971d4424bd68f733",
+        "data/syn_ant/fixtures/len4_b02_no_natural_final.tsv": "9cbb5d98822a13548f62ee75386c00ed388bbbeaabe727ba6b0e2d1c9d965dbf",
+        "data/syn_ant/fixtures/len4_b02_parent_pairs.tsv": "b62b3c5548cfb3ef53e4174848585c1d53dfc166a4be23c37dba29719b2e6d4e",
+        "data/syn_ant/fixtures/len4_b02_proposals.tsv": "12969f691dfa487ca122ada72ea8a373d3332887e15684a32e6fdd9f343e8637",
+        "data/syn_ant/fixtures/len4_b02_unresolved.txt": "b2baa7924ef23b70b1405fb46a2bd6a067195146649b1fe3946ff37667fac803",
+        "data/syn_ant/fixtures/len4_b03_accepted_draft.tsv": "ef048a8126da18a36fa47a96d87849ffd99ea26076f0ae7b29cdd32699570d98",
+        "data/syn_ant/fixtures/len4_b03_filtered.tsv": "877bd11a53939b2410a9124aa2aaf5e9bf42e8ef46878f702dcff7161ae1d9d3",
+        "data/syn_ant/fixtures/len4_b03_no_natural_draft.tsv": "b797e7ea7894777c2ecf6b8a323b5bdac4ebff22c5d4a34c1fee782c96a52430",
+        "data/syn_ant/fixtures/len4_b03_no_natural_final.tsv": "cf9ebab0e48a86cedbd6c208ad38a9301c483575f650556e0a511dfacd5bd148",
+        "data/syn_ant/fixtures/len4_b03_parent_pairs.tsv": "10c3ce880d7decf2ef5474bf116a1c584f6fb732a3ed98e8cd6b0dff0a69f4c8",
+        "data/syn_ant/fixtures/len4_b03_proposals.tsv": "e2fdba63217841450406db22a91d359fa87ea501e6f0a58bcefe9b7598779c60",
+        "data/syn_ant/fixtures/len4_b03_unresolved.txt": "d58c9fff306cf165aa87485effcfa5f9b92b570b8c7518226284344687f21db2",
+        "data/syn_ant/fixtures/len4_b04_accepted_draft.tsv": "a793be8dd09c2939fea9bca864c90085689cfab087bcad868d26c648c89a013c",
+        "data/syn_ant/fixtures/len4_b04_filtered.tsv": "fea4befec1e07dc725a0dfbc8c44faf71036cd8ba530f556e893a97efa758b9e",
+        "data/syn_ant/fixtures/len4_b04_no_natural_draft.tsv": "e6dcfc6c25f0362ffbb9e177bf402de6b2c487c5013c7db3634c8d5f9139bd7e",
+        "data/syn_ant/fixtures/len4_b04_no_natural_final.tsv": "5670611866271d0105f91ca999b67f521cb562dc7e4918c51490c16d892593ad",
+        "data/syn_ant/fixtures/len4_b04_parent_pairs.tsv": "28434ed921e137f5e34c5d22df4c6c6f22174b181837243c5d35637f59bedc72",
+        "data/syn_ant/fixtures/len4_b04_proposals.tsv": "7799cabb929b0c50bd272cb683f14669a2ab89094626db2de1f4ac837b53a00b",
+        "data/syn_ant/fixtures/len4_b04_unresolved.txt": "2d49bff2328d4ab57e5aa6c4e63dbd47874f68fc8f3c5c820365c72b6b9c5dd4",
+        "data/syn_ant/fixtures/len4_b05_accepted_draft.tsv": "e67776fdd9607dd929ee5d1478b4f873b24dace11f20101677484a5231ad28b5",
+        "data/syn_ant/fixtures/len4_b05_filtered.tsv": "20c990fe1341817ac440b0beb6c305bbd18aadbed665231fe678d8528d2ef733",
+        "data/syn_ant/fixtures/len4_b05_no_natural_draft.tsv": "ecfb8a3da8f854579ce7e29e6a39296c7f84a2fb4ca4b74f0f120dd3019adb6e",
+        "data/syn_ant/fixtures/len4_b05_no_natural_final.tsv": "7a60fda01b10a60d1acd9229506a4d0b8140d7eb65165422e3b24e83e9934df5",
+        "data/syn_ant/fixtures/len4_b05_parent_pairs.tsv": "64a00d76c62cda4ef63e3526fb3f0f404685cab8d40b1b316d353d219bb049ab",
+        "data/syn_ant/fixtures/len4_b05_proposals.tsv": "31c6c9d1faadbd08cbd8abfacdc1bb92f5c9df030f012b360127a2e216f95e8b",
+        "data/syn_ant/fixtures/len4_b05_unresolved.txt": "d7cd0fe293284d05f16eb5ef80f4a76f5158d8a5abb644032c837da5f8b649ca",
+        "data/syn_ant/fixtures/len4_b06_accepted_draft.tsv": "f545fb4978f19fa89d00aa3349c3eae99719c2b47441d1ea4154d094a7feb281",
+        "data/syn_ant/fixtures/len4_b06_filtered.tsv": "b8db1eaad70747aba5f4d677bdf20a112d822704f83bf7f3e29537f0ece4517b",
+        "data/syn_ant/fixtures/len4_b06_no_natural_draft.tsv": "13f5bd84017d3dccbabbc9f00724474aaa271df409e3678b0d4d46fb2a5a82c2",
+        "data/syn_ant/fixtures/len4_b06_no_natural_final.tsv": "e587442919610a30a665645dd514121298f0518ea45a21de682f475b7e5eed7d",
+        "data/syn_ant/fixtures/len4_b06_parent_pairs.tsv": "aa4710473f1b499e9879b75140b724e2fa3bd13e47afa67687f01c0114e4061f",
+        "data/syn_ant/fixtures/len4_b06_proposals.tsv": "a4a158c243bd73c0074ab1128de82242dce603e98f16601f9b86159f701509a2",
+        "data/syn_ant/fixtures/len4_b06_unresolved.txt": "90c8431197f11ea62ef3ba830eb6ff74b5236d405a9ae1460429abae88d4df82",
+        "data/syn_ant/fixtures/len4_final_acc_sample.tsv": "1880b5268f1f830cac1c1df63002b1897b83e25f875bbaa6470320053e32a877",
+        "data/syn_ant/fixtures/len4_final_nn_sample.tsv": "5919ff130565dc7ccc7ba71bb071b2b430b0a13a4588b13b8dbc7403bf06fdfc",
+        "data/syn_ant/fixtures/len4_final_sample_stats.json": "1405c5f5c20e40ce537adb9868d6d17e22b4d4619b022bf33a7b3257dfa70620",
+        "data/syn_ant/fixtures/post_syn_ant_b01_accepted.tsv": "33c3348ab3ab16598784ac9c2177fae5690946cc0b5341d826c5737d317961d1",
+        "data/syn_ant/fixtures/post_syn_ant_b01_filtered.tsv": "21b53511a52eb1303d00dba9ed5e498fa0354c5e58f268091bc9f2c850d9418d",
+        "data/syn_ant/fixtures/post_syn_ant_b01_no_natural_draft.tsv": "7fbaea5992272ac49b5713d3aed65ab2b1e6ea7bee8791a0adcca4f0d8c51b03",
+        "data/syn_ant/fixtures/post_syn_ant_b01_proposals.tsv": "49bea4a339fa1a511b802dd73292fb8642d8446f16742c552ef72631d5fd2190",
+        "data/syn_ant/fixtures/post_syn_ant_b02_accepted.tsv": "c6191a66f90882c611830809317ad9c440f96d52b667620dea29c05b40c4a5f6",
+        "data/syn_ant/fixtures/post_syn_ant_b02_filtered.tsv": "8a492d457546a3c264ff6b3f0076f861d4be51678e7b097ba36d2dc8c8199683",
+        "data/syn_ant/fixtures/post_syn_ant_b02_no_natural_draft.tsv": "3b12e56e60bc971a993b983b48be3b1944990f5222503def98e8c8749ef4ce41",
+        "data/syn_ant/fixtures/post_syn_ant_b02_proposals.tsv": "f8a4f3cc9d581287a0e150ff3ca3a8abac1778d777444a8c5489491e126f4b48",
+        "data/syn_ant/fixtures/post_syn_ant_b03_accepted.tsv": "07c73b2c81d70e9e8b4ed8f19ab73bdbdd8f2bb59dd02cea61e89178d1efcc94",
+        "data/syn_ant/fixtures/post_syn_ant_b03_filtered.tsv": "31fe3bdbab18aaed055a7bdc47839283297cc0d069594aa454cb5cd601b5d568",
+        "data/syn_ant/fixtures/post_syn_ant_b03_no_natural_draft.tsv": "ecb9bf9868d4f189cec9acad7ea24e62082a8c148840ab12440502181ed73290",
+        "data/syn_ant/fixtures/post_syn_ant_b03_proposals.tsv": "b99bf148234935ff3c17cc85a64a09e91aba54574f6287faebf97f4389750d99",
+        "data/syn_ant/fixtures/post_syn_ant_b04_accepted.tsv": "6b5e35ec25dd8b29c733066052f2f7e93c26c836deb5b748b5952dacc000ea3d",
+        "data/syn_ant/fixtures/post_syn_ant_b04_filtered.tsv": "d1a198c7bf5df394b8c3241b70e26dd4aaf10fcff8a0ce79f40e76a2f1613c36",
+        "data/syn_ant/fixtures/post_syn_ant_b04_proposals.tsv": "03dc53113fca7ac9a9123faf6c6d7a5f0913e3025ce58edbcfdea91fa20b5add",
+        "data/syn_ant/fixtures/post_syn_ant_b05_accepted.tsv": "c4f08498bc4d49d5f41c214be58585544b7574a7cba088df81f77c36275f7482",
+        "data/syn_ant/fixtures/post_syn_ant_b05_filtered.tsv": "df7e484d58fd3aaa422617df5ebc81370bf8a8e23b10571de8312b539c8be71b",
+        "data/syn_ant/fixtures/post_syn_ant_b05_no_natural_draft.tsv": "afbd4fc111b5f07cb5643ee2f06efe5982263e935d8a76cab3401059a7375f38",
+        "data/syn_ant/fixtures/post_syn_ant_b05_proposals.tsv": "83a690f2c0d90267829c32b551587cba0c583a18cb7e5e02a0b106eb17a554af",
+        "data/syn_ant/fixtures/post_syn_ant_gap_b02_top150.tsv": "cfe5e6ea26c78383b4b1d58ff909b95a508bb32db174c097dd8102fccf9cbe8c",
+        "data/syn_ant/fixtures/post_syn_ant_gap_b03_top150.tsv": "c54fa71967864388c2b870e2ef18d11b8d80af02e4d202092a94fd122819ede6",
+        "data/syn_ant/fixtures/post_syn_ant_gap_b04_top150.tsv": "054dfa4c7cd9c276529022fc431f2b2fbbeb8cbba9298749b1636776c1c2df6d",
+        "data/syn_ant/fixtures/post_syn_ant_gap_b05_all.tsv": "b09c534bcf84cdefc8920736717b3677316a61e981b8271029ae91daa4cf03a1",
+        "data/syn_ant/fixtures/post_syn_ant_gap_top150.tsv": "6e11f36b065fb989f08f67d7015c0436991302db4b6544887c19c250fb6dd526",
+        "data/syn_ant/fixtures/post_syn_ant_p1_nn_flip_b01_accepted.tsv": "27ce33793fc0672b07c7da2d02fd52bba69f356554f8a47e84898005b85e374e",
+        "data/syn_ant/fixtures/post_syn_ant_p1_nn_flip_b01_filtered.tsv": "27ce33793fc0672b07c7da2d02fd52bba69f356554f8a47e84898005b85e374e",
+        "data/syn_ant/fixtures/post_syn_ant_p1_nn_flip_b01_proposals.tsv": "12b9b9628879c1a1ee9e45bd865cf6212d2ce2d5b9fed5f0717c186a12524656",
+        "data/syn_ant/fixtures/post_syn_ant_ring5k10k_b01_accepted.tsv": "e7313d892386bdd47ac7a56b686123ad7b0520e7256cd18d18c973e972366d76",
+        "data/syn_ant/fixtures/post_syn_ant_ring5k10k_b01_filtered.tsv": "3e94e85ce07318f5154bd04e83c9d1c48bfe4001f0cbeb4c2d5474dc0bef1ad2",
+        "data/syn_ant/fixtures/post_syn_ant_ring5k10k_b01_no_natural_draft.tsv": "aeaa3b68cdbbb3ee8b0bc07655891bc783d0d45bc2a609b6087eed5568879bf6",
+        "data/syn_ant/fixtures/post_syn_ant_ring5k10k_b01_proposals.tsv": "9b22414073ed7b3c7ac14d78b7bdb5b5eea48ac5586c2bac26cd2b2b5cf96cc7",
+        "data/syn_ant/fixtures/post_syn_ant_ring5k10k_b01_top150.tsv": "6faf1999a0a1f866dcf8d32a7f37d5e2b3d67b57ced29e2f3e2537b99abb411d",
+        "data/syn_ant/fixtures/post_syn_ant_ring5k10k_b02_accepted.tsv": "16bcc8121254549c36b0da334a1ae6d23d506ddb7e8792c9a78ce3108c36c7d3",
+        "data/syn_ant/fixtures/post_syn_ant_ring5k10k_b02_filtered.tsv": "6dc46c6bfc9f10d018f413fdb4614a98e85e72b061501f93779234df1a747af4",
+        "data/syn_ant/fixtures/post_syn_ant_ring5k10k_b02_proposals.tsv": "6fd796ccfff5e0d94696d5651db1c5af95d77156251d7a838ede987a7e24f92c",
+        "data/syn_ant/fixtures/post_syn_ant_ring5k10k_b02_top150.tsv": "bc92633092fc5b3e3236bab1d6b87529f7a8a71b8073ed5cae7198a27a5eb7f4",
+        "data/syn_ant/fixtures/post_syn_ant_ring5k10k_b03_accepted.tsv": "ff3d2b071888629fbfbaef3c752dcd2ab0f78c1e35df9d5244109a51f563729d",
+        "data/syn_ant/fixtures/post_syn_ant_ring5k10k_b03_filtered.tsv": "ddc958b465381a7a03b7928f646cb4320e0a54627eeedc63d1d2ce0122e944bd",
+        "data/syn_ant/fixtures/post_syn_ant_ring5k10k_b03_proposals.tsv": "042099d7e9cfa472e62b2b235432a1a5cfa1105859d73aff61a831ecc923d8da",
+        "data/syn_ant/fixtures/post_syn_ant_ring5k10k_b03_top150.tsv": "5762a028ba75134a9f33e10d01819f28e3fcdacc08d932d5e0eb63900627b007",
+        "data/syn_ant/fixtures/post_syn_ant_ring5k10k_b04_accepted.tsv": "848d67924f2398af00faa448800e989cbbeb3b8eaa3e918ee73867b4a8381d04",
+        "data/syn_ant/fixtures/post_syn_ant_ring5k10k_b04_filtered.tsv": "592998acf9cd4a1ef977206e4db334d6b5258e7f68c976a5cf3b901d0ea9498a",
+        "data/syn_ant/fixtures/post_syn_ant_ring5k10k_b04_proposals.tsv": "6999a6c8923794e20450b835da3c0acd91b889e1f972c76f92cc64755e1e857e",
+        "data/syn_ant/fixtures/post_syn_ant_ring5k10k_b04_top500.tsv": "97559ba54946ed842ede16ccd567780fbf20c05cd2eccea936cff449a34de0b9",
+        "data/syn_ant/fixtures/post_syn_ant_ring5k10k_b05_accepted.tsv": "1971042c5aa0c5185d7ff32c5ec7dea4ba24c0d970cf4ada0f0a08bf1d82b089",
+        "data/syn_ant/fixtures/post_syn_ant_ring5k10k_b05_filtered.tsv": "3a68d41624bfcccf5bef779ad9e4eb6a0c16a14f8173a19accd178ea45888953",
+        "data/syn_ant/fixtures/post_syn_ant_ring5k10k_b05_proposals.tsv": "bab8408bcbc0d66d35bbea4d45b6d8d1d7ec271351836c08491b165d0788be97",
+        "data/syn_ant/fixtures/post_syn_ant_ring5k10k_b05_top500.tsv": "82a9f339d3f572c5fe2f12fa87c6fa3a30bea833db710ad68366af73bca40fdc",
+        "data/syn_ant/fixtures/post_syn_ant_ring5k10k_b06_accepted.tsv": "9051f60f5887c7f530d6ceb3c5af7c889b1376fd60a7e0e72f4b89e9929e65a6",
+        "data/syn_ant/fixtures/post_syn_ant_ring5k10k_b06_all.tsv": "7496e5606d14777196cb1da92906143879f4671255d52a6ccf044df038bf10f9",
+        "data/syn_ant/fixtures/post_syn_ant_ring5k10k_b06_filtered.tsv": "b403aa1d805819eaf15a0afd4402be775933b3b89c76eae871d28a413b193f42",
+        "data/syn_ant/fixtures/post_syn_ant_ring5k10k_b06_proposals.tsv": "bf2700fef2e2e95180a495eda2c703d44b46850fd1f78048b92924dc1e0917ad",
+        "data/syn_ant/fixtures/post_syn_ant_ring5k10k_open.tsv": "85c01ceafb097d992fa6d38dd6227ea959fc37d4334b687438d5a53925622656",
+        "data/syn_ant/fixtures/relations.tsv": "3f9c4778cf1ddfd0496c0f040f3df2293cacd7b7bf09d8868bdc56464bfed13c",
+        "data/syn_ant/project-antonyms-prompt-len4.txt": "c53c95966f0caefb50daeff3da5826ef473b0150f09f8461fa040306cc96a6cc",
+        "data/syn_ant/project-antonyms-prompt.txt": "b579cc0a6ed6a25840b341933bbe33286a4183f2bb0c2523c1537ab3e0c82fac",
+        "data/syn_ant/project/campaign_syn_len4.meta.json": "bf600de7acdae8da0eb88c03ef053eb98ebf2be89eb12dd39b52840d2fc79d95",
+        "data/syn_ant/project/campaign_syn_len4.tsv": "0b05741d8df8c8449951bf635afc57ea1c51721ca772c9d2dc394324dc761dda",
+        "data/syn_ant/project/campaign_syn_len4_final_audit.meta.json": "5f4674fbdcddb0ff8594d843666dec0db48f2a10332547545858939d11106dc4",
+        "data/syn_ant/project/campaign_syn_top5000.meta.json": "649024f18563de7838ccc1655af0b73a5c3e49f1658b41c266d01c1bf097ec31",
+        "data/syn_ant/project/campaign_syn_top5000.tsv": "09fb9eb9fecdabaa8f2b6f7781f35ec62a4ebb21d3c12c8482dbe627e5ca6df2",
+        "data/syn_ant/project/campaign_syn_top5000_final_audit.meta.json": "d4ab2ecb5408ad236303b6c2fecf0a464c6d8acd3515459aa0f9500bc4a0b693",
+        "data/syn_ant/project/fixtures/syn_len4_b01_accepted.tsv": "646fd91d35745e8f5f71bacaae67d5ad967de7e3b5c0b4e7b511de25870103fe",
+        "data/syn_ant/project/fixtures/syn_len4_b01_adequate.tsv": "f95bfad577acdb7edeccfcfd9752d443704c7fec3d5c222c00d6fd0efebbfd89",
+        "data/syn_ant/project/fixtures/syn_len4_b01_heads.tsv": "09911b143bf62c33e0dcec8a4c51aaf08fc22b4d34dd7b720c2e221f9152a10b",
+        "data/syn_ant/project/fixtures/syn_len4_b01_heads_list.txt": "16aa72348dfa45aaa9c7813076617e4a2b5e3dcbbcb5d4c065c3112e1cdf8b74",
+        "data/syn_ant/project/fixtures/syn_len4_b01_no_natural.tsv": "8ac208deb38df1645329da164a1e8a303e15282ba090c12613f184e3ed6fcc7b",
+        "data/syn_ant/project/fixtures/syn_len4_b02_accepted.tsv": "37454c3113a0fc84dbc52d523ac3336b05f2e9e9b8620d62e1fa43b78fb29c82",
+        "data/syn_ant/project/fixtures/syn_len4_b02_adequate.tsv": "c34138b598b7de9d1a913dd3355d0b2c0da74f71ab454fe3561c7b0c8ebcda24",
+        "data/syn_ant/project/fixtures/syn_len4_b02_heads.tsv": "64e896634fab456b114632bc187a5480faf11fbc3309a445232d529270f1bcff",
+        "data/syn_ant/project/fixtures/syn_len4_b02_heads_list.txt": "41afd954d77a7f1512304d03eadd5dd5cf0f7f67ee651f3dc880dff6814938ec",
+        "data/syn_ant/project/fixtures/syn_len4_b02_no_natural.tsv": "65931af1ad565fd64f619b9a65b65f02f9f6cffc85965f574622bac73c723e35",
+        "data/syn_ant/project/fixtures/syn_len4_b03_accepted.tsv": "e1708e1639d2a804dfc6eb3d21c78cec37c21bf2bb18a4c9360f34dc898d92ea",
+        "data/syn_ant/project/fixtures/syn_len4_b03_adequate.tsv": "ae874317d19c152597323d8567d57ee73d3615cf01e4ea0d94ebae3d75746064",
+        "data/syn_ant/project/fixtures/syn_len4_b03_heads.tsv": "e60f525b348fbb192ac3c422c0c6693bfc98f802442534b742173ee03651fc78",
+        "data/syn_ant/project/fixtures/syn_len4_b03_heads_list.txt": "ccf174fd4bd48a3eead1f461cc5aade8f9077f52c8bb4fbb17894e9fcf1008ca",
+        "data/syn_ant/project/fixtures/syn_len4_b03_no_natural.tsv": "07664a6a600ccd61639ca68c30de1a2ff85b6fb6a15f137b2e5817776b670958",
+        "data/syn_ant/project/fixtures/syn_len4_b04_accepted.tsv": "08c336fbd171416c638689fcd9767aab89d26f7ab78125613b34308434810a3f",
+        "data/syn_ant/project/fixtures/syn_len4_b04_adequate.tsv": "9c5b89309097175d5547be420da358130651dcf9d771ede5a78bf5e6e0e39f4f",
+        "data/syn_ant/project/fixtures/syn_len4_b04_heads.tsv": "b70c9b12eda76ebeed270a71bc7996857985103bfa70ab08f997963b0e9df063",
+        "data/syn_ant/project/fixtures/syn_len4_b04_heads_list.txt": "28049f309101556aadc121d6740dee50465cb1b1d53a8d01a0029af2b6161dca",
+        "data/syn_ant/project/fixtures/syn_len4_b04_no_natural.tsv": "7efb9efae9afee6c6850c52ad17287863f864350edd76bb2cc51972cc56f2f20",
+        "data/syn_ant/project/fixtures/syn_len4_b05_accepted.tsv": "eababe476d6182a959ab50b4a118fbdac5fba7481513dffe40edd202178fc51f",
+        "data/syn_ant/project/fixtures/syn_len4_b05_adequate.tsv": "54b5756b045658c8a6e42540f4648a3bd0bf8ed7c8ea93a230654361c9fc7dad",
+        "data/syn_ant/project/fixtures/syn_len4_b05_heads.tsv": "87d6b43afbbd1bb076936d29ea0d1103da4933647f47d42227e26930814db4d7",
+        "data/syn_ant/project/fixtures/syn_len4_b05_heads_list.txt": "4ff84de73a15323c154440ffc4bc0616a1dfaef27d751cbd56d64e48d2d0b3ad",
+        "data/syn_ant/project/fixtures/syn_len4_b05_no_natural.tsv": "fba6d686dc7224ebfebb124d9492bfea485fda1d8d769c4e9f05778c42c721b3",
+        "data/syn_ant/project/fixtures/syn_len4_b06_accepted.tsv": "816b184232f395aa79f910f5e3db10428d52b38b3d4502e8c90e6956bd45b978",
+        "data/syn_ant/project/fixtures/syn_len4_b06_adequate.tsv": "394f44b4d9f0e3019cb10dfa060bb40e4f4add869015ccc0c9645027157bc3ba",
+        "data/syn_ant/project/fixtures/syn_len4_b06_heads.tsv": "992a2749413f9976548357731dae6b1ddb3590c4baf60fdf0cb1e9efa5a4f6dd",
+        "data/syn_ant/project/fixtures/syn_len4_b06_heads_list.txt": "ed4d23de829b303a055777d1013287d726e79f06b729ab0ad2f60bd6372737b6",
+        "data/syn_ant/project/fixtures/syn_len4_b06_no_natural.tsv": "b6e9bc991f8ef0e0befd40f06804ac02f3fde1bd4849c1f0b4ee4ab334ceb235",
+        "data/syn_ant/project/fixtures/syn_len4_b07_accepted.tsv": "5ba8ce6a524f8e58407c8c3022c7d65384d0b1af8c43ff0796f1347f5b14523c",
+        "data/syn_ant/project/fixtures/syn_len4_b07_adequate.tsv": "3ffb57e2d127f5a8bb6f210bd6facaae8c426295c7095585e98fffc0a7f5a551",
+        "data/syn_ant/project/fixtures/syn_len4_b07_heads.tsv": "d35fef808bc460f59794cf8ee852f8b562e42de646667914632b9aa3a62cb5cc",
+        "data/syn_ant/project/fixtures/syn_len4_b07_heads_list.txt": "b6638dd9b4f38d21f161c6891ef8c89dd526de8e7afa02f3335b7cde5e5d8fd9",
+        "data/syn_ant/project/fixtures/syn_len4_b07_no_natural.tsv": "2723eb213947b39917cb61b5357c319dbbb6bd3a408ac0a48af1794cdce3984e",
+        "data/syn_ant/project/fixtures/syn_len4_b08_accepted.tsv": "085253d70bfbe8473d3db646738806c9d6d440a3431369a9018a51740adfeac7",
+        "data/syn_ant/project/fixtures/syn_len4_b08_adequate.tsv": "d9aec16ee29377a3c4a64469f5ce6aa0f861bb9e5f43a6a0e2396f639cbdef01",
+        "data/syn_ant/project/fixtures/syn_len4_b08_heads.tsv": "796f9e6e30890be0c60a244a94b09e5aef86261e7d2b31ca9eaf149149bbf0f7",
+        "data/syn_ant/project/fixtures/syn_len4_b08_heads_list.txt": "ca89ead3ac1141996cce166089300c598d20823d3eb29c766e6bfbf2ed1dd1a9",
+        "data/syn_ant/project/fixtures/syn_len4_b08_no_natural.tsv": "221a3688f09b2eac2f07a92a777df1c43ad2c7cae763ad2cd36ac99cff9cb5c9",
+        "data/syn_ant/project/fixtures/syn_len4_b09_accepted.tsv": "efc568043fb2cd758f05975d3246650854caa8ea775dca24db3b87c516bb9679",
+        "data/syn_ant/project/fixtures/syn_len4_b09_adequate.tsv": "65a28b16b76c29c7b40ef35b8c52b2c068b25b57b3fd88578a646950359521c7",
+        "data/syn_ant/project/fixtures/syn_len4_b09_heads.tsv": "4ba72f1bc36878e97ff99390e7b830e0a334cde361e321daa8535a976346065d",
+        "data/syn_ant/project/fixtures/syn_len4_b09_heads_list.txt": "d118d567680e2386681cd9f0034f5819c5ed1359f85d8a9bd29000b952c9780d",
+        "data/syn_ant/project/fixtures/syn_len4_b09_no_natural.tsv": "ca8ce6adef51b8b077fd37c05b539c7b81c4f5813de6d4884cd5de7d78425703",
+        "data/syn_ant/project/fixtures/syn_len4_b10_accepted.tsv": "7461532e9e99755e2d6b314055adf3bf2ef79ab32614f1c19f28433a05ae072f",
+        "data/syn_ant/project/fixtures/syn_len4_b10_adequate.tsv": "0f0d2907cb132e497bef30ac44f172e3e351640fca076395fcbcde80e8204369",
+        "data/syn_ant/project/fixtures/syn_len4_b10_heads.tsv": "ced8f0b18b77b2fa6ffcc0e91f9ac0eccf85479c591121a29c2d91a637c4e2b8",
+        "data/syn_ant/project/fixtures/syn_len4_b10_heads_list.txt": "d1d38c8f543de76c98a0b2a7b9ab5c74ade03cc23bfe60657f7f9c83d683d0a3",
+        "data/syn_ant/project/fixtures/syn_len4_b10_no_natural.tsv": "9563dd7acf366622c13ec301f01c155e2d241d3f9d2969de315bd9f2bccddba5",
+        "data/syn_ant/project/fixtures/syn_len4_final_audit_accepted_sample.tsv": "2dbe3ffc27da2e785510cfc874baf080d357872b6f689fd30fa2c36b8fdd2fdd",
+        "data/syn_ant/project/fixtures/syn_len4_final_audit_adequate_sample.tsv": "c3d7c2fd74cfea3e5a31d815fe51068c2891406c5e527cd74cad0b3bcbaada6e",
+        "data/syn_ant/project/fixtures/syn_len4_final_audit_no_natural_sample.tsv": "a2460c89ca5ea694ef5477184f7f076073e8f0c767bec405c0b7291304d2a50e",
+        "data/syn_ant/project/fixtures/syn_top5000_b01_accepted.tsv": "cd8808df5be2739aeadf87c9e35175f98f18f7cdcf714af21993ce4390894665",
+        "data/syn_ant/project/fixtures/syn_top5000_b01_adequate.tsv": "06fdd422e0bf2501881b8873e69fed0c189d6562f9f93c6c4968e17cbc4b1c19",
+        "data/syn_ant/project/fixtures/syn_top5000_b01_existing_syn.tsv": "cc0bafb4e82df98544b93bd6aeb68c37570f4490b314f70f3c1898a998c48b38",
+        "data/syn_ant/project/fixtures/syn_top5000_b01_heads.tsv": "28d12cfc20c28394e93f6611e7d101ac1d98cc438f89d10e5e8dd84bab9996b0",
+        "data/syn_ant/project/fixtures/syn_top5000_b01_no_natural.tsv": "91fc6d5c5c740ba4155d45f58cf69a9ff1a999e324423f4e0c910a88bd34a97e",
+        "data/syn_ant/project/fixtures/syn_top5000_b02_accepted.tsv": "a6a3c25dd8534a54fb36a621249b09cbab0a435d3581020f07cef91148f972c8",
+        "data/syn_ant/project/fixtures/syn_top5000_b02_adequate.tsv": "5a2b7c60d850b31602bab86acd40453120c30185ec583af715a06975e2061bff",
+        "data/syn_ant/project/fixtures/syn_top5000_b02_heads.tsv": "4956ff868e8f7579c7d922134c90339a7cb8b5ed2f042356b412d1a99ab5cecf",
+        "data/syn_ant/project/fixtures/syn_top5000_b02_no_natural.tsv": "2c33e4144538a90f2ab1b68b161069e886c61fc25627e505e2ec6896ed5bcabe",
+        "data/syn_ant/project/fixtures/syn_top5000_b03_accepted.tsv": "ee866d90b11d7479db818025aa4cdd348b0b1ad6ab666107cc120dbfd0714e73",
+        "data/syn_ant/project/fixtures/syn_top5000_b03_adequate.tsv": "fd42a69b021208ccc8fbe9c1d80ae9660db1c4cd01c4192d96c7e22d335451ca",
+        "data/syn_ant/project/fixtures/syn_top5000_b03_heads.tsv": "745f18e1da5371aa392f7f0ab098c3634b8de88c057904b5aaa8ff61d559c0d6",
+        "data/syn_ant/project/fixtures/syn_top5000_b03_no_natural.tsv": "bc6eff30663e088dd740f1c49ec41c804b9a4bfdf6de6fa7a749c4db80552d9c",
+        "data/syn_ant/project/fixtures/syn_top5000_b04_accepted.tsv": "212327d0ce2317e9b55cbef7e7915ce0bb3aec7e009bc5dc88ad9efb15c9891b",
+        "data/syn_ant/project/fixtures/syn_top5000_b04_adequate.tsv": "4b05a7882e3dc830ed6615ac20bd121aa240189ec3d9afc0628b9c1282ddcbf0",
+        "data/syn_ant/project/fixtures/syn_top5000_b04_heads.tsv": "362e9b271c126ffc93cfd1fc056c18eb73a279ed8b1ee5c499a078607aa9b50f",
+        "data/syn_ant/project/fixtures/syn_top5000_b04_no_natural.tsv": "62a867b4163f4617ceb1525d86e6978fcecc3937f4fde0b367819d4d30265023",
+        "data/syn_ant/project/fixtures/syn_top5000_b05_accepted.tsv": "46e9efc2b708a92accf731630c9cbaeba056e0c4244cfed2171749ee60b2423b",
+        "data/syn_ant/project/fixtures/syn_top5000_b05_adequate.tsv": "bad896c53fb21b20ba330d1c80d87f4518cde6265b9b0b2741f39834448fdf5b",
+        "data/syn_ant/project/fixtures/syn_top5000_b05_heads.tsv": "bd88217ae16db82f4a190531e7dd29e17aa08b0942410ae48e3608019d9a14da",
+        "data/syn_ant/project/fixtures/syn_top5000_b05_no_natural.tsv": "10bdb47c1dba0bcd3c32358dbcad5606fc5fb2043c7c17e5652bd3883810d65f",
+        "data/syn_ant/project/fixtures/syn_top5000_b06_accepted.tsv": "15601136fe701bd5558458e61efbf052ab744b3590248c5c9827857743f2434f",
+        "data/syn_ant/project/fixtures/syn_top5000_b06_adequate.tsv": "a2693d68cc38e619b23128a0d0d84244878c55070d054c5e71b038377be5d393",
+        "data/syn_ant/project/fixtures/syn_top5000_b06_heads.tsv": "675cdbf7a50c08a3d8fe97e4446789c4e8d97fc819254dd4bff5690b84842f41",
+        "data/syn_ant/project/fixtures/syn_top5000_b06_no_natural.tsv": "081ab378b882f52bd110989cc26b8aa55ce28d503d35008f55b27fafc3c4a3b3",
+        "data/syn_ant/project/fixtures/syn_top5000_final_audit_accepted_sample.tsv": "3412ffae22f632eee16cc89cdab72e6375670d59ae09610dfe914d1b09261a57",
+        "data/syn_ant/project/fixtures/syn_top5000_final_audit_adequate_sample.tsv": "49ae4dfd498f24640e246f1627ca24f6279cc9411869207caf2bba5cb8b15420",
+        "data/syn_ant/project/fixtures/syn_top5000_final_audit_no_natural_sample.tsv": "76bd8c43a719867f4cb1cd0da0481f746f1454989368155b9cc445d3d115d588",
+        "data/syn_ant/project/project-synonyms-prompt.txt": "ac69c02f318d3bf7215e89a4c7bea0b5e228ffc080634a45e6c8b486af4a5e50",
+        "data/syn_ant/project/project_adequate_existing.tsv": "4cd9cb2067c25a912a72ca6a17538d4008144bc203ff6c83ae24e792616f3652",
+        "data/syn_ant/project/project_no_natural_synonyms.tsv": "c197bb353c6f0c05b6b989cb338eb98dabf1a96888a72c9810f80043696595c7",
+        "data/syn_ant/project/project_synonyms.meta.json": "dd42030b9363b0cba9b2ac47557bb35419dd2eafb82e9c3ad05464db5077e5ba",
+        "data/syn_ant/project/project_synonyms.tsv": "f5725c327ba13a77fc4b6c227397250a9897492813197fd8dff56292263af6ce",
+        "data/syn_ant/project_antonyms.meta.json": "c67ac3f81b093186a2c4e2f36118ff0c5c4d4d25c8dade15a6fb8313c0fbacfb",
+        "data/syn_ant/project_antonyms.tsv": "577182b4c84ca25cc4ff014bc5f9f6d4e9b1329bc6a2c0fab3040ae64661cad4",
+        "data/syn_ant/project_no_natural_antonyms.meta.json": "a699b8ae49ec792ac1d194f71d04d6ce79f4828c27686f8d8a5902f0497bd20d",
+        "data/syn_ant/project_no_natural_antonyms.tsv": "24d5c38e6d595a612c712aacd6baa499f651dd1c5e2763f1ef8184fd9f31a457",
+        "data/syn_ant/raw/.gitignore": "d19364b360f6386494b8c27fdc84b73ac2c3cbed05d71924d7b2d0359047ff1c",
+        "data/syn_ant/sources.yaml": "bf542a5b75bef69e5ed91a9d5ca6a0f0e9bec1ac3d58258e17f738204a720c84",
+        "data/thesaurus/.gitignore": "980858e85eecddf8156396d55356eab1a67fec007da549fe6df200404050df09",
+        "data/thesaurus/dict_antonym.txt": "4878d6bb5a173f67bfd03b74744ec2658f0b8cba5f534e04f70084337cf7f98b",
+        "data/thesaurus/dict_synonym.txt": "5a78accfa48f1400ece36f8bc8c0afdd579dc60260f023dabcca9429c3a7f4d3"
+      }
+    },
+    "prior_runtime_rows_affected_by_new_normalization": 0,
+    "prior_word_usage_records_affected_by_new_normalization": 0,
+    "prior_stored_relation_keys_migrated": 0,
+    "previous_source_rows_preserved": 70245,
+    "previous_reading_grades_preserved": 70245,
+    "explicit_previous_reading_grade_repairs": 0,
+    "previous_word_usage_records_preserved": 131719,
+    "previous_word_usage_judgments_preserved": 19325,
+    "new_word_normalization_idempotent": true,
+    "post_review_original_spelling_regression_check": true,
+    "full_pool_parity_queries": 170,
+    "full_pool_parity_rows": 129455,
+    "full_pool_ranking_equal": true,
+    "smoke_tests": 338,
+    "smoke_passed": 334,
+    "smoke_skipped": 4,
+    "seam_tests": 89,
+    "seam_passed": 83,
+    "seam_skipped": 6,
+    "guide_query_tests": 1,
+    "guide_query_tests_passed": true,
+    "pwa_build": true,
+    "portable_build": true,
+    "full_app_typecheck": true,
+    "ranking_and_lookup_self_checks": true,
+    "targeted_node_typecheck": true,
+    "pwa_artifact_guard": true,
+    "layer_cache_format": "35",
+    "layer_cache_cold_misses": 8,
+    "layer_cache_warm_hits": 8,
+    "layer_cache_counter_matches_uncached_db": true,
+    "paging_fixture": {
+      "total": 206,
+      "first_page": 200,
+      "second_page": 6,
+      "everyday_literal_inserted_last_ranks_first": true,
+      "modes": 3
+    },
+    "final_reading_audit": {
+      "batch": "B60",
+      "initial_accepted": 749,
+      "withdrawals": [
+        {
+          "id": 113996,
+          "char": "蒲席",
+          "previous_jyutping": "pou4 zik6",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114034,
+          "char": "蒸蒸",
+          "previous_jyutping": "zing1 zing1",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114124,
+          "char": "蓮鬚",
+          "previous_jyutping": "lin4 sou1",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114474,
+          "char": "藥販",
+          "previous_jyutping": "joek6 faan5",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114477,
+          "char": "藩鎮割據",
+          "previous_jyutping": "faan4 zan3 got3 geoi3",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114284,
+          "char": "薪水階級",
+          "previous_jyutping": "san1 seoi2 gaai1 kap1",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114283,
+          "char": "薪水階層",
+          "previous_jyutping": "san1 seoi2 gaai1 cang4",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114046,
+          "char": "蒸點",
+          "previous_jyutping": "zing1 dim2",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114115,
+          "char": "蓮子心",
+          "previous_jyutping": "lin4 zi2 sam1",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114200,
+          "char": "蕃薯藤",
+          "previous_jyutping": "faan1 syu2 tang4",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114279,
+          "char": "薦拔",
+          "previous_jyutping": "zin3 bat6",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114306,
+          "char": "藉端",
+          "previous_jyutping": "ze3 dyun1",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114266,
+          "char": "薈集",
+          "previous_jyutping": "wai3 zaap6",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114293,
+          "char": "薰心",
+          "previous_jyutping": "fan1 sam1",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114211,
+          "char": "蕞爾小國",
+          "previous_jyutping": "zeoi3 ji5 siu2 gwok3",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114374,
+          "char": "藝事",
+          "previous_jyutping": "ngai6 si6",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114382,
+          "char": "藝師",
+          "previous_jyutping": "ngai6 si1",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114422,
+          "char": "藝高",
+          "previous_jyutping": "ngai6 gou1",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114444,
+          "char": "藥學界",
+          "previous_jyutping": "joek6 hok6 gaai3",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114446,
+          "char": "藥局",
+          "previous_jyutping": "joek6 guk6",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114454,
+          "char": "藥浴",
+          "previous_jyutping": "joek6 juk6",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114455,
+          "char": "藥湯",
+          "previous_jyutping": "joek6 tong1",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114458,
+          "char": "藥物性",
+          "previous_jyutping": "joek6 mat6 sing3",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114472,
+          "char": "藥製劑",
+          "previous_jyutping": "joek6 zai3 zai1",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114467,
+          "char": "藥石之言",
+          "previous_jyutping": "joek6 sek6 zi1 jin4",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114495,
+          "char": "蘆杆",
+          "previous_jyutping": "lou4 gon1",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114529,
+          "char": "蘿蔔青菜",
+          "previous_jyutping": "lo4 baak6 ceng1 coi3",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114548,
+          "char": "虎父犬子",
+          "previous_jyutping": "fu2 fu6 hyun2 zi2",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114555,
+          "char": "虎眼石",
+          "previous_jyutping": "fu2 ngaan5 sek6",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114562,
+          "char": "虎膽龍威",
+          "previous_jyutping": "fu2 daam2 lung4 wai1",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114571,
+          "char": "虎鬚",
+          "previous_jyutping": "fu2 sou1",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114573,
+          "char": "虐刑",
+          "previous_jyutping": "joek6 jing4",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114584,
+          "char": "處分權",
+          "previous_jyutping": "cyu3 fan1 kyun4",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114591,
+          "char": "處女身",
+          "previous_jyutping": "cyu5 neoi5 san1",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114599,
+          "char": "處斷",
+          "previous_jyutping": "cyu3 dyun6",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114613,
+          "char": "處置法",
+          "previous_jyutping": "cyu5 zi3 faat3",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114614,
+          "char": "處罰權",
+          "previous_jyutping": "cyu5 fat6 kyun4",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114627,
+          "char": "虛列",
+          "previous_jyutping": "heoi1 lit6",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114643,
+          "char": "虛幻境界",
+          "previous_jyutping": "heoi1 waan6 ging2 gaai3",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114656,
+          "char": "虛情",
+          "previous_jyutping": "heoi1 cing4",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114660,
+          "char": "虛擬人",
+          "previous_jyutping": "heoi1 ji4 jan4",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114664,
+          "char": "虛擬國度",
+          "previous_jyutping": "heoi1 ji4 gwok3 dou6",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114669,
+          "char": "虛擬故事",
+          "previous_jyutping": "heoi1 ji4 gu3 si6",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114671,
+          "char": "虛擬目錄",
+          "previous_jyutping": "heoi1 ji4 muk6 luk6",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114672,
+          "char": "虛擬社區",
+          "previous_jyutping": "heoi1 ji4 se5 keoi1",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114682,
+          "char": "虛晃一下",
+          "previous_jyutping": "heoi1 fong2 jat1 haa6",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114686,
+          "char": "虛渺",
+          "previous_jyutping": "heoi1 miu5",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114696,
+          "char": "虛腫",
+          "previous_jyutping": "heoi1 zung2",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114701,
+          "char": "虛話",
+          "previous_jyutping": "heoi1 waa6",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114710,
+          "char": "虛造",
+          "previous_jyutping": "heoi1 zou6",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114716,
+          "char": "虛領",
+          "previous_jyutping": "heoi1 ling5",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114727,
+          "char": "號碼機",
+          "previous_jyutping": "hou6 maa5 gei1",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114736,
+          "char": "虧掉",
+          "previous_jyutping": "kwai1 diu6",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114737,
+          "char": "虧損企業",
+          "previous_jyutping": "kwai1 syun2 kei5 jip6",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114740,
+          "char": "虧死",
+          "previous_jyutping": "kwai1 sei2",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114785,
+          "char": "蛇眼",
+          "previous_jyutping": "se4 ngaan5",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114786,
+          "char": "蛇紋",
+          "previous_jyutping": "se4 man4",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114797,
+          "char": "蛋包",
+          "previous_jyutping": "daan2 baau1",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114821,
+          "char": "蛋酒",
+          "previous_jyutping": "daan2 zau2",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114823,
+          "char": "蛋鬆",
+          "previous_jyutping": "daan2 sung1",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114824,
+          "char": "蛋黃派",
+          "previous_jyutping": "daan6 wong4 paai3",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114829,
+          "char": "蛙人隊",
+          "previous_jyutping": "waa1 jan4 deoi6",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114836,
+          "char": "蛙肉",
+          "previous_jyutping": "waa1 juk6",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114851,
+          "char": "蛤蜊湯",
+          "previous_jyutping": "gap3 lei4 tong1",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114869,
+          "char": "蜂場",
+          "previous_jyutping": "fung1 coeng4",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114875,
+          "char": "蜂巢形",
+          "previous_jyutping": "fung1 caau4 jing4",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114885,
+          "char": "蜂湧而上",
+          "previous_jyutping": "fung1 jung2 ji4 soeng5",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114899,
+          "char": "蜂花粉",
+          "previous_jyutping": "fung1 faa1 fan2",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114902,
+          "char": "蜂蜜瓶",
+          "previous_jyutping": "fung1 mat6 ping4",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114910,
+          "char": "蜂飛蝶舞",
+          "previous_jyutping": "fung1 fei1 dip6 mou5",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114917,
+          "char": "蜑民",
+          "previous_jyutping": "daan6 man4",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114925,
+          "char": "蜚短流長",
+          "previous_jyutping": "fei2 dyun2 lau4 coeng4",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114933,
+          "char": "蜜柚",
+          "previous_jyutping": "mat6 jau2",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114936,
+          "char": "蜜漬",
+          "previous_jyutping": "mat6 zik1",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114956,
+          "char": "蝗害",
+          "previous_jyutping": "wong4 hoi6",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114960,
+          "char": "蝙蝠衫",
+          "previous_jyutping": "pin1 fuk1 saam1",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114964,
+          "char": "蝦池",
+          "previous_jyutping": "haa1 ci4",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114965,
+          "char": "蝦羣",
+          "previous_jyutping": "haa1 kwan4",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114975,
+          "char": "蝴蝶型",
+          "previous_jyutping": "wu4 dip6 jing4",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114976,
+          "char": "蝴蝶夢",
+          "previous_jyutping": "wu4 dip6 mung6",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114984,
+          "char": "蝶形領帶",
+          "previous_jyutping": "dip6 jing4 ling5 daai3",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114987,
+          "char": "蝶羣",
+          "previous_jyutping": "dip6 kwan4",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114993,
+          "char": "蝸旋而上",
+          "previous_jyutping": "wo1 syun4 ji4 soeng5",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114504,
+          "char": "蘇州碼",
+          "previous_jyutping": "sou1 zau1 maa5",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114687,
+          "char": "虛無性",
+          "previous_jyutping": "heoi1 mou4 sing3",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114707,
+          "char": "虛軸",
+          "previous_jyutping": "heoi1 zuk6",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114745,
+          "char": "虯鬚",
+          "previous_jyutping": "kau4 sou1",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114746,
+          "char": "虹吸式",
+          "previous_jyutping": "hung4 kap1 sik1",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114749,
+          "char": "虹膜炎",
+          "previous_jyutping": "hung4 mok2 jim4",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114803,
+          "char": "蛋白沉澱",
+          "previous_jyutping": "daan2 baak6 cam4 din6",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114815,
+          "char": "蛋白飼料",
+          "previous_jyutping": "daan2 baak6 zi6 liu2",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114839,
+          "char": "蛙鳴蟬噪",
+          "previous_jyutping": "waa1 ming4 sim4 cou3",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 114953,
+          "char": "蝕損",
+          "previous_jyutping": "sit6 syun2",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115000,
+          "char": "蝸角之爭",
+          "previous_jyutping": "wo1 gok3 zi1 zang1",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115013,
+          "char": "融成",
+          "previous_jyutping": "jung4 sing4",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115019,
+          "char": "融為",
+          "previous_jyutping": "jung4 wai4",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115042,
+          "char": "螫人",
+          "previous_jyutping": "sik1 jan4",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115057,
+          "char": "螺旋彈簧",
+          "previous_jyutping": "lo4 syun4 daan6 wong4",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115061,
+          "char": "螺旋桿菌",
+          "previous_jyutping": "lo4 syun4 gon1 kwan2",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115067,
+          "char": "螺旋轉動",
+          "previous_jyutping": "lo4 syun4 zyun3 dung6",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115077,
+          "char": "螺絲墊",
+          "previous_jyutping": "lo4 si1 zin3",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115078,
+          "char": "螺絲扣",
+          "previous_jyutping": "lo4 si1 kau3",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115081,
+          "char": "螺絲鉗",
+          "previous_jyutping": "lo4 si1 kim4",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115116,
+          "char": "蟲蟲",
+          "previous_jyutping": "cung4 cung4",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115118,
+          "char": "蟲體",
+          "previous_jyutping": "cung4 tai2",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115144,
+          "char": "蠅拍",
+          "previous_jyutping": "jing4 paak3",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115169,
+          "char": "蠟人",
+          "previous_jyutping": "laap6 jan4",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115170,
+          "char": "蠟人館",
+          "previous_jyutping": "laap6 jan4 gun2",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115180,
+          "char": "蠟炬",
+          "previous_jyutping": "laap6 geoi6",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115186,
+          "char": "蠟黃色",
+          "previous_jyutping": "laap6 wong4 sik1",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115189,
+          "char": "蠢拙",
+          "previous_jyutping": "ceon2 zyut6",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115193,
+          "char": "蠱毒",
+          "previous_jyutping": "gu2 duk6",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115197,
+          "char": "蠶房",
+          "previous_jyutping": "caam4 fong4",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115202,
+          "char": "蠶豆酥",
+          "previous_jyutping": "caam4 dau2 sou1",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115226,
+          "char": "蠻行",
+          "previous_jyutping": "maan4 haang4",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115231,
+          "char": "血人",
+          "previous_jyutping": "hyut3 jan4",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115234,
+          "char": "血刃",
+          "previous_jyutping": "hyut3 jan6",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115243,
+          "char": "血手印",
+          "previous_jyutping": "hyut3 sau2 jan3",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115251,
+          "char": "血汙",
+          "previous_jyutping": "hyut3 waa1",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115259,
+          "char": "血淚斑斑",
+          "previous_jyutping": "hyut3 leoi6 baan1 baan1",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115263,
+          "char": "血源",
+          "previous_jyutping": "hyut3 jyun4",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115269,
+          "char": "血管炎",
+          "previous_jyutping": "hyut3 gun2 jim4",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115270,
+          "char": "血管病",
+          "previous_jyutping": "hyut3 gun2 beng6",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115271,
+          "char": "血粘度",
+          "previous_jyutping": "hyut3 nim1 dou6",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115278,
+          "char": "血統證明",
+          "previous_jyutping": "hyut3 tung2 zing3 ming4",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115284,
+          "char": "血肉相聯",
+          "previous_jyutping": "hyut3 juk6 soeng1 lyun4",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115285,
+          "char": "血肉糢糊",
+          "previous_jyutping": "hyut3 juk6 mou4 wu4",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115287,
+          "char": "血脈相通",
+          "previous_jyutping": "hyut3 mak6 soeng1 tung1",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115291,
+          "char": "血荒",
+          "previous_jyutping": "hyut3 fong1",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115318,
+          "char": "行之有年",
+          "previous_jyutping": "haang4 zi1 jau5 nin4",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115322,
+          "char": "行伍出身",
+          "previous_jyutping": "hong4 ng5 ceot1 san1",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115329,
+          "char": "行兇前",
+          "previous_jyutping": "hang4 hung1 cin4",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115330,
+          "char": "行兇後",
+          "previous_jyutping": "hang4 hung1 hau6",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115340,
+          "char": "行動隊",
+          "previous_jyutping": "hang4 dung6 deoi6",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115347,
+          "char": "行員",
+          "previous_jyutping": "haang4 jyun4",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115349,
+          "char": "行商坐賈",
+          "previous_jyutping": "hang4 soeng1 co5 gaa2",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115357,
+          "char": "行尊",
+          "previous_jyutping": "haang4 zyun1",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115358,
+          "char": "行尾",
+          "previous_jyutping": "haang4 mei5",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115368,
+          "char": "行情報價",
+          "previous_jyutping": "hong4 cing4 bou3 gaa3",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115375,
+          "char": "行房事",
+          "previous_jyutping": "hang4 fong4 si6",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115383,
+          "char": "行政案件",
+          "previous_jyutping": "hang4 zing3 on3 gin6",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115385,
+          "char": "行政法院",
+          "previous_jyutping": "hang4 zing3 faat3 jyun2",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115386,
+          "char": "行政界線",
+          "previous_jyutping": "hang4 zing3 gaai3 sin3",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115388,
+          "char": "行政監督",
+          "previous_jyutping": "hang4 zing3 gaam1 duk1",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115389,
+          "char": "行政級別",
+          "previous_jyutping": "hang4 zing3 kap1 bit6",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115390,
+          "char": "行政編制",
+          "previous_jyutping": "hang4 zing3 pin1 zai3",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115391,
+          "char": "行政職務",
+          "previous_jyutping": "hang4 zing3 zik1 mou6",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115393,
+          "char": "行政處罰",
+          "previous_jyutping": "hang4 zing3 cyu5 fat6",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115398,
+          "char": "行方便",
+          "previous_jyutping": "haang4 fong1 bin6",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115403,
+          "char": "行李室",
+          "previous_jyutping": "hang4 lei5 sat1",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115404,
+          "char": "行李房",
+          "previous_jyutping": "hang4 lei5 fong4",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115405,
+          "char": "行李物品",
+          "previous_jyutping": "hang4 lei5 mat6 ban2",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115409,
+          "char": "行業動態",
+          "previous_jyutping": "hong4 jip6 dung6 taai3",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115411,
+          "char": "行業新聞",
+          "previous_jyutping": "hong4 jip6 san1 man4",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115414,
+          "char": "行業資訊",
+          "previous_jyutping": "hong4 jip6 zi1 seon3",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115415,
+          "char": "行業軟件",
+          "previous_jyutping": "hong4 jip6 jyun5 gin6",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115434,
+          "char": "行為能力",
+          "previous_jyutping": "hang4 wai4 nang4 lik6",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115435,
+          "char": "行為表現",
+          "previous_jyutping": "hang4 wai4 biu2 jin6",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115438,
+          "char": "行為障礙",
+          "previous_jyutping": "hang4 wai4 zoeng3 ngoi6",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115449,
+          "char": "行筆流暢",
+          "previous_jyutping": "hang4 bat1 lau4 coeng3",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115453,
+          "char": "行聘",
+          "previous_jyutping": "haang4 ping3",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115466,
+          "char": "行誼",
+          "previous_jyutping": "haang4 ji4",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115469,
+          "char": "行賞",
+          "previous_jyutping": "haang4 soeng2",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115474,
+          "char": "行蹤無定",
+          "previous_jyutping": "hang4 zung1 mou4 ding6",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115475,
+          "char": "行車執照",
+          "previous_jyutping": "hang4 ce1 zap1 ziu3",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115478,
+          "char": "行車證",
+          "previous_jyutping": "hang4 ce1 zing3",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115479,
+          "char": "行軍壺",
+          "previous_jyutping": "hang4 gwan1 wu4",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115481,
+          "char": "行進路線",
+          "previous_jyutping": "hang4 zeon3 lou6 sin3",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115486,
+          "char": "行醫者",
+          "previous_jyutping": "hang4 ji1 ze2",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115488,
+          "char": "行銷全國",
+          "previous_jyutping": "hang4 siu1 cyun4 gwok3",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115489,
+          "char": "行銷國內",
+          "previous_jyutping": "hang4 siu1 gwok3 noi6",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115491,
+          "char": "行銷費用",
+          "previous_jyutping": "hang4 siu1 fai3 jung6",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115492,
+          "char": "行銷量",
+          "previous_jyutping": "hang4 siu1 loeng4",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115008,
+          "char": "融券",
+          "previous_jyutping": "jung4 gyun3",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115034,
+          "char": "螢光板",
+          "previous_jyutping": "jing4 gwong1 baan2",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115036,
+          "char": "螢幕上",
+          "previous_jyutping": "jing4 mok6 soeng5",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115085,
+          "char": "螻蟻貪生",
+          "previous_jyutping": "lau4 ngai5 taam1 sang1",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115090,
+          "char": "蟒袍玉帶",
+          "previous_jyutping": "mong5 pou4 juk6 daai3",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115106,
+          "char": "蟲媒",
+          "previous_jyutping": "cung4 mui4",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115129,
+          "char": "蟻穴潰堤",
+          "previous_jyutping": "ngai5 jyut6 kui2 tai4",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115246,
+          "char": "血栓性",
+          "previous_jyutping": "hyut3 saan1 sing3",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115261,
+          "char": "血清型",
+          "previous_jyutping": "hyut3 cing1 jing4",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115264,
+          "char": "血源性",
+          "previous_jyutping": "hyut3 jyun4 sing3",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115277,
+          "char": "血統書",
+          "previous_jyutping": "hyut3 tung2 syu1",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115293,
+          "char": "血藥濃度",
+          "previous_jyutping": "hyut3 joek6 nung4 dou6",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115298,
+          "char": "血運重建",
+          "previous_jyutping": "hyut3 wan6 cung4 gin3",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115413,
+          "char": "行業語",
+          "previous_jyutping": "hong4 jip6 jyu5",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115437,
+          "char": "行為責任",
+          "previous_jyutping": "hang4 wai4 zaak3 jam6",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115498,
+          "char": "行館",
+          "previous_jyutping": "haang4 gun2",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115506,
+          "char": "衍義",
+          "previous_jyutping": "hin2 ji6",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115622,
+          "char": "衞浴間",
+          "previous_jyutping": "wai6 juk6 gaan1",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115636,
+          "char": "衞生潔具",
+          "previous_jyutping": "wai6 sang1 git3 geoi6",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115640,
+          "char": "衞生統計",
+          "previous_jyutping": "wai6 sang1 tung2 gai3",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115687,
+          "char": "衣蛾",
+          "previous_jyutping": "ji1 ngo4",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115764,
+          "char": "表筆",
+          "previous_jyutping": "biu2 bat1",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115765,
+          "char": "表義",
+          "previous_jyutping": "biu2 ji6",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115781,
+          "char": "表見代理",
+          "previous_jyutping": "biu2 gin3 doi6 lei5",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115802,
+          "char": "表面抗原",
+          "previous_jyutping": "biu2 min6 kong3 jyun4",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115803,
+          "char": "表面活性",
+          "previous_jyutping": "biu2 min6 wut6 sing3",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115806,
+          "char": "表面濃度",
+          "previous_jyutping": "biu2 min6 nung4 dou6",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115812,
+          "char": "表面質量",
+          "previous_jyutping": "biu2 min6 zat1 loeng6",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115816,
+          "char": "表面電阻",
+          "previous_jyutping": "biu2 min6 din6 zo2",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115826,
+          "char": "衰減器",
+          "previous_jyutping": "seoi1 gaam2 hei3",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115874,
+          "char": "被保證人",
+          "previous_jyutping": "bei6 bou2 zing3 jan4",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115908,
+          "char": "被推薦者",
+          "previous_jyutping": "bei6 teoi1 zin3 ze2",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115907,
+          "char": "被接見者",
+          "previous_jyutping": "bei6 zip3 gin3 ze2",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115938,
+          "char": "被選人",
+          "previous_jyutping": "bei6 syun2 jan4",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115943,
+          "char": "被開方數",
+          "previous_jyutping": "bei6 hoi1 fong1 sou2",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115971,
+          "char": "裁示",
+          "previous_jyutping": "coi4 si6",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115503,
+          "char": "衍文",
+          "previous_jyutping": "hin2 man4",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115521,
+          "char": "街機版",
+          "previous_jyutping": "gaai1 gei1 baan2",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115520,
+          "char": "街心公園",
+          "previous_jyutping": "gaai1 sam1 gung1 jyun4",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115533,
+          "char": "街道綠化",
+          "previous_jyutping": "gaai1 dou6 luk6 faa3",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115537,
+          "char": "街頭巷底",
+          "previous_jyutping": "gaai1 tau4 hong6 dai2",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115542,
+          "char": "衙門作風",
+          "previous_jyutping": "ngaa4 mun4 zok3 fung1",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115566,
+          "char": "衝壓機",
+          "previous_jyutping": "cung1 aat3 gei1",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115568,
+          "char": "衝孔",
+          "previous_jyutping": "cung1 hung2",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115585,
+          "char": "衝突性",
+          "previous_jyutping": "cung1 dat6 sing3",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115589,
+          "char": "衝起",
+          "previous_jyutping": "cung1 hei2",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115591,
+          "char": "衝退",
+          "previous_jyutping": "cung1 teoi3",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115598,
+          "char": "衝鋒在前",
+          "previous_jyutping": "cung1 fung1 zoi6 cin4",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115603,
+          "char": "衝鋒隊",
+          "previous_jyutping": "cung1 fung1 deoi6",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115609,
+          "char": "衞國保家",
+          "previous_jyutping": "wai6 gwok3 bou2 gaa1",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115612,
+          "char": "衞戍司令",
+          "previous_jyutping": "wai6 syu3 si1 ling6",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115613,
+          "char": "衞所",
+          "previous_jyutping": "wai6 so2",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115617,
+          "char": "衞星艙",
+          "previous_jyutping": "wai6 sing1 cong1",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115625,
+          "char": "衞生事件",
+          "previous_jyutping": "wai6 sang1 si6 gin6",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115626,
+          "char": "衞生事業",
+          "previous_jyutping": "wai6 sang1 si6 jip6",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115632,
+          "char": "衞生指標",
+          "previous_jyutping": "wai6 sang1 zi2 biu1",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115639,
+          "char": "衞生系統",
+          "previous_jyutping": "wai6 sang1 hai6 tung2",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115645,
+          "char": "衞生領域",
+          "previous_jyutping": "wai6 sang1 ling5 wik6",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115658,
+          "char": "衣不蓋體",
+          "previous_jyutping": "ji1 bat1 goi3 tai2",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115669,
+          "char": "衣帶",
+          "previous_jyutping": "ji1 daai3",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115670,
+          "char": "衣帽鈎",
+          "previous_jyutping": "ji1 mou6 ngau1",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115671,
+          "char": "衣帽鞋襪",
+          "previous_jyutping": "ji1 mou6 haai4 mat6",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115675,
+          "char": "衣物箱",
+          "previous_jyutping": "ji1 mat6 soeng1",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115684,
+          "char": "衣缽相傳",
+          "previous_jyutping": "ji1 but3 soeng1 cyun4",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115696,
+          "char": "表伯",
+          "previous_jyutping": "biu2 baak3",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115715,
+          "char": "表姑夫",
+          "previous_jyutping": "biu2 gu1 fu1",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115716,
+          "char": "表姨父",
+          "previous_jyutping": "biu2 ji4 fu6",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115717,
+          "char": "表嬸",
+          "previous_jyutping": "biu2 sam2",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115719,
+          "char": "表層下",
+          "previous_jyutping": "biu2 cang4 haa6",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115720,
+          "char": "表層結構",
+          "previous_jyutping": "biu2 cang4 git3 kau3",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115726,
+          "char": "表情圖",
+          "previous_jyutping": "biu2 cing4 tou4",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115725,
+          "char": "表彰大會",
+          "previous_jyutping": "biu2 zoeng1 daai6 wui6",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115730,
+          "char": "表揚大會",
+          "previous_jyutping": "biu2 joeng4 daai6 wui6",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115732,
+          "char": "表決制",
+          "previous_jyutping": "biu2 kyut3 zai3",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115733,
+          "char": "表決器",
+          "previous_jyutping": "biu2 kyut3 hei3",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115734,
+          "char": "表演團",
+          "previous_jyutping": "biu2 jin2 tyun4",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115735,
+          "char": "表演場",
+          "previous_jyutping": "biu2 jin2 coeng4",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115738,
+          "char": "表率作用",
+          "previous_jyutping": "biu2 seot1 zok3 jung6",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115744,
+          "char": "表皮層",
+          "previous_jyutping": "biu2 pei4 cang4",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115766,
+          "char": "表舅媽",
+          "previous_jyutping": "biu2 kau5 maa1",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115767,
+          "char": "表舅母",
+          "previous_jyutping": "biu2 kau5 mou5",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115777,
+          "char": "表裏相依",
+          "previous_jyutping": "biu2 leoi5 soeng1 ji1",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115778,
+          "char": "表裏相應",
+          "previous_jyutping": "biu2 leoi5 soeng1 jing3",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115780,
+          "char": "表裏相符",
+          "previous_jyutping": "biu2 leoi5 soeng1 fu4",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115789,
+          "char": "表達思想",
+          "previous_jyutping": "biu2 daat6 si1 soeng2",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115792,
+          "char": "表達方法",
+          "previous_jyutping": "biu2 daat6 fong1 faat3",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115796,
+          "char": "表露出",
+          "previous_jyutping": "biu2 lou6 ceot1",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115797,
+          "char": "表面光潔",
+          "previous_jyutping": "biu2 min6 gwong1 git3",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115798,
+          "char": "表面反應",
+          "previous_jyutping": "biu2 min6 faan2 jing3",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115813,
+          "char": "表面起泡",
+          "previous_jyutping": "biu2 min6 hei2 pou5",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115822,
+          "char": "衰敝",
+          "previous_jyutping": "seoi1 bai6",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115833,
+          "char": "衰萎",
+          "previous_jyutping": "seoi1 wai2",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115840,
+          "char": "衰顏",
+          "previous_jyutping": "seoi1 ngaan4",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115855,
+          "char": "袋狀",
+          "previous_jyutping": "doi6 zong6",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115857,
+          "char": "袍澤之誼",
+          "previous_jyutping": "pou4 zaak6 zi1 ji4",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115858,
+          "char": "袍褂",
+          "previous_jyutping": "pou4 gwaa3",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115859,
+          "char": "袒胸露乳",
+          "previous_jyutping": "taan2 hung1 lou6 jyu5",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115861,
+          "char": "袒護着",
+          "previous_jyutping": "taan2 wu6 zoek6",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115862,
+          "char": "袒露出",
+          "previous_jyutping": "taan2 lou6 ceot1",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115863,
+          "char": "袖孔",
+          "previous_jyutping": "zau6 hung2",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115864,
+          "char": "袖珍式",
+          "previous_jyutping": "zau6 zan1 sik1",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115865,
+          "char": "袖珍書",
+          "previous_jyutping": "zau6 zan1 syu1",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115867,
+          "char": "袖裏",
+          "previous_jyutping": "zau6 leoi5",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115868,
+          "char": "袖裏乾坤",
+          "previous_jyutping": "zau6 leoi5 kin4 kwan1",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115869,
+          "char": "袖長",
+          "previous_jyutping": "zau6 coeng4",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115875,
+          "char": "被保護人",
+          "previous_jyutping": "bei6 bou2 wu6 jan4",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115877,
+          "char": "被冤枉者",
+          "previous_jyutping": "bei6 jyun1 wong2 ze2",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115879,
+          "char": "被判賠",
+          "previous_jyutping": "bei6 pun3 pui4",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115886,
+          "char": "被動模式",
+          "previous_jyutping": "bei6 dung6 mou4 sik1",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115887,
+          "char": "被動語態",
+          "previous_jyutping": "bei6 dung6 jyu5 taai3",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115888,
+          "char": "被吸入",
+          "previous_jyutping": "bei6 kap1 jap6",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115889,
+          "char": "被告席上",
+          "previous_jyutping": "bei6 gou3 zik6 soeng5",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115894,
+          "char": "被害案",
+          "previous_jyutping": "bei6 hoi6 on3",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115896,
+          "char": "被寵",
+          "previous_jyutping": "bei6 cung2",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115905,
+          "char": "被批評者",
+          "previous_jyutping": "bei6 pai1 ping4 ze2",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115910,
+          "char": "被查獲",
+          "previous_jyutping": "bei6 caa4 wok6",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115911,
+          "char": "被殲",
+          "previous_jyutping": "bei6 cim1",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115912,
+          "char": "被殺案",
+          "previous_jyutping": "bei6 saat3 on3",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115913,
+          "char": "被淹",
+          "previous_jyutping": "bei6 jim1",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115915,
+          "char": "被減數",
+          "previous_jyutping": "bei6 gaam2 sou3",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115917,
+          "char": "被炸飛",
+          "previous_jyutping": "bei6 zaa3 fei1",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115922,
+          "char": "被疑",
+          "previous_jyutping": "bei6 ji4",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115923,
+          "char": "被盜案",
+          "previous_jyutping": "bei6 dou6 on3",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115924,
+          "char": "被監管人",
+          "previous_jyutping": "bei6 gaam1 gun2 jan4",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115926,
+          "char": "被稱作",
+          "previous_jyutping": "bei6 cing1 zok3",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115930,
+          "char": "被舉高",
+          "previous_jyutping": "bei6 geoi2 gou1",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115932,
+          "char": "被虐待狂",
+          "previous_jyutping": "bei6 joek6 doi6 kong4",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115940,
+          "char": "被遺棄者",
+          "previous_jyutping": "bei6 wai4 hei3 ze2",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115941,
+          "char": "被錄取者",
+          "previous_jyutping": "bei6 luk6 ceoi2 ze2",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115942,
+          "char": "被錄用者",
+          "previous_jyutping": "bei6 luk6 jung6 ze2",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115944,
+          "char": "被雪困住",
+          "previous_jyutping": "bei6 syut3 wan3 zyu6",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115945,
+          "char": "被雷擊",
+          "previous_jyutping": "bei6 leoi4 gik1",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115951,
+          "char": "裁刀",
+          "previous_jyutping": "coi4 dou1",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115952,
+          "char": "裁切機",
+          "previous_jyutping": "coi4 cit3 gei1",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115958,
+          "char": "裁尺",
+          "previous_jyutping": "coi4 cek3",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115959,
+          "char": "裁度",
+          "previous_jyutping": "coi4 dou6",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115961,
+          "char": "裁成",
+          "previous_jyutping": "coi4 sing4",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115963,
+          "char": "裁斷機",
+          "previous_jyutping": "coi4 dyun6 gei1",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115966,
+          "char": "裁決令",
+          "previous_jyutping": "coi4 kyut3 ling6",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115977,
+          "char": "裁縫業",
+          "previous_jyutping": "coi4 fung4 jip6",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115981,
+          "char": "裁衣服",
+          "previous_jyutping": "coi4 ji1 fuk6",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115983,
+          "char": "裁軍談判",
+          "previous_jyutping": "coi4 gwan1 taam4 pun3",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115984,
+          "char": "裁退",
+          "previous_jyutping": "coi4 teoi3",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115986,
+          "char": "裁開",
+          "previous_jyutping": "coi4 hoi1",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        },
+        {
+          "id": 115988,
+          "char": "裂到",
+          "previous_jyutping": "lit6 dou2",
+          "reason": "較冷僻古語、過窄術語、地域稱法或低復用搭配，按日常生活及一般書面熟悉度撤回；不以來源權重冒充生活頻率。"
+        }
+      ],
+      "grade_changes": [
+        {
+          "id": 113994,
+          "char": "蒞場",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 113995,
+          "char": "蒞臨指導",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114001,
+          "char": "蒸便當",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114017,
+          "char": "蒸汽機車",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114018,
+          "char": "蒸汽熨斗",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114021,
+          "char": "蒸汽鍋爐",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114039,
+          "char": "蒸餾液",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114053,
+          "char": "蒼茫大地",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114056,
+          "char": "蒼蠅紙",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114064,
+          "char": "蓄力",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114067,
+          "char": "蓄意已久",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114068,
+          "char": "蓄意謀殺",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114070,
+          "char": "蓄水庫",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114080,
+          "char": "蓄積着",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114083,
+          "char": "蓄財",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114084,
+          "char": "蓄長髮",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114089,
+          "char": "蓋印處",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114104,
+          "char": "蓬勃發展",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114109,
+          "char": "蓬蓽增輝",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114111,
+          "char": "蓬頭散發",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114120,
+          "char": "蓮花座",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114122,
+          "char": "蓮花瓣",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114135,
+          "char": "蔓延下來",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114136,
+          "char": "蔓延到",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114146,
+          "char": "蔗園",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114148,
+          "char": "蔗漿",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114149,
+          "char": "蔗田",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114153,
+          "char": "蔚成風氣",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114166,
+          "char": "蔬菜栽培",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114169,
+          "char": "蔬菜種子",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114170,
+          "char": "蔬菜製品",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114171,
+          "char": "蔬菜類",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114172,
+          "char": "蔬食",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114182,
+          "char": "蔽日遮天",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114199,
+          "char": "蕃薯粉",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114201,
+          "char": "蕉園",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114214,
+          "char": "蕩女",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114215,
+          "char": "蕩寇",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114219,
+          "char": "蕩然",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114228,
+          "char": "蕭牆之禍",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114242,
+          "char": "薄情無義",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114243,
+          "char": "薄懲",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114244,
+          "char": "薄技在身",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114245,
+          "char": "薄煎餅",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114252,
+          "char": "薄膜袋",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114258,
+          "char": "薄衣",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114265,
+          "char": "薈萃一堂",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114267,
+          "char": "薏仁",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114269,
+          "char": "薏苡仁",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114281,
+          "char": "薦賢",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114282,
+          "char": "薪優",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114286,
+          "char": "薪資表",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114287,
+          "char": "薪金制",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114297,
+          "char": "薰爐",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114301,
+          "char": "薰香",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114304,
+          "char": "藉故推辭",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114305,
+          "char": "藉機報復",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114307,
+          "char": "藉端生事",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114310,
+          "char": "藉酒澆愁",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114311,
+          "char": "藍圈",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114312,
+          "char": "藍字",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114313,
+          "char": "藍帶",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114316,
+          "char": "藍方",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114318,
+          "char": "藍框",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114322,
+          "char": "藍燈",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114324,
+          "char": "藍眼睛",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114327,
+          "char": "藍線",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114338,
+          "char": "藍領階層",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114342,
+          "char": "藏匿在",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114343,
+          "char": "藏匿於",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114344,
+          "char": "藏匿處",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114353,
+          "char": "藏族同胞",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114356,
+          "char": "藏污",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114357,
+          "char": "藏經樓",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114358,
+          "char": "藏而不露",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114380,
+          "char": "藝展",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114385,
+          "char": "藝無止境",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114388,
+          "char": "藝術享受",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114392,
+          "char": "藝術修養",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114394,
+          "char": "藝術劇院",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114396,
+          "char": "藝術境界",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114397,
+          "char": "藝術大師",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114400,
+          "char": "藝術形象",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114403,
+          "char": "藝術格調",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114405,
+          "char": "藝術歌曲",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114406,
+          "char": "藝術水平",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114407,
+          "char": "藝術流派",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114409,
+          "char": "藝術畫",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114417,
+          "char": "藝術院校",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114419,
+          "char": "藝術體操",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114423,
+          "char": "藝高膽大",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114425,
+          "char": "藤傢俱",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114427,
+          "char": "藤架",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114430,
+          "char": "藤筐",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114431,
+          "char": "藤箱",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114434,
+          "char": "藤製",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114439,
+          "char": "藥品櫃",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114441,
+          "char": "藥單",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114450,
+          "char": "藥效持久",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114457,
+          "char": "藥物中毒",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114459,
+          "char": "藥物製劑",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114460,
+          "char": "藥理作用",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114462,
+          "char": "藥用價值",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114463,
+          "char": "藥用植物",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114468,
+          "char": "藥石罔效",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114471,
+          "char": "藥茶",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114478,
+          "char": "藴含着",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114482,
+          "char": "藴涵着",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114492,
+          "char": "蘆叢",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114497,
+          "char": "蘆筍汁",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114512,
+          "char": "蘋果花",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114514,
+          "char": "蘋果酒",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114528,
+          "char": "蘿蔔腿",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114535,
+          "char": "虎口逃生",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114558,
+          "char": "虎紋",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114560,
+          "char": "虎膽",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114574,
+          "char": "虐待老人",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114580,
+          "char": "虔誠地",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114581,
+          "char": "處世之道",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114582,
+          "char": "處世哲學",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114583,
+          "char": "處以斬首",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114589,
+          "char": "處女秀",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114596,
+          "char": "處得來",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114598,
+          "char": "處斬",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114600,
+          "char": "處於下風",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114601,
+          "char": "處死刑",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114602,
+          "char": "處理事務",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114604,
+          "char": "處理完畢",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114606,
+          "char": "處理意見",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114611,
+          "char": "處理軟件",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114615,
+          "char": "處罰金",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114616,
+          "char": "處處作對",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114617,
+          "char": "處處設防",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114633,
+          "char": "虛報年齡",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114634,
+          "char": "虛報成績",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114635,
+          "char": "虛增",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114642,
+          "char": "虛幻不實",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114645,
+          "char": "虛度一生",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114646,
+          "char": "虛度歲月",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114647,
+          "char": "虛度青春",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114650,
+          "char": "虛弱不堪",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114653,
+          "char": "虛心學習",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114654,
+          "char": "虛心接受",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114655,
+          "char": "虛心聽取",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114659,
+          "char": "虛擬主機",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114665,
+          "char": "虛擬地址",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114673,
+          "char": "虛擬空間",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114675,
+          "char": "虛擬語氣",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114677,
+          "char": "虛擲",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114678,
+          "char": "虛擲光陰",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114679,
+          "char": "虛擲時光",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114681,
+          "char": "虛晃",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114683,
+          "char": "虛晃一招",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114684,
+          "char": "虛構情節",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114695,
+          "char": "虛職",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114729,
+          "char": "號碼牌",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114738,
+          "char": "虧損累累",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114739,
+          "char": "虧本生意",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114752,
+          "char": "蚊蠅滋生",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114753,
+          "char": "蚊香盒",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114761,
+          "char": "蚯蚓洞",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114764,
+          "char": "蛀壞",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114767,
+          "char": "蛀洞",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114768,
+          "char": "蛀食",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114789,
+          "char": "蛇肉",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114799,
+          "char": "蛋湯",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114820,
+          "char": "蛋製品",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114827,
+          "char": "蛔蟲藥",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114831,
+          "char": "蛙叫",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114832,
+          "char": "蛙叫聲",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114837,
+          "char": "蛙腿",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114840,
+          "char": "蛛絲",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114844,
+          "char": "蛛網狀",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114852,
+          "char": "蛤蟆功",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114854,
+          "char": "蛹期",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114889,
+          "char": "蜂王乳",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114921,
+          "char": "蜘蛛洞",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114931,
+          "char": "蜜意",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114932,
+          "char": "蜜月遊",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114939,
+          "char": "蜜蜂窩",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114959,
+          "char": "蝙蝠洞",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114962,
+          "char": "蝦排",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114967,
+          "char": "蝦餅",
+          "previous_grade": 0,
+          "grade": 2
+        },
+        {
+          "id": 114995,
+          "char": "蝸殼",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115004,
+          "char": "螃蟹殼",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115005,
+          "char": "螃蟹肉",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115023,
+          "char": "融資難",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115058,
+          "char": "螺旋形",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115063,
+          "char": "螺旋狀",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115070,
+          "char": "螺旋麪",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115098,
+          "char": "蟬聯冠軍",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115099,
+          "char": "蟬聯寶座",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115104,
+          "char": "蟬鳴",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115105,
+          "char": "蟬鳴聲",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115112,
+          "char": "蟲聲",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115120,
+          "char": "蟲鳴",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115131,
+          "char": "蟻窩",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115156,
+          "char": "蠅頭之利",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115162,
+          "char": "蠔田",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115190,
+          "char": "蠢蛋",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115198,
+          "char": "蠶絲被",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115220,
+          "char": "蠻有意思",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115224,
+          "char": "蠻荒之地",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115225,
+          "char": "蠻荒時代",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115238,
+          "char": "血壓過低",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115239,
+          "char": "血尿酸",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115245,
+          "char": "血染",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115248,
+          "char": "血檢",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115257,
+          "char": "血流量",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115258,
+          "char": "血液製品",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115272,
+          "char": "血糖值",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115273,
+          "char": "血糖儀",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115275,
+          "char": "血紅色",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115286,
+          "char": "血脂高",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115289,
+          "char": "血腦屏障",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115299,
+          "char": "血量",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115310,
+          "char": "行不得",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115312,
+          "char": "行不改姓",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115314,
+          "char": "行不行",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115319,
+          "char": "行人情",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115323,
+          "char": "行使主權",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115324,
+          "char": "行使政權",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115325,
+          "char": "行使權力",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115326,
+          "char": "行俠好義",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115328,
+          "char": "行兇作惡",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115334,
+          "char": "行動代號",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115336,
+          "char": "行動指南",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115337,
+          "char": "行動敏捷",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115338,
+          "char": "行動計劃",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115339,
+          "char": "行動遲緩",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115352,
+          "char": "行天下",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115354,
+          "char": "行家話",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115355,
+          "char": "行將崩潰",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115356,
+          "char": "行將滅亡",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115369,
+          "char": "行情看漲",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115370,
+          "char": "行情看跌",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115376,
+          "char": "行政主管",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115377,
+          "char": "行政事務",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115380,
+          "char": "行政命令",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115382,
+          "char": "行政局",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115387,
+          "char": "行政當局",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115392,
+          "char": "行政腐敗",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115396,
+          "char": "行數",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115402,
+          "char": "行有行規",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115410,
+          "char": "行業協會",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115412,
+          "char": "行業標準",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115416,
+          "char": "行業類別",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115417,
+          "char": "行業龍頭",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115418,
+          "char": "行楷",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115423,
+          "char": "行氣活血",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115428,
+          "char": "行為不端",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115429,
+          "char": "行為惡劣",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115433,
+          "char": "行為習慣",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115436,
+          "char": "行為規範",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115462,
+          "char": "行行好",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115471,
+          "char": "行走路線",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115472,
+          "char": "行路難",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115473,
+          "char": "行蹤不定",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115495,
+          "char": "行間距",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115500,
+          "char": "行駛路線",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115504,
+          "char": "衍生品",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115509,
+          "char": "術前",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115514,
+          "char": "術語表",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115523,
+          "char": "街燈柱",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115527,
+          "char": "街談巷說",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115538,
+          "char": "街頭惡棍",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115539,
+          "char": "街頭時尚",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115545,
+          "char": "衝下",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115551,
+          "char": "衝來",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115552,
+          "char": "衝來衝去",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115553,
+          "char": "衝倒",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115559,
+          "char": "衝出重圍",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115562,
+          "char": "衝勁十足",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115563,
+          "char": "衝去",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115584,
+          "char": "衝突地區",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115592,
+          "char": "衝進",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115593,
+          "char": "衝進來",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115594,
+          "char": "衝進去",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115595,
+          "char": "衝過",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115599,
+          "char": "衝鋒衣",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115600,
+          "char": "衝鋒褲",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115616,
+          "char": "衞星網絡",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115619,
+          "char": "衞星電話",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115620,
+          "char": "衞星頻道",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115633,
+          "char": "衞生標準",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115634,
+          "char": "衞生機構",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115635,
+          "char": "衞生死角",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115637,
+          "char": "衞生狀況",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115643,
+          "char": "衞生設施",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115644,
+          "char": "衞生防護",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115654,
+          "char": "衡量得失",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115655,
+          "char": "衡量標準",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115676,
+          "char": "衣着打扮",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115688,
+          "char": "衣襬",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115704,
+          "char": "表侄女",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115706,
+          "char": "表兄妹",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115709,
+          "char": "表列",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115711,
+          "char": "表同情",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115727,
+          "char": "表情圖片",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115737,
+          "char": "表演藝術",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115742,
+          "char": "表現手法",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115750,
+          "char": "表示同情",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115753,
+          "char": "表示悲痛",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115754,
+          "char": "表示感激",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115755,
+          "char": "表示感謝",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115756,
+          "char": "表示慰問",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115757,
+          "char": "表示歉意",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115758,
+          "char": "表示決心",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115759,
+          "char": "表示滿意",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115761,
+          "char": "表示祝賀",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115762,
+          "char": "表示遺憾",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115771,
+          "char": "表裏一致",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115787,
+          "char": "表達力",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115788,
+          "char": "表達形式",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115799,
+          "char": "表面工夫",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115805,
+          "char": "表面温度",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115847,
+          "char": "衷心希望",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115850,
+          "char": "衷心祝願",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115866,
+          "char": "袖珍版",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115881,
+          "char": "被劫",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115882,
+          "char": "被劫持",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115883,
+          "char": "被劫走",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115892,
+          "char": "被壓迫",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115901,
+          "char": "被忽略了",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115904,
+          "char": "被扣",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115909,
+          "char": "被提名者",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115925,
+          "char": "被禁",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115935,
+          "char": "被貶",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115937,
+          "char": "被迫辭職",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115953,
+          "char": "裁判台",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115954,
+          "char": "裁判席",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115969,
+          "char": "裁減人員",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115974,
+          "char": "裁紙",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115976,
+          "char": "裁縫師",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115980,
+          "char": "裁衣",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115982,
+          "char": "裁製",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 115991,
+          "char": "裂成",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 114654,
+          "char": "虛心接受",
+          "previous_grade": 2,
+          "grade": 1
+        },
+        {
+          "id": 115274,
+          "char": "血糖高",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 115504,
+          "char": "衍生品",
+          "previous_grade": 2,
+          "grade": 1
+        },
+        {
+          "id": 115516,
+          "char": "街坊鄰居",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 115517,
+          "char": "街坊鄰里",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 115562,
+          "char": "衝勁十足",
+          "previous_grade": 2,
+          "grade": 1
+        },
+        {
+          "id": 115633,
+          "char": "衞生標準",
+          "previous_grade": 2,
+          "grade": 1
+        },
+        {
+          "id": 115637,
+          "char": "衞生狀況",
+          "previous_grade": 2,
+          "grade": 1
+        },
+        {
+          "id": 115643,
+          "char": "衞生設施",
+          "previous_grade": 2,
+          "grade": 1
+        },
+        {
+          "id": 115655,
+          "char": "衡量標準",
+          "previous_grade": 2,
+          "grade": 1
+        },
+        {
+          "id": 115729,
+          "char": "表情豐富",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 115731,
+          "char": "表明態度",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 115740,
+          "char": "表現出色",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 115791,
+          "char": "表達方式",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 115794,
+          "char": "表達能力",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 115847,
+          "char": "衷心希望",
+          "previous_grade": 2,
+          "grade": 1
+        },
+        {
+          "id": 115848,
+          "char": "衷心感謝",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 115849,
+          "char": "衷心祝福",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 115850,
+          "char": "衷心祝願",
+          "previous_grade": 2,
+          "grade": 1
+        }
+      ],
+      "amendments": [
+        {
+          "id": 114026,
+          "char": "蒸熟",
+          "previous_jyutping": "zing1 suk6",
+          "jyutping": "zing1 suk6",
+          "alternatives": [],
+          "note": "蒸熟為食物煮熟suk6；不借熟悉詞音或字重推新讀法。",
+          "reference": "AI:whole-word-context"
+        },
+        {
+          "id": 114030,
+          "char": "蒸發掉",
+          "previous_jyutping": "zing1 faat3 diu6",
+          "jyutping": "zing1 faat3 diu6",
+          "alternatives": [],
+          "note": "完整動補短語zing1faat3diu6；歌譜三處為同曲重複，不作三次獨立生活頻率。",
+          "reference": "AI:whole-word-context"
+        },
+        {
+          "id": 114111,
+          "char": "蓬頭散發",
+          "previous_jyutping": "pung4 tau4 saan3 faat3",
+          "jyutping": "pung4 tau4 saan3 faat3",
+          "alternatives": [],
+          "note": "原簡體蓬头散发的发為頭髮髮，按同字繁簡歧義校為蓬頭散髮；保留原來源，不把散發氣味的發混入。",
+          "reference": "https://jyut.net/query?q=髮"
+        },
+        {
+          "id": 114122,
+          "char": "蓮花瓣",
+          "previous_jyutping": "lin4 faa1 faan6",
+          "jyutping": "lin4 faa1 faan6",
+          "alternatives": [
+            "lin4 faa1 baan6"
+          ],
+          "note": "瓣為花瓣faan6建議音先，baan6現代同義又讀後，不套舊faan3。",
+          "reference": "https://jyut.net/query?q=瓣"
+        },
+        {
+          "id": 114136,
+          "char": "蔓延到",
+          "previous_jyutping": "maan6 jin4 dou2",
+          "jyutping": "maan6 jin4 dou3",
+          "alternatives": [],
+          "note": "到達dou3，不讀倒下dou2。",
+          "reference": "https://jyut.net/query?q=到"
+        },
+        {
+          "id": 114252,
+          "char": "薄膜袋",
+          "previous_jyutping": "bok6 mok6 doi6",
+          "jyutping": "bok6 mok6 doi6",
+          "alternatives": [
+            "bok6 mok2 doi6"
+          ],
+          "note": "膜mok6書讀先，現代同義語音mok2保留；不因單字等級當棄用。",
+          "reference": "https://jyut.net/query?q=膜"
+        },
+        {
+          "id": 114265,
+          "char": "薈萃一堂",
+          "previous_jyutping": "wai3 seoi6 jat1 tong4",
+          "jyutping": "kui2 seoi6 jat1 tong4",
+          "alternatives": [
+            "wui6 seoi6 jat1 tong4",
+            "wai3 seoi6 jat1 tong4"
+          ],
+          "note": "薈萃聚集kui2語音先，現代同義wui6及wai3書讀後，wai3亦有薈萃完整詞例，不限於草木。",
+          "reference": "https://jyut.net/query?q=薈"
+        },
+        {
+          "id": 114425,
+          "char": "藤傢俱",
+          "previous_jyutping": "tang4 gaa1 keoi1",
+          "jyutping": "tang4 gaa1 geoi6",
+          "alternatives": [
+            "tang4 gaa1 keoi1"
+          ],
+          "note": "家具義geoi6日常先；CantoDict完整傢俱亦載keoi1，列後而不將舊來源四個詞的keoi1無據全刪。整詞搭配與先後為AI判斷。",
+          "reference": "https://words.hk/zidin/家具 ; https://cantonese.sheik.co.uk/dictionary/characters/1402/"
+        },
+        {
+          "id": 114457,
+          "char": "藥物中毒",
+          "previous_jyutping": "joek6 mat6 zung1 duk6",
+          "jyutping": "joek6 mat6 zung3 duk6",
+          "alternatives": [],
+          "note": "中毒為遭受毒害zung3，非中央zung1。",
+          "reference": "https://jyut.net/query?q=中"
+        },
+        {
+          "id": 114459,
+          "char": "藥物製劑",
+          "previous_jyutping": "joek6 mat6 zai3 zai1",
+          "jyutping": "joek6 mat6 zai3 zai1",
+          "alternatives": [],
+          "note": "製造zai3，藥劑名詞zai1，不讀第二字也zai3。",
+          "reference": "https://jyut.net/query?q=劑"
+        },
+        {
+          "id": 114581,
+          "char": "處世之道",
+          "previous_jyutping": "cyu5 sai3 zi1 dou6",
+          "jyutping": "cyu2 sai3 zi1 dou6",
+          "alternatives": [
+            "cyu5 sai3 zi1 dou6"
+          ],
+          "note": "處為處事、處罰、相處或身處狀態cyu2建議音先，cyu5商務新詞典及完整現代詞例同義後；不套地方cyu3。件gin2物件語音先6後。",
+          "reference": "https://jyut.net/query?q=處 ; https://cantonese.org/search.php?q=處"
+        },
+        {
+          "id": 114582,
+          "char": "處世哲學",
+          "previous_jyutping": "cyu5 sai3 zit3 hok6",
+          "jyutping": "cyu2 sai3 zit3 hok6",
+          "alternatives": [
+            "cyu5 sai3 zit3 hok6"
+          ],
+          "note": "處為處事、處罰、相處或身處狀態cyu2建議音先，cyu5商務新詞典及完整現代詞例同義後；不套地方cyu3。件gin2物件語音先6後。",
+          "reference": "https://jyut.net/query?q=處 ; https://cantonese.org/search.php?q=處"
+        },
+        {
+          "id": 114583,
+          "char": "處以斬首",
+          "previous_jyutping": "cyu2 ji5 zaam2 sau2",
+          "jyutping": "cyu2 ji5 zaam2 sau2",
+          "alternatives": [
+            "cyu5 ji5 zaam2 sau2"
+          ],
+          "note": "處為處事、處罰、相處或身處狀態cyu2建議音先，cyu5商務新詞典及完整現代詞例同義後；不套地方cyu3。件gin2物件語音先6後。",
+          "reference": "https://jyut.net/query?q=處 ; https://cantonese.org/search.php?q=處"
+        },
+        {
+          "id": 114589,
+          "char": "處女秀",
+          "previous_jyutping": "cyu5 neoi5 sau3",
+          "jyutping": "cyu2 neoi5 sau3",
+          "alternatives": [
+            "cyu5 neoi5 sau3"
+          ],
+          "note": "處為處事、處罰、相處或身處狀態cyu2建議音先，cyu5商務新詞典及完整現代詞例同義後；不套地方cyu3。件gin2物件語音先6後。",
+          "reference": "https://jyut.net/query?q=處 ; https://cantonese.org/search.php?q=處"
+        },
+        {
+          "id": 114596,
+          "char": "處得來",
+          "previous_jyutping": "cyu3 dak1 loi4",
+          "jyutping": "cyu2 dak1 loi4",
+          "alternatives": [
+            "cyu5 dak1 loi4"
+          ],
+          "note": "處為處事、處罰、相處或身處狀態cyu2建議音先，cyu5商務新詞典及完整現代詞例同義後；不套地方cyu3。件gin2物件語音先6後。",
+          "reference": "https://jyut.net/query?q=處 ; https://cantonese.org/search.php?q=處"
+        },
+        {
+          "id": 114598,
+          "char": "處斬",
+          "previous_jyutping": "cyu3 zaam2",
+          "jyutping": "cyu2 zaam2",
+          "alternatives": [
+            "cyu5 zaam2"
+          ],
+          "note": "處為處事、處罰、相處或身處狀態cyu2建議音先，cyu5商務新詞典及完整現代詞例同義後；不套地方cyu3。件gin2物件語音先6後。",
+          "reference": "https://jyut.net/query?q=處 ; https://cantonese.org/search.php?q=處"
+        },
+        {
+          "id": 114600,
+          "char": "處於下風",
+          "previous_jyutping": "cyu3 jyu1 haa6 fung1",
+          "jyutping": "cyu2 jyu1 haa6 fung1",
+          "alternatives": [
+            "cyu5 jyu1 haa6 fung1"
+          ],
+          "note": "處為處事、處罰、相處或身處狀態cyu2建議音先，cyu5商務新詞典及完整現代詞例同義後；不套地方cyu3。件gin2物件語音先6後。",
+          "reference": "https://jyut.net/query?q=處 ; https://cantonese.org/search.php?q=處"
+        },
+        {
+          "id": 114601,
+          "char": "處死刑",
+          "previous_jyutping": "cyu3 sei2 jing4",
+          "jyutping": "cyu2 sei2 jing4",
+          "alternatives": [
+            "cyu5 sei2 jing4"
+          ],
+          "note": "處為處事、處罰、相處或身處狀態cyu2建議音先，cyu5商務新詞典及完整現代詞例同義後；不套地方cyu3。件gin2物件語音先6後。",
+          "reference": "https://jyut.net/query?q=處 ; https://cantonese.org/search.php?q=處"
+        },
+        {
+          "id": 114602,
+          "char": "處理事務",
+          "previous_jyutping": "cyu5 lei5 si6 mou6",
+          "jyutping": "cyu2 lei5 si6 mou6",
+          "alternatives": [
+            "cyu5 lei5 si6 mou6"
+          ],
+          "note": "處為處事、處罰、相處或身處狀態cyu2建議音先，cyu5商務新詞典及完整現代詞例同義後；不套地方cyu3。件gin2物件語音先6後。",
+          "reference": "https://jyut.net/query?q=處 ; https://cantonese.org/search.php?q=處"
+        },
+        {
+          "id": 114604,
+          "char": "處理完畢",
+          "previous_jyutping": "cyu5 lei5 jyun4 bat1",
+          "jyutping": "cyu2 lei5 jyun4 bat1",
+          "alternatives": [
+            "cyu5 lei5 jyun4 bat1"
+          ],
+          "note": "處為處事、處罰、相處或身處狀態cyu2建議音先，cyu5商務新詞典及完整現代詞例同義後；不套地方cyu3。件gin2物件語音先6後。",
+          "reference": "https://jyut.net/query?q=處 ; https://cantonese.org/search.php?q=處"
+        },
+        {
+          "id": 114606,
+          "char": "處理意見",
+          "previous_jyutping": "cyu5 lei5 ji3 gin3",
+          "jyutping": "cyu2 lei5 ji3 gin3",
+          "alternatives": [
+            "cyu5 lei5 ji3 gin3"
+          ],
+          "note": "處為處事、處罰、相處或身處狀態cyu2建議音先，cyu5商務新詞典及完整現代詞例同義後；不套地方cyu3。件gin2物件語音先6後。",
+          "reference": "https://jyut.net/query?q=處 ; https://cantonese.org/search.php?q=處"
+        },
+        {
+          "id": 114607,
+          "char": "處理方式",
+          "previous_jyutping": "cyu5 lei5 fong1 sik1",
+          "jyutping": "cyu2 lei5 fong1 sik1",
+          "alternatives": [
+            "cyu5 lei5 fong1 sik1"
+          ],
+          "note": "處為處事、處罰、相處或身處狀態cyu2建議音先，cyu5商務新詞典及完整現代詞例同義後；不套地方cyu3。件gin2物件語音先6後。",
+          "reference": "https://jyut.net/query?q=處 ; https://cantonese.org/search.php?q=處"
+        },
+        {
+          "id": 114609,
+          "char": "處理結果",
+          "previous_jyutping": "cyu5 lei5 git3 gwo2",
+          "jyutping": "cyu2 lei5 git3 gwo2",
+          "alternatives": [
+            "cyu5 lei5 git3 gwo2"
+          ],
+          "note": "處為處事、處罰、相處或身處狀態cyu2建議音先，cyu5商務新詞典及完整現代詞例同義後；不套地方cyu3。件gin2物件語音先6後。",
+          "reference": "https://jyut.net/query?q=處 ; https://cantonese.org/search.php?q=處"
+        },
+        {
+          "id": 114611,
+          "char": "處理軟件",
+          "previous_jyutping": "cyu5 lei5 jyun5 gin6",
+          "jyutping": "cyu2 lei5 jyun5 gin2",
+          "alternatives": [
+            "cyu5 lei5 jyun5 gin2",
+            "cyu2 lei5 jyun5 gin6",
+            "cyu5 lei5 jyun5 gin6"
+          ],
+          "note": "處為處事、處罰、相處或身處狀態cyu2建議音先，cyu5商務新詞典及完整現代詞例同義後；不套地方cyu3。件gin2物件語音先6後。",
+          "reference": "https://jyut.net/query?q=處 ; https://cantonese.org/search.php?q=處"
+        },
+        {
+          "id": 114615,
+          "char": "處罰金",
+          "previous_jyutping": "cyu3 fat6 gam1",
+          "jyutping": "cyu2 fat6 gam1",
+          "alternatives": [
+            "cyu5 fat6 gam1"
+          ],
+          "note": "處為處事、處罰、相處或身處狀態cyu2建議音先，cyu5商務新詞典及完整現代詞例同義後；不套地方cyu3。件gin2物件語音先6後。",
+          "reference": "https://jyut.net/query?q=處 ; https://cantonese.org/search.php?q=處"
+        },
+        {
+          "id": 114655,
+          "char": "虛心聽取",
+          "previous_jyutping": "heoi1 sam1 teng1 ceoi2",
+          "jyutping": "heoi1 sam1 teng1 ceoi2",
+          "alternatives": [
+            "heoi1 sam1 ting1 ceoi2"
+          ],
+          "note": "聽取意見teng1語音先ting1書讀後；不以固定聽覺ting3推新詞。",
+          "reference": "https://jyut.net/query?q=聽"
+        },
+        {
+          "id": 114659,
+          "char": "虛擬主機",
+          "previous_jyutping": "heoi1 ji4 zyu2 gei1",
+          "jyutping": "heoi1 ji5 zyu2 gei1",
+          "alternatives": [
+            "heoi1 ji4 zyu2 gei1"
+          ],
+          "note": "虛擬ji5建議書讀先，粵典完整虛擬世界／銀行及香港原發音亦有ji4，同義現代語音後；不因孤字缺ji4全刪。",
+          "reference": "https://jyut.net/query?q=擬 ; https://cantonese.org/search.php?q=虛 ; https://zh.forvo.com/word/虛擬/ ; https://en.wiktionary.org/wiki/虛擬機"
+        },
+        {
+          "id": 114665,
+          "char": "虛擬地址",
+          "previous_jyutping": "heoi1 ji4 dei6 zi2",
+          "jyutping": "heoi1 ji5 dei6 zi2",
+          "alternatives": [
+            "heoi1 ji4 dei6 zi2"
+          ],
+          "note": "虛擬ji5建議書讀先，粵典完整虛擬世界／銀行及香港原發音亦有ji4，同義現代語音後；不因孤字缺ji4全刪。",
+          "reference": "https://jyut.net/query?q=擬 ; https://cantonese.org/search.php?q=虛 ; https://zh.forvo.com/word/虛擬/ ; https://en.wiktionary.org/wiki/虛擬機"
+        },
+        {
+          "id": 114673,
+          "char": "虛擬空間",
+          "previous_jyutping": "heoi1 ji4 hung1 gaan1",
+          "jyutping": "heoi1 ji5 hung1 gaan1",
+          "alternatives": [
+            "heoi1 ji4 hung1 gaan1"
+          ],
+          "note": "虛擬ji5建議書讀先，粵典完整虛擬世界／銀行及香港原發音亦有ji4，同義現代語音後；不因孤字缺ji4全刪。",
+          "reference": "https://jyut.net/query?q=擬 ; https://cantonese.org/search.php?q=虛 ; https://zh.forvo.com/word/虛擬/ ; https://en.wiktionary.org/wiki/虛擬機"
+        },
+        {
+          "id": 114675,
+          "char": "虛擬語氣",
+          "previous_jyutping": "heoi1 ji4 jyu5 hei3",
+          "jyutping": "heoi1 ji5 jyu5 hei3",
+          "alternatives": [
+            "heoi1 ji4 jyu5 hei3"
+          ],
+          "note": "虛擬ji5建議書讀先，粵典完整虛擬世界／銀行及香港原發音亦有ji4，同義現代語音後；不因孤字缺ji4全刪。",
+          "reference": "https://jyut.net/query?q=擬 ; https://cantonese.org/search.php?q=虛 ; https://zh.forvo.com/word/虛擬/ ; https://en.wiktionary.org/wiki/虛擬機"
+        },
+        {
+          "id": 114738,
+          "char": "虧損累累",
+          "previous_jyutping": "kwai1 syun2 leoi4 leoi4",
+          "jyutping": "kwai1 syun2 leoi4 leoi4",
+          "alternatives": [],
+          "note": "累累為接連積聚leoi4 leoi4，與疲累leoi6分開；整詞正常，不因裸字罕見級別自動剔除。",
+          "reference": "https://jyut.net/query?q=累"
+        },
+        {
+          "id": 114852,
+          "char": "蛤蟆功",
+          "previous_jyutping": "haa1 maa4 gung1",
+          "jyutping": "haa1 maa4 gung1",
+          "alternatives": [],
+          "note": "完整熟悉武俠詞haa1maa4gung1，蛤在蛤蟆為haa1，非蛤蜊gap3。",
+          "reference": "https://jyut.net/query?q=蛤"
+        },
+        {
+          "id": 115198,
+          "char": "蠶絲被",
+          "previous_jyutping": "caam4 si1 bei6",
+          "jyutping": "caam4 si1 bei2",
+          "alternatives": [
+            "caam4 si1 bei6"
+          ],
+          "note": "棉被名詞bei2日常先bei6原讀後，非被動介詞bei6套入唯一預設。",
+          "reference": "https://jyut.net/query?q=被"
+        },
+        {
+          "id": 115257,
+          "char": "血流量",
+          "previous_jyutping": "hyut3 lau4 loeng4",
+          "jyutping": "hyut3 lau4 loeng6",
+          "alternatives": [],
+          "note": "數量名詞loeng6，不讀量度loeng4。",
+          "reference": "https://jyut.net/query?q=量"
+        },
+        {
+          "id": 115299,
+          "char": "血量",
+          "previous_jyutping": "hyut3 loeng4",
+          "jyutping": "hyut3 loeng6",
+          "alternatives": [],
+          "note": "數量名詞loeng6，不讀量度loeng4。",
+          "reference": "https://jyut.net/query?q=量"
+        },
+        {
+          "id": 115310,
+          "char": "行不得",
+          "previous_jyutping": "haang4 bat1 dak1",
+          "jyutping": "hang4 bat1 dak1",
+          "alternatives": [],
+          "note": "行得通能力義hang4，不按走路草稿自動加長元音或品行hang6。",
+          "reference": "https://jyut.net/query?q=行"
+        },
+        {
+          "id": 115312,
+          "char": "行不改姓",
+          "previous_jyutping": "haang4 bat1 goi2 sing3",
+          "jyutping": "hang4 bat1 goi2 sing3",
+          "alternatives": [],
+          "note": "固定行不改姓書讀hang4，不機械取走路haang4。",
+          "reference": "https://jyut.net/query?q=行"
+        },
+        {
+          "id": 115314,
+          "char": "行不行",
+          "previous_jyutping": "haang4 bat1 hang4",
+          "jyutping": "hang4 bat1 hang4",
+          "alternatives": [
+            "haang4 bat1 haang4"
+          ],
+          "note": "能力可否hang4先；正音字典同義他真行haang4又讀後，不套品行hang6。",
+          "reference": "https://jyut.net/query?q=行"
+        },
+        {
+          "id": 115319,
+          "char": "行人情",
+          "previous_jyutping": "hang4 jan4 cing4",
+          "jyutping": "haang4 jan4 cing4",
+          "alternatives": [
+            "hang4 jan4 cing4"
+          ],
+          "note": "行人情為做禮數、送人情的haang4日常語音先hang4書讀後，不按行人道路分詞。",
+          "reference": "https://jyut.net/query?q=行"
+        },
+        {
+          "id": 115326,
+          "char": "行俠好義",
+          "previous_jyutping": "haang4 hap6 hou2 ji6",
+          "jyutping": "hang4 hap6 hou3 ji6",
+          "alternatives": [],
+          "note": "行俠為行動hang4，好義為喜愛hou3，不讀好壞hou2。",
+          "reference": "https://jyut.net/query?q=行 ; https://jyut.net/query?q=好"
+        },
+        {
+          "id": 115339,
+          "char": "行動遲緩",
+          "previous_jyutping": "hang4 dung6 ci4 wun6",
+          "jyutping": "hang4 dung6 ci4 wun6",
+          "alternatives": [
+            "hang4 dung6 ci4 wun4"
+          ],
+          "note": "緩wun6先，完整緩和現代wun4同義原讀後，不一律判4錯音。",
+          "reference": "https://jyut.net/query?q=緩"
+        },
+        {
+          "id": 115352,
+          "char": "行天下",
+          "previous_jyutping": "haang4 tin1 haa6",
+          "jyutping": "hang4 tin1 haa6",
+          "alternatives": [
+            "haang4 tin1 haa6"
+          ],
+          "note": "遍行天下書讀hang4先，走路haang4同義語音後。",
+          "reference": "https://jyut.net/query?q=行"
+        },
+        {
+          "id": 115354,
+          "char": "行家話",
+          "previous_jyutping": "hong4 gaa1 waa6",
+          "jyutping": "hong4 gaa1 waa6",
+          "alternatives": [
+            "hong4 gaa1 waa2"
+          ],
+          "note": "話語名詞此先保留書讀waa6，口語waa2同義後。",
+          "reference": "https://jyut.net/query?q=話"
+        },
+        {
+          "id": 115355,
+          "char": "行將崩潰",
+          "previous_jyutping": "hang6 zoeng1 bang1 kui2",
+          "jyutping": "hang4 zoeng1 bang1 kui2",
+          "alternatives": [
+            "haang4 zoeng1 bang1 kui2"
+          ],
+          "note": "行將快要hang4有現代完整詞例；同音字彙另有行將竣工haang4語音後，不套品行hang6。原有孤詞行將hang6留待獨立來源覆核，本批不改寫舊源。",
+          "reference": "https://jyut.net/query?q=行 ; https://www.wenweipo.com/epaper/view/newsDetail/1399788654301417472.html"
+        },
+        {
+          "id": 115356,
+          "char": "行將滅亡",
+          "previous_jyutping": "hang6 zoeng1 mit6 mong4",
+          "jyutping": "hang4 zoeng1 mit6 mong4",
+          "alternatives": [
+            "haang4 zoeng1 mit6 mong4"
+          ],
+          "note": "行將快要hang4有現代完整詞例；同音字彙另有行將竣工haang4語音後，不套品行hang6。原有孤詞行將hang6留待獨立來源覆核，本批不改寫舊源。",
+          "reference": "https://jyut.net/query?q=行 ; https://www.wenweipo.com/epaper/view/newsDetail/1399788654301417472.html"
+        },
+        {
+          "id": 115396,
+          "char": "行數",
+          "previous_jyutping": "haang4 sou2",
+          "jyutping": "hong4 sou3",
+          "alternatives": [],
+          "note": "文字的行列hong4、數量sou3，非走路haang4或數算sou2。",
+          "reference": "https://jyut.net/query?q=行 ; https://jyut.net/query?q=數"
+        },
+        {
+          "id": 115402,
+          "char": "行有行規",
+          "previous_jyutping": "haang4 jau5 hong4 kwai1",
+          "jyutping": "hong4 jau5 hong4 kwai1",
+          "alternatives": [],
+          "note": "各行業的行hong4，非行走haang4。",
+          "reference": "https://jyut.net/query?q=行"
+        },
+        {
+          "id": 115418,
+          "char": "行楷",
+          "previous_jyutping": "haang4 kaai2",
+          "jyutping": "hang4 kaai2",
+          "alternatives": [],
+          "note": "行楷為書法hang4，不套走路haang4。",
+          "reference": "https://jyut.net/query?q=行"
+        },
+        {
+          "id": 115423,
+          "char": "行氣活血",
+          "previous_jyutping": "hong4 hei3 wut6 hyut3",
+          "jyutping": "hang4 hei3 wut6 hyut3",
+          "alternatives": [],
+          "note": "行氣為使氣血運行hang4，非行業hong4。",
+          "reference": "https://jyut.net/query?q=行"
+        },
+        {
+          "id": 115462,
+          "char": "行行好",
+          "previous_jyutping": "hong4 hong4 hou2",
+          "jyutping": "hang4 hang4 hou2",
+          "alternatives": [],
+          "note": "行好施善的祈請書讀hang4，非行業hong4或古剛健疊詞hong6。",
+          "reference": "https://jyut.net/query?q=行"
+        },
+        {
+          "id": 115471,
+          "char": "行走路線",
+          "previous_jyutping": "haang4 zau2 lou6 sin3",
+          "jyutping": "haang4 zau2 lou6 sin3",
+          "alternatives": [
+            "hang4 zau2 lou6 sin3"
+          ],
+          "note": "走路haang4日常語音先hang4書讀後。",
+          "reference": "https://jyut.net/query?q=行"
+        },
+        {
+          "id": 115504,
+          "char": "衍生品",
+          "previous_jyutping": "hin2 sang1 ban2",
+          "jyutping": "jin2 sang1 ban2",
+          "alternatives": [
+            "hin2 sang1 ban2"
+          ],
+          "note": "衍生jin2建議讀音先、hin2現代又讀後；不單憑舊jin5引申詞例擴張所有衍字詞。",
+          "reference": "https://jyut.net/query?q=衍"
+        },
+        {
+          "id": 115560,
+          "char": "衝到",
+          "previous_jyutping": "cung1 dou2",
+          "jyutping": "cung1 dou3",
+          "alternatives": [],
+          "note": "衝到為到達dou3，不讀倒下dou2。",
+          "reference": "https://jyut.net/query?q=到"
+        },
+        {
+          "id": 115676,
+          "char": "衣着打扮",
+          "previous_jyutping": "ji1 zoek6 daa2 baan6",
+          "jyutping": "ji1 zoek3 daa2 baan6",
+          "alternatives": [],
+          "note": "衣着服飾zoek3，不套着手／着重zoek6或著作zyu3。",
+          "reference": "https://jyut.net/query?q=着"
+        },
+        {
+          "id": 115704,
+          "char": "表侄女",
+          "previous_jyutping": "biu2 zat6 neoi5",
+          "jyutping": "biu2 zat6 neoi2",
+          "alternatives": [
+            "biu2 zat6 neoi5"
+          ],
+          "note": "親屬姪女neoi2日常變調先5後；原侄字同字異體留檔，不換字製作來源。",
+          "reference": "https://jyut.net/query?q=女"
+        },
+        {
+          "id": 115706,
+          "char": "表兄妹",
+          "previous_jyutping": "biu2 hing1 mui1",
+          "jyutping": "biu2 hing1 mui6",
+          "alternatives": [
+            "biu2 hing1 mui2"
+          ],
+          "note": "兄妹之妹mui6書面先，現代親屬名詞mui2後；不套丫頭mui1。",
+          "reference": "https://jyut.net/query?q=妹"
+        },
+        {
+          "id": 115727,
+          "char": "表情圖片",
+          "previous_jyutping": "biu2 cing4 tou4 pin2",
+          "jyutping": "biu2 cing4 tou4 pin2",
+          "alternatives": [
+            "biu2 cing4 tou4 pin3"
+          ],
+          "note": "圖片pin2先、原讀3後。",
+          "reference": "https://jyut.net/query?q=片"
+        },
+        {
+          "id": 115935,
+          "char": "被貶",
+          "previous_jyutping": "bei6 bin2",
+          "jyutping": "bei6 bin2",
+          "alternatives": [],
+          "note": "被動bei6、貶抑bin2；原歌詞兩處重複不作獨立生活頻率。",
+          "reference": "AI:whole-word-context"
+        },
+        {
+          "id": 115369,
+          "char": "行情看漲",
+          "previous_jyutping": "hong4 cing4 hon3 zoeng2",
+          "jyutping": "hong4 cing4 hon3 zoeng3",
+          "alternatives": [
+            "hong4 cing4 hon3 zoeng2"
+          ],
+          "note": "漲價zoeng3建議日常音先，zoeng2有現代完整漲價又讀依據後，非一律刪2。",
+          "reference": "https://jyut.net/query?q=漲"
+        },
+        {
+          "id": 114430,
+          "char": "藤筐",
+          "previous_jyutping": "tang4 hong1",
+          "jyutping": "tang4 hong1",
+          "alternatives": [
+            "tang4 kwaang1"
+          ],
+          "note": "筐hong1建議音先、kwaang1商務及查音字典現代同義又讀後，不套舊kong1。",
+          "reference": "https://jyut.net/query?q=筐"
+        },
+        {
+          "id": 114018,
+          "char": "蒸汽熨斗",
+          "previous_jyutping": "zing1 hei3 tong3 dau2",
+          "jyutping": "zing1 hei3 tong3 dau2",
+          "alternatives": [],
+          "note": "熨斗為日常及建議tong3dau2；不因其他字典列wan6就自動複製，資料集叢考證不建議wan6實用。",
+          "reference": "https://jyut.net/query?q=熨"
+        },
+        {
+          "id": 115713,
+          "char": "表妹夫",
+          "previous_jyutping": "biu2 mui2 fu1",
+          "jyutping": "biu2 mui6 fu1",
+          "alternatives": [],
+          "note": "表妹夫的妹依完整妹夫mui6fu1固定詞讀6；不能把表妹末字mui2變調機械保留到妹夫內部。",
+          "reference": "https://cantonese.sheik.co.uk/dictionary/words/11339/ ; https://www.hkuspace.hku.hk/event/20230826/exploring-the-features-and-fun-of-cantonese-from-its-pinyin-tone-sandhi-and-lexicons"
+        }
+      ],
+      "restored_candidates": [],
+      "final_accepted_before_dedup": 431,
+      "corpus": {
+        "observations": 7,
+        "supplied_spans": 13,
+        "all_original_spans_read": true,
+        "source_commit": "018e88540b917c40dc3f7248ed98908208544b54",
+        "boundary_notes": {
+          "114030": "想會否蒸發掉與不會給蒸發掉為完整動補短語；三處為同曲重複，非三次獨立生活頻率。",
+          "114586": "相處／到有個裂口跨相處詞界；處到不是獨立相處短語，本批拒收。",
+          "114595": "相處／得太好跨相處詞界；處得不是獨立詞，不能當整詞頻率。本批拒收；處得來另按自然通用搭配覆核。",
+          "114654": "虛心接受／挫折失敗有完整虛心接受，兩處副歌重複不作獨立頻率。",
+          "115595": "俯首／衝過有完整衝過，三處同曲重複不作獨立頻率。",
+          "115849": "衷心祝福／然後有完整衷心祝福；保留自然通用祝語。",
+          "115935": "還被貶當後備有完整被貶，兩處重複不作獨立生活頻率。"
+        }
+      },
+      "prior_decisions_preserved": 113994,
+      "explicit_prior_decision_repairs": [],
+      "existing_runtime_audit": {
+        "傢俱 keoi1": "CantoDict full modern furniture entry explicitlykeoi1; four prior runtime forms and three prior curated objects retained. New藤傢俱geoi6dailyfirst,keoi1later. No global bare-character deletion.",
+        "虛擬 ji4": "Modern full words.hk definition and Hong Kong recorded pronunciation supportji4. Existing rows retained, newji5recommendedfirst/ji4later.",
+        "行將 hang6": "No prior curated object; baseline Rime isolated wholewordhang6 not modified without source-specific audit; newwholephraseshang4/haang4 supported by modern complete examples."
+      },
+      "same_word_orthographic_canonicalizations": [
+        {
+          "id": 114478,
+          "source_form": "藴含着",
+          "canonical_form": "蘊含着"
+        },
+        {
+          "id": 114482,
+          "source_form": "藴涵着",
+          "canonical_form": "蘊涵着"
+        }
+      ],
+      "final_tone_fix_after_initial_validation": {
+        "char": "表妹夫",
+        "previous_jyutping": "biu2 mui2 fu1",
+        "jyutping": "biu2 mui6 fu1",
+        "initial_validation_retained": true,
+        "requires_fresh_inventory_primary_cache_and_query_checks": true
+      },
+      "final_complete_word_evidence_checks": [
+        {
+          "id": 114044,
+          "char": "蒸魚",
+          "note": "蒸魚jyu2有現代完整蒸魚及薑蔥蒸魚教學詞例，確認保留；未把非首選語尾變調當唯一通則。",
+          "reference": "https://www.cantoneseclass101.com/lesson/cantonese-words-of-the-week-with-olivia-for-beginners-14-cooking ; https://products.innovativelanguage.com/books/findaway_PDFs/Cantonese/cantonese_travel_compilation_kobo_audiobook.pdf"
+        },
+        {
+          "id": 115706,
+          "char": "表兄妹",
+          "note": "完整粵典妹條明列兄妹hing1mui2，與妹夫mui6fu1區分；兄妹mui6亦有完整同胞兄妹詞例，先6後2，不套稱女孩mui1。",
+          "reference": "https://words.hk/zidin/妹 ; https://cantonese.sheik.co.uk/dictionary/characters/1193/"
+        }
+      ]
+    }
+  }
+}
