@@ -663,3 +663,11 @@ mui1 女孩子泛稱未有二妹整詞根據，本批不擴入。
 管理局長的長採職位 zoeng2，篤學好古的好採喜愛 hou3，篇數、節數採數量 sou3。簿記師 bou6 為記帳行業詞，簿本 bou2 為器物語音；竹簾子 lim4、粗花呢 nei4 與什麼 sam6 mo1 都是現代正常整詞語境，沒有讓裸字等級誤判其讀音罕見。窗簾杆、粗杆依簡體來源的棍棒義採同詞正體桿，gon2 先、gon1 後；竹杆保留杆原字 gon1，沒有換另一表達製作來源。
 
 完整字面、音節、碼、依據與排序見[B55 審核](../data/lexicon/reviews/2026-11-06-written-b55-supplement.tsv)及[B55 最終驗證](../data/lexicon/reviews/2026-11-06-written-b55-validation.json)。未有整詞實測先後者明示 AI 判斷，與詞語本身的常用度獨立。
+
+## 第五十六批整詞讀音終審（2026-11-07）
+
+新增 **1,105 組來源讀音分級**，累計 **67,316 組**；原有 66,211 個分級物件逐欄保留。[紀](https://jyut.net/query?q=紀)的 gei2／gei3 均有現代整詞依據，紀錄下來採3先2後，紀念等詞採2先3後；處分的分採 fan1，處 cyu2 先、現代 cyu5 同義後讀保留。系統診斷保留 dyun3／dyun6；絞斷、綿綿不斷採 tyun5 先、dyun6 後，沒有把所有斷字套同一聲調。
+
+[縫](https://jyut.net/query?q=縫)的開口名詞 fung6 與商務新詞典名詞又讀 fung4 保留；1916年的 fung3 不加入現代候選，也不以罅 laa3 作縫字讀音。素負盛名的盛採顯赫 sing6，寢具被採 pei5，緊接著按[完整接著](https://cantonese.org/search.php?q=接著)採 zoek6；著作 zyu3 不混入接續詞。[絨](https://jyut.net/query?q=絨)採 jung2 語音先、jung4 文讀後；[綴](https://jyut.net/query?q=綴)的連結、組字和裝飾義採 zeoi6 先、zeoi3 現代同義後讀。統計權重採 cung5、緝拿罪犯採 faan2、級長採 zoeng2，音節與0243碼一同核對。
+
+詞語本身的常用度獨立分級；有正常書讀不等於生活高頻，裸字缺少變調讀音也不將完整詞判為棄用。完整字形、讀音、碼、依據與排序見[B56 審核](../data/lexicon/reviews/2026-11-06-written-b56-supplement.tsv)及[B56 最終驗證](../data/lexicon/reviews/2026-11-06-written-b56-validation.json)。

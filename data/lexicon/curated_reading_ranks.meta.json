@@ -1,20 +1,20 @@
 {
   "date": "2026-11-06",
   "reviewer": "AI-assisted whole-word commonness review; not measured corpus frequency or human item-by-item approval",
-  "curated_rows": 66211,
-  "curated_sha256": "fb0447caf0a090d918e1665413f4d3907fdc1933d863416a9356a44e6182a177",
+  "curated_rows": 67316,
+  "curated_sha256": "4f5050db76c488d493b2145c18af5e486a2e567db4c93ac94ab00fb9dc023ad8",
   "rime_char_sha256": "868937c3ebbcaf47170a80a43bd063b20f6699a884e39110154fd91bba9d195d",
-  "ranks_sha256": "ba5cb0db6199924ff9810f9f9a33a4de7b25a48b40635aa41ddb3bceefbaefa9",
+  "ranks_sha256": "39de93b1fad58345d8185d04891ee7667ef8142df1e5a2f39d5f1365ed266e5a",
   "grades": {
-    "預設": 57632,
-    "常用": 8493,
+    "預設": 58577,
+    "常用": 8653,
     "罕見": 83,
     "棄用": 3
   },
   "basis": {
-    "rime-components": 58454,
+    "rime-components": 59418,
     "rime-orthographic": 99,
-    "ai-context": 7658
+    "ai-context": 7799
   },
   "grade_order": [
     "預設",
@@ -38,46 +38,46 @@
     "爲": "為"
   },
   "validation": {
-    "merged_rows": 245204,
-    "merged_literals": 227632,
-    "unique_triples": 245202,
-    "baseline_rows": 244110,
+    "merged_rows": 246309,
+    "merged_literals": 228674,
+    "unique_triples": 246307,
+    "baseline_rows": 245204,
     "all_previous_rows_and_multiplicities_retained": true,
     "confirmed_old_wrong_sense_readings_removed": 0,
-    "all_accepted_primary_reading_checks": 1002,
-    "old_word_grades_preserved": 126965,
-    "new_source_readings": 1094,
+    "all_accepted_primary_reading_checks": 1042,
+    "old_word_grades_preserved": 127967,
+    "new_source_readings": 1105,
     "new_pairs_retained": true,
-    "search_checks": 526,
-    "preferred_reading_checks": 91,
-    "word_usage_keys": 127967,
+    "search_checks": 512,
+    "preferred_reading_checks": 59,
+    "word_usage_keys": 129009,
     "withdrawn_curated_literals": 2051,
     "live_db_unchanged": true,
     "backend_pwa_essay_frequency_keys": 266884,
     "essay_frequency_tables_equal": true,
-    "backend_pwa_word_grade_keys": 127967,
-    "backend_pwa_curated_reading_grade_keys": 67016,
+    "backend_pwa_word_grade_keys": 129009,
+    "backend_pwa_curated_reading_grade_keys": 68135,
     "word_grade_tables_equal": true,
     "curated_reading_grade_tables_equal": true,
-    "old_source_rows_preserved": 65117,
-    "old_reading_grades_preserved": 65117,
-    "old_usage_rows_preserved": 126965,
-    "old_judgments_preserved": 17786,
-    "new_source_forms": 1002,
-    "new_merged_forms": 1002,
+    "old_source_rows_preserved": 66211,
+    "old_reading_grades_preserved": 66211,
+    "old_usage_rows_preserved": 127967,
+    "old_judgments_preserved": 18098,
+    "new_source_forms": 1042,
+    "new_merged_forms": 1042,
     "existing_merged_forms_with_new_readings": [],
-    "raw_source_forms": 63735,
-    "normalized_source_forms": 63733,
-    "new_word_usage_judgments": 312,
+    "raw_source_forms": 64777,
+    "normalized_source_forms": 64775,
+    "new_word_usage_judgments": 349,
     "unrelated_user_files_unchanged": true,
     "previous_overlay_bytes_preserved": true,
     "existing_runtime_readings_mirrored": 0,
     "exact_existing_wrong_sense_overlay_deletions": 0,
-    "new_merged_readings": 1094,
-    "new_merged_readings_net": 1094,
+    "new_merged_readings": 1105,
+    "new_merged_readings_net": 1105,
     "full_final_inventory_rebuilt_and_compared": true,
     "client_query_engine_with_new_dictionary": {
-      "checks": 375,
+      "checks": 408,
       "modes": 3,
       "new_dictionary_loaded_in_client_engine": true,
       "preferred_readings_equal": true
@@ -334,18 +334,18 @@
     "prior_runtime_rows_affected_by_new_normalization": 0,
     "prior_word_usage_records_affected_by_new_normalization": 0,
     "prior_stored_relation_keys_migrated": 0,
-    "previous_source_rows_preserved": 65117,
-    "previous_reading_grades_preserved": 65117,
+    "previous_source_rows_preserved": 66211,
+    "previous_reading_grades_preserved": 66211,
     "explicit_previous_reading_grade_repairs": 0,
-    "previous_word_usage_records_preserved": 126965,
-    "previous_word_usage_judgments_preserved": 17786,
+    "previous_word_usage_records_preserved": 127967,
+    "previous_word_usage_judgments_preserved": 18098,
     "new_word_normalization_idempotent": true,
     "post_review_original_spelling_regression_check": true,
-    "full_pool_parity_queries": 151,
-    "full_pool_parity_rows": 131595,
+    "full_pool_parity_queries": 166,
+    "full_pool_parity_rows": 129978,
     "full_pool_ranking_equal": true,
-    "smoke_tests": 333,
-    "smoke_passed": 329,
+    "smoke_tests": 334,
+    "smoke_passed": 330,
     "smoke_skipped": 4,
     "seam_tests": 89,
     "seam_passed": 83,
@@ -370,3392 +370,2834 @@
       "modes": 3
     },
     "final_reading_audit": {
-      "batch": "B55",
-      "initial_accepted": 1188,
+      "batch": "B56",
+      "initial_accepted": 1198,
       "withdrawals": [
         {
-          "id": 104013,
-          "char": "穎脱而出",
-          "previous_jyutping": "wing6 tyut3 ji4 ceot1",
-          "reason": "穎脱而出為較少用變語，保留原字判斷，不重排為脫穎而出造來源。"
+          "id": 105998,
+          "char": "精神外科",
+          "previous_jyutping": "zing1 san4 ngoi6 fo1",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 104043,
-          "char": "穩定杆",
-          "previous_jyutping": "wan2 ding6 gon1",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106018,
+          "char": "精神論",
+          "previous_jyutping": "zing1 san4 leon6",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 104047,
-          "char": "穩定率",
-          "previous_jyutping": "wan2 ding6 leot2",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106029,
+          "char": "精簡整編",
+          "previous_jyutping": "zing1 gaan2 zing2 pin1",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 104086,
-          "char": "穹隆式",
-          "previous_jyutping": "kung4 lung4 sik1",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106039,
+          "char": "精義入神",
+          "previous_jyutping": "zing1 ji6 jap6 san4",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 104134,
-          "char": "空心湯圓",
-          "previous_jyutping": "hung1 sam1 tong1 jyun4",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106048,
+          "char": "精血虧虛",
+          "previous_jyutping": "zing1 hyut3 kwai1 heoi1",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 104135,
-          "char": "空心球",
-          "previous_jyutping": "hung1 sam1 kau4",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106055,
+          "char": "精進勇猛",
+          "previous_jyutping": "zing1 zeon3 jung5 maang5",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 104171,
-          "char": "空氣氧化",
-          "previous_jyutping": "hung1 hei3 joeng5 faa3",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106064,
+          "char": "精金良玉",
+          "previous_jyutping": "zing1 gam1 loeng4 juk6",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 104181,
-          "char": "空氣除菌",
-          "previous_jyutping": "hung1 hei3 ceoi4 kwan2",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106070,
+          "char": "精餾塔",
+          "previous_jyutping": "zing1 lau6 taap3",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 104193,
-          "char": "空白對照",
-          "previous_jyutping": "hung1 baak6 deoi3 ziu3",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106081,
+          "char": "糊粉",
+          "previous_jyutping": "wu4 fan2",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 104195,
-          "char": "空白試驗",
-          "previous_jyutping": "hung1 baak6 si3 jim6",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106091,
+          "char": "糖化酶",
+          "previous_jyutping": "tong4 faa3 mui4",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 104210,
-          "char": "空腹便便",
-          "previous_jyutping": "hung1 fuk1 bin6 bin6",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106092,
+          "char": "糖原分解",
+          "previous_jyutping": "tong4 jyun4 fan1 gaai2",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 104223,
-          "char": "空語句",
-          "previous_jyutping": "hung1 jyu5 geoi3",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106093,
+          "char": "糖原生成",
+          "previous_jyutping": "tong4 jyun4 sang1 sing4",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 104266,
-          "char": "空間軌道",
-          "previous_jyutping": "hung1 gaan1 gwai2 dou6",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106094,
+          "char": "糖商",
+          "previous_jyutping": "tong4 soeng1",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 104270,
-          "char": "空間頻率",
-          "previous_jyutping": "hung1 gaan1 pan4 leot2",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106095,
+          "char": "糖基",
+          "previous_jyutping": "tong4 gei1",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 104307,
-          "char": "穿孔卡片",
-          "previous_jyutping": "cyun1 hung2 kaat1 pin2",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106096,
+          "char": "糖基化",
+          "previous_jyutping": "tong4 gei1 faa3",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 104312,
-          "char": "穿孔蛋白",
-          "previous_jyutping": "cyun1 hung2 daan2 baak6",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106118,
+          "char": "糖耐量",
+          "previous_jyutping": "tong4 noi6 loeng6",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 104354,
-          "char": "穿透效應",
-          "previous_jyutping": "cyun1 tau3 haau6 jing3",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106121,
+          "char": "糖胺聚糖",
+          "previous_jyutping": "tong4 on1 zeoi6 tong4",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 104405,
-          "char": "突變型",
-          "previous_jyutping": "dat6 bin3 jing4",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106133,
+          "char": "糖酵解",
+          "previous_jyutping": "tong4 haau1 gaai2",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 104409,
-          "char": "突變性",
-          "previous_jyutping": "dat6 bin3 sing3",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106134,
+          "char": "糖酸",
+          "previous_jyutping": "tong4 syun1",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 104414,
-          "char": "突變體",
-          "previous_jyutping": "dat6 bin3 tai2",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106138,
+          "char": "糙紙",
+          "previous_jyutping": "cou3 zi2",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 104451,
-          "char": "窗台綠化",
-          "previous_jyutping": "coeng1 toi4 luk6 faa3",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106146,
+          "char": "糞壤",
+          "previous_jyutping": "fan3 joeng6",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 104471,
-          "char": "窘厄",
-          "previous_jyutping": "kwan3 aak1",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106168,
+          "char": "糠油",
+          "previous_jyutping": "hong1 jau4",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 104481,
-          "char": "窠穴",
-          "previous_jyutping": "fo1 jyut6",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106174,
+          "char": "糧作",
+          "previous_jyutping": "loeng4 zok3",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 104482,
-          "char": "窣窣",
-          "previous_jyutping": "seot1 seot1",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106176,
+          "char": "糧囤",
+          "previous_jyutping": "loeng4 tyun4",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 104483,
-          "char": "窨井蓋",
-          "previous_jyutping": "jam3 zeng2 goi3",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106199,
+          "char": "糯稻根",
+          "previous_jyutping": "no6 dou6 gan1",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 104497,
-          "char": "窩賊",
-          "previous_jyutping": "wo1 caak6",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106200,
+          "char": "糰粉",
+          "previous_jyutping": "tyun4 fan2",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 104498,
-          "char": "窩贓罪",
-          "previous_jyutping": "wo1 zong1 zeoi6",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106201,
+          "char": "糲食粗衣",
+          "previous_jyutping": "lai6 sik6 cou1 ji1",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 104512,
-          "char": "窮厄",
-          "previous_jyutping": "kung4 aak1",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106202,
+          "char": "糲飯",
+          "previous_jyutping": "lai6 faan6",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 104513,
-          "char": "窮原竟委",
-          "previous_jyutping": "kung4 jyun4 ging2 wai2",
-          "reason": "窮原竟委為較少用原形，不換原字為源製作另一詞源。"
+          "id": 106229,
+          "char": "系統疾病",
+          "previous_jyutping": "hai6 tung2 zat6 beng6",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 104523,
-          "char": "窮家富路",
-          "previous_jyutping": "kung4 gaa1 fu3 lou6",
-          "reason": "窮家富路為較少用地域性俗語，本輪不收。"
+          "id": 106247,
+          "char": "系譜學",
+          "previous_jyutping": "hai6 pou2 hok6",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 104530,
-          "char": "窮年累世",
-          "previous_jyutping": "kung4 nin4 leoi5 sai3",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106248,
+          "char": "系譜法",
+          "previous_jyutping": "hai6 pou2 faat3",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 104543,
-          "char": "窮極思變",
-          "previous_jyutping": "kung4 gik6 si1 bin3",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106249,
+          "char": "系鏈",
+          "previous_jyutping": "hai6 lin2",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 104598,
-          "char": "竊居高位",
-          "previous_jyutping": "sit3 geoi1 gou1 wai6",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106260,
+          "char": "糾舉",
+          "previous_jyutping": "gau2 geoi2",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 104600,
-          "char": "竊據要津",
-          "previous_jyutping": "sit3 geoi3 jiu3 zeon1",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106262,
+          "char": "紀委書記",
+          "previous_jyutping": "gei2 wai2 syu1 gei3",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 104618,
-          "char": "立地書櫥",
-          "previous_jyutping": "laap6 dei6 syu1 cyu4",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106274,
+          "char": "紀檢員",
+          "previous_jyutping": "gei2 gim2 jyun4",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 104630,
-          "char": "立本",
-          "previous_jyutping": "laap6 bun2",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106291,
+          "char": "約束運動",
+          "previous_jyutping": "joek3 cuk1 wan6 dung6",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 104632,
-          "char": "立枯病",
-          "previous_jyutping": "laap6 fu1 beng6",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106294,
+          "char": "約稿函",
+          "previous_jyutping": "joek3 gou2 haam4",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 104636,
-          "char": "立案率",
-          "previous_jyutping": "laap6 on3 leot2",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106299,
+          "char": "紅丸",
+          "previous_jyutping": "hung4 jyun2",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 104638,
-          "char": "立業安邦",
-          "previous_jyutping": "laap6 jip6 on1 bong1",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106321,
+          "char": "紅情綠意",
+          "previous_jyutping": "hung4 cing4 luk6 ji3",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 104650,
-          "char": "立竿",
-          "previous_jyutping": "laap6 gon1",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106348,
+          "char": "紅管",
+          "previous_jyutping": "hung4 gun2",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 104662,
-          "char": "立鏡",
-          "previous_jyutping": "laap6 geng3",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106349,
+          "char": "紅管藥",
+          "previous_jyutping": "hung4 gun2 joek6",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 104666,
-          "char": "立體倉庫",
-          "previous_jyutping": "laap6 tai2 cong1 fu3",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106355,
+          "char": "紅絲暗繫",
+          "previous_jyutping": "hung4 si1 am3 hai6",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 104672,
-          "char": "立體技術",
-          "previous_jyutping": "laap6 tai2 gei6 seot6",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106357,
+          "char": "紅綢舞",
+          "previous_jyutping": "hung4 cau4 mou5",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 104694,
-          "char": "站務管理",
-          "previous_jyutping": "zaam6 mou6 gun2 lei5",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106372,
+          "char": "紅葉題詩",
+          "previous_jyutping": "hung4 jip6 tai4 si1",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 104697,
-          "char": "站台雨棚",
-          "previous_jyutping": "zaam6 toi4 jyu5 paang4",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106392,
+          "char": "紅豆詞",
+          "previous_jyutping": "hung4 dau6 ci4",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 104703,
-          "char": "站法",
-          "previous_jyutping": "zaam6 faat3",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106395,
+          "char": "紅酥手",
+          "previous_jyutping": "hung4 sou1 sau2",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 104738,
-          "char": "竣事",
-          "previous_jyutping": "zeon3 si6",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106396,
+          "char": "紅鉛筆畫",
+          "previous_jyutping": "hung4 jyun4 bat1 waa2",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 104763,
-          "char": "竭智盡忠",
-          "previous_jyutping": "kit3 zi3 zeon6 zung1",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106397,
+          "char": "紅鋅礦",
+          "previous_jyutping": "hung4 san1 kwong3",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 104764,
-          "char": "竭智盡慮",
-          "previous_jyutping": "kit3 zi3 zeon6 leoi6",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106416,
+          "char": "紆迴",
+          "previous_jyutping": "jyu1 wui4",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 104774,
-          "char": "竭誠盡節",
-          "previous_jyutping": "kit3 sing4 zeon6 zit3",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106419,
+          "char": "紈袴膏粱",
+          "previous_jyutping": "jyun4 fu3 gou1 loeng4",
+          "reason": "原紈袴字形為傳統異寫，按熟悉度仍偏冷僻，本輪不收；不改紈絝製作來源。"
         },
         {
-          "id": 104798,
-          "char": "端本正源",
-          "previous_jyutping": "dyun1 bun2 zing3 jyun4",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106420,
+          "char": "紈褲",
+          "previous_jyutping": "jyun4 fu3",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 104805,
-          "char": "端系統",
-          "previous_jyutping": "dyun1 hai6 tung2",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106424,
+          "char": "紋枯病",
+          "previous_jyutping": "man4 fu1 beng6",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 104807,
-          "char": "端舉",
-          "previous_jyutping": "dyun1 geoi2",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106430,
+          "char": "紋理狀",
+          "previous_jyutping": "man4 lei5 zong6",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 104845,
-          "char": "競賽心理",
-          "previous_jyutping": "ging6 coi3 sam1 lei5",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106433,
+          "char": "納垢藏污",
+          "previous_jyutping": "naap6 gau3 cong4 wu1",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 104877,
-          "char": "竹漿",
-          "previous_jyutping": "zuk1 zoeng1",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106438,
+          "char": "納採",
+          "previous_jyutping": "naap6 coi2",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 104888,
-          "char": "竹膠板",
-          "previous_jyutping": "zuk1 gaau1 baan2",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106440,
+          "char": "納款",
+          "previous_jyutping": "naap6 fun2",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 104889,
-          "char": "竹花",
-          "previous_jyutping": "zuk1 faa1",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106443,
+          "char": "納采",
+          "previous_jyutping": "naap6 coi2",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 104890,
-          "char": "竹苞松茂",
-          "previous_jyutping": "zuk1 baau1 cung4 mau6",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106446,
+          "char": "純一不雜",
+          "previous_jyutping": "seon4 jat1 bat1 zaap6",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 104892,
-          "char": "竹葦",
-          "previous_jyutping": "zuk1 wai5",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106449,
+          "char": "純合子",
+          "previous_jyutping": "seon4 hap6 zi2",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 104896,
-          "char": "竹頭木屑",
-          "previous_jyutping": "zuk1 tau4 muk6 sit3",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106460,
+          "char": "純林",
+          "previous_jyutping": "seon4 lam4",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 104899,
-          "char": "竿頭一步",
-          "previous_jyutping": "gon1 tau4 jat1 bou6",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106479,
+          "char": "純篤",
+          "previous_jyutping": "seon4 duk1",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 104900,
-          "char": "竿頭日上",
-          "previous_jyutping": "gon1 tau4 jat6 soeng5",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106481,
+          "char": "純綿",
+          "previous_jyutping": "seon4 min4",
+          "reason": "原綿形在商品標示可見，但通用純棉已覆蓋，本輪不以近形替換增詞。"
         },
         {
-          "id": 104901,
-          "char": "竿頭日進",
-          "previous_jyutping": "gon1 tau4 jat6 zeon3",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106484,
+          "char": "純血馬",
+          "previous_jyutping": "seon4 hyut3 maa5",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 104902,
-          "char": "竿頭直上",
-          "previous_jyutping": "gon1 tau4 zik6 soeng5",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106485,
+          "char": "純誠",
+          "previous_jyutping": "seon4 sing4",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 104908,
-          "char": "笑傲風月",
-          "previous_jyutping": "siu3 ngou6 fung1 jyut6",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106492,
+          "char": "紗筒",
+          "previous_jyutping": "saa1 tung2",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 104936,
-          "char": "笑面夜叉",
-          "previous_jyutping": "siu3 min6 je6 caa1",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106493,
+          "char": "紗管",
+          "previous_jyutping": "saa1 gun2",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 104938,
-          "char": "笙磬同音",
-          "previous_jyutping": "sang1 hing3 tung4 jam1",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106496,
+          "char": "紗羅",
+          "previous_jyutping": "saa1 lo4",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 104949,
-          "char": "符命",
-          "previous_jyutping": "fu4 ming6",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106514,
+          "char": "紙帶機",
+          "previous_jyutping": "zi2 daai3 gei1",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 104953,
-          "char": "符籤",
-          "previous_jyutping": "fu4 cim1",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106518,
+          "char": "紙板桶",
+          "previous_jyutping": "zi2 baan2 tung2",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 104954,
-          "char": "符號分析",
-          "previous_jyutping": "fu4 hou6 fan1 sik1",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106525,
+          "char": "紙漿模",
+          "previous_jyutping": "zi2 zoeng1 mou4",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 104955,
-          "char": "符號執行",
-          "previous_jyutping": "fu4 hou6 zap1 hang4",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106538,
+          "char": "紙硯",
+          "previous_jyutping": "zi2 jin2",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 104959,
-          "char": "符號檢驗",
-          "previous_jyutping": "fu4 hou6 gim2 jim6",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106556,
+          "char": "紙護角",
+          "previous_jyutping": "zi2 wu6 gok3",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 105012,
-          "char": "筆削褒貶",
-          "previous_jyutping": "bat1 soek3 baau1 bin2",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106620,
+          "char": "素行",
+          "previous_jyutping": "sou3 hang6",
+          "reason": "品行義本身可讀 hang6，但原表達較少用，不以讀音正確取代常用度門檻。"
         },
         {
-          "id": 105013,
-          "char": "筆力扛鼎",
-          "previous_jyutping": "bat1 lik6 gong1 ding2",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106619,
+          "char": "素緞",
+          "previous_jyutping": "sou3 dyun6",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 105017,
-          "char": "筆墨橫姿",
-          "previous_jyutping": "bat1 mak6 waang4 zi1",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106640,
+          "char": "紡絲機",
+          "previous_jyutping": "fong2 si1 gei1",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 105024,
-          "char": "筆格",
-          "previous_jyutping": "bat1 gaak3",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106641,
+          "char": "紡絲頭",
+          "previous_jyutping": "fong2 si1 tau4",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 105028,
-          "char": "筆老墨秀",
-          "previous_jyutping": "bat1 lou5 mak6 sau3",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106660,
+          "char": "索購",
+          "previous_jyutping": "sok3 kau3",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 105030,
-          "char": "筆耕墨耘",
-          "previous_jyutping": "bat1 gaang1 mak6 wan4",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106680,
+          "char": "紫蘇梗",
+          "previous_jyutping": "zi2 sou1 gang2",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 105035,
-          "char": "筆誅墨伐",
-          "previous_jyutping": "bat1 zyu1 mak6 fat6",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106682,
+          "char": "紫袍玉帶",
+          "previous_jyutping": "zi2 pou4 juk6 daai3",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 105043,
-          "char": "筆陣",
-          "previous_jyutping": "bat1 zan6",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106698,
+          "char": "累卵之危",
+          "previous_jyutping": "leoi5 leon2 zi1 ngai4",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 105046,
-          "char": "筆飽墨酣",
-          "previous_jyutping": "bat1 baau2 mak6 ham4",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106708,
+          "char": "累教不改",
+          "previous_jyutping": "leoi6 gaau3 bat1 goi2",
+          "reason": "較少用變語，不把累換屢製作來源。"
         },
         {
-          "id": 105063,
-          "char": "等化",
-          "previous_jyutping": "dang2 faa3",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106733,
+          "char": "累進法",
+          "previous_jyutping": "leoi6 zeon3 faat3",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 105071,
-          "char": "等外品",
-          "previous_jyutping": "dang2 ngoi6 ban2",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106757,
+          "char": "細木工板",
+          "previous_jyutping": "sai3 muk6 gung1 baan2",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 105081,
-          "char": "等效電路",
-          "previous_jyutping": "dang2 haau6 din6 lou6",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106783,
+          "char": "細索",
+          "previous_jyutping": "sai3 sok3",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 105087,
-          "char": "等温過程",
-          "previous_jyutping": "dang2 wan1 gwo3 cing4",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106789,
+          "char": "細胞保護",
+          "previous_jyutping": "sai3 baau1 bou2 wu6",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 105095,
-          "char": "等積投影",
-          "previous_jyutping": "dang2 zik1 tau4 jing2",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106790,
+          "char": "細胞信號",
+          "previous_jyutping": "sai3 baau1 seon3 hou6",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 105107,
-          "char": "等角投影",
-          "previous_jyutping": "dang2 gok3 tau4 jing2",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106817,
+          "char": "終值",
+          "previous_jyutping": "zung1 zik6",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 105111,
-          "char": "等距投影",
-          "previous_jyutping": "dang2 keoi5 tau4 jing2",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106850,
+          "char": "終產物",
+          "previous_jyutping": "zung1 caan2 mat6",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 105118,
-          "char": "等量置換",
-          "previous_jyutping": "dang2 loeng6 zi3 wun6",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106874,
+          "char": "終養",
+          "previous_jyutping": "zung1 joeng5",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 105121,
-          "char": "等雨量線",
-          "previous_jyutping": "dang2 jyu5 loeng6 sin3",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106881,
+          "char": "絃歌不輟",
+          "previous_jyutping": "jin4 go1 bat1 zyut3",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 105131,
-          "char": "筋骨草",
-          "previous_jyutping": "gan1 gwat1 cou2",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106902,
+          "char": "組塊",
+          "previous_jyutping": "zou2 faai3",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 105138,
-          "char": "筐籠",
-          "previous_jyutping": "hong1 lung4",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106914,
+          "char": "組織後衞",
+          "previous_jyutping": "zou2 zik1 hau6 wai6",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 105142,
-          "char": "筒夾",
-          "previous_jyutping": "tung2 gaap3",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106920,
+          "char": "組羣",
+          "previous_jyutping": "zou2 kwan4",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 105145,
-          "char": "筒狀花",
-          "previous_jyutping": "tung2 zong6 faa1",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106989,
+          "char": "結構域",
+          "previous_jyutping": "git3 kau3 wik6",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 105165,
-          "char": "答辭",
-          "previous_jyutping": "daap3 ci4",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106992,
+          "char": "結構膠",
+          "previous_jyutping": "git3 kau3 gaau1",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 105175,
-          "char": "策無遺算",
-          "previous_jyutping": "caak3 mou4 wai4 syun3",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 107003,
+          "char": "結球萵苣",
+          "previous_jyutping": "git3 kau4 wo1 geoi6",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 105176,
-          "char": "策略服務器",
-          "previous_jyutping": "caak3 loek6 fuk6 mou6 hei3",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 107010,
+          "char": "結穗",
+          "previous_jyutping": "git3 seoi6",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 105182,
-          "char": "筵上",
-          "previous_jyutping": "jin4 soeng6",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 107011,
+          "char": "結穴",
+          "previous_jyutping": "git3 jyut6",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 105185,
-          "char": "筵會",
-          "previous_jyutping": "jin4 wui2",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 107015,
+          "char": "結節病",
+          "previous_jyutping": "git3 zit3 beng6",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 105189,
-          "char": "箇中之味",
-          "previous_jyutping": "go3 zung1 zi1 mei6",
-          "reason": "箇中之味原箇形較少用，不換個字製作另一詞源。"
+          "id": 107023,
+          "char": "結羣性",
+          "previous_jyutping": "git3 kwan4 sing3",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 105190,
-          "char": "箇中人",
-          "previous_jyutping": "go3 zung1 jan4",
-          "reason": "箇中人原箇形較少用，通行個中人已有來源，不換字製作新來源。"
+          "id": 107026,
+          "char": "結草蟲",
+          "previous_jyutping": "git3 cou2 cung4",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 105191,
-          "char": "箇中內情",
-          "previous_jyutping": "go3 zung1 noi6 cing4",
-          "reason": "箇中內情原箇形較少用，不換個字製作另一詞源。"
+          "id": 107031,
+          "char": "結轉額",
+          "previous_jyutping": "git3 zyun2 ngaak6",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 105192,
-          "char": "箇中妙趣",
-          "previous_jyutping": "go3 zung1 miu6 ceoi3",
-          "reason": "箇中妙趣原箇形較少用，不換個字製作另一詞源。"
+          "id": 107053,
+          "char": "絕俗",
+          "previous_jyutping": "zyut6 zuk6",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 105193,
-          "char": "箋言",
-          "previous_jyutping": "zin1 jin4",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 107065,
+          "char": "絕對權",
+          "previous_jyutping": "zyut6 deoi3 kyun4",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 105195,
-          "char": "箍匠",
-          "previous_jyutping": "ku1 zoeng6",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 107087,
+          "char": "絕熱功",
+          "previous_jyutping": "zyut6 jit6 gung1",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 105198,
-          "char": "箕宿",
-          "previous_jyutping": "gei1 suk1",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 107089,
+          "char": "絕熱指數",
+          "previous_jyutping": "zyut6 jit6 zi2 sou3",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 105204,
-          "char": "箕帚",
-          "previous_jyutping": "gei1 zaau2",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 107090,
+          "char": "絕熱方程",
+          "previous_jyutping": "zyut6 jit6 fong1 cing4",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 105207,
-          "char": "箕裘",
-          "previous_jyutping": "gei1 kau4",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 107092,
+          "char": "絕熱線",
+          "previous_jyutping": "zyut6 jit6 sin3",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 105209,
-          "char": "箕風畢雨",
-          "previous_jyutping": "gei1 fung1 bat1 jyu5",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 107128,
+          "char": "絞股藍",
+          "previous_jyutping": "gaau2 gu2 laam4",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 105248,
-          "char": "算術函數",
-          "previous_jyutping": "syun3 seot6 haam4 sou3",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 107131,
+          "char": "絞鏈",
+          "previous_jyutping": "gaau2 lin2",
+          "reason": "原絞形為較少用寫法，不改鉸鏈製作新來源。"
         },
         {
-          "id": 105250,
-          "char": "算術家",
-          "previous_jyutping": "syun3 seot6 gaa1",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 107135,
+          "char": "絡合作用",
+          "previous_jyutping": "lok3 hap6 zok3 jung6",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 105252,
-          "char": "算術碼",
-          "previous_jyutping": "syun3 seot6 maa5",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 107136,
+          "char": "絡石藤",
+          "previous_jyutping": "lok3 sek6 tang4",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 105267,
-          "char": "箝形攻勢",
-          "previous_jyutping": "kim4 jing4 gung1 sai3",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 107188,
+          "char": "統帥體制",
+          "previous_jyutping": "tung2 seoi3 tai2 zai3",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 105295,
-          "char": "管家基因",
-          "previous_jyutping": "gun2 gaa1 gei1 jan1",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 107189,
+          "char": "統帶",
+          "previous_jyutping": "tung2 daai3",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 105328,
-          "char": "管轄異議",
-          "previous_jyutping": "gun2 hat6 ji6 ji5",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 107198,
+          "char": "統理",
+          "previous_jyutping": "tung2 lei5",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 105333,
-          "char": "管道泵",
-          "previous_jyutping": "gun2 dou6 bam1",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 107213,
+          "char": "統計平衡",
+          "previous_jyutping": "tung2 gai3 ping4 hang4",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 105334,
-          "char": "管道消聲",
-          "previous_jyutping": "gun2 dou6 siu1 sing1",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 107230,
+          "char": "絲光處理",
+          "previous_jyutping": "si1 gwong1 cyu5 lei5",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 105336,
-          "char": "管道穿越",
-          "previous_jyutping": "gun2 dou6 cyun1 jyut6",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 107244,
+          "char": "絲素",
+          "previous_jyutping": "si1 sou3",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 105355,
-          "char": "箭程",
-          "previous_jyutping": "zin3 cing4",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 107254,
+          "char": "絲膠",
+          "previous_jyutping": "si1 gaau1",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 105369,
-          "char": "箱紙板",
-          "previous_jyutping": "soeng1 zi2 baan2",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 107255,
+          "char": "絲蘿",
+          "previous_jyutping": "si1 lo4",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 105372,
-          "char": "箴規",
-          "previous_jyutping": "zam1 kwai1",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 107259,
+          "char": "絲裂黴素",
+          "previous_jyutping": "si1 lit6 mei4 sou3",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 105377,
-          "char": "節制資本",
-          "previous_jyutping": "zit3 zai3 zi1 bun2",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 107330,
+          "char": "經師人師",
+          "previous_jyutping": "ging1 si1 jan4 si1",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 105397,
-          "char": "節氣表",
-          "previous_jyutping": "zit3 hei3 biu2",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 107430,
+          "char": "經緯網格",
+          "previous_jyutping": "ging1 wai5 mong5 gaak3",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 105405,
-          "char": "節煤",
-          "previous_jyutping": "zit3 mui4",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 107450,
+          "char": "經邦論道",
+          "previous_jyutping": "ging1 bong1 leon6 dou6",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 105406,
-          "char": "節用厚生",
-          "previous_jyutping": "zit3 jung6 hau5 sang1",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 107474,
+          "char": "綜合語",
+          "previous_jyutping": "zung1 hap6 jyu5",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 105407,
-          "char": "節用愛民",
-          "previous_jyutping": "zit3 jung6 oi3 man4",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 107477,
+          "char": "綜核",
+          "previous_jyutping": "zung1 hat6",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 105408,
-          "char": "節用裕民",
-          "previous_jyutping": "zit3 jung6 jyu6 man4",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 107511,
+          "char": "綠球藻",
+          "previous_jyutping": "luk6 kau4 zou2",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 105431,
-          "char": "節育率",
-          "previous_jyutping": "zit3 juk6 leot2",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 107512,
+          "char": "綠礬",
+          "previous_jyutping": "luk6 faan4",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 105449,
-          "char": "篆刻網",
-          "previous_jyutping": "syun6 hak1 mong5",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 107531,
+          "char": "綠蓑青笠",
+          "previous_jyutping": "luk6 so1 cing1 lap1",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 105455,
-          "char": "篇牘",
-          "previous_jyutping": "pin1 duk6",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 107532,
+          "char": "綠衣人",
+          "previous_jyutping": "luk6 ji1 jan4",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 105459,
-          "char": "築欄",
-          "previous_jyutping": "zuk1 laan4",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 107546,
+          "char": "綬帶鳥",
+          "previous_jyutping": "sau6 daai3 niu5",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 105461,
-          "char": "築舍道傍",
-          "previous_jyutping": "zuk1 se3 dou6 pong4",
-          "reason": "築舍道傍原形較少用，不換築室道謀或道旁製作另一詞源。"
+          "id": 107642,
+          "char": "網格法",
+          "previous_jyutping": "mong5 gaak3 faat3",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 105471,
-          "char": "篤敬",
-          "previous_jyutping": "duk1 ging3",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 107738,
+          "char": "網罟",
+          "previous_jyutping": "mong5 gu2",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 105493,
-          "char": "篩粉機",
-          "previous_jyutping": "sai1 fan2 gei1",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 107781,
+          "char": "綴輯",
+          "previous_jyutping": "zeoi6 cap1",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 105498,
-          "char": "篩酒",
-          "previous_jyutping": "sai1 zau2",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 107800,
+          "char": "綾絹",
+          "previous_jyutping": "ling4 gyun3",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 105499,
-          "char": "篩鑼擂鼓",
-          "previous_jyutping": "sai1 lo4 leoi4 gu2",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 107906,
+          "char": "線分辨率",
+          "previous_jyutping": "sin3 fan1 bin6 leot6",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 105507,
-          "char": "篾工",
-          "previous_jyutping": "mit6 gung1",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 107920,
+          "char": "線性探查",
+          "previous_jyutping": "sin3 sing3 taam3 caa4",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 105508,
-          "char": "篾竹",
-          "previous_jyutping": "mit6 zuk1",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 107922,
+          "char": "線性檢波",
+          "previous_jyutping": "sin3 sing3 gim2 bo1",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 105510,
-          "char": "篾籤",
-          "previous_jyutping": "mit6 cim1",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 107923,
+          "char": "線性檢測",
+          "previous_jyutping": "sin3 sing3 gim2 caak1",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 105511,
-          "char": "篾絲",
-          "previous_jyutping": "mit6 si1",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 107925,
+          "char": "線性現象",
+          "previous_jyutping": "sin3 sing3 jin6 zoeng6",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 105523,
-          "char": "簞食壺酒",
-          "previous_jyutping": "daan1 sik6 wu4 zau2",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 107928,
+          "char": "線性網絡",
+          "previous_jyutping": "sin3 sing3 mong5 lok3",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 105525,
-          "char": "簟紋如水",
-          "previous_jyutping": "dim3 man4 jyu4 seoi2",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 107930,
+          "char": "線性調製",
+          "previous_jyutping": "sin3 sing3 tiu4 zai3",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 105527,
-          "char": "簡任",
-          "previous_jyutping": "gaan2 jam6",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 107944,
+          "char": "線條透視",
+          "previous_jyutping": "sin3 tiu4 tau3 si6",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 105570,
-          "char": "簡縮本",
-          "previous_jyutping": "gaan2 suk1 bun2",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 107945,
+          "char": "線極化",
+          "previous_jyutping": "sin3 gik6 faa3",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 105575,
-          "char": "簡要不煩",
-          "previous_jyutping": "gaan2 jiu3 bat1 faan4",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 107946,
+          "char": "線源",
+          "previous_jyutping": "sin3 jyun4",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 105585,
-          "char": "簧樂器",
-          "previous_jyutping": "wong4 ngok6 hei3",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 107952,
+          "char": "線脹係數",
+          "previous_jyutping": "sin3 zoeng3 hai6 sou3",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 105587,
-          "char": "簪纓世族",
-          "previous_jyutping": "zaam1 jing1 sai3 zuk6",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 107953,
+          "char": "線膛炮",
+          "previous_jyutping": "sin3 tong4 paau3",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 105588,
-          "char": "簪纓世胄",
-          "previous_jyutping": "zaam1 jing1 sai3 zau6",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 107956,
+          "char": "線蟲病",
+          "previous_jyutping": "sin3 cung4 beng6",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 105592,
-          "char": "簸動",
-          "previous_jyutping": "bo2 dung6",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 107962,
+          "char": "線質量",
+          "previous_jyutping": "sin3 zat1 loeng6",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 105595,
-          "char": "簸盪",
-          "previous_jyutping": "bo2 dong6",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 107981,
+          "char": "締構",
+          "previous_jyutping": "tai3 kau3",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 105638,
-          "char": "簾窺壁聽",
-          "previous_jyutping": "lim2 kwai1 bik1 teng1",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 107985,
+          "char": "緣情體物",
+          "previous_jyutping": "jyun4 cing4 tai2 mat6",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 105658,
-          "char": "籃運",
-          "previous_jyutping": "laam4 wan6",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 107987,
+          "char": "緣慳命蹇",
+          "previous_jyutping": "jyun4 haan1 ming6 gin2",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 105668,
-          "char": "籌建處",
-          "previous_jyutping": "cau4 gin3 cyu3",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 107991,
+          "char": "緣法",
+          "previous_jyutping": "jyun4 faat3",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
         },
         {
-          "id": 105670,
-          "char": "籌策",
-          "previous_jyutping": "cau4 caak3",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
-        },
-        {
-          "id": 105674,
-          "char": "籌辦處",
-          "previous_jyutping": "cau4 baan6 cyu3",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
-        },
-        {
-          "id": 105684,
-          "char": "籠蓋",
-          "previous_jyutping": "lung4 goi3",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
-        },
-        {
-          "id": 105685,
-          "char": "籠鳥檻猿",
-          "previous_jyutping": "lung4 niu5 haam5 jyun4",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
-        },
-        {
-          "id": 105701,
-          "char": "籲求",
-          "previous_jyutping": "jyu6 kau4",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
-        },
-        {
-          "id": 105713,
-          "char": "粉壁",
-          "previous_jyutping": "fan2 bik1",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
-        },
-        {
-          "id": 105727,
-          "char": "粉白黛綠",
-          "previous_jyutping": "fan2 baak6 doi6 luk6",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
-        },
-        {
-          "id": 105733,
-          "char": "粉糕",
-          "previous_jyutping": "fan2 gou1",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
-        },
-        {
-          "id": 105756,
-          "char": "粉骨碎身",
-          "previous_jyutping": "fan2 gwat1 seoi3 san1",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
-        },
-        {
-          "id": 105762,
-          "char": "粒屑",
-          "previous_jyutping": "lap1 sit3",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
-        },
-        {
-          "id": 105835,
-          "char": "粗袍糲食",
-          "previous_jyutping": "cou1 pou4 lai6 sik6",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
-        },
-        {
-          "id": 105841,
-          "char": "粗讀",
-          "previous_jyutping": "cou1 duk6",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
-        },
-        {
-          "id": 105864,
-          "char": "粘液性",
-          "previous_jyutping": "nim1 jik6 sing3",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
-        },
-        {
-          "id": 105880,
-          "char": "粘膠蛋白",
-          "previous_jyutping": "nim1 gaau1 daan2 baak6",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
-        },
-        {
-          "id": 105885,
-          "char": "粘附分子",
-          "previous_jyutping": "nim1 fu6 fan6 zi2",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
-        },
-        {
-          "id": 105887,
-          "char": "粟紅貫朽",
-          "previous_jyutping": "suk1 hung4 gun3 nau2",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
-        },
-        {
-          "id": 105888,
-          "char": "粟陳貫朽",
-          "previous_jyutping": "suk1 can4 gun3 nau2",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
-        },
-        {
-          "id": 105893,
-          "char": "粲然可觀",
-          "previous_jyutping": "caan3 jin4 ho2 gun1",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
-        },
-        {
-          "id": 105894,
-          "char": "粲花之論",
-          "previous_jyutping": "caan3 faa1 zi1 leon6",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
-        },
-        {
-          "id": 105898,
-          "char": "粵犬吠雪",
-          "previous_jyutping": "jyut6 hyun2 fai6 syut3",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
-        },
-        {
-          "id": 105906,
-          "char": "精兵制",
-          "previous_jyutping": "zing1 bing1 zai3",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
-        },
-        {
-          "id": 105907,
-          "char": "精兵政策",
-          "previous_jyutping": "zing1 bing1 zing3 caak3",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
-        },
-        {
-          "id": 105915,
-          "char": "精卵結合",
-          "previous_jyutping": "zing1 leon2 git3 hap6",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
-        },
-        {
-          "id": 105916,
-          "char": "精卵融合",
-          "previous_jyutping": "zing1 leon2 jung4 hap6",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
-        },
-        {
-          "id": 105917,
-          "char": "精原細胞",
-          "previous_jyutping": "zing1 jyun4 sai3 baau1",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
-        },
-        {
-          "id": 105924,
-          "char": "精品房",
-          "previous_jyutping": "zing1 ban2 fong4",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
-        },
-        {
-          "id": 105925,
-          "char": "精品網",
-          "previous_jyutping": "zing1 ban2 mong5",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
-        },
-        {
-          "id": 105930,
-          "char": "精奧",
-          "previous_jyutping": "zing1 ou3",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
-        },
-        {
-          "id": 105933,
-          "char": "精子形成",
-          "previous_jyutping": "zing1 zi2 jing4 sing4",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
-        },
-        {
-          "id": 105939,
-          "char": "精專",
-          "previous_jyutping": "zing1 zyun1",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
-        },
-        {
-          "id": 105966,
-          "char": "精敏",
-          "previous_jyutping": "zing1 man5",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
-        },
-        {
-          "id": 105974,
-          "char": "精梳棉",
-          "previous_jyutping": "zing1 so1 min4",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
-        },
-        {
-          "id": 105976,
-          "char": "精梳紗",
-          "previous_jyutping": "zing1 so1 saa1",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
-        },
-        {
-          "id": 105978,
-          "char": "精母細胞",
-          "previous_jyutping": "zing1 mou5 sai3 baau1",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
-        },
-        {
-          "id": 105986,
-          "char": "精煉爐",
-          "previous_jyutping": "zing1 lin6 lou4",
-          "reason": "較少用古語／變體、過窄專科詞、組織或欄目式縮稱、低復用搭配，日常與通用書面使用不足，本輪不收。"
+          "id": 106271,
+          "char": "紀念表",
+          "previous_jyutping": "gei2 nim6 biu2",
+          "reason": "紀念表原表字面未能穩定辨清記錄表或紀念錶，不按近形字補改成另一來源；低復用本輪撤回。"
         }
       ],
       "grade_changes": [
         {
-          "id": 104072,
-          "char": "穴居野外",
+          "id": 105999,
+          "char": "精神家園",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 104083,
-          "char": "究理",
+          "id": 106000,
+          "char": "精神實質",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 104110,
-          "char": "空勤人員",
+          "id": 106023,
+          "char": "精神風貌",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 104228,
-          "char": "空談家",
+          "id": 106034,
+          "char": "精細結構",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 104230,
-          "char": "空談者",
+          "id": 106049,
+          "char": "精裝修",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 104234,
-          "char": "空費",
+          "id": 106140,
+          "char": "糞便污水",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 104258,
-          "char": "空間性",
+          "id": 106183,
+          "char": "糧油食品",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 104398,
-          "char": "突襲戰術",
+          "id": 106189,
+          "char": "糧船",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 104435,
-          "char": "窒塞",
+          "id": 106191,
+          "char": "糧行",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 104455,
-          "char": "窗式空調",
+          "id": 106192,
+          "char": "糧谷",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 104477,
-          "char": "窘色",
+          "id": 106205,
+          "char": "系刊",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 104503,
-          "char": "窪田",
+          "id": 106232,
+          "char": "系統總線",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 104529,
-          "char": "窮巷陋室",
+          "id": 106240,
+          "char": "系統集成",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 104532,
-          "char": "窮形盡相",
+          "id": 106246,
+          "char": "系花",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 104564,
-          "char": "窮迫",
+          "id": 106250,
+          "char": "系館",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 104576,
-          "char": "窯灶",
+          "id": 106304,
+          "char": "紅外掃描",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 104590,
-          "char": "竄跑",
+          "id": 106305,
+          "char": "紅外接口",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 104594,
-          "char": "竊以為",
+          "id": 106317,
+          "char": "紅帶子",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 104608,
-          "char": "立人",
+          "id": 106337,
+          "char": "紅瓶",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 104616,
-          "char": "立名",
+          "id": 106363,
+          "char": "紅色政權",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 104617,
-          "char": "立命",
+          "id": 106361,
+          "char": "紅色弱",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 104645,
-          "char": "立現",
+          "id": 106364,
+          "char": "紅色盲",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 104647,
-          "char": "立異",
+          "id": 106385,
+          "char": "紅袖添香",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 104670,
-          "char": "立體性",
+          "id": 106386,
+          "char": "紅裝素裹",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 104692,
-          "char": "站務",
+          "id": 106402,
+          "char": "紅頂商人",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 104696,
-          "char": "站口",
+          "id": 106403,
+          "char": "紅頭繩",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 104698,
-          "char": "站哨",
+          "id": 106405,
+          "char": "紅頭蠅",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 104700,
-          "char": "站崗放哨",
+          "id": 106451,
+          "char": "純小數",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 104720,
-          "char": "竟夜",
+          "id": 106477,
+          "char": "純種牛",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 104740,
-          "char": "童妓",
+          "id": 106498,
+          "char": "紙上作業",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 104748,
-          "char": "童聲版",
+          "id": 106507,
+          "char": "紙品廠",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 104761,
-          "char": "竭慮",
+          "id": 106528,
+          "char": "紙版畫",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 104769,
-          "char": "竭盡棉薄",
+          "id": 106552,
+          "char": "紙行",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 104789,
-          "char": "端口地址",
+          "id": 106624,
+          "char": "素質教育",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 104790,
-          "char": "端口掃描",
+          "id": 106642,
+          "char": "紡績",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 104791,
-          "char": "端口映射",
+          "id": 106643,
+          "char": "紡織印染",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 104797,
-          "char": "端整",
+          "id": 106644,
+          "char": "紡織器材",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 104809,
-          "char": "端賴",
+          "id": 106647,
+          "char": "紡織機械",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 104817,
-          "char": "競合",
+          "id": 106792,
+          "char": "細胞學說",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 104837,
-          "char": "競相壓價",
+          "id": 106848,
+          "char": "終生事業",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 104838,
-          "char": "競相奔走",
+          "id": 106853,
+          "char": "終端產品",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 104843,
-          "char": "競豔",
+          "id": 106872,
+          "char": "終身職",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 104844,
-          "char": "競買價",
+          "id": 106892,
+          "char": "組合原理",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 104847,
-          "char": "競賽題",
+          "id": 107028,
+          "char": "結訓",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 104852,
-          "char": "競鬥",
+          "id": 107048,
+          "char": "絕世獨立",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 104857,
-          "char": "竹圍",
+          "id": 107068,
+          "char": "絕對空間",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 104866,
-          "char": "竹書",
+          "id": 107070,
+          "char": "絕對速度",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 104884,
-          "char": "竹簾子",
+          "id": 107071,
+          "char": "絕對運動",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 104885,
-          "char": "竹籮",
+          "id": 107088,
+          "char": "絕熱層",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 104894,
-          "char": "竹韻",
+          "id": 107091,
+          "char": "絕熱材料",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 104898,
-          "char": "竿頭",
+          "id": 107098,
+          "char": "絕緣油",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 104924,
-          "char": "笑臉攻勢",
+          "id": 107099,
+          "char": "絕緣漆",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 104934,
-          "char": "笑面",
+          "id": 107101,
+          "char": "絕緣紙",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 104935,
-          "char": "笑面外交",
+          "id": 107150,
+          "char": "給定日期",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 104964,
-          "char": "符頭",
+          "id": 107154,
+          "char": "給水器",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 105011,
-          "char": "筆伐口誅",
+          "id": 107155,
+          "char": "給水泵",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 105019,
-          "char": "筆底春風",
+          "id": 107156,
+          "char": "給水站",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 105025,
-          "char": "筆歌墨舞",
+          "id": 107158,
+          "char": "給水箱",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 105031,
-          "char": "筆耕硯田",
+          "id": 107178,
+          "char": "統一大業",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 105039,
-          "char": "筆述",
+          "id": 107179,
+          "char": "統一天下",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 105065,
-          "char": "等同性",
+          "id": 107186,
+          "char": "統合力",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 105077,
-          "char": "等效值",
+          "id": 107187,
+          "char": "統合性",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 105103,
-          "char": "等級賽",
+          "id": 107217,
+          "char": "統計權重",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 105132,
-          "char": "筍竹",
+          "id": 107218,
+          "char": "統計算法",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 105134,
-          "char": "筍衣",
+          "id": 107247,
+          "char": "絲綢品",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 105160,
-          "char": "答語",
+          "id": 107250,
+          "char": "絲綢面料",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 105168,
-          "char": "答辯期",
+          "id": 107268,
+          "char": "絹帛",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 105210,
-          "char": "算一天",
+          "id": 107299,
+          "char": "經典力學",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 105238,
-          "char": "算法語言",
+          "id": 107350,
+          "char": "經濟區劃",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 105242,
-          "char": "算珠",
+          "id": 107351,
+          "char": "經濟協作",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 105264,
-          "char": "箝口",
+          "id": 107353,
+          "char": "經濟合同",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 105265,
-          "char": "箝口結舌",
+          "id": 107362,
+          "char": "經濟年度",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 105288,
-          "char": "管口",
+          "id": 107364,
+          "char": "經濟復原",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 105293,
-          "char": "管外",
+          "id": 107366,
+          "char": "經濟情報",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 105294,
-          "char": "管孔",
+          "id": 107371,
+          "char": "經濟擔保",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 105303,
-          "char": "管殼",
+          "id": 107378,
+          "char": "經濟滲透",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 105304,
-          "char": "管法",
+          "id": 107386,
+          "char": "經濟評價",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 105323,
-          "char": "管窺之見",
+          "id": 107395,
+          "char": "經營品種",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 105330,
-          "char": "管道口",
+          "id": 107396,
+          "char": "經營型",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 105342,
-          "char": "管養",
+          "id": 107399,
+          "char": "經營學",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 105351,
-          "char": "箭毒",
+          "id": 107401,
+          "char": "經營承包",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 105400,
-          "char": "節油器",
+          "id": 107403,
+          "char": "經營效果",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 105410,
-          "char": "節目部",
+          "id": 107406,
+          "char": "經營機制",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 105412,
-          "char": "節目預報",
+          "id": 107451,
+          "char": "經銷家",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 105422,
-          "char": "節約用糧",
+          "id": 107454,
+          "char": "經銷站",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 105434,
-          "char": "節能器",
+          "id": 107456,
+          "char": "經銷部",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 105436,
-          "char": "節能降耗",
+          "id": 107476,
+          "char": "綜攬",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 105439,
-          "char": "節譯",
+          "id": 107481,
+          "char": "綜藝片",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 105448,
-          "char": "篆刻展",
+          "id": 107529,
+          "char": "綠葉成陰",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 105454,
-          "char": "篇次",
+          "id": 107544,
+          "char": "綢緞莊",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 105457,
-          "char": "篇籍",
+          "id": 107582,
+          "char": "網上家園",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 105497,
-          "char": "篩選制度",
+          "id": 107587,
+          "char": "網上沖印",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 105505,
-          "char": "篷帆",
+          "id": 107595,
+          "char": "網上藥店",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 105506,
-          "char": "篷馬車",
+          "id": 107604,
+          "char": "網上鄰居",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 105519,
-          "char": "簍筐",
+          "id": 107606,
+          "char": "網中網",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 105541,
-          "char": "簡字",
+          "id": 107614,
+          "char": "網友會",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 105542,
-          "char": "簡字表",
+          "id": 107619,
+          "char": "網址庫",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 105543,
-          "char": "簡寫本",
+          "id": 107623,
+          "char": "網套",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 105545,
-          "char": "簡復",
+          "id": 107641,
+          "char": "網格布",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 105550,
-          "char": "簡政",
+          "id": 107664,
+          "char": "網眼布",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 105551,
-          "char": "簡易法",
+          "id": 107665,
+          "char": "網眼狀",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 105561,
-          "char": "簡略法",
+          "id": 107683,
+          "char": "網絡單元",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 105562,
-          "char": "簡省",
+          "id": 107687,
+          "char": "網絡實名",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 105567,
-          "char": "簡約型",
+          "id": 107693,
+          "char": "網絡延時",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 105578,
-          "char": "簡論",
+          "id": 107696,
+          "char": "網絡教室",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 105580,
-          "char": "簡釋",
+          "id": 107705,
+          "char": "網絡業",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 105590,
-          "char": "簫管",
+          "id": 107709,
+          "char": "網絡理論",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 105616,
-          "char": "簽呈",
+          "id": 107711,
+          "char": "網絡界",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 105634,
-          "char": "簽退",
+          "id": 107734,
+          "char": "網絡頻段",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 105641,
-          "char": "簿記師",
+          "id": 107736,
+          "char": "網絡體系",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 105654,
-          "char": "籃球飛人",
+          "id": 107740,
+          "char": "網羅人材",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 105657,
-          "char": "籃賽",
+          "id": 107743,
+          "char": "網膜炎",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 105659,
-          "char": "籃隊",
+          "id": 107751,
+          "char": "網警",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 105669,
-          "char": "籌撥",
+          "id": 107756,
+          "char": "網賺",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 105672,
-          "char": "籌設",
+          "id": 107764,
+          "char": "網遊版",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 105682,
-          "char": "籠統性",
+          "id": 107766,
+          "char": "網間通話",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 105691,
-          "char": "籬下",
+          "id": 107770,
+          "char": "網頁快照",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 105693,
-          "char": "籬子",
+          "id": 107775,
+          "char": "網齡",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 105694,
-          "char": "籬竹",
+          "id": 107815,
+          "char": "綿言細語",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 105706,
-          "char": "米粉條",
+          "id": 107841,
+          "char": "緊急情報",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 105714,
-          "char": "粉妝",
+          "id": 107847,
+          "char": "緊急處分",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 105715,
-          "char": "粉屑",
+          "id": 107857,
+          "char": "緊挾",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 105718,
-          "char": "粉拳",
+          "id": 107880,
+          "char": "緊跟形勢",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 105737,
-          "char": "粉絲狀",
+          "id": 107886,
+          "char": "緊迫逼人",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 105739,
-          "char": "粉膏",
+          "id": 107908,
+          "char": "線卡",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 105740,
-          "char": "粉臉",
+          "id": 107915,
+          "char": "線序",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 105751,
-          "char": "粉面朱唇",
+          "id": 107917,
+          "char": "線性元件",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 105752,
-          "char": "粉面油頭",
+          "id": 107936,
+          "char": "線控器",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 105755,
-          "char": "粉骨捐軀",
+          "id": 107939,
+          "char": "線束",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 105764,
-          "char": "粒米",
+          "id": 107947,
+          "char": "線程",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 105788,
-          "char": "粗布條",
+          "id": 107976,
+          "char": "緞帶花",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 105790,
-          "char": "粗度",
+          "id": 107978,
+          "char": "緞紋",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 105792,
-          "char": "粗心浮氣",
+          "id": 107979,
+          "char": "緞被",
           "previous_grade": 1,
           "grade": 2
         },
         {
-          "id": 105796,
-          "char": "粗服亂頭",
-          "previous_grade": 1,
-          "grade": 2
-        },
-        {
-          "id": 105801,
-          "char": "粗毛布",
-          "previous_grade": 1,
-          "grade": 2
-        },
-        {
-          "id": 105802,
-          "char": "粗毛皮",
-          "previous_grade": 1,
-          "grade": 2
-        },
-        {
-          "id": 105803,
-          "char": "粗澀",
-          "previous_grade": 1,
-          "grade": 2
-        },
-        {
-          "id": 105814,
-          "char": "粗筋",
-          "previous_grade": 1,
-          "grade": 2
-        },
-        {
-          "id": 105815,
-          "char": "粗米",
-          "previous_grade": 1,
-          "grade": 2
-        },
-        {
-          "id": 105818,
-          "char": "粗紙板",
-          "previous_grade": 1,
-          "grade": 2
-        },
-        {
-          "id": 105820,
-          "char": "粗絨",
-          "previous_grade": 1,
-          "grade": 2
-        },
-        {
-          "id": 105824,
-          "char": "粗聲厲氣",
-          "previous_grade": 1,
-          "grade": 2
-        },
-        {
-          "id": 105825,
-          "char": "粗聲暴氣",
-          "previous_grade": 1,
-          "grade": 2
-        },
-        {
-          "id": 105827,
-          "char": "粗腔橫調",
-          "previous_grade": 1,
-          "grade": 2
-        },
-        {
-          "id": 105832,
-          "char": "粗衣淡食",
-          "previous_grade": 1,
-          "grade": 2
-        },
-        {
-          "id": 105834,
-          "char": "粗衣糲食",
-          "previous_grade": 1,
-          "grade": 2
-        },
-        {
-          "id": 105842,
-          "char": "粗貨",
-          "previous_grade": 1,
-          "grade": 2
-        },
-        {
-          "id": 105843,
-          "char": "粗質",
-          "previous_grade": 1,
-          "grade": 2
-        },
-        {
-          "id": 105844,
-          "char": "粗選",
-          "previous_grade": 1,
-          "grade": 2
-        },
-        {
-          "id": 105852,
-          "char": "粘劑",
-          "previous_grade": 1,
-          "grade": 2
-        },
-        {
-          "id": 105855,
-          "char": "粘固",
-          "previous_grade": 1,
-          "grade": 2
-        },
-        {
-          "id": 105856,
-          "char": "粘固劑",
-          "previous_grade": 1,
-          "grade": 2
-        },
-        {
-          "id": 105862,
-          "char": "粘扣帶",
-          "previous_grade": 1,
-          "grade": 2
-        },
-        {
-          "id": 105871,
-          "char": "粘結性",
-          "previous_grade": 1,
-          "grade": 2
-        },
-        {
-          "id": 105876,
-          "char": "粘膜炎",
-          "previous_grade": 1,
-          "grade": 2
-        },
-        {
-          "id": 105879,
-          "char": "粘膠纖維",
-          "previous_grade": 1,
-          "grade": 2
-        },
-        {
-          "id": 105884,
-          "char": "粘質",
-          "previous_grade": 1,
-          "grade": 2
-        },
-        {
-          "id": 105889,
-          "char": "粟類",
-          "previous_grade": 1,
-          "grade": 2
-        },
-        {
-          "id": 105892,
-          "char": "粲然一笑",
-          "previous_grade": 1,
-          "grade": 2
-        },
-        {
-          "id": 105899,
-          "char": "粵籍",
-          "previous_grade": 1,
-          "grade": 2
-        },
-        {
-          "id": 105920,
-          "char": "精品化",
-          "previous_grade": 1,
-          "grade": 2
-        },
-        {
-          "id": 105921,
-          "char": "精品小說",
-          "previous_grade": 1,
-          "grade": 2
-        },
-        {
-          "id": 105923,
-          "char": "精品廊",
-          "previous_grade": 1,
-          "grade": 2
-        },
-        {
-          "id": 105927,
-          "char": "精品課程",
-          "previous_grade": 1,
-          "grade": 2
-        },
-        {
-          "id": 105928,
-          "char": "精品軟件",
-          "previous_grade": 1,
-          "grade": 2
-        },
-        {
-          "id": 105929,
-          "char": "精品電影",
-          "previous_grade": 1,
-          "grade": 2
-        },
-        {
-          "id": 105963,
-          "char": "精心製造",
-          "previous_grade": 1,
-          "grade": 2
-        },
-        {
-          "id": 105980,
-          "char": "精油瓶",
-          "previous_grade": 1,
-          "grade": 2
-        },
-        {
-          "id": 105982,
-          "char": "精液量",
-          "previous_grade": 1,
-          "grade": 2
-        },
-        {
-          "id": 105987,
-          "char": "精琢",
-          "previous_grade": 1,
-          "grade": 2
-        },
-        {
-          "id": 105989,
-          "char": "精短",
-          "previous_grade": 1,
-          "grade": 2
-        },
-        {
-          "id": 105901,
-          "char": "粵語歌",
+          "id": 106099,
+          "char": "糖度",
           "previous_grade": 0,
           "grade": 1
         },
         {
-          "id": 105903,
-          "char": "粵語版",
+          "id": 106100,
+          "char": "糖果屋",
           "previous_grade": 0,
           "grade": 1
         },
         {
-          "id": 105905,
-          "char": "粵音",
+          "id": 106113,
+          "char": "糖盒",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 106106,
+          "char": "糖漬",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 106157,
+          "char": "糟得",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 106164,
+          "char": "糟透",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 106343,
+          "char": "紅着眼睛",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 106344,
+          "char": "紅着臉",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 106382,
+          "char": "紅衣服",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 106387,
+          "char": "紅襪子",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 106400,
+          "char": "紅鞋",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 106401,
+          "char": "紅鞋子",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 106456,
+          "char": "純屬騙局",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 106461,
+          "char": "純棉布",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 106488,
+          "char": "純酒精",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 106491,
+          "char": "紗布繃帶",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 106746,
+          "char": "細字",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 106752,
+          "char": "細心地",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 106840,
+          "char": "終極目標",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 106833,
+          "char": "終會",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 106834,
+          "char": "終有",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 106893,
+          "char": "組合成",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 106951,
+          "char": "結婚年齡",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 107040,
+          "char": "絕不允許",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 107103,
+          "char": "絕緣膠布",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 107104,
+          "char": "絕緣膠帶",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 107105,
+          "char": "絕美",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 107300,
+          "char": "經典台詞",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 107304,
+          "char": "經典影片",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 107309,
+          "char": "經典笑話",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 107331,
+          "char": "經常帳户",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 107358,
+          "char": "經濟實用",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 107393,
+          "char": "經營之道",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 107414,
+          "char": "經理級",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 107447,
+          "char": "經過努力",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 107591,
+          "char": "網上相冊",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 107600,
+          "char": "網上談情",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 107706,
+          "char": "網絡流量",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 107733,
+          "char": "網絡電話",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 107772,
+          "char": "網頁背景",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 107835,
+          "char": "緊急事件",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 107844,
+          "char": "緊急會議",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 107861,
+          "char": "緊握拳頭",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 107878,
+          "char": "緊貼在",
           "previous_grade": 0,
           "grade": 1
         }
       ],
       "amendments": [
         {
-          "id": 104053,
-          "char": "穩拿到",
-          "previous_jyutping": "wan2 naa4 dou2",
-          "jyutping": "wan2 naa4 dou2",
+          "id": 106266,
+          "char": "紀律處分",
+          "previous_jyutping": "gei2 leot6 cyu2 fan6",
+          "jyutping": "gei2 leot6 cyu2 fan1",
+          "alternatives": [
+            "gei2 leot6 cyu5 fan1",
+            "gei3 leot6 cyu2 fan1"
+          ],
+          "note": "處分完整詞LSHK詞表 cyu2/cyu5 fan1；紀律的紀 gei2 先、gei3 現代又讀後。分不由國語 fèn 推成 fan6，處也不按單字品類誤刪 cyu5。",
+          "reference": "https://cala.hk/assets/CRAT_Appendix2_bystroke_1.3.pdf ; https://jyut.net/query?q=紀"
+        },
+        {
+          "id": 107847,
+          "char": "緊急處分",
+          "previous_jyutping": "gan2 gap1 cyu2 fan1",
+          "jyutping": "gan2 gap1 cyu2 fan1",
+          "alternatives": [
+            "gan2 gap1 cyu5 fan1"
+          ],
+          "note": "處分是 cyu2 fan1；LSHK整詞亦載 cyu5 fan1，保留同義後讀。",
+          "reference": "https://cala.hk/assets/CRAT_Appendix2_bystroke_1.3.pdf"
+        },
+        {
+          "id": 106263,
+          "char": "紀實小說",
+          "previous_jyutping": "gei2 sat6 siu2 syut3",
+          "jyutping": "gei2 sat6 siu2 syut3",
+          "alternatives": [
+            "gei3 sat6 siu2 syut3"
+          ],
+          "note": "紀的現代字典 gei2 正常先讀；紀事、紀念及紀律 gei3 亦有現代依據，保留後，非一概當錯音。",
+          "reference": "https://jyut.net/query?q=紀"
+        },
+        {
+          "id": 106264,
+          "char": "紀實文學",
+          "previous_jyutping": "gei2 sat6 man4 hok6",
+          "jyutping": "gei2 sat6 man4 hok6",
+          "alternatives": [
+            "gei3 sat6 man4 hok6"
+          ],
+          "note": "紀的現代字典 gei2 正常先讀；紀事、紀念及紀律 gei3 亦有現代依據，保留後，非一概當錯音。",
+          "reference": "https://jyut.net/query?q=紀"
+        },
+        {
+          "id": 106267,
+          "char": "紀念刊",
+          "previous_jyutping": "gei2 nim6 hon1",
+          "jyutping": "gei2 nim6 hon1",
+          "alternatives": [
+            "gei3 nim6 hon1"
+          ],
+          "note": "紀的現代字典 gei2 正常先讀；紀事、紀念及紀律 gei3 亦有現代依據，保留後，非一概當錯音。",
+          "reference": "https://jyut.net/query?q=紀"
+        },
+        {
+          "id": 106269,
+          "char": "紀念活動",
+          "previous_jyutping": "gei2 nim6 wut6 dung6",
+          "jyutping": "gei2 nim6 wut6 dung6",
+          "alternatives": [
+            "gei3 nim6 wut6 dung6"
+          ],
+          "note": "紀的現代字典 gei2 正常先讀；紀事、紀念及紀律 gei3 亦有現代依據，保留後，非一概當錯音。",
+          "reference": "https://jyut.net/query?q=紀"
+        },
+        {
+          "id": 106270,
+          "char": "紀念版",
+          "previous_jyutping": "gei2 nim6 baan2",
+          "jyutping": "gei2 nim6 baan2",
+          "alternatives": [
+            "gei3 nim6 baan2"
+          ],
+          "note": "紀的現代字典 gei2 正常先讀；紀事、紀念及紀律 gei3 亦有現代依據，保留後，非一概當錯音。",
+          "reference": "https://jyut.net/query?q=紀"
+        },
+        {
+          "id": 106272,
+          "char": "紀念詞",
+          "previous_jyutping": "gei2 nim6 ci4",
+          "jyutping": "gei2 nim6 ci4",
+          "alternatives": [
+            "gei3 nim6 ci4"
+          ],
+          "note": "紀的現代字典 gei2 正常先讀；紀事、紀念及紀律 gei3 亦有現代依據，保留後，非一概當錯音。",
+          "reference": "https://jyut.net/query?q=紀"
+        },
+        {
+          "id": 106915,
+          "char": "組織紀律",
+          "previous_jyutping": "zou2 zik1 gei2 leot6",
+          "jyutping": "zou2 zik1 gei2 leot6",
+          "alternatives": [
+            "zou2 zik1 gei3 leot6"
+          ],
+          "note": "紀的現代字典 gei2 正常先讀；紀事、紀念及紀律 gei3 亦有現代依據，保留後，非一概當錯音。",
+          "reference": "https://jyut.net/query?q=紀"
+        },
+        {
+          "id": 106955,
+          "char": "結婚紀念",
+          "previous_jyutping": "git3 fan1 gei2 nim6",
+          "jyutping": "git3 fan1 gei2 nim6",
+          "alternatives": [
+            "git3 fan1 gei3 nim6"
+          ],
+          "note": "紀的現代字典 gei2 正常先讀；紀事、紀念及紀律 gei3 亦有現代依據，保留後，非一概當錯音。",
+          "reference": "https://jyut.net/query?q=紀"
+        },
+        {
+          "id": 107022,
+          "char": "結繩紀事",
+          "previous_jyutping": "git3 sing4 gei2 si6",
+          "jyutping": "git3 sing4 gei2 si6",
+          "alternatives": [
+            "git3 sing4 gei3 si6"
+          ],
+          "note": "紀的現代字典 gei2 正常先讀；紀事、紀念及紀律 gei3 亦有現代依據，保留後，非一概當錯音。",
+          "reference": "https://jyut.net/query?q=紀"
+        },
+        {
+          "id": 106280,
+          "char": "紀錄下來",
+          "previous_jyutping": "gei3 luk6 haa6 loi4",
+          "jyutping": "gei3 luk6 haa6 loi4",
+          "alternatives": [
+            "gei2 luk6 haa6 loi4"
+          ],
+          "note": "紀錄動詞 gei3 有粵語查音識字字典完整詞例；gei2 亦為現代紀錄正常讀，不因同音記錄而換字或刪2。",
+          "reference": "https://jyut.net/query?q=紀 ; https://www.ny.edu.hk/web/cht/hkbc_journal/HKBC_11th%20Journal/489-583.pdf"
+        },
+        {
+          "id": 106234,
+          "char": "系統診斷",
+          "previous_jyutping": "hai6 tung2 can2 dyun3",
+          "jyutping": "hai6 tung2 can2 dyun3",
+          "alternatives": [
+            "hai6 tung2 can2 dyun6"
+          ],
+          "note": "診斷判定義 dyun3 先；dyun6 在現代同音字彙有診斷完整詞例，同義後讀保留。",
+          "reference": "https://jyut.net/query?q=斷"
+        },
+        {
+          "id": 106623,
+          "char": "素負盛名",
+          "previous_jyutping": "sou3 fu6 sing4 ming4",
+          "jyutping": "sou3 fu6 sing6 ming4",
           "alternatives": [],
-          "note": "穩拿到為自然可復用通用述語，非方言。",
-          "reference": "AI:whole-word-context"
+          "note": "盛名的盛為顯赫豐盛 sing6；sing4 是盛物容器義，不把草稿誤讀沿用。",
+          "reference": "https://jyut.net/query?q=盛"
         },
         {
-          "id": 104089,
-          "char": "空下來",
-          "previous_jyutping": "hung1 haa6 loi4",
-          "jyutping": "hung1 haa6 loi4",
-          "alternatives": [],
-          "note": "空下來為騰出空間或時間的自然完整述語，不憑國語慣用而一概排除。",
-          "reference": "AI:whole-word-context"
-        },
-        {
-          "id": 104037,
-          "char": "穩定上升",
-          "previous_jyutping": "wan2 ding6 soeng5 sing1",
-          "jyutping": "wan2 ding6 soeng6 sing1",
-          "alternatives": [
-            "wan2 ding6 soeng5 sing1"
-          ],
-          "note": "上升完整詞粵典、LSHK詞表採 soeng6 sing1；CantoDict及現代例句亦有 soeng5，同義保留後。不能按單字上山5誤刪原6。",
-          "reference": "https://words.hk/zidin/上升 ; https://cantonese.sheik.co.uk/dictionary/words/4381/ ; https://cala.hk/assets/CRAT_Appendix2_bystroke_1.5.pdf"
-        },
-        {
-          "id": 105418,
-          "char": "節節上漲",
-          "previous_jyutping": "zit3 zit3 soeng5 zoeng2",
-          "jyutping": "zit3 zit3 soeng6 zoeng3",
-          "alternatives": [
-            "zit3 zit3 soeng5 zoeng3",
-            "zit3 zit3 soeng5 zoeng2"
-          ],
-          "note": "上漲完整詞LSHK表用 soeng6 zoeng3，CantoDict有 soeng5 zoeng3；漲價 zoeng2 亦有現代明確詞義。保留有據同義組合，先後為 AI 判斷，不說6或3必為錯音。",
-          "reference": "https://cala.hk/assets/CRAT_Appendix2_bystroke_1.5.pdf ; https://cantonese.sheik.co.uk/dictionary/characters/56/?full=true ; https://jyut.net/query?q=漲"
-        },
-        {
-          "id": 104066,
-          "char": "穩穩重重",
-          "previous_jyutping": "wan2 wan2 zung6 zung6",
-          "jyutping": "wan2 wan2 zung6 zung6",
-          "alternatives": [],
-          "note": "穩重兩字重皆 zung6，不是重複 cung4；整詞疊語同步修正。",
-          "reference": "AI:whole-word-context"
-        },
-        {
-          "id": 104089,
-          "char": "空下來",
-          "previous_jyutping": "hung1 haa6 loi4",
-          "jyutping": "hung1 haa6 loi4",
-          "alternatives": [
-            "hung3 haa6 loi4"
-          ],
-          "note": "使空、騰出來的空 hung1 有現代直接例空出一間房，1977中華字典亦以 hung3 注同義；兩者保留，非把得空詞音套天空。",
-          "reference": "https://jyut.net/query?q=空"
-        },
-        {
-          "id": 104053,
-          "char": "穩拿到",
-          "previous_jyutping": "wan2 naa4 dou2",
-          "jyutping": "wan2 naa4 dou2",
-          "alternatives": [
-            "wan2 naa4 dou3"
-          ],
-          "note": "穩拿到為結果取得，dou2 優先、dou3 文讀後；次序依整詞語境 AI 判斷。",
-          "reference": "AI:whole-word-context"
-        },
-        {
-          "id": 104196,
-          "char": "空白鍵",
-          "previous_jyutping": "hung1 baak6 gin2",
-          "jyutping": "hung1 baak6 gin2",
-          "alternatives": [
-            "hung1 baak6 gin6"
-          ],
-          "note": "按鍵、事件、文件、配件、軟件的件鍵為器物／事物名詞，日常 gin2 優先，文讀 gin6 後。",
-          "reference": "AI:whole-word-context"
-        },
-        {
-          "id": 104280,
-          "char": "空難事件",
-          "previous_jyutping": "hung1 naan6 si6 gin2",
-          "jyutping": "hung1 naan6 si6 gin2",
-          "alternatives": [
-            "hung1 naan6 si6 gin6"
-          ],
-          "note": "按鍵、事件、文件、配件、軟件的件鍵為器物／事物名詞，日常 gin2 優先，文讀 gin6 後。",
-          "reference": "AI:whole-word-context"
-        },
-        {
-          "id": 105312,
-          "char": "管理文件",
-          "previous_jyutping": "gun2 lei5 man4 gin6",
-          "jyutping": "gun2 lei5 man4 gin2",
-          "alternatives": [
-            "gun2 lei5 man4 gin6"
-          ],
-          "note": "按鍵、事件、文件、配件、軟件的件鍵為器物／事物名詞，日常 gin2 優先，文讀 gin6 後。",
-          "reference": "AI:whole-word-context"
-        },
-        {
-          "id": 105338,
-          "char": "管道配件",
-          "previous_jyutping": "gun2 dou6 pui3 gin6",
-          "jyutping": "gun2 dou6 pui3 gin2",
-          "alternatives": [
-            "gun2 dou6 pui3 gin6"
-          ],
-          "note": "按鍵、事件、文件、配件、軟件的件鍵為器物／事物名詞，日常 gin2 優先，文讀 gin6 後。",
-          "reference": "AI:whole-word-context"
-        },
-        {
-          "id": 105928,
-          "char": "精品軟件",
-          "previous_jyutping": "zing1 ban2 jyun5 gin6",
-          "jyutping": "zing1 ban2 jyun5 gin2",
-          "alternatives": [
-            "zing1 ban2 jyun5 gin6"
-          ],
-          "note": "按鍵、事件、文件、配件、軟件的件鍵為器物／事物名詞，日常 gin2 優先，文讀 gin6 後。",
-          "reference": "AI:whole-word-context"
-        },
-        {
-          "id": 104199,
-          "char": "空盤",
-          "previous_jyutping": "hung1 pun2",
-          "jyutping": "hung1 pun2",
-          "alternatives": [
-            "hung1 pun4"
-          ],
-          "note": "盛物器皿盤取日常 pun2，文讀 pun4 同義後。",
-          "reference": "https://words.hk/zidin/盤"
-        },
-        {
-          "id": 104802,
-          "char": "端盤子",
-          "previous_jyutping": "dyun1 pun2 zi2",
-          "jyutping": "dyun1 pun2 zi2",
-          "alternatives": [
-            "dyun1 pun4 zi2"
-          ],
-          "note": "盛物器皿盤取日常 pun2，文讀 pun4 同義後。",
-          "reference": "https://words.hk/zidin/盤"
-        },
-        {
-          "id": 104669,
-          "char": "立體影片",
-          "previous_jyutping": "laap6 tai2 jing2 pin2",
-          "jyutping": "laap6 tai2 jing2 pin2",
-          "alternatives": [
-            "laap6 tai2 jing2 pin3"
-          ],
-          "note": "影片、畫及眼鏡名詞採日常變調優先、現代文讀較後；按整詞完整詞根判斷，不套畫畫動詞。",
-          "reference": "https://jyut.net/query?q=片 ; https://jyut.net/query?q=畫 ; https://jyut.net/query?q=鏡"
-        },
-        {
-          "id": 104675,
-          "char": "立體畫",
-          "previous_jyutping": "laap6 tai2 waa2",
-          "jyutping": "laap6 tai2 waa2",
-          "alternatives": [
-            "laap6 tai2 waa6"
-          ],
-          "note": "影片、畫及眼鏡名詞採日常變調優先、現代文讀較後；按整詞完整詞根判斷，不套畫畫動詞。",
-          "reference": "https://jyut.net/query?q=片 ; https://jyut.net/query?q=畫 ; https://jyut.net/query?q=鏡"
-        },
-        {
-          "id": 104676,
-          "char": "立體眼鏡",
-          "previous_jyutping": "laap6 tai2 ngaan5 geng2",
-          "jyutping": "laap6 tai2 ngaan5 geng2",
-          "alternatives": [
-            "laap6 tai2 ngaan5 geng3"
-          ],
-          "note": "影片、畫及眼鏡名詞採日常變調優先、現代文讀較後；按整詞完整詞根判斷，不套畫畫動詞。",
-          "reference": "https://jyut.net/query?q=片 ; https://jyut.net/query?q=畫 ; https://jyut.net/query?q=鏡"
-        },
-        {
-          "id": 104753,
-          "char": "童話故事",
-          "previous_jyutping": "tung4 waa2 gu3 si6",
-          "jyutping": "tung4 waa2 gu3 si6",
-          "alternatives": [
-            "tung4 waa6 gu3 si6"
-          ],
-          "note": "影片、畫及眼鏡名詞採日常變調優先、現代文讀較後；按整詞完整詞根判斷，不套畫畫動詞。",
-          "reference": "https://jyut.net/query?q=片 ; https://jyut.net/query?q=畫 ; https://jyut.net/query?q=鏡"
-        },
-        {
-          "id": 104929,
-          "char": "笑話書",
-          "previous_jyutping": "siu3 waa2 syu1",
-          "jyutping": "siu3 waa2 syu1",
-          "alternatives": [
-            "siu3 waa6 syu1"
-          ],
-          "note": "影片、畫及眼鏡名詞採日常變調優先、現代文讀較後；按整詞完整詞根判斷，不套畫畫動詞。",
-          "reference": "https://jyut.net/query?q=片 ; https://jyut.net/query?q=畫 ; https://jyut.net/query?q=鏡"
-        },
-        {
-          "id": 105565,
-          "char": "簡筆畫",
-          "previous_jyutping": "gaan2 bat1 waa2",
-          "jyutping": "gaan2 bat1 waa2",
-          "alternatives": [
-            "gaan2 bat1 waa6"
-          ],
-          "note": "影片、畫及眼鏡名詞採日常變調優先、現代文讀較後；按整詞完整詞根判斷，不套畫畫動詞。",
-          "reference": "https://jyut.net/query?q=片 ; https://jyut.net/query?q=畫 ; https://jyut.net/query?q=鏡"
-        },
-        {
-          "id": 105731,
-          "char": "粉筆畫",
-          "previous_jyutping": "fan2 bat1 waa2",
-          "jyutping": "fan2 bat1 waa2",
-          "alternatives": [
-            "fan2 bat1 waa6"
-          ],
-          "note": "影片、畫及眼鏡名詞採日常變調優先、現代文讀較後；按整詞完整詞根判斷，不套畫畫動詞。",
-          "reference": "https://jyut.net/query?q=片 ; https://jyut.net/query?q=畫 ; https://jyut.net/query?q=鏡"
-        },
-        {
-          "id": 105902,
-          "char": "粵語片",
-          "previous_jyutping": "jyut6 jyu5 pin2",
-          "jyutping": "jyut6 jyu5 pin2",
-          "alternatives": [
-            "jyut6 jyu5 pin3"
-          ],
-          "note": "影片、畫及眼鏡名詞採日常變調優先、現代文讀較後；按整詞完整詞根判斷，不套畫畫動詞。",
-          "reference": "https://jyut.net/query?q=片 ; https://jyut.net/query?q=畫 ; https://jyut.net/query?q=鏡"
-        },
-        {
-          "id": 105944,
-          "char": "精彩圖片",
-          "previous_jyutping": "zing1 coi2 tou4 pin2",
-          "jyutping": "zing1 coi2 tou4 pin2",
-          "alternatives": [
-            "zing1 coi2 tou4 pin3"
-          ],
-          "note": "影片、畫及眼鏡名詞採日常變調優先、現代文讀較後；按整詞完整詞根判斷，不套畫畫動詞。",
-          "reference": "https://jyut.net/query?q=片 ; https://jyut.net/query?q=畫 ; https://jyut.net/query?q=鏡"
-        },
-        {
-          "id": 105947,
-          "char": "精彩畫面",
-          "previous_jyutping": "zing1 coi2 waa2 min2",
-          "jyutping": "zing1 coi2 waa2 min2",
-          "alternatives": [
-            "zing1 coi2 waa6 min2"
-          ],
-          "note": "影片、畫及眼鏡名詞採日常變調優先、現代文讀較後；按整詞完整詞根判斷，不套畫畫動詞。",
-          "reference": "https://jyut.net/query?q=片 ; https://jyut.net/query?q=畫 ; https://jyut.net/query?q=鏡"
-        },
-        {
-          "id": 104231,
-          "char": "空谷傳聲",
-          "previous_jyutping": "hung1 guk1 cyun4 seng1",
-          "jyutping": "hung1 guk1 cyun4 seng1",
-          "alternatives": [
-            "hung1 guk1 cyun4 sing1"
-          ],
-          "note": "聲音 seng1 語音先、sing1 文讀後；笛作樂器 dek2 為現代語音、dek6 文讀，同義均保留，不添僅舊書 dik6。",
-          "reference": "https://jyut.net/query?q=聲 ; https://jyut.net/query?q=笛"
-        },
-        {
-          "id": 104939,
-          "char": "笛手",
-          "previous_jyutping": "dek2 sau2",
-          "jyutping": "dek2 sau2",
-          "alternatives": [
-            "dek6 sau2"
-          ],
-          "note": "聲音 seng1 語音先、sing1 文讀後；笛作樂器 dek2 為現代語音、dek6 文讀，同義均保留，不添僅舊書 dik6。",
-          "reference": "https://jyut.net/query?q=聲 ; https://jyut.net/query?q=笛"
-        },
-        {
-          "id": 104940,
-          "char": "笛管",
-          "previous_jyutping": "dek2 gun2",
-          "jyutping": "dek2 gun2",
-          "alternatives": [
-            "dek6 gun2"
-          ],
-          "note": "聲音 seng1 語音先、sing1 文讀後；笛作樂器 dek2 為現代語音、dek6 文讀，同義均保留，不添僅舊書 dik6。",
-          "reference": "https://jyut.net/query?q=聲 ; https://jyut.net/query?q=笛"
-        },
-        {
-          "id": 105823,
-          "char": "粗聲",
-          "previous_jyutping": "cou1 sing1",
-          "jyutping": "cou1 seng1",
-          "alternatives": [
-            "cou1 sing1"
-          ],
-          "note": "聲音 seng1 語音先、sing1 文讀後；笛作樂器 dek2 為現代語音、dek6 文讀，同義均保留，不添僅舊書 dik6。",
-          "reference": "https://jyut.net/query?q=聲 ; https://jyut.net/query?q=笛"
-        },
-        {
-          "id": 105824,
-          "char": "粗聲厲氣",
-          "previous_jyutping": "cou1 sing1 lai6 hei3",
-          "jyutping": "cou1 seng1 lai6 hei3",
-          "alternatives": [
-            "cou1 sing1 lai6 hei3"
-          ],
-          "note": "聲音 seng1 語音先、sing1 文讀後；笛作樂器 dek2 為現代語音、dek6 文讀，同義均保留，不添僅舊書 dik6。",
-          "reference": "https://jyut.net/query?q=聲 ; https://jyut.net/query?q=笛"
-        },
-        {
-          "id": 105825,
-          "char": "粗聲暴氣",
-          "previous_jyutping": "cou1 sing1 bou6 hei3",
-          "jyutping": "cou1 seng1 bou6 hei3",
-          "alternatives": [
-            "cou1 sing1 bou6 hei3"
-          ],
-          "note": "聲音 seng1 語音先、sing1 文讀後；笛作樂器 dek2 為現代語音、dek6 文讀，同義均保留，不添僅舊書 dik6。",
-          "reference": "https://jyut.net/query?q=聲 ; https://jyut.net/query?q=笛"
-        },
-        {
-          "id": 104933,
-          "char": "笑醒",
-          "previous_jyutping": "siu3 seng2",
-          "jyutping": "siu3 seng2",
-          "alternatives": [
-            "siu3 sing2"
-          ],
-          "note": "笑醒為醒覺義，seng2 日常語音先、sing2 文讀後。",
-          "reference": "https://jyut.net/query?q=醒"
-        },
-        {
-          "id": 104585,
-          "char": "窺間伺隙",
-          "previous_jyutping": "kwai1 gaan3 zi6 gwik1",
-          "jyutping": "kwai1 gaan3 zi6 gwik1",
-          "alternatives": [
-            "kwai1 gaan3 zi6 kwik1"
-          ],
-          "note": "窺間伺隙取時機間 gaan3，隙 gwik1／kwik1 均現代；原閒字變形按原字判斷，不造另一來源。",
-          "reference": "https://jyut.net/query?q=間 ; https://jyut.net/query?q=隙"
-        },
-        {
-          "id": 104584,
-          "char": "窺閒伺隙",
-          "previous_jyutping": "kwai1 haan4 zi6 gwik1",
-          "jyutping": "kwai1 haan4 zi6 gwik1",
-          "alternatives": [
-            "kwai1 haan4 zi6 kwik1"
-          ],
-          "note": "窺閒伺隙原閒字可指空閒時機，隙兩音現代保留；不自動改間字取得另一來源。",
-          "reference": "https://jyut.net/query?q=隙"
-        },
-        {
-          "id": 104815,
-          "char": "競價排名",
-          "previous_jyutping": "ging6 gaa3 paai4 ming4",
-          "jyutping": "ging6 gaa3 paai4 ming4",
-          "alternatives": [
-            "ging3 gaa3 paai4 ming4"
-          ],
-          "note": "競爭、競賽義 ging6 通行先讀；2007及1991字典明列現代又讀 ging3，保留後，不刪舊音。",
-          "reference": "https://jyut.net/query?q=競"
-        },
-        {
-          "id": 104817,
-          "char": "競合",
-          "previous_jyutping": "ging6 hap6",
-          "jyutping": "ging6 hap6",
+          "id": 106548,
+          "char": "紙縫",
+          "previous_jyutping": "zi2 laa3",
+          "jyutping": "zi2 fung6",
           "alternatives": [
-            "ging3 hap6"
+            "zi2 fung4"
           ],
-          "note": "競爭、競賽義 ging6 通行先讀；2007及1991字典明列現代又讀 ging3，保留後，不刪舊音。",
-          "reference": "https://jyut.net/query?q=競"
+          "note": "縫為狹長開口名詞，fung6 有現代門縫、縫隙詞例；商務新詞典名詞義亦有 fung4 又讀。laa3 是罅字而非縫的粵拼，不以同義替字讀音冒充。fung3 只見1916，不加作現代異讀。",
+          "reference": "https://jyut.net/query?q=縫"
         },
         {
-          "id": 104819,
-          "char": "競奪",
-          "previous_jyutping": "ging6 dyut6",
-          "jyutping": "ging6 dyut6",
+          "id": 106787,
+          "char": "細縫",
+          "previous_jyutping": "sai3 laa3",
+          "jyutping": "sai3 fung6",
           "alternatives": [
-            "ging3 dyut6"
+            "sai3 fung4"
           ],
-          "note": "競爭、競賽義 ging6 通行先讀；2007及1991字典明列現代又讀 ging3，保留後，不刪舊音。",
-          "reference": "https://jyut.net/query?q=競"
+          "note": "縫為狹長開口名詞，fung6 有現代門縫、縫隙詞例；商務新詞典名詞義亦有 fung4 又讀。laa3 是罅字而非縫的粵拼，不以同義替字讀音冒充。fung3 只見1916，不加作現代異讀。",
+          "reference": "https://jyut.net/query?q=縫"
         },
         {
-          "id": 104821,
-          "char": "競技狀態",
-          "previous_jyutping": "ging6 gei6 zong6 taai3",
-          "jyutping": "ging6 gei6 zong6 taai3",
+          "id": 106106,
+          "char": "糖漬",
+          "previous_jyutping": "tong4 zik1",
+          "jyutping": "tong4 zik1",
           "alternatives": [
-            "ging3 gei6 zong6 taai3"
+            "tong4 zi3",
+            "tong4 zi6"
           ],
-          "note": "競爭、競賽義 ging6 通行先讀；2007及1991字典明列現代又讀 ging3，保留後，不刪舊音。",
-          "reference": "https://jyut.net/query?q=競"
+          "note": "糖漬為浸糖加工，zik1 在現代漚浸義有語音，zi3 文讀及zi6久浸又讀亦現代可據；不是只剩污漬義。",
+          "reference": "https://jyut.net/query?q=漬"
         },
         {
-          "id": 104823,
-          "char": "競投人",
-          "previous_jyutping": "ging6 tau4 jan4",
-          "jyutping": "ging6 tau4 jan4",
+          "id": 106742,
+          "char": "細嚼",
+          "previous_jyutping": "sai3 zoek3",
+          "jyutping": "sai3 zoek3",
           "alternatives": [
-            "ging3 tau4 jan4"
+            "sai3 ziu6",
+            "sai3 zoek6"
           ],
-          "note": "競爭、競賽義 ging6 通行先讀；2007及1991字典明列現代又讀 ging3，保留後，不刪舊音。",
-          "reference": "https://jyut.net/query?q=競"
+          "note": "細嚼用咀嚼義 zoek3 先；現代 ziu6 語音與 zoek6 書讀同義保留，反芻專義 ziu3 不混入。",
+          "reference": "https://jyut.net/query?q=嚼"
         },
         {
-          "id": 104824,
-          "char": "競拍者",
-          "previous_jyutping": "ging6 paak3 ze2",
-          "jyutping": "ging6 paak3 ze2",
+          "id": 107162,
+          "char": "絨毛玩具",
+          "previous_jyutping": "jung2 mou4 wun6 geoi6",
+          "jyutping": "jung2 mou4 wun6 geoi6",
           "alternatives": [
-            "ging3 paak3 ze2"
+            "jung4 mou4 wun6 geoi6"
           ],
-          "note": "競爭、競賽義 ging6 通行先讀；2007及1991字典明列現代又讀 ging3，保留後，不刪舊音。",
-          "reference": "https://jyut.net/query?q=競"
+          "note": "絨的毛織物 jung2 現代口語先、jung4 現代文讀後，均同義，不能因較少字典載變調而刪。",
+          "reference": "https://jyut.net/query?q=絨"
         },
         {
-          "id": 104827,
-          "char": "競業禁止",
-          "previous_jyutping": "ging6 jip6 gam3 zi2",
-          "jyutping": "ging6 jip6 gam3 zi2",
+          "id": 107163,
+          "char": "絨氈",
+          "previous_jyutping": "jung2 zin1",
+          "jyutping": "jung2 zin1",
           "alternatives": [
-            "ging3 jip6 gam3 zi2"
+            "jung4 zin1"
           ],
-          "note": "競爭、競賽義 ging6 通行先讀；2007及1991字典明列現代又讀 ging3，保留後，不刪舊音。",
-          "reference": "https://jyut.net/query?q=競"
+          "note": "絨的毛織物 jung2 現代口語先、jung4 現代文讀後，均同義，不能因較少字典載變調而刪。",
+          "reference": "https://jyut.net/query?q=絨"
         },
         {
-          "id": 104828,
-          "char": "競標者",
-          "previous_jyutping": "ging6 biu1 ze2",
-          "jyutping": "ging6 biu1 ze2",
+          "id": 107165,
+          "char": "絨絲",
+          "previous_jyutping": "jung2 si1",
+          "jyutping": "jung2 si1",
           "alternatives": [
-            "ging3 biu1 ze2"
+            "jung4 si1"
           ],
-          "note": "競爭、競賽義 ging6 通行先讀；2007及1991字典明列現代又讀 ging3，保留後，不刪舊音。",
-          "reference": "https://jyut.net/query?q=競"
+          "note": "絨的毛織物 jung2 現代口語先、jung4 現代文讀後，均同義，不能因較少字典載變調而刪。",
+          "reference": "https://jyut.net/query?q=絨"
         },
         {
-          "id": 104831,
-          "char": "競爭心",
-          "previous_jyutping": "ging6 zang1 sam1",
-          "jyutping": "ging6 zang1 sam1",
+          "id": 107166,
+          "char": "絨線刺繡",
+          "previous_jyutping": "jung2 sin3 ci3 sau3",
+          "jyutping": "jung2 sin3 ci3 sau3",
           "alternatives": [
-            "ging3 zang1 sam1"
+            "jung4 sin3 ci3 sau3"
           ],
-          "note": "競爭、競賽義 ging6 通行先讀；2007及1991字典明列現代又讀 ging3，保留後，不刪舊音。",
-          "reference": "https://jyut.net/query?q=競"
+          "note": "絨的毛織物 jung2 現代口語先、jung4 現代文讀後，均同義，不能因較少字典載變調而刪。",
+          "reference": "https://jyut.net/query?q=絨"
         },
         {
-          "id": 104832,
-          "char": "競爭手段",
-          "previous_jyutping": "ging6 zang1 sau2 dyun6",
-          "jyutping": "ging6 zang1 sau2 dyun6",
+          "id": 107167,
+          "char": "絨繩",
+          "previous_jyutping": "jung2 sing4",
+          "jyutping": "jung2 sing4",
           "alternatives": [
-            "ging3 zang1 sau2 dyun6"
+            "jung4 sing4"
           ],
-          "note": "競爭、競賽義 ging6 通行先讀；2007及1991字典明列現代又讀 ging3，保留後，不刪舊音。",
-          "reference": "https://jyut.net/query?q=競"
+          "note": "絨的毛織物 jung2 現代口語先、jung4 現代文讀後，均同義，不能因較少字典載變調而刪。",
+          "reference": "https://jyut.net/query?q=絨"
         },
         {
-          "id": 104833,
-          "char": "競爭機制",
-          "previous_jyutping": "ging6 zang1 gei1 zai3",
-          "jyutping": "ging6 zang1 gei1 zai3",
+          "id": 107246,
+          "char": "絲絨布",
+          "previous_jyutping": "si1 jung2 bou3",
+          "jyutping": "si1 jung2 bou3",
           "alternatives": [
-            "ging3 zang1 gei1 zai3"
+            "si1 jung4 bou3"
           ],
-          "note": "競爭、競賽義 ging6 通行先讀；2007及1991字典明列現代又讀 ging3，保留後，不刪舊音。",
-          "reference": "https://jyut.net/query?q=競"
+          "note": "絨的毛織物 jung2 現代口語先、jung4 現代文讀後，均同義，不能因較少字典載變調而刪。",
+          "reference": "https://jyut.net/query?q=絨"
         },
         {
-          "id": 104835,
-          "char": "競猜活動",
-          "previous_jyutping": "ging6 caai1 wut6 dung6",
-          "jyutping": "ging6 caai1 wut6 dung6",
+          "id": 107776,
+          "char": "綴出",
+          "previous_jyutping": "zeoi6 ceot1",
+          "jyutping": "zeoi6 ceot1",
           "alternatives": [
-            "ging3 caai1 wut6 dung6"
+            "zeoi3 ceot1"
           ],
-          "note": "競爭、競賽義 ging6 通行先讀；2007及1991字典明列現代又讀 ging3，保留後，不刪舊音。",
-          "reference": "https://jyut.net/query?q=競"
+          "note": "綴連、組字、裝飾義 zeoi6 為建議讀音，zeoi3 現代同義亦有明確詞例，保留後；不把停止義 zyut3 機械混入。",
+          "reference": "https://jyut.net/query?q=綴"
         },
         {
-          "id": 104837,
-          "char": "競相壓價",
-          "previous_jyutping": "ging6 soeng1 aat3 gaa3",
-          "jyutping": "ging6 soeng1 aat3 gaa3",
+          "id": 107777,
+          "char": "綴字成文",
+          "previous_jyutping": "zeoi3 zi6 sing4 man4",
+          "jyutping": "zeoi6 zi6 sing4 man4",
           "alternatives": [
-            "ging3 soeng1 aat3 gaa3"
+            "zeoi3 zi6 sing4 man4"
           ],
-          "note": "競爭、競賽義 ging6 通行先讀；2007及1991字典明列現代又讀 ging3，保留後，不刪舊音。",
-          "reference": "https://jyut.net/query?q=競"
+          "note": "綴連、組字、裝飾義 zeoi6 為建議讀音，zeoi3 現代同義亦有明確詞例，保留後；不把停止義 zyut3 機械混入。",
+          "reference": "https://jyut.net/query?q=綴"
         },
         {
-          "id": 104838,
-          "char": "競相奔走",
-          "previous_jyutping": "ging6 soeng1 ban1 zau2",
-          "jyutping": "ging6 soeng1 ban1 zau2",
+          "id": 107780,
+          "char": "綴補",
+          "previous_jyutping": "zeoi6 bou2",
+          "jyutping": "zeoi6 bou2",
           "alternatives": [
-            "ging3 soeng1 ban1 zau2"
+            "zeoi3 bou2"
           ],
-          "note": "競爭、競賽義 ging6 通行先讀；2007及1991字典明列現代又讀 ging3，保留後，不刪舊音。",
-          "reference": "https://jyut.net/query?q=競"
+          "note": "綴連、組字、裝飾義 zeoi6 為建議讀音，zeoi3 現代同義亦有明確詞例，保留後；不把停止義 zyut3 機械混入。",
+          "reference": "https://jyut.net/query?q=綴"
         },
         {
-          "id": 104843,
-          "char": "競豔",
-          "previous_jyutping": "ging6 jim6",
-          "jyutping": "ging6 jim6",
+          "id": 107782,
+          "char": "綴連",
+          "previous_jyutping": "zeoi6 lin4",
+          "jyutping": "zeoi6 lin4",
           "alternatives": [
-            "ging3 jim6"
+            "zeoi3 lin4"
           ],
-          "note": "競爭、競賽義 ging6 通行先讀；2007及1991字典明列現代又讀 ging3，保留後，不刪舊音。",
-          "reference": "https://jyut.net/query?q=競"
+          "note": "綴連、組字、裝飾義 zeoi6 為建議讀音，zeoi3 現代同義亦有明確詞例，保留後；不把停止義 zyut3 機械混入。",
+          "reference": "https://jyut.net/query?q=綴"
         },
         {
-          "id": 104844,
-          "char": "競買價",
-          "previous_jyutping": "ging6 maai5 gaa3",
-          "jyutping": "ging6 maai5 gaa3",
+          "id": 106223,
+          "char": "系統托盤",
+          "previous_jyutping": "hai6 tung2 tok3 pun2",
+          "jyutping": "hai6 tung2 tok3 pun2",
           "alternatives": [
-            "ging3 maai5 gaa3"
+            "hai6 tung2 tok3 pun4"
           ],
-          "note": "競爭、競賽義 ging6 通行先讀；2007及1991字典明列現代又讀 ging3，保留後，不刪舊音。",
-          "reference": "https://jyut.net/query?q=競"
+          "note": "托盤器皿名詞 pun2 日常先、pun4 現代書讀後，同義保留。",
+          "reference": "https://jyut.net/query?q=盤"
         },
         {
-          "id": 104846,
-          "char": "競賽活動",
-          "previous_jyutping": "ging6 coi3 wut6 dung6",
-          "jyutping": "ging6 coi3 wut6 dung6",
+          "id": 106233,
+          "char": "系統託盤",
+          "previous_jyutping": "hai6 tung2 tok3 pun2",
+          "jyutping": "hai6 tung2 tok3 pun2",
           "alternatives": [
-            "ging3 coi3 wut6 dung6"
+            "hai6 tung2 tok3 pun4"
           ],
-          "note": "競爭、競賽義 ging6 通行先讀；2007及1991字典明列現代又讀 ging3，保留後，不刪舊音。",
-          "reference": "https://jyut.net/query?q=競"
+          "note": "托盤器皿名詞 pun2 日常先、pun4 現代書讀後，同義保留。",
+          "reference": "https://jyut.net/query?q=盤"
         },
         {
-          "id": 104847,
-          "char": "競賽題",
-          "previous_jyutping": "ging6 coi3 tai4",
-          "jyutping": "ging6 coi3 tai4",
+          "id": 106516,
+          "char": "紙托盤",
+          "previous_jyutping": "zi2 tok3 pun2",
+          "jyutping": "zi2 tok3 pun2",
           "alternatives": [
-            "ging3 coi3 tai4"
+            "zi2 tok3 pun4"
           ],
-          "note": "競爭、競賽義 ging6 通行先讀；2007及1991字典明列現代又讀 ging3，保留後，不刪舊音。",
-          "reference": "https://jyut.net/query?q=競"
+          "note": "托盤器皿名詞 pun2 日常先、pun4 現代書讀後，同義保留。",
+          "reference": "https://jyut.net/query?q=盤"
         },
         {
-          "id": 104848,
-          "char": "競走比賽",
-          "previous_jyutping": "ging6 zau2 bei2 coi3",
-          "jyutping": "ging6 zau2 bei2 coi3",
+          "id": 106536,
+          "char": "紙盤",
+          "previous_jyutping": "zi2 pun2",
+          "jyutping": "zi2 pun2",
           "alternatives": [
-            "ging3 zau2 bei2 coi3"
+            "zi2 pun4"
           ],
-          "note": "競爭、競賽義 ging6 通行先讀；2007及1991字典明列現代又讀 ging3，保留後，不刪舊音。",
-          "reference": "https://jyut.net/query?q=競"
+          "note": "托盤器皿名詞 pun2 日常先、pun4 現代書讀後，同義保留。",
+          "reference": "https://jyut.net/query?q=盤"
         },
         {
-          "id": 104849,
-          "char": "競走運動",
-          "previous_jyutping": "ging6 zau2 wan6 dung6",
-          "jyutping": "ging6 zau2 wan6 dung6",
+          "id": 106555,
+          "char": "紙託盤",
+          "previous_jyutping": "zi2 tok3 pun2",
+          "jyutping": "zi2 tok3 pun2",
           "alternatives": [
-            "ging3 zau2 wan6 dung6"
+            "zi2 tok3 pun4"
           ],
-          "note": "競爭、競賽義 ging6 通行先讀；2007及1991字典明列現代又讀 ging3，保留後，不刪舊音。",
-          "reference": "https://jyut.net/query?q=競"
+          "note": "托盤器皿名詞 pun2 日常先、pun4 現代書讀後，同義保留。",
+          "reference": "https://jyut.net/query?q=盤"
         },
         {
-          "id": 104850,
-          "char": "競跑",
-          "previous_jyutping": "ging6 paau2",
-          "jyutping": "ging6 paau2",
+          "id": 106231,
+          "char": "系統盤",
+          "previous_jyutping": "hai6 tung2 pun4",
+          "jyutping": "hai6 tung2 pun2",
           "alternatives": [
-            "ging3 paau2"
+            "hai6 tung2 pun4"
           ],
-          "note": "競爭、競賽義 ging6 通行先讀；2007及1991字典明列現代又讀 ging3，保留後，不刪舊音。",
-          "reference": "https://jyut.net/query?q=競"
+          "note": "系統盤為磁盤名詞，pun2 日常先、pun4 書讀後，非盤旋動詞。",
+          "reference": "https://jyut.net/query?q=盤"
         },
         {
-          "id": 104851,
-          "char": "競選活動",
-          "previous_jyutping": "ging6 syun2 wut6 dung6",
-          "jyutping": "ging6 syun2 wut6 dung6",
+          "id": 106259,
+          "char": "糾紛案件",
+          "previous_jyutping": "gau2 fan1 on3 gin2",
+          "jyutping": "gau2 fan1 on3 gin2",
           "alternatives": [
-            "ging3 syun2 wut6 dung6"
+            "gau2 fan1 on3 gin6"
           ],
-          "note": "競爭、競賽義 ging6 通行先讀；2007及1991字典明列現代又讀 ging3，保留後，不刪舊音。",
-          "reference": "https://jyut.net/query?q=競"
+          "note": "件為案件、鍵或文件的名詞 gin2 變調先，gin6 現代原讀後；不是物件詞本身冷門。",
+          "reference": "https://jyut.net/query?q=件 ; https://jyut.net/query?q=鍵"
         },
         {
-          "id": 104852,
-          "char": "競鬥",
-          "previous_jyutping": "ging6 dau3",
-          "jyutping": "ging6 dau3",
+          "id": 106900,
+          "char": "組合鍵",
+          "previous_jyutping": "zou2 hap6 gin6",
+          "jyutping": "zou2 hap6 gin2",
           "alternatives": [
-            "ging3 dau3"
+            "zou2 hap6 gin6"
           ],
-          "note": "競爭、競賽義 ging6 通行先讀；2007及1991字典明列現代又讀 ging3，保留後，不刪舊音。",
-          "reference": "https://jyut.net/query?q=競"
+          "note": "件為案件、鍵或文件的名詞 gin2 變調先，gin6 現代原讀後；不是物件詞本身冷門。",
+          "reference": "https://jyut.net/query?q=件 ; https://jyut.net/query?q=鍵"
         },
         {
-          "id": 104590,
-          "char": "竄跑",
-          "previous_jyutping": "cyun2 paau2",
-          "jyutping": "cyun2 paau2",
+          "id": 107062,
+          "char": "絕密件",
+          "previous_jyutping": "zyut6 mat6 gin2",
+          "jyutping": "zyut6 mat6 gin2",
           "alternatives": [
-            "cyun3 paau2"
+            "zyut6 mat6 gin6"
           ],
-          "note": "竄走逃匿 cyun2 為現代建議音，cyun3 同義現代又讀亦保留；不因3又讀標籤判棄用。",
-          "reference": "https://jyut.net/query?q=竄"
+          "note": "件為案件、鍵或文件的名詞 gin2 變調先，gin6 現代原讀後；不是物件詞本身冷門。",
+          "reference": "https://jyut.net/query?q=件 ; https://jyut.net/query?q=鍵"
         },
         {
-          "id": 104591,
-          "char": "竄進",
-          "previous_jyutping": "cyun2 zeon3",
-          "jyutping": "cyun2 zeon3",
+          "id": 107835,
+          "char": "緊急事件",
+          "previous_jyutping": "gan2 gap1 si6 gin2",
+          "jyutping": "gan2 gap1 si6 gin2",
           "alternatives": [
-            "cyun3 zeon3"
+            "gan2 gap1 si6 gin6"
           ],
-          "note": "竄走逃匿 cyun2 為現代建議音，cyun3 同義現代又讀亦保留；不因3又讀標籤判棄用。",
-          "reference": "https://jyut.net/query?q=竄"
-        },
-        {
-          "id": 104583,
-          "char": "窺覦",
-          "previous_jyutping": "kwai1 jyu4",
-          "jyutping": "kwai1 jyu4",
-          "alternatives": [],
-          "note": "覦現代 jyu4，jyu6 僅見舊書，不無據增加現代整詞讀法。",
-          "reference": "https://jyut.net/query?q=覦"
-        },
-        {
-          "id": 104532,
-          "char": "窮形盡相",
-          "previous_jyutping": "kung4 jing4 zeon6 soeng3",
-          "jyutping": "kung4 jing4 zeon6 soeng3",
-          "alternatives": [],
-          "note": "窮形盡相為形貌 soeng3，非互相 soeng1；原音節與碼同步。",
-          "reference": "AI:whole-word-context"
-        },
-        {
-          "id": 104557,
-          "char": "窮相",
-          "previous_jyutping": "kung4 soeng3",
-          "jyutping": "kung4 soeng3",
-          "alternatives": [],
-          "note": "窮相為形貌 soeng3，非互相 soeng1。",
-          "reference": "AI:whole-word-context"
+          "note": "件為案件、鍵或文件的名詞 gin2 變調先，gin6 現代原讀後；不是物件詞本身冷門。",
+          "reference": "https://jyut.net/query?q=件 ; https://jyut.net/query?q=鍵"
         },
         {
-          "id": 104466,
-          "char": "窗簾桿",
-          "previous_jyutping": "coeng1 lim2 gon2",
-          "jyutping": "coeng1 lim2 gon2",
+          "id": 107771,
+          "char": "網頁文件",
+          "previous_jyutping": "mong5 jip6 man4 gin6",
+          "jyutping": "mong5 jip6 man4 gin2",
           "alternatives": [
-            "coeng1 lim2 gon1"
+            "mong5 jip6 man4 gin6"
           ],
-          "note": "簡體來源杆按棍棒義採正體桿，非另一詞；桿 gon2 日常先、同杆 gon1 的現代又讀後，保留原來源字面。",
-          "reference": "https://jyut.net/query?q=桿 ; https://www.ny.edu.hk/web/cht/hkbc_journal/HKBC_11th%20Journal/421-487.pdf"
+          "note": "件為案件、鍵或文件的名詞 gin2 變調先，gin6 現代原讀後；不是物件詞本身冷門。",
+          "reference": "https://jyut.net/query?q=件 ; https://jyut.net/query?q=鍵"
         },
         {
-          "id": 105797,
-          "char": "粗桿",
-          "previous_jyutping": "cou1 gon1",
-          "jyutping": "cou1 gon2",
+          "id": 106400,
+          "char": "紅鞋",
+          "previous_jyutping": "hung4 haai4",
+          "jyutping": "hung4 haai2",
           "alternatives": [
-            "cou1 gon1"
+            "hung4 haai4"
           ],
-          "note": "簡體來源杆按棍棒義採正體桿，非另一詞；桿 gon2 日常先、同杆 gon1 的現代又讀後，保留原來源字面。",
-          "reference": "https://jyut.net/query?q=桿 ; https://www.ny.edu.hk/web/cht/hkbc_journal/HKBC_11th%20Journal/421-487.pdf"
-        },
-        {
-          "id": 104867,
-          "char": "竹杆",
-          "previous_jyutping": "zuk1 gon2",
-          "jyutping": "zuk1 gon1",
-          "alternatives": [],
-          "note": "竹杆保留杆原字的竹竿同義 gon1，字典現代杆／竿均有此音；不憑國語 gǎn 自動套 gon2，亦不改竹竿製造另一來源。",
-          "reference": "https://jyut.net/query?q=杆 ; https://jyut.net/query?q=竿"
+          "note": "鞋名詞 haai2 日常先、haai4 現代書讀後。",
+          "reference": "https://jyut.net/query?q=鞋"
         },
         {
-          "id": 105075,
-          "char": "等待時間",
-          "previous_jyutping": "dang2 doi6 si4 gaan1",
-          "jyutping": "dang2 doi6 si4 gaan1",
+          "id": 106401,
+          "char": "紅鞋子",
+          "previous_jyutping": "hung4 haai4 zi2",
+          "jyutping": "hung4 haai2 zi2",
           "alternatives": [
-            "dang2 doi6 si4 gaan3"
+            "hung4 haai4 zi2"
           ],
-          "note": "時間／期間的間現代完整時間有 gaan1／gaan3，同義保留；不把間隔義一概視為不同音排除。",
-          "reference": "https://words.hk/zidin/時間"
+          "note": "鞋名詞 haai2 日常先、haai4 現代書讀後。",
+          "reference": "https://jyut.net/query?q=鞋"
         },
         {
-          "id": 105391,
-          "char": "節日期間",
-          "previous_jyutping": "zit3 jat6 kei4 gaan1",
-          "jyutping": "zit3 jat6 kei4 gaan1",
+          "id": 107658,
+          "char": "網球鞋",
+          "previous_jyutping": "mong5 kau4 haai2",
+          "jyutping": "mong5 kau4 haai2",
           "alternatives": [
-            "zit3 jat6 kei4 gaan3"
+            "mong5 kau4 haai4"
           ],
-          "note": "時間／期間的間現代完整時間有 gaan1／gaan3，同義保留；不把間隔義一概視為不同音排除。",
-          "reference": "https://words.hk/zidin/時間"
+          "note": "鞋名詞 haai2 日常先、haai4 現代書讀後。",
+          "reference": "https://jyut.net/query?q=鞋"
         },
         {
-          "id": 105161,
-          "char": "答謝宴會",
-          "previous_jyutping": "daap3 ze6 jin3 wui6",
-          "jyutping": "daap3 ze6 jin3 wui2",
+          "id": 106316,
+          "char": "紅帶",
+          "previous_jyutping": "hung4 daai3",
+          "jyutping": "hung4 daai2",
           "alternatives": [
-            "daap3 ze6 jin3 wui6"
+            "hung4 daai3"
           ],
-          "note": "答謝或答辯聚會為名詞，wui2 先、wui6 文讀後，不套能力 wui5。",
-          "reference": "AI:whole-word-context"
+          "note": "帶狀物名詞 daai2 日常變調先、daai3 原讀後，不把帶領動詞讀法當唯一。",
+          "reference": "https://jyut.net/query?q=帶"
         },
         {
-          "id": 105162,
-          "char": "答謝會",
-          "previous_jyutping": "daap3 ze6 wui2",
-          "jyutping": "daap3 ze6 wui2",
+          "id": 106317,
+          "char": "紅帶子",
+          "previous_jyutping": "hung4 daai3 zi2",
+          "jyutping": "hung4 daai2 zi2",
           "alternatives": [
-            "daap3 ze6 wui6"
+            "hung4 daai3 zi2"
           ],
-          "note": "答謝或答辯聚會為名詞，wui2 先、wui6 文讀後，不套能力 wui5。",
-          "reference": "AI:whole-word-context"
+          "note": "帶狀物名詞 daai2 日常變調先、daai3 原讀後，不把帶領動詞讀法當唯一。",
+          "reference": "https://jyut.net/query?q=帶"
         },
         {
-          "id": 105167,
-          "char": "答辯會",
-          "previous_jyutping": "daap3 bin6 wui2",
-          "jyutping": "daap3 bin6 wui2",
+          "id": 107493,
+          "char": "綠帶",
+          "previous_jyutping": "luk6 daai2",
+          "jyutping": "luk6 daai2",
           "alternatives": [
-            "daap3 bin6 wui6"
+            "luk6 daai3"
           ],
-          "note": "答謝或答辯聚會為名詞，wui2 先、wui6 文讀後，不套能力 wui5。",
-          "reference": "AI:whole-word-context"
+          "note": "帶狀物名詞 daai2 日常變調先、daai3 原讀後，不把帶領動詞讀法當唯一。",
+          "reference": "https://jyut.net/query?q=帶"
         },
         {
-          "id": 105663,
-          "char": "籌備會議",
-          "previous_jyutping": "cau4 bei6 wui6 ji5",
-          "jyutping": "cau4 bei6 wui6 ji5",
-          "alternatives": [],
-          "note": "籌備會議中的會議固定 wui6 ji5，不套聚會 wui2 或能力 wui5。",
-          "reference": "AI:whole-word-context"
-        },
-        {
-          "id": 105310,
-          "char": "管理局長",
-          "previous_jyutping": "gun2 lei5 guk6 zoeng2",
-          "jyutping": "gun2 lei5 guk6 zoeng2",
-          "alternatives": [],
-          "note": "局長指職位 zoeng2，非長短 coeng4；字面不變而音節、碼同步。",
-          "reference": "AI:whole-word-context"
-        },
-        {
-          "id": 104179,
-          "char": "空氣量",
-          "previous_jyutping": "hung1 hei3 loeng6",
-          "jyutping": "hung1 hei3 loeng6",
-          "alternatives": [],
-          "note": "本詞的量或數指數量，量 loeng6／數 sou3，非量度 loeng4、數算 sou2 動詞；整個音節同步。",
-          "reference": "AI:whole-word-context"
-        },
-        {
-          "id": 104735,
-          "char": "章節數",
-          "previous_jyutping": "zoeng1 zit3 sou3",
-          "jyutping": "zoeng1 zit3 sou3",
-          "alternatives": [],
-          "note": "本詞的量或數指數量，量 loeng6／數 sou3，非量度 loeng4、數算 sou2 動詞；整個音節同步。",
-          "reference": "AI:whole-word-context"
-        },
-        {
-          "id": 105388,
-          "char": "節數",
-          "previous_jyutping": "zit3 sou3",
-          "jyutping": "zit3 sou3",
-          "alternatives": [],
-          "note": "本詞的量或數指數量，量 loeng6／數 sou3，非量度 loeng4、數算 sou2 動詞；整個音節同步。",
-          "reference": "AI:whole-word-context"
-        },
-        {
-          "id": 105452,
-          "char": "篇數",
-          "previous_jyutping": "pin1 sou3",
-          "jyutping": "pin1 sou3",
-          "alternatives": [],
-          "note": "本詞的量或數指數量，量 loeng6／數 sou3，非量度 loeng4、數算 sou2 動詞；整個音節同步。",
-          "reference": "AI:whole-word-context"
-        },
-        {
-          "id": 105982,
-          "char": "精液量",
-          "previous_jyutping": "zing1 jik6 loeng6",
-          "jyutping": "zing1 jik6 loeng6",
-          "alternatives": [],
-          "note": "本詞的量或數指數量，量 loeng6／數 sou3，非量度 loeng4、數算 sou2 動詞；整個音節同步。",
-          "reference": "AI:whole-word-context"
-        },
-        {
-          "id": 105468,
-          "char": "篤學好古",
-          "previous_jyutping": "duk1 hok6 hou3 gu2",
-          "jyutping": "duk1 hok6 hou3 gu2",
-          "alternatives": [],
-          "note": "好古指喜愛古代文化 hou3，非好壞 hou2。",
-          "reference": "AI:whole-word-context"
-        },
-        {
-          "id": 105465,
-          "char": "篡奪者",
-          "previous_jyutping": "saan3 dyut6 ze2",
-          "jyutping": "saan3 dyut6 ze2",
+          "id": 107822,
+          "char": "緊固帶",
+          "previous_jyutping": "gan2 gu3 daai2",
+          "jyutping": "gan2 gu3 daai2",
           "alternatives": [
-            "cyun3 dyut6 ze2"
+            "gan2 gu3 daai3"
           ],
-          "note": "篡奪 saan3 優先；同義現代原讀 cyun3 保留較後，不憑字形混同竄走。",
-          "reference": "https://jyut.net/query?q=篡"
-        },
-        {
-          "id": 105518,
-          "char": "簌簌淚下",
-          "previous_jyutping": "cuk1 cuk1 leoi6 haa6",
-          "jyutping": "cuk1 cuk1 leoi6 haa6",
-          "alternatives": [],
-          "note": "簌簌淚下的簌 cuk1 為現代正常；suk1 僅見舊書，不無據增加現代讀法。",
-          "reference": "https://jyut.net/query?q=簌"
+          "note": "帶狀物名詞 daai2 日常變調先、daai3 原讀後，不把帶領動詞讀法當唯一。",
+          "reference": "https://jyut.net/query?q=帶"
         },
         {
-          "id": 105683,
-          "char": "籠罩着",
-          "previous_jyutping": "lung4 zaau3 zoek6",
-          "jyutping": "lung5 zaau3 zoek6",
+          "id": 107976,
+          "char": "緞帶花",
+          "previous_jyutping": "dyun6 daai2 faa1",
+          "jyutping": "dyun6 daai2 faa1",
           "alternatives": [
-            "lung4 zaau3 zoek6"
+            "dyun6 daai3 faa1"
           ],
-          "note": "現代字典有黑雲籠罩着大地 lung5 的完整詞例；CantoDict整詞籠罩 lung4 亦有據，兩音保留，5先4後為本批語境判斷，不刪舊4。",
-          "reference": "https://jyut.net/query?q=籠 ; https://cantonese.sheik.co.uk/dictionary/words/59456/"
+          "note": "帶狀物名詞 daai2 日常變調先、daai3 原讀後，不把帶領動詞讀法當唯一。",
+          "reference": "https://jyut.net/query?q=帶"
         },
         {
-          "id": 105604,
-          "char": "簽到簿",
-          "previous_jyutping": "cim1 dou3 bou2",
-          "jyutping": "cim1 dou3 bou2",
+          "id": 107104,
+          "char": "絕緣膠帶",
+          "previous_jyutping": "zyut6 jyun4 gaau1 daai2",
+          "jyutping": "zyut6 jyun4 gaau1 daai2",
           "alternatives": [
-            "cim1 dou3 bou6"
+            "zyut6 jyun4 gaau1 daai3"
           ],
-          "note": "冊簿物件日常 bou2 先，現代書面 bou6 保留後；不套蠶具古義 bok6。",
-          "reference": "https://jyut.net/query?q=簿"
+          "note": "帶狀物名詞 daai2 日常變調先、daai3 原讀後，不把帶領動詞讀法當唯一。",
+          "reference": "https://jyut.net/query?q=帶"
         },
         {
-          "id": 105639,
-          "char": "簿本",
-          "previous_jyutping": "bou2 bun2",
-          "jyutping": "bou2 bun2",
+          "id": 106571,
+          "char": "級會",
+          "previous_jyutping": "kap1 wui2",
+          "jyutping": "kap1 wui2",
           "alternatives": [
-            "bou6 bun2"
+            "kap1 wui6"
           ],
-          "note": "冊簿物件日常 bou2 先，現代書面 bou6 保留後；不套蠶具古義 bok6。",
-          "reference": "https://jyut.net/query?q=簿"
+          "note": "大會／級會／網友會為集會名詞，wui2 先、wui6 現代書讀後；會議固定詞仍用 wui6 ji5。",
+          "reference": "https://jyut.net/query?q=會"
         },
         {
-          "id": 105640,
-          "char": "簿本費",
-          "previous_jyutping": "bou2 bun2 fai3",
-          "jyutping": "bou2 bun2 fai3",
+          "id": 107614,
+          "char": "網友會",
+          "previous_jyutping": "mong5 jau5 wui2",
+          "jyutping": "mong5 jau5 wui2",
           "alternatives": [
-            "bou6 bun2 fai3"
+            "mong5 jau5 wui6"
           ],
-          "note": "冊簿物件日常 bou2 先，現代書面 bou6 保留後；不套蠶具古義 bok6。",
-          "reference": "https://jyut.net/query?q=簿"
-        },
-        {
-          "id": 105641,
-          "char": "簿記師",
-          "previous_jyutping": "bou6 gei3 si1",
-          "jyutping": "bou6 gei3 si1",
-          "alternatives": [],
-          "note": "簿記是記帳行業固定詞 bou6 gei3；不能把簿本物件的變調2自動套作首讀，原6保留。",
-          "reference": "https://jyut.net/query?q=簿"
+          "note": "大會／級會／網友會為集會名詞，wui2 先、wui6 現代書讀後；會議固定詞仍用 wui6 ji5。",
+          "reference": "https://jyut.net/query?q=會"
         },
         {
-          "id": 105129,
-          "char": "筋膜",
-          "previous_jyutping": "gan1 mok2",
-          "jyutping": "gan1 mok6",
+          "id": 107743,
+          "char": "網膜炎",
+          "previous_jyutping": "mong5 mok6 jim4",
+          "jyutping": "mong5 mok6 jim4",
           "alternatives": [
-            "gan1 mok2"
+            "mong5 mok2 jim4"
           ],
-          "note": "身體薄膜取書面 mok6 優先、同義現代語音 mok2 後；詞語本身常用度另排。",
+          "note": "身體薄膜 mok6 正常書讀先，mok2 現代同義語音保留後。",
           "reference": "https://jyut.net/query?q=膜"
         },
         {
-          "id": 105876,
-          "char": "粘膜炎",
-          "previous_jyutping": "nim1 mok2 jim4",
-          "jyutping": "nim1 mok6 jim4",
+          "id": 107515,
+          "char": "綠膿桿菌",
+          "previous_jyutping": "luk6 nung4 gon2 kwan2",
+          "jyutping": "luk6 nung4 gon2 kwan2",
           "alternatives": [
-            "nim1 mok2 jim4"
+            "luk6 nung4 gon1 kwan2"
           ],
-          "note": "身體薄膜取書面 mok6 優先、同義現代語音 mok2 後；詞語本身常用度另排。",
-          "reference": "https://jyut.net/query?q=膜"
+          "note": "桿菌形狀 gon2 先、gon1 現代同義後，不按國語 gǎn 決定粵音。",
+          "reference": "https://jyut.net/query?q=桿"
         },
         {
-          "id": 105849,
-          "char": "粘上",
-          "previous_jyutping": "nim4 soeng5",
-          "jyutping": "nim4 soeng5",
-          "alternatives": [
-            "zim1 soeng5"
-          ],
-          "note": "粘為黏的同字異體，黏貼動作 nim4 有現代直接詞例；香港中學生字典明列粘住、粘貼 zim1 同義又讀，保留後。nim1 的濃黏形容義另處理，不用字表隨機配音。",
-          "reference": "https://words.hk/zidin/黏 ; https://jyut.net/query?q=粘"
-        },
-        {
-          "id": 105850,
-          "char": "粘上去",
-          "previous_jyutping": "nim4 soeng5 heoi3",
-          "jyutping": "nim4 soeng5 heoi3",
-          "alternatives": [
-            "zim1 soeng5 heoi3"
-          ],
-          "note": "粘為黏的同字異體，黏貼動作 nim4 有現代直接詞例；香港中學生字典明列粘住、粘貼 zim1 同義又讀，保留後。nim1 的濃黏形容義另處理，不用字表隨機配音。",
-          "reference": "https://words.hk/zidin/黏 ; https://jyut.net/query?q=粘"
-        },
-        {
-          "id": 105851,
-          "char": "粘住",
-          "previous_jyutping": "nim4 zyu6",
-          "jyutping": "nim4 zyu6",
-          "alternatives": [
-            "zim1 zyu6"
-          ],
-          "note": "粘為黏的同字異體，黏貼動作 nim4 有現代直接詞例；香港中學生字典明列粘住、粘貼 zim1 同義又讀，保留後。nim1 的濃黏形容義另處理，不用字表隨機配音。",
-          "reference": "https://words.hk/zidin/黏 ; https://jyut.net/query?q=粘"
-        },
-        {
-          "id": 105855,
-          "char": "粘固",
-          "previous_jyutping": "nim4 gu3",
-          "jyutping": "nim4 gu3",
-          "alternatives": [
-            "zim1 gu3"
-          ],
-          "note": "粘為黏的同字異體，黏貼動作 nim4 有現代直接詞例；香港中學生字典明列粘住、粘貼 zim1 同義又讀，保留後。nim1 的濃黏形容義另處理，不用字表隨機配音。",
-          "reference": "https://words.hk/zidin/黏 ; https://jyut.net/query?q=粘"
-        },
-        {
-          "id": 105867,
-          "char": "粘牢",
-          "previous_jyutping": "nim4 lou4",
-          "jyutping": "nim4 lou4",
-          "alternatives": [
-            "zim1 lou4"
-          ],
-          "note": "粘為黏的同字異體，黏貼動作 nim4 有現代直接詞例；香港中學生字典明列粘住、粘貼 zim1 同義又讀，保留後。nim1 的濃黏形容義另處理，不用字表隨機配音。",
-          "reference": "https://words.hk/zidin/黏 ; https://jyut.net/query?q=粘"
-        },
-        {
-          "id": 105873,
-          "char": "粘緊",
-          "previous_jyutping": "nim4 gan2",
-          "jyutping": "nim4 gan2",
-          "alternatives": [
-            "zim1 gan2"
-          ],
-          "note": "粘為黏的同字異體，黏貼動作 nim4 有現代直接詞例；香港中學生字典明列粘住、粘貼 zim1 同義又讀，保留後。nim1 的濃黏形容義另處理，不用字表隨機配音。",
-          "reference": "https://words.hk/zidin/黏 ; https://jyut.net/query?q=粘"
-        },
-        {
-          "id": 105883,
-          "char": "粘貼板",
-          "previous_jyutping": "nim4 tip3 baan2",
-          "jyutping": "nim4 tip3 baan2",
-          "alternatives": [
-            "zim1 tip3 baan2"
-          ],
-          "note": "粘為黏的同字異體，黏貼動作 nim4 有現代直接詞例；香港中學生字典明列粘住、粘貼 zim1 同義又讀，保留後。nim1 的濃黏形容義另處理，不用字表隨機配音。",
-          "reference": "https://words.hk/zidin/黏 ; https://jyut.net/query?q=粘"
-        },
-        {
-          "id": 105852,
-          "char": "粘劑",
-          "previous_jyutping": "nim1 zai1",
-          "jyutping": "nim1 zai1",
-          "alternatives": [
-            "nim4 zai1"
-          ],
-          "note": "粘性、膠液材質等濃黏性質採現代 nim1；同黏 nim4 文讀保留較後，字面粘是同字異體，不改另一詞來源。",
-          "reference": "https://words.hk/zidin/黏 ; https://jyut.net/query?q=粘"
-        },
-        {
-          "id": 105856,
-          "char": "粘固劑",
-          "previous_jyutping": "nim1 gu3 zai1",
-          "jyutping": "nim1 gu3 zai1",
-          "alternatives": [
-            "nim4 gu3 zai1"
-          ],
-          "note": "粘性、膠液材質等濃黏性質採現代 nim1；同黏 nim4 文讀保留較後，字面粘是同字異體，不改另一詞來源。",
-          "reference": "https://words.hk/zidin/黏 ; https://jyut.net/query?q=粘"
-        },
-        {
-          "id": 105861,
-          "char": "粘性流體",
-          "previous_jyutping": "nim1 sing3 lau4 tai2",
-          "jyutping": "nim1 sing3 lau4 tai2",
-          "alternatives": [
-            "nim4 sing3 lau4 tai2"
-          ],
-          "note": "粘性、膠液材質等濃黏性質採現代 nim1；同黏 nim4 文讀保留較後，字面粘是同字異體，不改另一詞來源。",
-          "reference": "https://words.hk/zidin/黏 ; https://jyut.net/query?q=粘"
-        },
-        {
-          "id": 105862,
-          "char": "粘扣帶",
-          "previous_jyutping": "nim1 kau3 daai3",
-          "jyutping": "nim1 kau3 daai3",
-          "alternatives": [
-            "nim4 kau3 daai3"
-          ],
-          "note": "粘性、膠液材質等濃黏性質採現代 nim1；同黏 nim4 文讀保留較後，字面粘是同字異體，不改另一詞來源。",
-          "reference": "https://words.hk/zidin/黏 ; https://jyut.net/query?q=粘"
-        },
-        {
-          "id": 105871,
-          "char": "粘結性",
-          "previous_jyutping": "nim1 git3 sing3",
-          "jyutping": "nim1 git3 sing3",
-          "alternatives": [
-            "nim4 git3 sing3"
-          ],
-          "note": "粘性、膠液材質等濃黏性質採現代 nim1；同黏 nim4 文讀保留較後，字面粘是同字異體，不改另一詞來源。",
-          "reference": "https://words.hk/zidin/黏 ; https://jyut.net/query?q=粘"
-        },
-        {
-          "id": 105879,
-          "char": "粘膠纖維",
-          "previous_jyutping": "nim1 gaau1 cim1 wai4",
-          "jyutping": "nim1 gaau1 cim1 wai4",
-          "alternatives": [
-            "nim4 gaau1 cim1 wai4"
-          ],
-          "note": "粘性、膠液材質等濃黏性質採現代 nim1；同黏 nim4 文讀保留較後，字面粘是同字異體，不改另一詞來源。",
-          "reference": "https://words.hk/zidin/黏 ; https://jyut.net/query?q=粘"
-        },
-        {
-          "id": 105884,
-          "char": "粘質",
-          "previous_jyutping": "nim1 zat1",
-          "jyutping": "nim1 zat1",
-          "alternatives": [
-            "nim4 zat1"
-          ],
-          "note": "粘性、膠液材質等濃黏性質採現代 nim1；同黏 nim4 文讀保留較後，字面粘是同字異體，不改另一詞來源。",
-          "reference": "https://words.hk/zidin/黏 ; https://jyut.net/query?q=粘"
-        },
-        {
-          "id": 104804,
-          "char": "端粒",
-          "previous_jyutping": "dyun1 lap1",
-          "jyutping": "dyun1 nap1",
-          "alternatives": [
-            "dyun1 lap1"
-          ],
-          "note": "顆粒、粒子或量詞粒採通行 nap1，lap1 亦有現代又讀依據，保留較後，非只按普通話拼音 l- 配音。",
-          "reference": "https://jyut.net/query?q=粒"
-        },
-        {
-          "id": 105732,
-          "char": "粉粒",
-          "previous_jyutping": "fan2 lap1",
-          "jyutping": "fan2 nap1",
-          "alternatives": [
-            "fan2 lap1"
-          ],
-          "note": "顆粒、粒子或量詞粒採通行 nap1，lap1 亦有現代又讀依據，保留較後，非只按普通話拼音 l- 配音。",
-          "reference": "https://jyut.net/query?q=粒"
-        },
-        {
-          "id": 105760,
-          "char": "粒子學說",
-          "previous_jyutping": "nap1 zi2 hok6 syut3",
-          "jyutping": "nap1 zi2 hok6 syut3",
-          "alternatives": [
-            "lap1 zi2 hok6 syut3"
-          ],
-          "note": "顆粒、粒子或量詞粒採通行 nap1，lap1 亦有現代又讀依據，保留較後，非只按普通話拼音 l- 配音。",
-          "reference": "https://jyut.net/query?q=粒"
-        },
-        {
-          "id": 105764,
-          "char": "粒米",
-          "previous_jyutping": "lap1 mai5",
-          "jyutping": "nap1 mai5",
-          "alternatives": [
-            "lap1 mai5"
-          ],
-          "note": "顆粒、粒子或量詞粒採通行 nap1，lap1 亦有現代又讀依據，保留較後，非只按普通話拼音 l- 配音。",
-          "reference": "https://jyut.net/query?q=粒"
-        },
-        {
-          "id": 105766,
-          "char": "粒粒",
-          "previous_jyutping": "lap1 lap1",
-          "jyutping": "nap1 nap1",
-          "alternatives": [
-            "lap1 lap1"
-          ],
-          "note": "顆粒、粒子或量詞粒採通行 nap1，lap1 亦有現代又讀依據，保留較後，非只按普通話拼音 l- 配音。",
-          "reference": "https://jyut.net/query?q=粒"
-        },
-        {
-          "id": 105990,
-          "char": "精研細磨",
-          "previous_jyutping": "zing1 jin4 sai3 mo4",
-          "jyutping": "zing1 jin4 sai3 mo4",
-          "alternatives": [
-            "zing1 ngaan4 sai3 mo4"
-          ],
-          "note": "研磨 jin4 有現代直接詞例，ngaan4 為同義碾磨語音，保留後，不加入硯古寫 jin6。",
-          "reference": "https://jyut.net/query?q=研"
-        },
-        {
-          "id": 105450,
-          "char": "篆隸",
-          "previous_jyutping": "syun6 dai6",
-          "jyutping": "syun6 dai6",
-          "alternatives": [
-            "syun6 lai6"
-          ],
-          "note": "篆隸為書體，隸 dai6／lai6 均有現代隸書完整詞例；本批 dai6 先、lai6 後。",
-          "reference": "https://jyut.net/query?q=隸"
-        },
-        {
-          "id": 105354,
-          "char": "箭矢",
-          "previous_jyutping": "zin3 ci2",
-          "jyutping": "zin3 ci2",
+          "id": 107983,
+          "char": "緣分已盡",
+          "previous_jyutping": "jyun4 fan6 ji5 zeon6",
+          "jyutping": "jyun4 fan6 ji5 zeon6",
           "alternatives": [],
-          "note": "箭矢為箭 ci2，非屎本字古義 si2；不無據增加同詞異讀。",
-          "reference": "https://jyut.net/query?q=矢"
+          "note": "緣分 fan6 為緣份，不用分開 fan1。",
+          "reference": "https://words.hk/zidin/緣份"
         },
         {
-          "id": 104091,
-          "char": "空中加油",
-          "previous_jyutping": "hung1 zung1 gaa1 jau2",
-          "jyutping": "hung1 zung1 gaa1 jau2",
+          "id": 106575,
+          "char": "級長",
+          "previous_jyutping": "kap1 zoeng2",
+          "jyutping": "kap1 zoeng2",
+          "alternatives": [],
+          "note": "按整詞用法作 AI 輔助粵音覆核。級長為職銜 zoeng2，非長短 coeng4。",
+          "reference": "AI:whole-word-context"
+        },
+        {
+          "id": 106552,
+          "char": "紙行",
+          "previous_jyutping": "zi2 hong4",
+          "jyutping": "zi2 hong4",
+          "alternatives": [],
+          "note": "按整詞用法作 AI 輔助粵音覆核。紙行是行業商號 hong4。",
+          "reference": "AI:whole-word-context"
+        },
+        {
+          "id": 106191,
+          "char": "糧行",
+          "previous_jyutping": "loeng4 hong4",
+          "jyutping": "loeng4 hong4",
+          "alternatives": [],
+          "note": "按整詞用法作 AI 輔助粵音覆核。糧行為買賣行業商號 hong4，非步行 haang4。",
+          "reference": "AI:whole-word-context"
+        },
+        {
+          "id": 106204,
+          "char": "系出名門",
+          "previous_jyutping": "hai6 ceot1 ming4 mun4",
+          "jyutping": "hai6 ceot1 ming4 mun4",
+          "alternatives": [],
+          "note": "按整詞用法作 AI 輔助粵音覆核。",
+          "reference": "AI:whole-word-context"
+        },
+        {
+          "id": 106325,
+          "char": "紅木傢俱",
+          "previous_jyutping": "hung4 muk6 gaa1 geoi6",
+          "jyutping": "hung4 muk6 gaa1 geoi6",
+          "alternatives": [],
+          "note": "按整詞用法作 AI 輔助粵音覆核。紅木傢俱的器物俱應按整詞家具 geoi6，非俱皆 keoi1。原傢俱通行異寫保留，不改家具製作另一來源。",
+          "reference": "AI:whole-word-context"
+        },
+        {
+          "id": 106489,
+          "char": "純音樂",
+          "previous_jyutping": "seon4 jam1 ngok6",
+          "jyutping": "seon4 jam1 ngok6",
+          "alternatives": [],
+          "note": "按整詞用法作 AI 輔助粵音覆核。純音樂是音樂藝術 ngok6，非快樂 lok6。",
+          "reference": "AI:whole-word-context"
+        },
+        {
+          "id": 107969,
+          "char": "緝拿罪犯",
+          "previous_jyutping": "cap1 naa4 zeoi6 faan2",
+          "jyutping": "cap1 naa4 zeoi6 faan2",
+          "alternatives": [],
+          "note": "按整詞用法作 AI 輔助粵音覆核。罪犯為犯罪者名詞 faan2，非犯罪動詞 faan6。",
+          "reference": "AI:whole-word-context"
+        },
+        {
+          "id": 107757,
+          "char": "網路上",
+          "previous_jyutping": "mong5 lou6 soeng6",
+          "jyutping": "mong5 lou6 soeng6",
+          "alternatives": [],
+          "note": "按整詞用法作 AI 輔助粵音覆核。網路上為方位 soeng6，不套上去 soeng5。",
+          "reference": "AI:whole-word-context"
+        },
+        {
+          "id": 107844,
+          "char": "緊急會議",
+          "previous_jyutping": "gan2 gap1 wui6 ji5",
+          "jyutping": "gan2 gap1 wui6 ji5",
+          "alternatives": [],
+          "note": "按整詞用法作 AI 輔助粵音覆核。",
+          "reference": "AI:whole-word-context"
+        },
+        {
+          "id": 107859,
+          "char": "緊接著",
+          "previous_jyutping": "gan2 zip3 zyu3",
+          "jyutping": "gan2 zip3 zoek6",
+          "alternatives": [],
+          "note": "接著是完整接續詞，CC-Canto及CantoDict均明列 zip3 zoek6；zyu3 為著作等義，不以國語輕聲 zhe 推讀粵音。",
+          "reference": "https://cantonese.org/search.php?q=接著 ; https://cantonese.sheik.co.uk/dictionary/characters/1049/?cf=1&full=true"
+        },
+        {
+          "id": 107217,
+          "char": "統計權重",
+          "previous_jyutping": "tung2 gai3 kyun4 cung5",
+          "jyutping": "tung2 gai3 kyun4 cung5",
+          "alternatives": [],
+          "note": "權重為加權分量，CC-Canto整詞 kyun4 cung5，非 zung6。",
+          "reference": "https://cantonese.org/search.php?q=權"
+        },
+        {
+          "id": 107123,
+          "char": "絞斷",
+          "previous_jyutping": "gaau2 dyun6",
+          "jyutping": "gaau2 tyun5",
           "alternatives": [
-            "hung1 zung1 gaa1 jau4"
+            "gaau2 dyun6"
           ],
-          "note": "加油完整詞有現代入油／加油站 jau2 詞例，LSHK表亦有 jau4；空中加油的油取日常2先、文讀4後，不因Rime裸字缺2誤判棄用。",
-          "reference": "https://words.hk/zidin/加油 ; https://cala.hk/assets/CRAT_Appendix2_bystroke_1.5.pdf"
-        }
-      ],
-      "restored_candidates": [
-        {
-          "id": 104053,
-          "char": "穩拿到",
-          "reason": "穩拿到為自然可復用通用述語，非方言。"
+          "note": "斷開、連續中止義 tyun5 白讀先，dyun6 現代同義文讀後；不混判斷 dyun3。",
+          "reference": "https://jyut.net/query?q=斷 ; https://words.hk/zidin/斷絕"
         },
         {
-          "id": 104089,
-          "char": "空下來",
-          "reason": "空下來為騰出空間或時間的自然完整述語，不憑國語慣用而一概排除。"
+          "id": 107805,
+          "char": "綿綿不斷",
+          "previous_jyutping": "min4 min4 bat1 dyun6",
+          "jyutping": "min4 min4 bat1 tyun5",
+          "alternatives": [
+            "min4 min4 bat1 dyun6"
+          ],
+          "note": "斷開、連續中止義 tyun5 白讀先，dyun6 現代同義文讀後；不混判斷 dyun3。",
+          "reference": "https://jyut.net/query?q=斷 ; https://words.hk/zidin/斷絕"
+        },
+        {
+          "id": 106697,
+          "char": "累加法",
+          "previous_jyutping": "leoi6 gaa1 faat3",
+          "jyutping": "leoi6 gaa1 faat3",
+          "alternatives": [
+            "leoi5 gaa1 faat3"
+          ],
+          "note": "累積、遞加義 leoi6 有粵典完整詞證，leoi5 現代書讀亦保留，不把6誤限於疲累。",
+          "reference": "https://words.hk/zidin/累積 ; https://jyut.net/query?q=累"
+        },
+        {
+          "id": 106703,
+          "char": "累增",
+          "previous_jyutping": "leoi6 zang1",
+          "jyutping": "leoi6 zang1",
+          "alternatives": [
+            "leoi5 zang1"
+          ],
+          "note": "累積、遞加義 leoi6 有粵典完整詞證，leoi5 現代書讀亦保留，不把6誤限於疲累。",
+          "reference": "https://words.hk/zidin/累積 ; https://jyut.net/query?q=累"
+        },
+        {
+          "id": 106713,
+          "char": "累減",
+          "previous_jyutping": "leoi6 gaam2",
+          "jyutping": "leoi6 gaam2",
+          "alternatives": [
+            "leoi5 gaam2"
+          ],
+          "note": "累積、遞加義 leoi6 有粵典完整詞證，leoi5 現代書讀亦保留，不把6誤限於疲累。",
+          "reference": "https://words.hk/zidin/累積 ; https://jyut.net/query?q=累"
+        },
+        {
+          "id": 106718,
+          "char": "累積下來",
+          "previous_jyutping": "leoi6 zik1 haa6 loi4",
+          "jyutping": "leoi6 zik1 haa6 loi4",
+          "alternatives": [
+            "leoi5 zik1 haa6 loi4"
+          ],
+          "note": "累積、遞加義 leoi6 有粵典完整詞證，leoi5 現代書讀亦保留，不把6誤限於疲累。",
+          "reference": "https://words.hk/zidin/累積 ; https://jyut.net/query?q=累"
+        },
+        {
+          "id": 106719,
+          "char": "累積到",
+          "previous_jyutping": "leoi6 zik1 dou3",
+          "jyutping": "leoi6 zik1 dou3",
+          "alternatives": [
+            "leoi5 zik1 dou3"
+          ],
+          "note": "累積、遞加義 leoi6 有粵典完整詞證，leoi5 現代書讀亦保留，不把6誤限於疲累。",
+          "reference": "https://words.hk/zidin/累積 ; https://jyut.net/query?q=累"
+        },
+        {
+          "id": 106722,
+          "char": "累積盈虧",
+          "previous_jyutping": "leoi6 zik1 jing4 kwai1",
+          "jyutping": "leoi6 zik1 jing4 kwai1",
+          "alternatives": [
+            "leoi5 zik1 jing4 kwai1"
+          ],
+          "note": "累積、遞加義 leoi6 有粵典完整詞證，leoi5 現代書讀亦保留，不把6誤限於疲累。",
+          "reference": "https://words.hk/zidin/累積 ; https://jyut.net/query?q=累"
+        },
+        {
+          "id": 106729,
+          "char": "累計額",
+          "previous_jyutping": "leoi6 gai3 ngaak6",
+          "jyutping": "leoi6 gai3 ngaak6",
+          "alternatives": [
+            "leoi5 gai3 ngaak6"
+          ],
+          "note": "累積、遞加義 leoi6 有粵典完整詞證，leoi5 現代書讀亦保留，不把6誤限於疲累。",
+          "reference": "https://words.hk/zidin/累積 ; https://jyut.net/query?q=累"
+        },
+        {
+          "id": 106268,
+          "char": "紀念大會",
+          "previous_jyutping": "gei2 nim6 daai6 wui6",
+          "jyutping": "gei2 nim6 daai6 wui2",
+          "alternatives": [
+            "gei2 nim6 daai6 wui6",
+            "gei3 nim6 daai6 wui2"
+          ],
+          "note": "紀念大會為集會名詞 wui2 先、wui6 書讀後；紀念 gei2 先、gei3 現代又讀後；不擴展無需要的所有異讀乘積。",
+          "reference": "https://jyut.net/query?q=紀 ; https://jyut.net/query?q=會"
+        },
+        {
+          "id": 107251,
+          "char": "絲綿被",
+          "previous_jyutping": "si1 min4 bei6",
+          "jyutping": "si1 min4 pei5",
+          "alternatives": [],
+          "note": "被褥、棉被的被為 pei5；現代字典將 bei6 列被動、遭受義，沒有寢具同義依據，本詞不加入 bei6。",
+          "reference": "https://jyut.net/query?q=被"
+        },
+        {
+          "id": 107979,
+          "char": "緞被",
+          "previous_jyutping": "dyun6 bei6",
+          "jyutping": "dyun6 pei5",
+          "alternatives": [],
+          "note": "被褥、棉被的被為 pei5；現代字典將 bei6 列被動、遭受義，沒有寢具同義依據，本詞不加入 bei6。",
+          "reference": "https://jyut.net/query?q=被"
         }
       ],
-      "final_accepted_before_dedup": 1002,
+      "restored_candidates": [],
+      "final_accepted_before_dedup": 1044,
       "corpus": {
-        "observations": 11,
-        "supplied_spans": 14,
+        "observations": 6,
+        "supplied_spans": 12,
         "all_original_spans_read": true,
         "source_commit": "018e88540b917c40dc3f7248ed98908208544b54",
         "boundary_notes": {
-          "104214": "太空／船的內部切分，不當空船的獨立詞頻；空船另有空載船隻的自然完整用法。",
-          "104350": "穿起嫁妝是完整穿起 cyun1 hei2 述語，譜上 hei1 不是現代起字新讀音，副歌重複不當獨立詞頻。",
-          "104432": "窄路為完整道路詞，現代路 lou6；譜上 lou3 不當正常新讀法，副歌重複不當詞頻。",
-          "104548": "無窮／氣數跨詞，不支持另收窮氣；原形按地域用法不收。",
-          "104691": "站出點吸引有站出完整述語，保留正常 zaam6 ceot1；不把整句任意內部片段當實測生活詞頻。",
-          "104754": "童話般的婚禮為完整修飾用法，tung4 waa2 bun1；同一副歌不是兩個獨立常用度觀測。",
-          "105076": "等得多變習慣有等得 dang2 dak1 述補結構，按可復用功能短語保留；非完整獨立詞頻。",
-          "105227": "推算到的內部述補片段，不當算到的獨立整詞頻率；算到的自然計算達成用法另判，dou3 原譜不視作錯音。",
-          "105394": "季節／會默默無言跨詞，節會不收，不套能力 wui5 造聚會讀音。",
-          "105463": "築起了圍牆有完整築起 zuk1 hei2 述語，保留。",
-          "105691": "採菊東籬下有籬下方位結構，可與寄人籬下等書面用法對照，列較後書面級，不當高生活詞頻。"
+          "106707": "親口講你累得很有完整述補累得 leoi6 dak1，疲累6，非積累5；同一副歌三次不當三個獨立詞頻。",
+          "106756": "一秒夠細數有完整細數 sai3 sou2，數為點算動詞，非數量 sou3。",
+          "106827": "彼此終必火化有完整終必 zung1 bit1 副詞，通用書面／填詞可復用。",
+          "106833": "始終／會等到跨詞，不能當終會的整詞頻率；終會另按自然副詞加情態用法收，wui5 非集會2/6。",
+          "106834": "火花終有日耗盡有完整終有；另一首始終／有些心虛為跨詞，兩首命中不等於兩次完整詞頻。",
+          "107149": "給你／愛護過的愛護不能拆成給你愛，字串命中不足支持獨立詞，本批不收。"
         }
       },
-      "prior_decisions_preserved": 103994,
+      "prior_decisions_preserved": 105994,
       "explicit_prior_decision_repairs": [],
       "existing_runtime_audit": {
-        "上升 soeng6": "Modern whole-word words.hk/LSHK valid; preserve,5 also modern CantoDict.",
-        "籠罩 lung4": "Modern CantoDict full word valid,5 also direct modern example; preserve old both.",
-        "競 ging3": "Modern2007/1991 alternate, preserve old; new terms6first3later.",
-        "粘 nim1": "Modern黏性/黏液 context valid, not global deletion; verb4/zim1 separately.",
-        "簿記 bou6": "Existing complete bookkeeping word valid, not blanket object bou2.",
-        "竄 cyun2/cyun3": "Bothmodern, preserve.",
-        "加油 jau2": "Modern full-word refuelling sense valid, though Rime bare character lacks2. New whole-word grade0,4later."
+        "紀 gei2/gei3": "Both modern; preserve existing, context order only new.",
+        "處分 cyu5 fan1": "Modern LSHK whole word valid; do not delete old cyu5.",
+        "累 leoi6 accumulation": "Modern whole累積 words.hk valid, preserve existing6.",
+        "縫 fung4 noun": "Modern商務新詞典 noun alternate, preserve existing4.",
+        "絨 jung4/jung2": "Both modern same material, preserve existing."
       }
     }
   },
@@ -3765,6 +3207,6 @@
     "license": "CC BY 4.0",
     "modifications": "Aggregated single-character grades for word readings; explicit glyph inheritance and AI contextual overrides are marked per row."
   },
-  "updated_through_batch": "2026-11-06-written-b55",
+  "updated_through_batch": "2026-11-06-written-b56",
   "updated_on": "2026-11-07"
 }

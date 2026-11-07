@@ -83,6 +83,7 @@ BATCH_52 = "2026-11-06-written-b52"
 BATCH_53 = "2026-11-06-written-b53"
 BATCH_54 = "2026-11-06-written-b54"
 BATCH_55 = "2026-11-06-written-b55"
+BATCH_56 = "2026-11-06-written-b56"
 
 
 def review_rows(path):
@@ -558,7 +559,7 @@ class WrittenLexiconSupplementTests(unittest.TestCase):
         }
         candidates = ingest_lexicon_json(CURATED, source_id="curated")
         pairs = {(row.char, row.jyutping, row.code) for row in candidates}
-        batch = [row for row in json.loads(CURATED.read_text(encoding="utf-8")) if row.get("batch") in {BATCH, BATCH_02, BATCH_03, BATCH_04, BATCH_05, BATCH_06, BATCH_07, BATCH_08, BATCH_09, BATCH_10, BATCH_11, BATCH_12, BATCH_13, BATCH_14, BATCH_15, BATCH_16, BATCH_17, BATCH_18, BATCH_19, BATCH_20, BATCH_21, BATCH_22, BATCH_23, BATCH_24, BATCH_25, BATCH_26, BATCH_27, BATCH_28, BATCH_29, BATCH_30, BATCH_31, BATCH_32, BATCH_33, BATCH_34, BATCH_35, BATCH_36, BATCH_37, BATCH_38, BATCH_39, BATCH_40, BATCH_41, BATCH_42, BATCH_43, BATCH_44, BATCH_45, BATCH_46, BATCH_47, BATCH_48, BATCH_49, BATCH_50, BATCH_51, BATCH_52, BATCH_53, BATCH_54, BATCH_55}]
+        batch = [row for row in json.loads(CURATED.read_text(encoding="utf-8")) if row.get("batch") in {BATCH, BATCH_02, BATCH_03, BATCH_04, BATCH_05, BATCH_06, BATCH_07, BATCH_08, BATCH_09, BATCH_10, BATCH_11, BATCH_12, BATCH_13, BATCH_14, BATCH_15, BATCH_16, BATCH_17, BATCH_18, BATCH_19, BATCH_20, BATCH_21, BATCH_22, BATCH_23, BATCH_24, BATCH_25, BATCH_26, BATCH_27, BATCH_28, BATCH_29, BATCH_30, BATCH_31, BATCH_32, BATCH_33, BATCH_34, BATCH_35, BATCH_36, BATCH_37, BATCH_38, BATCH_39, BATCH_40, BATCH_41, BATCH_42, BATCH_43, BATCH_44, BATCH_45, BATCH_46, BATCH_47, BATCH_48, BATCH_49, BATCH_50, BATCH_51, BATCH_52, BATCH_53, BATCH_54, BATCH_55, BATCH_56}]
         usage = load_word_usage(CURATED.with_name("word_usage.tsv"))
         withdrawn = {literal for literal, grade in usage.items() if grade.withdraw_curated}
         self.assertTrue({(to_traditional(row["char"]), row["jyutping"], row["code"]) for row in batch if to_traditional(row["char"]) not in withdrawn}.issubset(pairs))
@@ -2542,6 +2543,52 @@ class WrittenLexiconSupplementTests(unittest.TestCase):
             self.assertEqual(ranks[literal, jp], "預設")
         self.assertEqual(ranks["籠罩着", "lung4 zaau3 zoek6"], "常用")
         self.assertEqual(ranks["競選活動", "ging3 syun2 wut6 dung6"], "常用")
+
+    def test_fifty_sixth_batch_keeps_whole_word_senses_and_lyric_boundaries(self):
+        curated = json.loads(CURATED.read_text(encoding="utf-8"))
+        path = REVIEW.parent / f"{BATCH_56}-supplement.tsv"
+        meta = json.loads((REVIEW.parent / f"{BATCH_56}.meta.json").read_text(encoding="utf-8"))
+        review = review_rows(path)
+        self.assertEqual(hashlib.sha256(path.read_bytes()).hexdigest(), meta["review_tsv_sha256"])
+        self.assertEqual(input_fingerprint(curated, meta, 56), meta["input_curated_sha256"])
+        self.assertEqual(meta["newly_reviewed_candidates"], 2000)
+        self.assertEqual(meta["second_pass_familiarity_withdrawals"], 154)
+        self.assertEqual(meta["reading_repairs"], 0)
+        self.assertEqual(meta["unreviewed_pool_candidates"], 38608)
+        batch = [r for r in curated if r.get("batch") == BATCH_56]
+        self.assertEqual(len(batch), 1105)
+        self.assertEqual({(r["char"], r["jyutping"], r["code"], r["evidence"]) for r in review if r["verdict"] == "accept"},
+                         {(r["char"], r["jyutping"], r["code"], r["evidence"]) for r in batch})
+        pairs = {(to_traditional(r["char"]), r["jyutping"]) for r in batch}
+        for literal, jp in [("紀律處分", "gei2 leot6 cyu2 fan1"), ("紀律處分", "gei2 leot6 cyu5 fan1"),
+                            ("紀錄下來", "gei3 luk6 haa6 loi4"), ("紀錄下來", "gei2 luk6 haa6 loi4"),
+                            ("系統診斷", "hai6 tung2 can2 dyun3"), ("系統診斷", "hai6 tung2 can2 dyun6"),
+                            ("級長", "kap1 zoeng2"), ("紙縫", "zi2 fung6"), ("紙縫", "zi2 fung4"),
+                            ("素負盛名", "sou3 fu6 sing6 ming4"), ("純音樂", "seon4 jam1 ngok6"),
+                            ("統計權重", "tung2 gai3 kyun4 cung5"), ("緝拿罪犯", "cap1 naa4 zeoi6 faan2"),
+                            ("緊接著", "gan2 zip3 zoek6"), ("緣分已盡", "jyun4 fan6 ji5 zeon6"),
+                            ("累得", "leoi6 dak1"), ("細數", "sai3 sou2"), ("終必", "zung1 bit1"),
+                            ("終會", "zung1 wui5"), ("終有", "zung1 jau5"),
+                            ("絲綿被", "si1 min4 pei5"), ("緞被", "dyun6 pei5"),
+                            ("絨線刺繡", "jung2 sin3 ci3 sau3"), ("絨線刺繡", "jung4 sin3 ci3 sau3")]:
+            self.assertIn((to_traditional(literal), jp), pairs)
+        for literal, jp in [("紀律處分", "gei2 leot6 cyu2 fan6"), ("級長", "kap1 coeng4"),
+                            ("紙縫", "zi2 laa3"), ("素負盛名", "sou3 fu6 sing4 ming4"),
+                            ("緊接著", "gan2 zip3 zyu3"), ("緣分已盡", "jyun4 fan1 ji5 zeon6"),
+                            ("絲綿被", "si1 min4 bei6"), ("緞被", "dyun6 bei6")]:
+            self.assertNotIn((to_traditional(literal), jp), pairs)
+        by_id = {r["id"]: r for r in review}
+        self.assertIn("始終／會", by_id["106833"]["note"])
+        self.assertIn("始終／有", by_id["106834"]["note"])
+        self.assertIn("給你／愛護過", by_id["107149"]["note"])
+        for identifier in ("106707", "106756", "106827", "106833", "106834", "107149"):
+            self.assertIn("Cantopop-corpus/blob/018e885", by_id[identifier]["reading_reference"])
+        for identifier in ("106048", "106121", "106271", "106419", "106481", "107149", "107755", "107986"):
+            self.assertEqual(by_id[identifier]["verdict"], "reject")
+        ranks = {(r["char"], r["jyutping"]): r["pron_rank"] for r in json.loads(CURATED.with_name("curated_reading_ranks.json").read_text(encoding="utf-8"))}
+        self.assertEqual(ranks["紀錄下來", "gei3 luk6 haa6 loi4"], "預設")
+        self.assertEqual(ranks["紀錄下來", "gei2 luk6 haa6 loi4"], "常用")
+        self.assertEqual(ranks["綠葉成蔭", "luk6 jip6 sing4 jam1"], "預設")
 
     def test_campaign_and_restoration_literals_keep_their_senses(self):
         for expected, inputs in [("御駕親征", ("御驾亲征", "御駕親征", "御駕親徵")),
