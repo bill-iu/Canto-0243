@@ -615,3 +615,13 @@ mui1 女孩子泛稱未有二妹整詞根據，本批不擴入。
 改字不能沿原音：物救必反的救 gau3 不套入極 gik6；煮豆燃箕的箕 gei1 不套入完整煮豆燃萁的豆莖 kei4。兩項原有正確詞音已覆蓋，沒有補入錯讀。煮茗先列現代建議 ming5，保留茶義 ming4 又讀；要求 jiu1、搖曳 jai6、呢喃 nei4 naam4 及抹灰 mut3 均按完整詞及現代詞義處理，不因孤字較後便把正常全詞列作罕見。
 
 讀音順位與詞語常用度獨立。新增來源、原字／正字、0243 碼及理由見[B50 審核表](../data/lexicon/reviews/2026-11-06-written-b50-supplement.tsv)；全部收錄候選首選音、一般與異讀全池排序、三種模式搜尋、新詞庫實際客戶端查詢及冷／熱快取見[B50 驗證](../data/lexicon/reviews/2026-11-06-written-b50-validation.json)。
+
+## 第五十一批整詞讀音終審（2026-11-07）
+
+新增 887 組讀音分級，累計 **62,226 組來源讀音**；全部 61,339 個舊分級物件保留。狐狸精採[粵典完整詞](https://words.hk/zidin/狐狸精) lei4，沒有憑口語直覺改成 lei2；生命以[完整詞例](https://words.hk/zidin/生命) ming6 優先，既有口語 meng6 同義異讀另列。產科病房以[日常病房](https://words.hk/zidin/病房) fong2 優先，fong4 文讀保留，病一律 beng6。
+
+吼的 hau3、haau1、hau1 均有現代咆哮詞例，不把 haau1 限成注視義而誤刪；玩轉的 zyun3 與 zyun2 有完整詞來源，按整詞先後排列。狹義、狹路的 haap3／haap6、猥褻的 wai2／wui1 亦保留有據異讀。瓦楞 ling4 有現代直接詞例，未臆增 lang4；瑰奇、瑰異取珍奇義 gwai1，不沿玫瑰義 gwai3。逃竄 cyun2 優先、cyun3 文讀較後。
+
+獲益匪淺的匪讀 fei2，字形改正後未保留非 fei1 的錯配草稿。狂風怒號 hou4、玄奧晦澀 fui3 sap1 等按完整詞義分級，不因孤字順位把正常全詞判作罕見。玻璃墊 zin3／din3 及玻璃框 kwaang1／hong1 的日常、文讀先後獨立於詞語常用度。
+
+見[B51 讀音與字形審核](../data/lexicon/reviews/2026-11-06-written-b51-supplement.tsv)及[B51 完整驗證](../data/lexicon/reviews/2026-11-06-written-b51-validation.json)。組合與無實測順位均標明為 AI 判斷；未改舊來源、全局字音或原有詞頻。
