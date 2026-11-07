@@ -133,6 +133,11 @@ _CONTEXTUAL_RESTORE: dict[str, str] = {
     "迴歸方程": "回歸方程",
     "迴歸祖國": "回歸祖國",
     "逐步迴歸": "逐步回歸",
+    "遠徵隊": "遠征隊",
+    "鄉裏鄉親": "鄉里鄉親",
+    "鄰裏公園": "鄰里公園",
+    "鄰裏糾紛": "鄰里糾紛",
+    "鄰裏關係": "鄰里關係",
 }
 
 # Bare word senses: preserve the input, since the converted form can have its
