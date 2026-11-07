@@ -18,7 +18,7 @@ from ingest.lexicon_sources import ingest_source
 from ingest.syn_ant_manifest import resolve_source_path
 
 # Bump when candidate pickle layout or parser output semantics change.
-LAYER_CACHE_FORMAT = "25"
+LAYER_CACHE_FORMAT = "27"
 DEFAULT_CACHE_DIR = ROOT / ".cache" / "lexicon-layers"
 _SAFE = re.compile(r"[^a-zA-Z0-9._-]+")
 

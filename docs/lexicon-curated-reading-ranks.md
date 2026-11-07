@@ -579,3 +579,11 @@ mui1 女孩子泛稱未有二妹整詞根據，本批不擴入。
 新增 1,070 組讀音，原有 55,131 個分級物件不變。上一批橡膠墊排除 zin3 的判斷過窄，現按中大及完整墊子詞例補回，與 din3 同列通行；字書收錄多寡不能當日常頻率。氣墊床保留 zin2／din2、zin3／din3；毛氈墊先列日常 zin3。每間房的 fong2／fong4、母女的 neoi5／neoi2、歌友會的 wui2／wui6 分先後，沒有把變調當錯音，也沒有保留能力義 wui5。每頁行數的行讀 hong4、數讀 sou3；民族樂派讀 ngok6，氈呢讀 nei4。
 
 現代全詞先於孤字標籤：正當理由先列 dong3，保留有同義完整詞例的 dong1；每盎司維持 words.hk 公版詞表及 Rime 完整盎司 on1 si2 優先，另列有據讀法；死鏈接先列 lin2，保留 lin6／lin4。比肩接踵的 zung2／dung2、毒蠍的 kit3／hit3、枕藉的 zam2／zam3、贅述的 zeoi6／zeoi3 均有現代字書根據，依整詞分先後，不用少用或棄用的孤字標籤一律刪除。正式字面、草稿、六聲碼、佐證及順位見[B46 審核表](../data/lexicon/reviews/2026-11-06-written-b46-supplement.tsv)及[驗證](../data/lexicon/reviews/2026-11-06-written-b46-validation.json)。正規化規則未變，快取維持 25。
+
+## 第四十七批整詞讀音（2026-11-07）
+
+本批逐項完成 1,210 個初選的讀音覆核，退回 9 個不合範圍或太冷的表達；查重後寫入 1,225 組來源讀音，原有 56,201 個分級物件保留。其中沉陷 cam4 haam6 已由其他來源覆蓋，為使其優先於新增 cam4 ham6，顯式鏡像到自建來源並寫入整詞分級；合併後仍只有一個相同三元組，沒有因字級較低而讓較後讀音搶前。
+
+水分子 fan1、濕度水分 fan6，中毒 zung3、組織會 wui2／wui6、數量數 sou3、油量 loeng6、治喪 song3、泳將 zoeng3 按詞義處理。沈的沉靜、下沉義轉通行沉 cam4，非姓氏 sam2；汙的污濁義用 wu1，非鑿地 waa1。泡茶、浸泡為 paau3，泡沫 pou5 有現代字書直接支持；泡芙 paau3 fu4、沙發 saa1 faat3 優先採完整現代詞例。沉溺 nik1／nik6、泛 faan3／faan6、浹背 zip3／gaap3、河鰻 maan6／maan4 保留有據異讀。法蘭 laan4／laan1 為完整詞的文讀與語音，不因 Rime 缺孤字記錄便判錯。
+
+詞級先後與詞語常用度獨立，整詞組合及無實測資料的判斷有明確標記。來源字面、草稿、正式字面、0243 碼及引用見[B47 審核表](../data/lexicon/reviews/2026-11-06-written-b47-supplement.tsv)及[驗證](../data/lexicon/reviews/2026-11-06-written-b47-validation.json)。水煙斗、煙斗兩個精確還原避免錯成鬥；累計 89 項，快取為 27。
