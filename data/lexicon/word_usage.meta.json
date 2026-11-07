@@ -15,102 +15,255 @@
     "冷僻退回"
   ],
   "automatic_bands": "0: subtitle channels>=20 or Essay>=1000; 1: channels>=5 or Essay>=500; otherwise 2. Absence alone never withdraws a word.",
-  "curated_sha256": "6459d75fbe3d6d7e3187229b2eee52c187a0bebf87dc8967a1c86019acb422ad",
-  "output_sha256": "11d432cc64d8f6801c75d810255138be0cfdbf5c2923a99ee5c725d0a69d349a",
-  "judgments_sha256": "f3df6cfe737767106837fbbc345a2769d409b06aa5ac895e1d24c68f4353c7df",
-  "curated_literals": 77502,
-  "observed_literals": 104441,
-  "graded_literals": 141735,
-  "contextual_judgments": 22388,
+  "curated_sha256": "f8b33138c16edbf99afe80249ced69fa6e5af60bf911a0adeeccee8fd17ab8c8",
+  "output_sha256": "49084ca469172cda1c6f6859ff13ef2c2134ab58058f4a1e51b32601c6c9f20b",
+  "judgments_sha256": "efc4722f765362f3d1e6a864d315d25297a3d004a3c1ec2ea2552361b7c3104e",
+  "curated_literals": 78303,
+  "observed_literals": 104731,
+  "graded_literals": 142535,
+  "contextual_judgments": 22731,
   "pending_curated_literals": 0,
   "curated_grades": {
-    "0": 5732,
-    "1": 31757,
+    "0": 5804,
+    "1": 32034,
     "3": 2051,
-    "2": 37962
+    "2": 38414
   },
   "withdrawn_curated_literals": 2051,
   "withdrawn_curated_readings": 2117,
   "validation": {
-    "merged_rows": 260197,
-    "merged_literals": 241395,
-    "unique_triples": 260195,
-    "baseline_rows": 259463,
-    "all_previous_rows_and_multiplicities_retained_except_exact_exclusion": true,
-    "all_previous_source_flags_retained_except_exact_exclusion": true,
+    "merged_rows": 261039,
+    "merged_literals": 242195,
+    "unique_triples": 261037,
+    "baseline_rows": 260197,
+    "all_previous_rows_and_multiplicities_retained": true,
+    "all_previous_source_flags_retained": true,
     "explicit_existing_word_preference_checks": 0,
     "explicit_runtime_literal_migrations": 0,
     "existing_runtime_readings_mirrored": 0,
-    "new_existing_word_readings": 0,
-    "confirmed_old_wrong_sense_readings_removed": 1,
+    "new_existing_word_readings": 1,
+    "confirmed_old_wrong_sense_readings_removed": 0,
     "explicit_existing_reading_replacements": 0,
-    "all_accepted_primary_reading_checks": 708,
-    "old_word_grades_preserved": 141027,
-    "new_source_readings": 735,
+    "all_accepted_primary_reading_checks": 801,
+    "old_word_grades_preserved": 141735,
+    "new_source_readings": 842,
     "new_pairs_retained": true,
-    "search_checks": 504,
-    "preferred_reading_checks": 27,
-    "word_usage_keys": 141735,
+    "search_checks": 673,
+    "preferred_reading_checks": 40,
+    "word_usage_keys": 142535,
     "withdrawn_curated_literals": 2051,
     "live_db_unchanged": true,
-    "old_source_rows_preserved": 80476,
-    "old_reading_grades_preserved": 80476,
+    "old_source_rows_preserved": 81211,
+    "old_reading_grades_preserved": 81211,
     "explicit_previous_source_repairs": 0,
     "explicit_previous_reading_grade_repairs": 0,
-    "old_usage_rows_preserved": 141027,
-    "old_judgments_preserved": 22187,
-    "new_source_forms": 708,
-    "new_merged_forms": 708,
-    "new_merged_readings": 735,
-    "old_runtime_readings_deleted": 1,
+    "old_usage_rows_preserved": 141735,
+    "old_judgments_preserved": 22388,
+    "new_source_forms": 801,
+    "new_merged_forms": 800,
+    "new_merged_readings": 842,
+    "old_runtime_readings_deleted": 0,
     "old_runtime_readings_replaced": 0,
-    "new_merged_readings_net": 734,
-    "raw_source_forms": 77504,
-    "normalized_source_forms": 77502,
-    "new_word_usage_judgments": 201,
-    "active_curated_forms": 75451,
-    "active_curated_readings": 79094,
+    "new_merged_readings_net": 842,
+    "existing_runtime_literals_with_new_readings": [
+      "默不作聲"
+    ],
+    "raw_source_forms": 78305,
+    "normalized_source_forms": 78303,
+    "new_word_usage_judgments": 343,
+    "active_curated_forms": 76252,
+    "active_curated_readings": 79936,
     "unrelated_user_files_unchanged": true,
     "previous_overlay_rows_preserved": true,
-    "old_overlay_rows_added": 1,
-    "prior_candidate_decisions_preserved": 135994,
+    "old_overlay_rows_added": 0,
+    "prior_candidate_decisions_preserved": 137994,
     "explicit_prior_candidate_adjustments": 0,
     "all_review_source_locations_verified": true,
     "normalizer_bytes_unchanged": true,
     "layer_cache_bytes_unchanged": true,
     "existing_source_reading_audit": {
-      "scanned_runtime_rows": 259463,
-      "candidate_rows": 29,
+      "scanned_runtime_rows": 260197,
+      "candidate_rows": 70,
       "candidates": [
         {
-          "char": "躍",
-          "jyutping": "joek3",
-          "code": "4",
+          "char": "噬",
+          "jyutping": "sai6",
+          "code": "2",
+          "source_flags": 164
+        },
+        {
+          "char": "焊",
+          "jyutping": "hon2",
+          "code": "9",
+          "source_flags": 4
+        },
+        {
+          "char": "焊",
+          "jyutping": "hon6",
+          "code": "2",
+          "source_flags": 164
+        },
+        {
+          "char": "瓶",
+          "jyutping": "peng4",
+          "code": "0",
+          "source_flags": 4
+        },
+        {
+          "char": "瓶",
+          "jyutping": "ping2",
+          "code": "9",
+          "source_flags": 4
+        },
+        {
+          "char": "瓶",
+          "jyutping": "ping4",
+          "code": "0",
+          "source_flags": 164
+        },
+        {
+          "char": "病",
+          "jyutping": "beng6",
+          "code": "2",
+          "source_flags": 164
+        },
+        {
+          "char": "睇",
+          "jyutping": "dai6",
+          "code": "2",
+          "source_flags": 4
+        },
+        {
+          "char": "睇",
+          "jyutping": "tai2",
+          "code": "9",
+          "source_flags": 166
+        },
+        {
+          "char": "袋",
+          "jyutping": "doi6",
+          "code": "2",
+          "source_flags": 166
+        },
+        {
+          "char": "陷",
+          "jyutping": "haam6",
+          "code": "2",
+          "source_flags": 164
+        },
+        {
+          "char": "陷",
+          "jyutping": "ham6",
+          "code": "2",
           "source_flags": 36
         },
         {
-          "char": "躍",
-          "jyutping": "joek6",
+          "char": "齧",
+          "jyutping": "jit3",
+          "code": "4",
+          "source_flags": 4
+        },
+        {
+          "char": "齧",
+          "jyutping": "jit6",
+          "code": "2",
+          "source_flags": 4
+        },
+        {
+          "char": "齧",
+          "jyutping": "ngaat6",
+          "code": "2",
+          "source_flags": 36
+        },
+        {
+          "char": "齧",
+          "jyutping": "ngit6",
           "code": "2",
           "source_flags": 132
         },
         {
-          "char": "躍",
-          "jyutping": "tik1",
-          "code": "3",
+          "char": "齧",
+          "jyutping": "nip6",
+          "code": "2",
           "source_flags": 4
         },
         {
-          "char": "上訴",
-          "jyutping": "soeng6 sou3",
-          "code": "24",
+          "char": "中毒",
+          "jyutping": "zung3 duk6",
+          "code": "42",
           "source_flags": 51
         },
         {
-          "char": "如魚得水",
-          "jyutping": "jyu4 jyu4 dak1 seoi2",
-          "code": "0039",
+          "char": "伙頭",
+          "jyutping": "fo2 tau2",
+          "code": "99",
+          "source_flags": 32
+        },
+        {
+          "char": "共處",
+          "jyutping": "gung6 cyu3",
+          "code": "24",
+          "source_flags": 48
+        },
+        {
+          "char": "共處",
+          "jyutping": "gung6 cyu5",
+          "code": "25",
+          "source_flags": 32
+        },
+        {
+          "char": "凹陷",
+          "jyutping": "nap1 ham6",
+          "code": "32",
+          "source_flags": 48
+        },
+        {
+          "char": "凹陷",
+          "jyutping": "nap1 haam6",
+          "code": "32",
+          "source_flags": 32
+        },
+        {
+          "char": "利率",
+          "jyutping": "lei6 leot2",
+          "code": "29",
+          "source_flags": 48
+        },
+        {
+          "char": "名單",
+          "jyutping": "ming4 daan1",
+          "code": "03",
+          "source_flags": 51
+        },
+        {
+          "char": "噬",
+          "jyutping": "sai4",
+          "code": "0",
+          "source_flags": 34
+        },
+        {
+          "char": "容量",
+          "jyutping": "jung4 loeng6",
+          "code": "02",
+          "source_flags": 51
+        },
+        {
+          "char": "應允",
+          "jyutping": "jing1 wan5",
+          "code": "35",
           "source_flags": 50
+        },
+        {
+          "char": "應允",
+          "jyutping": "jing3 wan5",
+          "code": "45",
+          "source_flags": 32
+        },
+        {
+          "char": "效率",
+          "jyutping": "haau6 leot2",
+          "code": "29",
+          "source_flags": 48
         },
         {
           "char": "旋轉",
@@ -119,16 +272,46 @@
           "source_flags": 49
         },
         {
-          "char": "熱量",
-          "jyutping": "jit6 loeng6",
-          "code": "22",
-          "source_flags": 51
+          "char": "時分",
+          "jyutping": "si4 fan6",
+          "code": "02",
+          "source_flags": 48
         },
         {
-          "char": "生物",
-          "jyutping": "sang1 mat6",
-          "code": "32",
-          "source_flags": 51
+          "char": "機率",
+          "jyutping": "gei1 leot2",
+          "code": "39",
+          "source_flags": 48
+        },
+        {
+          "char": "比率",
+          "jyutping": "bei2 leot2",
+          "code": "99",
+          "source_flags": 32
+        },
+        {
+          "char": "焊",
+          "jyutping": "hon5",
+          "code": "5",
+          "source_flags": 32
+        },
+        {
+          "char": "畫押",
+          "jyutping": "waak6 aat3",
+          "code": "24",
+          "source_flags": 48
+        },
+        {
+          "char": "相處",
+          "jyutping": "soeng1 cyu3",
+          "code": "34",
+          "source_flags": 49
+        },
+        {
+          "char": "相處",
+          "jyutping": "soeng1 cyu5",
+          "code": "35",
+          "source_flags": 34
         },
         {
           "char": "腫瘤",
@@ -143,88 +326,130 @@
           "source_flags": 51
         },
         {
-          "char": "跳躍",
-          "jyutping": "tiu3 joek3",
-          "code": "44",
-          "source_flags": 48
+          "char": "處分",
+          "jyutping": "cyu2 fan1",
+          "code": "93",
+          "source_flags": 49
         },
         {
-          "char": "踴躍",
-          "jyutping": "jung2 joek3",
-          "code": "94",
-          "source_flags": 48
-        },
-        {
-          "char": "踴躍",
-          "jyutping": "jung2 joek6",
-          "code": "92",
-          "source_flags": 51
-        },
-        {
-          "char": "銀行",
-          "jyutping": "ngan4 hong4",
-          "code": "00",
-          "source_flags": 35
-        },
-        {
-          "char": "銀行",
-          "jyutping": "ngan4 hong2",
-          "code": "09",
-          "source_flags": 32
-        },
-        {
-          "char": "高檔",
-          "jyutping": "gou1 dong3",
-          "code": "34",
-          "source_flags": 51
-        },
-        {
-          "char": "鬼斧神工",
-          "jyutping": "gwai2 fu2 san4 gung1",
-          "code": "9903",
+          "char": "處分",
+          "jyutping": "cyu5 fan1",
+          "code": "53",
           "source_flags": 34
         },
         {
-          "char": "魚竿",
-          "jyutping": "jyu4 gon1",
+          "char": "行星",
+          "jyutping": "haang4 sing1",
           "code": "03",
           "source_flags": 48
         },
         {
-          "char": "魚肉",
-          "jyutping": "jyu4 juk6",
-          "code": "02",
-          "source_flags": 50
-        },
-        {
-          "char": "魚膠",
-          "jyutping": "jyu4 gaau1",
+          "char": "行星",
+          "jyutping": "hang4 sing1",
           "code": "03",
           "source_flags": 50
         },
         {
-          "char": "魚骨",
-          "jyutping": "jyu4 gwat1",
-          "code": "03",
-          "source_flags": 50
+          "char": "袋",
+          "jyutping": "doi2",
+          "code": "9",
+          "source_flags": 34
         },
         {
-          "char": "魷魚",
-          "jyutping": "jau4 jyu2",
+          "char": "部署",
+          "jyutping": "bou6 cyu5",
+          "code": "25",
+          "source_flags": 51
+        },
+        {
+          "char": "酵母",
+          "jyutping": "haau1 mou5",
+          "code": "35",
+          "source_flags": 48
+        },
+        {
+          "char": "領帶",
+          "jyutping": "ling5 daai2",
+          "code": "59",
+          "source_flags": 48
+        },
+        {
+          "char": "領帶",
+          "jyutping": "leng5 daai2",
+          "code": "59",
+          "source_flags": 32
+        },
+        {
+          "char": "頻率",
+          "jyutping": "pan4 leot2",
           "code": "09",
+          "source_flags": 49
+        },
+        {
+          "char": "黏性",
+          "jyutping": "nim1 sing3",
+          "code": "34",
           "source_flags": 50
         },
         {
-          "char": "鯽魚",
-          "jyutping": "zak1 jyu2",
+          "char": "黏膜",
+          "jyutping": "nim1 mok2",
           "code": "39",
           "source_flags": 48
         },
         {
-          "char": "鯽魚",
-          "jyutping": "zik1 jyu2",
-          "code": "39",
+          "char": "點名",
+          "jyutping": "dim2 meng2",
+          "code": "99",
+          "source_flags": 49
+        },
+        {
+          "char": "鼓膜",
+          "jyutping": "gu2 mok2",
+          "code": "99",
+          "source_flags": 48
+        },
+        {
+          "char": "凹陷",
+          "jyutping": "au3 haam6",
+          "code": "42",
           "source_flags": 2
+        },
+        {
+          "char": "比率",
+          "jyutping": "bei2 leot6",
+          "code": "92",
+          "source_flags": 18
+        },
+        {
+          "char": "點名",
+          "jyutping": "dim2 ming4",
+          "code": "90",
+          "source_flags": 2
+        },
+        {
+          "char": "酵母",
+          "jyutping": "gaau3 mou5",
+          "code": "45",
+          "source_flags": 2
+        },
+        {
+          "char": "機率",
+          "jyutping": "gei1 leot6",
+          "code": "32",
+          "source_flags": 2
+        },
+        {
+          "char": "效率",
+          "jyutping": "haau6 leot6",
+          "code": "22",
+          "source_flags": 19
+        },
+        {
+          "char": "利率",
+          "jyutping": "lei6 leot6",
+          "code": "22",
+          "source_flags": 19
         },
         {
           "char": "黏度",
@@ -233,59 +458,68 @@
           "source_flags": 2
         },
         {
-          "char": "跳躍",
-          "jyutping": "tiu3 joek6",
-          "code": "42",
-          "source_flags": 19
+          "char": "黏著",
+          "jyutping": "nim1 zoek6",
+          "code": "32",
+          "source_flags": 2
         },
         {
-          "char": "粘度",
-          "jyutping": "nim1 dou6",
+          "char": "黏膜",
+          "jyutping": "nim1 mok6",
+          "code": "32",
+          "source_flags": 2
+        },
+        {
+          "char": "頻率",
+          "jyutping": "pan4 leot6",
+          "code": "02",
+          "source_flags": 2
+        },
+        {
+          "char": "相間",
+          "jyutping": "soeng1 gaan1",
+          "code": "33",
+          "source_flags": 2
+        },
+        {
+          "char": "雜處",
+          "jyutping": "zaap6 cyu3",
+          "code": "24",
+          "source_flags": 0
+        },
+        {
+          "char": "中毒",
+          "jyutping": "zung1 duk6",
           "code": "32",
           "source_flags": 16
         },
         {
-          "char": "鬼斧神工",
-          "jyutping": "gwai2 fu2 san1 gung1",
-          "code": "9933",
+          "char": "相處",
+          "jyutping": "soeng1 cyu2",
+          "code": "39",
           "source_flags": 16
         },
         {
-          "char": "魷魚",
-          "jyutping": "jau4 jyu4",
-          "code": "00",
-          "source_flags": 16
+          "char": "領帶",
+          "jyutping": "ling5 daai3",
+          "code": "54",
+          "source_flags": 17
         }
       ],
       "exact_reading_replacements": [],
-      "exact_reading_exclusions": [
-        {
-          "char": "鬼斧神工",
-          "jyutping": "gwai2 fu2 san1 gung1",
-          "code": "9933",
-          "correct_jyutping": "gwai2 fu2 san4 gung1",
-          "correct_code": "9903",
-          "source_file": "data/lexicon/raw/rime-cantonese-upstream/word.csv",
-          "source_line": 91458,
-          "source_sha256": "b7f2561ccd222358cd7d04f2a349b986831aa8d61adf60d8584d6ffc5dd6f27a",
-          "source_license": "CC-BY-4.0",
-          "reference": "data/lexicon/raw/words_hk/wordslist.json#鬼斧神工 ; https://jyut.net/query?q=神",
-          "reason": "完整鬼斧神工的神指神奇工藝，原粵典完整詞供san4。現代san1用於神荼等專有用法，不套入此詞；正確完整讀音原已在庫，只精確刪除誤配san1，不產生重複正音列。"
-        }
-      ],
-      "all_other_context_rows_retained": 28,
-      "old_runtime_readings_deleted": 1,
+      "exact_reading_exclusions": [],
+      "all_other_context_rows_retained": 70,
+      "old_runtime_readings_deleted": 0,
       "old_runtime_readings_replaced": 0,
       "old_curated_source_rows_changed": 0,
       "prior_reading_additions": [],
       "valid_readings_retained": [
-        "神san1在神荼等專有用法有效；不作裸字或全庫刪除。",
-        "魚非末語素4與獨立名詞2按完整詞處理；魚仔2仍有效，不全庫按位置機械改音。",
-        "黏度nim1及nim4都是完整現代詞供應，1先4後；單字詞性推論不可刪1。",
-        "熱量以完整粵典及CantoDict6供本批新詞；其他舊詞loeng4不變。",
-        "裸魷魚jyu2與完整魷魚乾／絲jyu4並存；鯽zak1及zik1現代音保留。"
+        "率名詞2及書讀6均有效，原庫全部保留。",
+        "相間1／3、共處及相處3／5／2、應允1／3、處分2／5按完整詞保留，不能按裸字推論刪讀。",
+        "酵母haau1、黏度nim1、黏膜nim1mok2與現代書讀等整詞讀法並存，舊詞源及讀音常用度不變。",
+        "睇tai2有1996完整凝睇詩句例，dai6現代書讀仍有效，不把國語字音當粵語配讀依據。"
       ],
-      "policy": "Only one exact ghost-work san1 exclusion. Retain all other existing contextual rows, source flags, source/rank objects and normalizer/cache code. No candidate discovery."
+      "policy": "B72 has no exact old-reading deletion, replacement or mirror. Preserve every old runtime row, multiplicity, source flag, source/rank/usage object and normalizer/cache code. No candidate discovery."
     },
     "fixed_remaining_scope": {
       "user_objective": "把剩餘的12608個候選詞審核到完成就可以收尾，不新增新候選詞",
@@ -306,32 +540,32 @@
       "regional_holds_outside_remaining_pool": 924,
       "note": "User narrowed the finish line to the frozen remaining candidate pool. Do not discover or append candidates, or extend completion to historical/regional holds. Already reviewed B69 additions still require their pending final validation."
     },
-    "remaining_unreviewed": 8608,
+    "remaining_unreviewed": 6608,
     "backend_pwa_essay_frequency_keys": 266884,
     "essay_frequency_tables_equal": true,
-    "backend_pwa_word_grade_keys": 141735,
-    "backend_pwa_curated_reading_grade_keys": 82303,
+    "backend_pwa_word_grade_keys": 142535,
+    "backend_pwa_curated_reading_grade_keys": 83154,
     "word_grade_tables_equal": true,
     "curated_reading_grade_tables_equal": true,
-    "new_expressions": 708,
-    "existing_word_reading_additions": 0,
+    "new_expressions": 800,
+    "existing_word_reading_additions": 1,
     "full_final_inventory_rebuilt_and_compared": true,
     "client_query_engine_with_new_dictionary": {
-      "checks": 2244,
+      "checks": 2589,
       "modes": 3,
       "new_dictionary_loaded_in_client_engine": true,
       "preferred_readings_equal": true,
       "all_expected_cases_verified_exactly_once": true,
       "parallel_workers": 4
     },
-    "contextual_reading_pairs_checked": 165,
-    "full_pool_parity_queries": 126,
-    "full_pool_parity_rows": 147849,
+    "contextual_reading_pairs_checked": 267,
+    "full_pool_parity_queries": 165,
+    "full_pool_parity_rows": 150646,
     "full_pool_ranking_equal": true,
     "heteronym_full_pool_ranking_equal": true,
     "representative_top200_quality_review": {
       "43": {
-        "total_literals": 3753,
+        "total_literals": 3754,
         "top20": [
           "覺得",
           "發生",
@@ -361,7 +595,7 @@
         "everyday_precedes_less_common": true
       },
       "243": {
-        "total_literals": 315,
+        "total_literals": 316,
         "top20": [
           "下意識",
           "洛杉磯",
@@ -389,14 +623,11 @@
           "1": 96,
           "2": 86
         },
-        "new_batch_in_top200": [
-          "驗貨單",
-          "驗血單"
-        ],
+        "new_batch_in_top200": [],
         "everyday_precedes_less_common": true
       },
       "33": {
-        "total_literals": 6708,
+        "total_literals": 6722,
         "top20": [
           "姐姐",
           "應該",
@@ -426,7 +657,7 @@
         "everyday_precedes_less_common": true
       },
       "333": {
-        "total_literals": 1105,
+        "total_literals": 1116,
         "top20": [
           "朱古力",
           "哈哈哈",
@@ -453,16 +684,11 @@
           "0": 53,
           "1": 147
         },
-        "new_batch_in_top200": [
-          "骨灰箱",
-          "高低音",
-          "高音質",
-          "髒東西"
-        ],
+        "new_batch_in_top200": [],
         "everyday_precedes_less_common": true
       },
       "3333": {
-        "total_literals": 370,
+        "total_literals": 371,
         "top20": [
           "哈哈哈哈",
           "公安機關",
@@ -487,12 +713,11 @@
         ],
         "top200_grades": {
           "0": 11,
-          "1": 95,
-          "2": 94
+          "1": 96,
+          "2": 93
         },
         "new_batch_in_top200": [
-          "高級職稱",
-          "高歌一曲"
+          "低優先級"
         ],
         "everyday_precedes_less_common": true
       },
@@ -529,7 +754,7 @@
         "everyday_precedes_less_common": true
       },
       "323": {
-        "total_literals": 586,
+        "total_literals": 590,
         "top20": [
           "一大堆",
           "科學家",
@@ -553,17 +778,18 @@
           "七輛車"
         ],
         "top200_grades": {
-          "0": 31,
-          "1": 168,
-          "2": 1
+          "0": 32,
+          "1": 168
         },
         "new_batch_in_top200": [
-          "高尿酸"
+          "一號機",
+          "不夜天",
+          "公墓區"
         ],
         "everyday_precedes_less_common": true
       },
       "223": {
-        "total_literals": 503,
+        "total_literals": 506,
         "top20": [
           "電視機",
           "第二朝",
@@ -587,14 +813,16 @@
           "士大夫"
         ],
         "top200_grades": {
-          "0": 38,
-          "1": 162
+          "0": 39,
+          "1": 161
         },
-        "new_batch_in_top200": [],
+        "new_batch_in_top200": [
+          "亮度高"
+        ],
         "everyday_precedes_less_common": true
       },
       "39": {
-        "total_literals": 4528,
+        "total_literals": 4545,
         "top20": [
           "屋企",
           "開始",
@@ -624,7 +852,7 @@
         "everyday_precedes_less_common": true
       },
       "22": {
-        "total_literals": 4400,
+        "total_literals": 4411,
         "top20": [
           "但係",
           "係咪",
@@ -672,857 +900,906 @@
     "layer_cache_cold_misses": 8,
     "layer_cache_warm_hits": 8,
     "layer_cache_counter_matches_uncached_db": true,
-    "previous_runtime_rows_retained_without_change": 259462,
+    "previous_runtime_rows_retained_without_change": 260197,
     "previous_runtime_reading_replacements": 0,
     "final_reading_audit": {
       "newly_reviewed_candidates": 2000,
-      "initial_accepted_candidates": 751,
+      "initial_accepted_candidates": 838,
       "second_pass_familiarity_withdrawals": [
         {
-          "id": 136039,
-          "char": "養生學",
-          "previous_jyutping": "joeng5 sang1 hok6",
+          "id": 138208,
+          "char": "鹽析",
+          "previous_jyutping": "jim4 sik1",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 138445,
+          "char": "黏合成",
+          "previous_jyutping": "nim1 hap6 sing4",
           "previous_word_usage_rank": 1
         },
         {
-          "id": 136237,
-          "char": "首播儀式",
-          "previous_jyutping": "sau2 bo3 ji4 sik1",
+          "id": 138447,
+          "char": "黏在",
+          "previous_jyutping": "nim1 zoi6",
           "previous_word_usage_rank": 1
         },
         {
-          "id": 136371,
-          "char": "馬戲篷",
-          "previous_jyutping": "maa5 hei3 pung4",
+          "id": 138499,
+          "char": "黑幕小說",
+          "previous_jyutping": "hak1 mok6 siu2 syut3",
           "previous_word_usage_rank": 1
         },
         {
-          "id": 136634,
-          "char": "騰湧",
-          "previous_jyutping": "tang4 jung2",
+          "id": 138603,
+          "char": "黔驢",
+          "previous_jyutping": "kim4 lou4",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 138618,
+          "char": "默視",
+          "previous_jyutping": "mak6 si6",
           "previous_word_usage_rank": 1
         },
         {
-          "id": 136639,
-          "char": "騰讓",
-          "previous_jyutping": "tang4 joeng6",
+          "id": 138650,
+          "char": "點定",
+          "previous_jyutping": "dim2 ding6",
           "previous_word_usage_rank": 1
         },
         {
-          "id": 136652,
-          "char": "騷氣",
-          "previous_jyutping": "sou1 hei3",
+          "id": 138795,
+          "char": "鼎新革故",
+          "previous_jyutping": "ding2 san1 gaak3 gu3",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 138802,
+          "char": "鼎足而居",
+          "previous_jyutping": "ding2 zuk1 ji4 geoi1",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 138821,
+          "char": "鼓台",
+          "previous_jyutping": "gu2 toi4",
           "previous_word_usage_rank": 1
         },
         {
-          "id": 136698,
-          "char": "驕態",
-          "previous_jyutping": "giu1 taai3",
+          "id": 138837,
+          "char": "鼓滿",
+          "previous_jyutping": "gu2 mun5",
           "previous_word_usage_rank": 1
         },
         {
-          "id": 136781,
-          "char": "驚聲",
-          "previous_jyutping": "ging1 sing1",
+          "id": 138950,
+          "char": "鼾息聲",
+          "previous_jyutping": "hon4 sik1 sing1",
           "previous_word_usage_rank": 1
         },
         {
-          "id": 136789,
-          "char": "驚讚",
-          "previous_jyutping": "ging1 zaan3",
+          "id": 139172,
+          "char": "一德一心",
+          "previous_jyutping": "jat1 dak1 jat1 sam1",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 139335,
+          "char": "乾子",
+          "previous_jyutping": "gon1 zi2",
           "previous_word_usage_rank": 1
         },
         {
-          "id": 136794,
-          "char": "驚避",
-          "previous_jyutping": "ging1 bei6",
+          "id": 139416,
+          "char": "介弟",
+          "previous_jyutping": "gaai3 dai6",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 139784,
+          "char": "全序",
+          "previous_jyutping": "cyun4 zeoi6",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 139785,
+          "char": "全序集",
+          "previous_jyutping": "cyun4 zeoi6 zaap6",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 139842,
+          "char": "公共積累",
+          "previous_jyutping": "gung1 gung6 zik1 leoi6",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 139879,
+          "char": "公望",
+          "previous_jyutping": "gung1 mong6",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 139748,
+          "char": "光瑩",
+          "previous_jyutping": "gwong1 jing4",
           "previous_word_usage_rank": 1
         },
         {
-          "id": 136800,
-          "char": "驚魂失魄",
-          "previous_jyutping": "ging1 wan4 sat1 paak3",
+          "id": 139949,
+          "char": "冰瑩",
+          "previous_jyutping": "bing1 jing4",
           "previous_word_usage_rank": 1
         },
         {
-          "id": 136803,
-          "char": "驚魂落魄",
-          "previous_jyutping": "ging1 wan4 lok6 paak3",
+          "id": 139983,
+          "char": "凝靜",
+          "previous_jyutping": "jing4 zing6",
           "previous_word_usage_rank": 1
         },
         {
-          "id": 136813,
-          "char": "驟滅",
-          "previous_jyutping": "zaau6 mit6",
-          "previous_word_usage_rank": 1
-        },
-        {
-          "id": 136814,
-          "char": "驟至",
-          "previous_jyutping": "zaau6 zi3",
-          "previous_word_usage_rank": 1
-        },
-        {
-          "id": 136817,
-          "char": "驟雪",
-          "previous_jyutping": "zaau6 syut3",
-          "previous_word_usage_rank": 1
-        },
-        {
-          "id": 136818,
-          "char": "驟風",
-          "previous_jyutping": "zaau6 fung1",
-          "previous_word_usage_rank": 1
-        },
-        {
-          "id": 136856,
-          "char": "骨瘦形銷",
-          "previous_jyutping": "gwat1 sau3 jing4 siu1",
-          "previous_word_usage_rank": 1
-        },
-        {
-          "id": 136863,
-          "char": "骨碎補",
-          "previous_jyutping": "gwat1 seoi3 bou2",
-          "previous_word_usage_rank": 1
-        },
-        {
-          "id": 136904,
-          "char": "髒臉",
-          "previous_jyutping": "zong1 lim5",
-          "previous_word_usage_rank": 1
-        },
-        {
-          "id": 137008,
-          "char": "體認出",
-          "previous_jyutping": "tai2 jing6 ceot1",
-          "previous_word_usage_rank": 1
-        },
-        {
-          "id": 137021,
-          "char": "體驗出",
-          "previous_jyutping": "tai2 jim6 ceot1",
-          "previous_word_usage_rank": 1
-        },
-        {
-          "id": 137022,
-          "char": "體驗型",
-          "previous_jyutping": "tai2 jim6 jing4",
-          "previous_word_usage_rank": 1
-        },
-        {
-          "id": 137313,
-          "char": "高速線",
-          "previous_jyutping": "gou1 cuk1 sin3",
-          "previous_word_usage_rank": 1
-        },
-        {
-          "id": 137323,
-          "char": "高階層",
-          "previous_jyutping": "gou1 gaai1 cang4",
-          "previous_word_usage_rank": 1
-        },
-        {
-          "id": 137407,
-          "char": "鬥技場",
-          "previous_jyutping": "dau3 gei6 coeng4",
-          "previous_word_usage_rank": 1
-        },
-        {
-          "id": 137431,
-          "char": "鬥雞走犬",
-          "previous_jyutping": "dau3 gai1 zau2 hyun2",
-          "previous_word_usage_rank": 1
-        },
-        {
-          "id": 137487,
-          "char": "鬼呀",
-          "previous_jyutping": "gwai2 aa4",
-          "previous_word_usage_rank": 1
-        },
-        {
-          "id": 137518,
-          "char": "鬼精",
-          "previous_jyutping": "gwai2 zing1",
-          "previous_word_usage_rank": 1
-        },
-        {
-          "id": 137603,
-          "char": "魔仙",
-          "previous_jyutping": "mo1 sin1",
-          "previous_word_usage_rank": 1
-        },
-        {
-          "id": 137607,
-          "char": "魔堡",
-          "previous_jyutping": "mo1 bou2",
-          "previous_word_usage_rank": 1
-        },
-        {
-          "id": 137608,
-          "char": "魔塔",
-          "previous_jyutping": "mo1 taap3",
-          "previous_word_usage_rank": 1
-        },
-        {
-          "id": 137613,
-          "char": "魔宮",
-          "previous_jyutping": "mo1 gung1",
-          "previous_word_usage_rank": 1
-        },
-        {
-          "id": 137620,
-          "char": "魔晶石",
-          "previous_jyutping": "mo1 zing1 sek6",
-          "previous_word_usage_rank": 1
-        },
-        {
-          "id": 137628,
-          "char": "魔犬",
-          "previous_jyutping": "mo1 hyun2",
-          "previous_word_usage_rank": 1
-        },
-        {
-          "id": 137635,
-          "char": "魔眼",
-          "previous_jyutping": "mo1 ngaan5",
-          "previous_word_usage_rank": 1
-        },
-        {
-          "id": 137636,
-          "char": "魔石",
-          "previous_jyutping": "mo1 sek6",
-          "previous_word_usage_rank": 1
-        },
-        {
-          "id": 137641,
-          "char": "魔術節",
-          "previous_jyutping": "mo1 seot6 zit3",
-          "previous_word_usage_rank": 1
-        },
-        {
-          "id": 137654,
-          "char": "魔鬼列車",
-          "previous_jyutping": "mo1 gwai2 lit6 ce1",
-          "previous_word_usage_rank": 1
-        },
-        {
-          "id": 137901,
-          "char": "鳴金擊鼓",
-          "previous_jyutping": "ming4 gam1 gik1 gu2",
-          "previous_word_usage_rank": 1
+          "id": 139972,
+          "char": "凍土地",
+          "previous_jyutping": "dung3 tou2 dei6",
+          "previous_word_usage_rank": 2
         }
       ],
       "word_familiarity_regrades": [
         {
-          "id": 136008,
-          "char": "飾釘",
+          "id": 137996,
+          "char": "鴿房",
           "previous_rank": 1,
           "rank": 2
         },
         {
-          "id": 136009,
-          "char": "飾針",
+          "id": 137999,
+          "char": "鴿賽",
           "previous_rank": 1,
           "rank": 2
         },
         {
-          "id": 136216,
-          "char": "首因效應",
+          "id": 138049,
+          "char": "鶯語",
           "previous_rank": 1,
           "rank": 2
         },
         {
-          "id": 136518,
-          "char": "駢體文",
+          "id": 138069,
+          "char": "鶴羣",
           "previous_rank": 1,
           "rank": 2
         },
         {
-          "id": 136866,
-          "char": "骨細胞",
+          "id": 138070,
+          "char": "鶴翼",
           "previous_rank": 1,
           "rank": 2
         },
         {
-          "id": 136887,
-          "char": "骨髓細胞",
+          "id": 138071,
+          "char": "鶴聲",
           "previous_rank": 1,
           "rank": 2
         },
         {
-          "id": 136882,
-          "char": "骨雕",
+          "id": 138252,
+          "char": "麥乳茶",
           "previous_rank": 1,
           "rank": 2
         },
         {
-          "id": 136874,
-          "char": "骨質瓷",
+          "id": 138266,
+          "char": "麥飯",
           "previous_rank": 1,
           "rank": 2
         },
         {
-          "id": 137026,
-          "char": "髖部",
+          "id": 138338,
+          "char": "黃斑部",
           "previous_rank": 1,
           "rank": 2
         },
         {
-          "id": 137027,
-          "char": "髖關節炎",
+          "id": 138510,
+          "char": "黑斑病",
           "previous_rank": 1,
           "rank": 2
         },
         {
-          "id": 137065,
-          "char": "高倍率",
+          "id": 138609,
+          "char": "默問",
           "previous_rank": 1,
           "rank": 2
         },
         {
-          "id": 137082,
-          "char": "高可用性",
+          "id": 138612,
+          "char": "默從",
           "previous_rank": 1,
           "rank": 2
         },
         {
-          "id": 137083,
-          "char": "高可靠性",
+          "id": 138614,
+          "char": "默求",
           "previous_rank": 1,
           "rank": 2
         },
         {
-          "id": 137103,
-          "char": "高壓線塔",
+          "id": 138658,
+          "char": "點指畫字",
           "previous_rank": 1,
           "rank": 2
         },
         {
-          "id": 137105,
-          "char": "高壓閥門",
+          "id": 138741,
+          "char": "黨的建設",
           "previous_rank": 1,
           "rank": 2
         },
         {
-          "id": 137107,
-          "char": "高壓電源",
+          "id": 138742,
+          "char": "黨的性質",
           "previous_rank": 1,
           "rank": 2
         },
         {
-          "id": 137113,
-          "char": "高寬比",
+          "id": 138744,
+          "char": "黨的方針",
           "previous_rank": 1,
           "rank": 2
         },
         {
-          "id": 137114,
-          "char": "高射炮彈",
+          "id": 138745,
+          "char": "黨的紀律",
           "previous_rank": 1,
           "rank": 2
         },
         {
-          "id": 137115,
-          "char": "高射炮火",
+          "id": 138746,
+          "char": "黨的綱領",
           "previous_rank": 1,
           "rank": 2
         },
         {
-          "id": 137128,
-          "char": "高山植物",
+          "id": 138747,
+          "char": "黨的路線",
           "previous_rank": 1,
           "rank": 2
         },
         {
-          "id": 137184,
-          "char": "高架輕軌",
+          "id": 138748,
+          "char": "黨的領導",
           "previous_rank": 1,
           "rank": 2
         },
         {
-          "id": 137185,
-          "char": "高架鐵道",
+          "id": 138761,
+          "char": "黨風建設",
           "previous_rank": 1,
           "rank": 2
         },
         {
-          "id": 137173,
-          "char": "高新產業",
+          "id": 138760,
+          "char": "黨風好轉",
           "previous_rank": 1,
           "rank": 2
         },
         {
-          "id": 137201,
-          "char": "高氣壓",
+          "id": 138838,
+          "char": "鼓瑟",
           "previous_rank": 1,
           "rank": 2
         },
         {
-          "id": 137213,
-          "char": "高產田",
+          "id": 138843,
+          "char": "鼓翼",
           "previous_rank": 1,
           "rank": 2
         },
         {
-          "id": 137231,
-          "char": "高等專科",
+          "id": 138861,
+          "char": "鼓角齊鳴",
           "previous_rank": 1,
           "rank": 2
         },
         {
-          "id": 137232,
-          "char": "高等數學",
+          "id": 138862,
+          "char": "鼓譟而起",
           "previous_rank": 1,
           "rank": 2
         },
         {
-          "id": 137233,
-          "char": "高等考試",
+          "id": 138897,
+          "char": "鼠腹雞腸",
           "previous_rank": 1,
           "rank": 2
         },
         {
-          "id": 137240,
-          "char": "高粘度",
+          "id": 138951,
+          "char": "鼾音",
           "previous_rank": 1,
           "rank": 2
         },
         {
-          "id": 137258,
-          "char": "高級職稱",
+          "id": 138958,
+          "char": "齊心一力",
           "previous_rank": 1,
           "rank": 2
         },
         {
-          "id": 137307,
-          "char": "高通量",
+          "id": 138960,
+          "char": "齊心同力",
           "previous_rank": 1,
           "rank": 2
         },
         {
-          "id": 137315,
-          "char": "高遠球",
+          "id": 138969,
+          "char": "齊眉棍",
           "previous_rank": 1,
           "rank": 2
         },
         {
-          "id": 137322,
-          "char": "高阻隔",
+          "id": 138985,
+          "char": "齋主",
           "previous_rank": 1,
           "rank": 2
         },
         {
-          "id": 137329,
-          "char": "高電位",
+          "id": 138986,
+          "char": "齋供",
           "previous_rank": 1,
           "rank": 2
         },
         {
-          "id": 137330,
-          "char": "高電平",
+          "id": 138987,
+          "char": "齋壇",
           "previous_rank": 1,
           "rank": 2
         },
         {
-          "id": 137333,
-          "char": "高音單元",
+          "id": 139051,
+          "char": "齧噬",
           "previous_rank": 1,
           "rank": 2
         },
         {
-          "id": 137339,
-          "char": "高頻電波",
+          "id": 139262,
+          "char": "不欺暗室",
           "previous_rank": 1,
           "rank": 2
         },
         {
-          "id": 137815,
-          "char": "鳥冠",
+          "id": 139332,
+          "char": "乾哥",
           "previous_rank": 1,
           "rank": 2
         },
         {
-          "id": 137821,
-          "char": "鳥囀",
+          "id": 139333,
+          "char": "乾妹",
           "previous_rank": 1,
           "rank": 2
         },
         {
-          "id": 137828,
-          "char": "鳥巢蕨",
+          "id": 139334,
+          "char": "乾姐",
           "previous_rank": 1,
           "rank": 2
         },
         {
-          "id": 137844,
-          "char": "鳥綱",
+          "id": 139425,
+          "char": "仙力",
           "previous_rank": 1,
           "rank": 2
         },
         {
-          "id": 137969,
-          "char": "鴨蹼",
+          "id": 139426,
+          "char": "仙客",
           "previous_rank": 1,
           "rank": 2
         },
         {
-          "id": 137626,
-          "char": "魔法盾",
+          "id": 139559,
+          "char": "侍人",
           "previous_rank": 1,
           "rank": 2
         },
         {
-          "id": 137605,
-          "char": "魔劍士",
+          "id": 139627,
+          "char": "修善",
           "previous_rank": 1,
           "rank": 2
         },
         {
-          "id": 137616,
-          "char": "魔導師",
+          "id": 139700,
+          "char": "僕僕風塵",
           "previous_rank": 1,
           "rank": 2
         },
         {
-          "id": 137604,
-          "char": "魔劍",
+          "id": 139709,
+          "char": "儒門",
           "previous_rank": 1,
           "rank": 2
         },
         {
-          "id": 137655,
-          "char": "魔鬼城",
+          "id": 139719,
+          "char": "儲氣庫",
           "previous_rank": 1,
           "rank": 2
         },
         {
-          "id": 137772,
-          "char": "鯤鵬展翅",
+          "id": 139865,
+          "char": "公學堂",
           "previous_rank": 1,
           "rank": 2
         },
         {
-          "id": 137917,
-          "char": "鳶飛魚躍",
+          "id": 139940,
+          "char": "冰台",
           "previous_rank": 1,
           "rank": 2
         },
         {
-          "id": 137710,
-          "char": "魚躍鳶飛",
+          "id": 139975,
+          "char": "凝固化",
           "previous_rank": 1,
           "rank": 2
         },
         {
-          "id": 137716,
-          "char": "魚道",
+          "id": 139978,
+          "char": "凝氣",
           "previous_rank": 1,
           "rank": 2
         },
         {
-          "id": 137943,
-          "char": "鴛夢",
+          "id": 139979,
+          "char": "凝睇",
           "previous_rank": 1,
           "rank": 2
         },
         {
-          "id": 137394,
-          "char": "鬚眉男子",
-          "previous_rank": 1,
-          "rank": 2
+          "id": 139494,
+          "char": "仿真度",
+          "previous_rank": 0,
+          "rank": 1
         },
         {
-          "id": 137181,
-          "char": "高枕安寢",
-          "previous_rank": 1,
-          "rank": 2
+          "id": 139495,
+          "char": "仿若",
+          "previous_rank": 0,
+          "rank": 1
         },
         {
-          "id": 137088,
-          "char": "高唱入雲",
-          "previous_rank": 1,
-          "rank": 2
+          "id": 139568,
+          "char": "供貨量",
+          "previous_rank": 0,
+          "rank": 1
+        },
+        {
+          "id": 139570,
+          "char": "供電量",
+          "previous_rank": 0,
+          "rank": 1
+        },
+        {
+          "id": 139250,
+          "char": "不合格率",
+          "previous_rank": 0,
+          "rank": 1
+        },
+        {
+          "id": 139267,
+          "char": "不良率",
+          "previous_rank": 0,
+          "rank": 1
+        },
+        {
+          "id": 139284,
+          "char": "中低級",
+          "previous_rank": 0,
+          "rank": 1
+        },
+        {
+          "id": 138645,
+          "char": "點名單",
+          "previous_rank": 0,
+          "rank": 1
+        },
+        {
+          "id": 138879,
+          "char": "鼠標懸停",
+          "previous_rank": 0,
+          "rank": 1
+        },
+        {
+          "id": 139720,
+          "char": "儲氣罐",
+          "previous_rank": 0,
+          "rank": 1
+        },
+        {
+          "id": 139604,
+          "char": "保齡球道",
+          "previous_rank": 0,
+          "rank": 1
+        },
+        {
+          "id": 139749,
+          "char": "光盤機",
+          "previous_rank": 0,
+          "rank": 1
+        },
+        {
+          "id": 139170,
+          "char": "一展風采",
+          "previous_rank": 0,
+          "rank": 1
+        },
+        {
+          "id": 139508,
+          "char": "但願人長久",
+          "previous_rank": 0,
+          "rank": 1
+        },
+        {
+          "id": 138408,
+          "char": "黃金歲月",
+          "previous_rank": 0,
+          "rank": 1
+        },
+        {
+          "id": 138405,
+          "char": "黃金搭檔",
+          "previous_rank": 0,
+          "rank": 1
+        },
+        {
+          "id": 138513,
+          "char": "黑暗時代",
+          "previous_rank": 0,
+          "rank": 1
+        },
+        {
+          "id": 138625,
+          "char": "默默無名",
+          "previous_rank": 0,
+          "rank": 1
+        },
+        {
+          "id": 138768,
+          "char": "黯然淚下",
+          "previous_rank": 0,
+          "rank": 1
+        },
+        {
+          "id": 138789,
+          "char": "鼎力扶持",
+          "previous_rank": 0,
+          "rank": 1
+        },
+        {
+          "id": 138799,
+          "char": "鼎盛時期",
+          "previous_rank": 0,
+          "rank": 1
+        },
+        {
+          "id": 139180,
+          "char": "一版再版",
+          "previous_rank": 0,
+          "rank": 1
         }
       ],
       "amendments": [
         {
-          "id": 136571,
-          "char": "騎行",
-          "previous_jyutping": "ke4 hang4",
-          "jyutping": "ke4 hang4",
-          "note": "此為騎車出行的書面動詞，以已核完整行走hang4及出行語境判斷hang4。直接讀Wiktionary原詞條只有國語、沒有粵音，聚合站所標hong2不能視為原詞條提供的完整粵語讀音。本讀音明列AI整詞判斷，不冒稱詞典直接供音。",
-          "reference": "https://en.wiktionary.org/wiki/騎行 ; data/lexicon/raw/words_hk/wordslist.json#行走"
+          "id": 138169,
+          "char": "鹼中毒",
+          "previous_jyutping": "gaan2 zung1 duk6",
+          "jyutping": "gaan2 zung3 duk6",
+          "note": "中毒完整詞為zung3duk6；不是中間zung1。",
+          "reference": "data/lexicon/raw/words_hk/wordslist.json#中毒"
         },
         {
-          "id": 137240,
-          "char": "高粘度",
-          "previous_jyutping": "gou1 nim1 dou6",
-          "jyutping": "gou1 nim1 dou6",
-          "note": "完整黏度現代詞條明列nim1及nim4，已有庫nim1亦有效。新高黏度以1先、4後；不能按動詞／形容詞裸字分工否定整詞1。",
-          "reference": "https://en.wiktionary.org/wiki/黏度"
+          "id": 138470,
+          "char": "黑作坊",
+          "previous_jyutping": "hak1 zok3 fong1",
+          "jyutping": "hak1 zok3 fong2",
+          "note": "坊指手工業工作場所；2007廣州話正音字典明列完整作坊fong2，不沿用草稿fong1。",
+          "reference": "https://ny.edu.hk/web/cht/hkbc_journal/HKBC_11th%20Journal/421-487.pdf"
         },
         {
-          "id": 137209,
-          "char": "高熱量",
-          "previous_jyutping": "gou1 jit6 loeng6",
-          "jyutping": "gou1 jit6 loeng6",
-          "note": "原粵典及CantoDict完整熱量均供jit6loeng6；原未交付草稿4不作新增又讀。其他歷史詞的loeng4不在本項改動範圍。",
-          "reference": "data/lexicon/raw/words_hk/wordslist.json#熱量 ; https://www.cantonese.sheik.co.uk/dictionary/characters/835/?full=true"
+          "id": 138606,
+          "char": "默不做聲",
+          "previous_jyutping": "mak6 bat1 zou6 seng1",
+          "jyutping": "mak6 bat1 zok3 seng1",
+          "note": "用通行默不作聲，完整Rime有mak6bat1zok3seng1；原庫作聲亦有seng1及sing1，兩個現代整詞讀法都保留，後續去重。",
+          "reference": "data/lexicon/raw/rime-cantonese-upstream/word.csv#默不作聲 ; validation-b71.db#作聲"
         },
         {
-          "id": 136871,
-          "char": "骨肉瘤",
-          "previous_jyutping": "gwat1 juk6 lau2",
-          "jyutping": "gwat1 juk6 lau2",
-          "note": "原粵典完整腫瘤供lau2及lau4；本詞名詞日常變調2先、書讀4後，不只按瘤裸字取音。",
-          "reference": "data/lexicon/raw/words_hk/wordslist.json#腫瘤"
+          "id": 138658,
+          "char": "點指畫字",
+          "previous_jyutping": "dim2 zi2 waa2 zi6",
+          "jyutping": "dim2 zi2 waak6 zi6",
+          "note": "此處指按指印簽押，畫按完整畫押waak6aat3的劃記義取waak6；不是名詞圖畫waa2。",
+          "reference": "https://dict.revised.moe.edu.tw/dictView.jsp?ID=46328 ; data/lexicon/raw/words_hk/wordslist.json#畫押"
         },
         {
-          "id": 136873,
-          "char": "骨腫瘤",
-          "previous_jyutping": "gwat1 zung2 lau2",
-          "jyutping": "gwat1 zung2 lau2",
-          "note": "原粵典完整腫瘤供lau2及lau4；本詞名詞日常變調2先、書讀4後，不只按瘤裸字取音。",
-          "reference": "data/lexicon/raw/words_hk/wordslist.json#腫瘤"
+          "id": 138986,
+          "char": "齋供",
+          "previous_jyutping": "zaai1 gung1",
+          "jyutping": "zaai1 gung3",
+          "note": "供奉神佛的食品名詞，供取供品gung3；不是供應動詞gung1。此為整詞語義與現代供品讀音的AI配讀，不冒稱國語詞典直接提供粵音。",
+          "reference": "https://ctext.org/dictionary.pl?char=齋供&if=en ; data/lexicon/raw/words_hk/wordslist.json#供品"
         },
         {
-          "id": 137666,
-          "char": "魚場",
-          "previous_jyutping": "jyu2 coeng4",
-          "jyutping": "jyu4 coeng4",
-          "note": "此新詞的魚為複合詞語素，依完整魚骨／魚膠／魚竿及粵典語素用法取jyu4，非單獨魚名詞變調jyu2；沒有全庫按位置改字音。",
-          "reference": "https://words.hk/zidin/魚 ; data/lexicon/raw/words_hk/wordslist.json#魚骨/魚膠/魚竿"
+          "id": 139638,
+          "char": "倉容量",
+          "previous_jyutping": "cong1 jung4 loeng4",
+          "jyutping": "cong1 jung4 loeng6",
+          "note": "完整容量jung4loeng6是容量大小的名詞，不是量度loeng4。",
+          "reference": "data/lexicon/raw/words_hk/wordslist.json#容量"
         },
         {
-          "id": 137667,
-          "char": "魚塊",
-          "previous_jyutping": "jyu2 faai3",
-          "jyutping": "jyu4 faai3",
-          "note": "此新詞的魚為複合詞語素，依完整魚骨／魚膠／魚竿及粵典語素用法取jyu4，非單獨魚名詞變調jyu2；沒有全庫按位置改字音。",
-          "reference": "https://words.hk/zidin/魚 ; data/lexicon/raw/words_hk/wordslist.json#魚骨/魚膠/魚竿"
+          "id": 139873,
+          "char": "公擔",
+          "previous_jyutping": "gung1 daam1",
+          "jyutping": "gung1 daam3",
+          "note": "完整公擔gung1daam3是百公斤重量單位；不是動詞擔當daam1。",
+          "reference": "https://en.wiktionary.org/wiki/公擔"
         },
         {
-          "id": 137670,
-          "char": "魚杆",
-          "previous_jyutping": "jyu2 gon1",
-          "jyutping": "jyu4 gon1",
-          "note": "此新詞的魚為複合詞語素，依完整魚骨／魚膠／魚竿及粵典語素用法取jyu4，非單獨魚名詞變調jyu2；沒有全庫按位置改字音。",
-          "reference": "https://words.hk/zidin/魚 ; data/lexicon/raw/words_hk/wordslist.json#魚骨/魚膠/魚竿"
+          "id": 139979,
+          "char": "凝睇",
+          "previous_jyutping": "jing4 dai6",
+          "jyutping": "jing4 tai2",
+          "note": "1996粵語同音字典增訂本在tai2下明引長恨歌的完整凝睇詞例；不能因國語dì或凝眸注視語義就否定tai2。2007正音字典及1991商務新詞典的dai6仍是現代有效又讀。Wiktionary原詞條僅有國語音，不冒稱其直接供粵音。詞語本身列較少用級，讀音先後另判。",
+          "reference": "https://jyut.net/query?q=睇 ; https://en.wiktionary.org/wiki/凝睇"
         },
         {
-          "id": 137690,
-          "char": "魚皮",
-          "previous_jyutping": "jyu2 pei4",
-          "jyutping": "jyu4 pei4",
-          "note": "此新詞的魚為複合詞語素，依完整魚骨／魚膠／魚竿及粵典語素用法取jyu4，非單獨魚名詞變調jyu2；沒有全庫按位置改字音。",
-          "reference": "https://words.hk/zidin/魚 ; data/lexicon/raw/words_hk/wordslist.json#魚骨/魚膠/魚竿"
+          "id": 139112,
+          "char": "龍蛇雜處",
+          "previous_jyutping": "lung4 se4 zaap6 cyu5",
+          "jyutping": "lung4 se4 zaap6 cyu5",
+          "note": "依完整共處／相處5的現代同處語境作AI長詞先後判斷。完整雜處zaap6cyu3亦由原庫及Wiktionary直接提供，保留3作又讀；不把所有處字一概強制5。",
+          "reference": "https://en.wiktionary.org/wiki/雜處 ; validation-b71.db#雜處/共處/相處"
         },
         {
-          "id": 137698,
-          "char": "魚箱",
-          "previous_jyutping": "jyu2 soeng1",
-          "jyutping": "jyu4 soeng1",
-          "note": "此新詞的魚為複合詞語素，依完整魚骨／魚膠／魚竿及粵典語素用法取jyu4，非單獨魚名詞變調jyu2；沒有全庫按位置改字音。",
-          "reference": "https://words.hk/zidin/魚 ; data/lexicon/raw/words_hk/wordslist.json#魚骨/魚膠/魚竿"
+          "id": 139269,
+          "char": "不負重望",
+          "previous_jyutping": "bat1 fu6 zung6 mong6",
+          "jyutping": "bat1 fu6 zung6 mong6",
+          "note": "完整重望zung6mong6指厚望，不是重複cung4；亦不從另一詞重點的cung5機械遷移。",
+          "reference": "https://en.wiktionary.org/wiki/重望"
         },
         {
-          "id": 137701,
-          "char": "魚紋",
-          "previous_jyutping": "jyu2 man4",
-          "jyutping": "jyu4 man4",
-          "note": "此新詞的魚為複合詞語素，依完整魚骨／魚膠／魚竿及粵典語素用法取jyu4，非單獨魚名詞變調jyu2；沒有全庫按位置改字音。",
-          "reference": "https://words.hk/zidin/魚 ; data/lexicon/raw/words_hk/wordslist.json#魚骨/魚膠/魚竿"
+          "id": 139051,
+          "char": "齧噬",
+          "previous_jyutping": "ngaat6 sai6",
+          "jyutping": "ngaat6 sai6",
+          "note": "原粵典齧ngaat6及1992香港中學生中文詞典的啃咬義取ngaat6先；2007正音字典嚼齧／齧齒動物及1996字書供jit6，現代啃咬又讀保留。長詞先後為AI語境判斷，不冒稱完整長詞詞典直接供音。原未採用的jit3草稿不作本批新讀音，也不據此擴大刪除舊庫。",
+          "reference": "data/lexicon/raw/words_hk/wordslist.json#齧 ; https://jyut.net/query?q=齧"
         },
         {
-          "id": 137705,
-          "char": "魚膠粉",
-          "previous_jyutping": "jyu2 gaau1 fan2",
-          "jyutping": "jyu4 gaau1 fan2",
-          "note": "此新詞的魚為複合詞語素，依完整魚骨／魚膠／魚竿及粵典語素用法取jyu4，非單獨魚名詞變調jyu2；沒有全庫按位置改字音。",
-          "reference": "https://words.hk/zidin/魚 ; data/lexicon/raw/words_hk/wordslist.json#魚骨/魚膠/魚竿"
+          "id": 139052,
+          "char": "齧斷",
+          "previous_jyutping": "ngaat6 dyun6",
+          "jyutping": "ngaat6 dyun6",
+          "note": "原粵典齧ngaat6及1992香港中學生中文詞典的啃咬義取ngaat6先；2007正音字典嚼齧／齧齒動物及1996字書供jit6，現代啃咬又讀保留。長詞先後為AI語境判斷，不冒稱完整長詞詞典直接供音。原未採用的jit3草稿不作本批新讀音，也不據此擴大刪除舊庫。",
+          "reference": "data/lexicon/raw/words_hk/wordslist.json#齧 ; https://jyut.net/query?q=齧"
         },
         {
-          "id": 137716,
-          "char": "魚道",
-          "previous_jyutping": "jyu2 dou6",
-          "jyutping": "jyu4 dou6",
-          "note": "此新詞的魚為複合詞語素，依完整魚骨／魚膠／魚竿及粵典語素用法取jyu4，非單獨魚名詞變調jyu2；沒有全庫按位置改字音。",
-          "reference": "https://words.hk/zidin/魚 ; data/lexicon/raw/words_hk/wordslist.json#魚骨/魚膠/魚竿"
+          "id": 138219,
+          "char": "鹽瓶",
+          "previous_jyutping": "jim4 ping4",
+          "jyutping": "jim4 ping2",
+          "note": "按名詞整詞的日常變調先列，保留現代書讀後列；此長詞先後為AI語境判斷，並非把裸字常用度當整詞頻率。",
+          "reference": "validation-b71.db#瓶/袋 ; data/lexicon/raw/words_hk/wordslist.json#腫瘤"
         },
         {
-          "id": 137717,
-          "char": "魚醬",
-          "previous_jyutping": "jyu2 zoeng3",
-          "jyutping": "jyu4 zoeng3",
-          "note": "此新詞的魚為複合詞語素，依完整魚骨／魚膠／魚竿及粵典語素用法取jyu4，非單獨魚名詞變調jyu2；沒有全庫按位置改字音。",
-          "reference": "https://words.hk/zidin/魚 ; data/lexicon/raw/words_hk/wordslist.json#魚骨/魚膠/魚竿"
+          "id": 138292,
+          "char": "麻油瓶",
+          "previous_jyutping": "maa4 jau4 ping4",
+          "jyutping": "maa4 jau4 ping2",
+          "note": "按名詞整詞的日常變調先列，保留現代書讀後列；此長詞先後為AI語境判斷，並非把裸字常用度當整詞頻率。",
+          "reference": "validation-b71.db#瓶/袋 ; data/lexicon/raw/words_hk/wordslist.json#腫瘤"
         },
         {
-          "id": 137718,
-          "char": "魚頭湯",
-          "previous_jyutping": "jyu2 tau4 tong1",
-          "jyutping": "jyu4 tau4 tong1",
-          "note": "此新詞的魚為複合詞語素，依完整魚骨／魚膠／魚竿及粵典語素用法取jyu4，非單獨魚名詞變調jyu2；沒有全庫按位置改字音。",
-          "reference": "https://words.hk/zidin/魚 ; data/lexicon/raw/words_hk/wordslist.json#魚骨/魚膠/魚竿"
+          "id": 138282,
+          "char": "麪粉袋",
+          "previous_jyutping": "min6 fan2 doi6",
+          "jyutping": "min6 fan2 doi2",
+          "note": "按名詞整詞的日常變調先列，保留現代書讀後列；此長詞先後為AI語境判斷，並非把裸字常用度當整詞頻率。",
+          "reference": "validation-b71.db#瓶/袋 ; data/lexicon/raw/words_hk/wordslist.json#腫瘤"
         },
         {
-          "id": 137719,
-          "char": "魚飼料",
-          "previous_jyutping": "jyu2 zi6 liu2",
-          "jyutping": "jyu4 zi6 liu2",
-          "note": "此新詞的魚為複合詞語素，依完整魚骨／魚膠／魚竿及粵典語素用法取jyu4，非單獨魚名詞變調jyu2；沒有全庫按位置改字音。",
-          "reference": "https://words.hk/zidin/魚 ; data/lexicon/raw/words_hk/wordslist.json#魚骨/魚膠/魚竿"
+          "id": 138353,
+          "char": "黃瓜片",
+          "previous_jyutping": "wong4 gwaa1 pin3",
+          "jyutping": "wong4 gwaa1 pin2",
+          "note": "按名詞整詞的日常變調先列，保留現代書讀後列；此長詞先後為AI語境判斷，並非把裸字常用度當整詞頻率。",
+          "reference": "validation-b71.db#瓶/袋 ; data/lexicon/raw/words_hk/wordslist.json#腫瘤"
         },
         {
-          "id": 137721,
-          "char": "魚骨頭",
-          "previous_jyutping": "jyu2 gwat1 tau4",
-          "jyutping": "jyu4 gwat1 tau4",
-          "note": "此新詞的魚為複合詞語素，依完整魚骨／魚膠／魚竿及粵典語素用法取jyu4，非單獨魚名詞變調jyu2；沒有全庫按位置改字音。",
-          "reference": "https://words.hk/zidin/魚 ; data/lexicon/raw/words_hk/wordslist.json#魚骨/魚膠/魚竿"
+          "id": 139330,
+          "char": "乳腺瘤",
+          "previous_jyutping": "jyu5 sin3 lau2",
+          "jyutping": "jyu5 sin3 lau2",
+          "note": "按名詞整詞的日常變調先列，保留現代書讀後列；此長詞先後為AI語境判斷，並非把裸字常用度當整詞頻率。",
+          "reference": "validation-b71.db#瓶/袋 ; data/lexicon/raw/words_hk/wordslist.json#腫瘤"
         },
         {
-          "id": 137730,
-          "char": "魷魚乾",
-          "previous_jyutping": "jau4 jyu2 gon1",
-          "jyutping": "jau4 jyu4 gon1",
-          "note": "粵典完整魷魚詞條的魷魚乾／魷魚絲例明列jau4jyu4；單獨魷魚jyu2不照搬到更長的此複合名詞。片仍保留日常2及書讀3。",
-          "reference": "https://words.hk/zidin/魷魚"
+          "id": 139250,
+          "char": "不合格率",
+          "previous_jyutping": "bat1 hap6 gaak3 leot6",
+          "jyutping": "bat1 hap6 gaak3 leot2",
+          "note": "原粵典完整比率、利率、機率、頻率、效率均供leot2；不能因率的裸字書讀6就宣稱名詞變調2錯。本批此數值比率名詞以2先、6後，長詞先後明列AI判斷，不冒稱每一長詞都有整詞實測音頻。",
+          "reference": "data/lexicon/raw/words_hk/wordslist.json#比率/利率/機率/頻率/效率"
         },
         {
-          "id": 137732,
-          "char": "魷魚絲",
-          "previous_jyutping": "jau4 jyu2 si1",
-          "jyutping": "jau4 jyu4 si1",
-          "note": "粵典完整魷魚詞條的魷魚乾／魷魚絲例明列jau4jyu4；單獨魷魚jyu2不照搬到更長的此複合名詞。片仍保留日常2及書讀3。",
-          "reference": "https://words.hk/zidin/魷魚"
+          "id": 139267,
+          "char": "不良率",
+          "previous_jyutping": "bat1 loeng4 leot6",
+          "jyutping": "bat1 loeng4 leot2",
+          "note": "原粵典完整比率、利率、機率、頻率、效率均供leot2；不能因率的裸字書讀6就宣稱名詞變調2錯。本批此數值比率名詞以2先、6後，長詞先後明列AI判斷，不冒稱每一長詞都有整詞實測音頻。",
+          "reference": "data/lexicon/raw/words_hk/wordslist.json#比率/利率/機率/頻率/效率"
         },
         {
-          "id": 137731,
-          "char": "魷魚片",
-          "previous_jyutping": "jau4 jyu2 pin2",
-          "jyutping": "jau4 jyu4 pin2",
-          "note": "粵典完整魷魚詞條的魷魚乾／魷魚絲例明列jau4jyu4；單獨魷魚jyu2不照搬到更長的此複合名詞。片仍保留日常2及書讀3。",
-          "reference": "https://words.hk/zidin/魷魚"
+          "id": 139585,
+          "char": "保存率",
+          "previous_jyutping": "bou2 cyun4 leot6",
+          "jyutping": "bou2 cyun4 leot2",
+          "note": "原粵典完整比率、利率、機率、頻率、效率均供leot2；不能因率的裸字書讀6就宣稱名詞變調2錯。本批此數值比率名詞以2先、6後，長詞先後明列AI判斷，不冒稱每一長詞都有整詞實測音頻。",
+          "reference": "data/lexicon/raw/words_hk/wordslist.json#比率/利率/機率/頻率/效率"
         },
         {
-          "id": 137780,
-          "char": "鯽魚湯",
-          "previous_jyutping": "zik1 jyu2 tong1",
-          "jyutping": "zak1 jyu4 tong1",
-          "note": "完整原粵典鯽魚zak1jyu2給鯽的日常音；此湯名魚為非末語素jyu4。鯽zik1亦有現代字書根據，保留又讀，不將兩字等同魚的單獨名詞變調。",
-          "reference": "data/lexicon/raw/words_hk/wordslist.json#鯽魚 ; https://jyut.net/query?q=鯽"
+          "id": 139714,
+          "char": "優秀率",
+          "previous_jyutping": "jau1 sau3 leot6",
+          "jyutping": "jau1 sau3 leot2",
+          "note": "原粵典完整比率、利率、機率、頻率、效率均供leot2；不能因率的裸字書讀6就宣稱名詞變調2錯。本批此數值比率名詞以2先、6後，長詞先後明列AI判斷，不冒稱每一長詞都有整詞實測音頻。",
+          "reference": "data/lexicon/raw/words_hk/wordslist.json#比率/利率/機率/頻率/效率"
         },
         {
-          "id": 137710,
-          "char": "魚躍鳶飛",
-          "previous_jyutping": "jyu2 joek6 jyun1 fei1",
-          "jyutping": "jyu4 joek3 jyun1 fei1",
-          "note": "魚為非末語素4，躍3按完整粵典跳躍／躍及CC-Canto魚躍；躍6亦見完整踴躍，現代書讀有效後列。",
-          "reference": "https://words.hk/zidin/魚 ; data/lexicon/raw/words_hk/wordslist.json#跳躍/踴躍 ; https://cantonese.org/search.php?q=魚"
+          "id": 139927,
+          "char": "再貼現率",
+          "previous_jyutping": "zoi3 tip3 jin6 leot6",
+          "jyutping": "zoi3 tip3 jin6 leot2",
+          "note": "原粵典完整比率、利率、機率、頻率、效率均供leot2；不能因率的裸字書讀6就宣稱名詞變調2錯。本批此數值比率名詞以2先、6後，長詞先後明列AI判斷，不冒稱每一長詞都有整詞實測音頻。",
+          "reference": "data/lexicon/raw/words_hk/wordslist.json#比率/利率/機率/頻率/效率"
         },
         {
-          "id": 137917,
-          "char": "鳶飛魚躍",
-          "previous_jyutping": "jyun1 fei1 jyu2 joek6",
-          "jyutping": "jyun1 fei1 jyu4 joek3",
-          "note": "與魚躍鳶飛同一魚4及躍3語素判斷；保留現代躍6書讀後列。",
-          "reference": "https://words.hk/zidin/魚 ; data/lexicon/raw/words_hk/wordslist.json#跳躍/踴躍"
+          "id": 139989,
+          "char": "出口率",
+          "previous_jyutping": "ceot1 hau2 leot6",
+          "jyutping": "ceot1 hau2 leot2",
+          "note": "原粵典完整比率、利率、機率、頻率、效率均供leot2；不能因率的裸字書讀6就宣稱名詞變調2錯。本批此數值比率名詞以2先、6後，長詞先後明列AI判斷，不冒稱每一長詞都有整詞實測音頻。",
+          "reference": "data/lexicon/raw/words_hk/wordslist.json#比率/利率/機率/頻率/效率"
         },
         {
-          "id": 136587,
-          "char": "騎驢找馬",
-          "previous_jyutping": "ke4 leoi4 zaau2 maa5",
-          "jyutping": "ke4 lou4 zaau2 maa5",
-          "note": "完整驢lou4及leoi4都有現代詞音根據；教育署建議lou4，leoi4又讀。日常lou4先，leoi4屬較少用書讀，讀音罕見級2後列，詞語本身通用級1。",
-          "reference": "https://jyut.net/query?q=驢 ; data/lexicon/raw/words_hk/wordslist.json#驢",
-          "retained_reading": "ke4 leoi4 zaau2 maa5",
-          "retained_reading_rank": 2
+          "id": 139986,
+          "char": "凹陷型",
+          "previous_jyutping": "nap1 ham6 jing4",
+          "jyutping": "nap1 ham6 jing4",
+          "note": "完整凹陷語境的ham6先，現代陷haam6亦有效後列，不將兩者一概判錯。",
+          "reference": "validation-b71.db#凹陷/陷"
         },
         {
-          "id": 137926,
-          "char": "鴉片煙癮",
-          "previous_jyutping": "aa1 pin3 jin1 jan2",
-          "jyutping": "aa1 pin3 jin1 jan5",
-          "note": "2007字典及教育署建議jan5；1985字典有完整烟癮jan2，1996同音字典原讀2及習讀5同列。新詞日常5先，原讀2保留罕見級2，不承襲裸字棄用標記，亦不將2一概說成錯讀。",
-          "reference": "https://jyut.net/query?q=癮 ; data/lexicon/raw/words_hk/wordslist.json#上癮/癮",
-          "retained_reading": "aa1 pin3 jin1 jan2",
-          "retained_reading_rank": 2
+          "id": 138565,
+          "char": "黑色鏈條",
+          "previous_jyutping": "hak1 sik1 lin4 tiu4",
+          "jyutping": "hak1 sik1 lin2 tiu4",
+          "note": "AI 整詞覆核：原粵典鏈lin2，CantoDict明列lin2較普遍、lin4為有效標準讀音；新長詞以2先4後。不能把原裸字標籤直接繼承成整詞棄用。",
+          "reference": "data/lexicon/raw/words_hk/wordslist.json#鏈 ; https://cantonese.sheik.co.uk/dictionary/characters/3532/?cf=1&full=true"
+        },
+        {
+          "id": 138676,
+          "char": "點焊機",
+          "previous_jyutping": "dim2 hon6 gei1",
+          "jyutping": "dim2 hon6 gei1",
+          "note": "AI 整詞覆核：焊的現代焊接義hon6正常，原粵典焊明列hon6及hon5；本詞hon6保留，不能因裸字排名把此正常工序詞讀音降為罕見。詞語本身仍為較少用級，與讀音先後分開。",
+          "reference": "data/lexicon/raw/words_hk/wordslist.json#焊"
+        },
+        {
+          "id": 139710,
+          "char": "儘可能減少",
+          "previous_jyutping": "zeon6 ho2 nang4 gaam2 siu2",
+          "jyutping": "zeon6 ho2 nang4 gaam2 siu2",
+          "note": "AI 整詞覆核：香港原粵典儘／儘量供zeon6，CC-Canto完整盡可能亦有6的口語用法，本長詞6先；CantoDict及CC-Canto完整儘可能明列zeon2，現代2又讀後列保留，不能宣稱2錯或從國語聲調機械二擇一。",
+          "reference": "data/lexicon/raw/words_hk/wordslist.json#儘/儘量 ; https://cantonese.sheik.co.uk/dictionary/characters/1413/ ; https://cantonese.org/search.php?q=儘 ; https://cantonese.org/search.php?q=盡"
         }
       ],
-      "accepted_before_normalized_dedup": 712,
+      "accepted_before_normalized_dedup": 815,
       "all_2000_forms_reviewed": true,
       "all_selected_readings_reviewed_twice": true,
       "corpus_all_supplied_spans_and_wider_contexts_read": true,
-      "corpus_observations": 5,
-      "corpus_supplied_spans": 5,
-      "previous_decision_prefix_preserved": 135994,
+      "corpus_observations": 4,
+      "corpus_supplied_spans": 8,
+      "previous_decision_prefix_preserved": 137994,
       "reading_review_sealed": true,
-      "fixed_scope_remaining_unreviewed": 8608,
-      "accepted_after_dedup": 708,
-      "final_source_readings_reviewed": 735,
-      "genuinely_new_expressions": 708,
-      "final_modern_variant_seal": [
-        {
-          "id": 136587,
-          "char": "騎驢找馬",
-          "previous_jyutping": "ke4 leoi4 zaau2 maa5",
-          "jyutping": "ke4 lou4 zaau2 maa5",
-          "note": "完整驢lou4及leoi4都有現代詞音根據；教育署建議lou4，leoi4又讀。日常lou4先，leoi4屬較少用書讀，讀音罕見級2後列，詞語本身通用級1。",
-          "reference": "https://jyut.net/query?q=驢 ; data/lexicon/raw/words_hk/wordslist.json#驢",
-          "retained_reading": "ke4 leoi4 zaau2 maa5",
-          "retained_reading_rank": 2
-        },
-        {
-          "id": 137926,
-          "char": "鴉片煙癮",
-          "previous_jyutping": "aa1 pin3 jin1 jan2",
-          "jyutping": "aa1 pin3 jin1 jan5",
-          "note": "2007字典及教育署建議jan5；1985字典有完整烟癮jan2，1996同音字典原讀2及習讀5同列。新詞日常5先，原讀2保留罕見級2，不承襲裸字棄用標記，亦不將2一概說成錯讀。",
-          "reference": "https://jyut.net/query?q=癮 ; data/lexicon/raw/words_hk/wordslist.json#上癮/癮",
-          "retained_reading": "aa1 pin3 jin1 jan2",
-          "retained_reading_rank": 2
-        }
-      ],
+      "fixed_scope_remaining_unreviewed": 6608,
+      "accepted_after_dedup": 801,
+      "final_source_readings_reviewed": 842,
+      "genuinely_new_expressions": 800,
+      "post_rank_contextual_grade_review": true,
       "same_word_orthographic_canonicalizations": [
         {
-          "id": 137063,
-          "source_form": "高低温",
-          "canonical_form": "高低溫"
+          "id": 138069,
+          "source_form": "鶴羣",
+          "canonical_form": "鶴群"
         },
         {
-          "id": 137207,
-          "source_form": "高温氣候",
-          "canonical_form": "高溫氣候"
+          "id": 138103,
+          "source_form": "鷹勾鼻",
+          "canonical_form": "鷹鉤鼻"
         },
         {
-          "id": 137240,
-          "source_form": "高粘度",
-          "canonical_form": "高黏度"
+          "id": 138298,
+          "source_form": "麻痹思想",
+          "canonical_form": "麻痺思想"
         },
         {
-          "id": 137352,
-          "source_form": "髮卡人",
-          "canonical_form": "發卡人"
+          "id": 138299,
+          "source_form": "麻痹症",
+          "canonical_form": "麻痺症"
         },
         {
-          "id": 137353,
-          "source_form": "髮卡行",
-          "canonical_form": "發卡行"
+          "id": 138349,
+          "source_form": "黃燐",
+          "canonical_form": "黃磷"
         },
         {
-          "id": 137740,
-          "source_form": "鮮姜",
-          "canonical_form": "鮮薑"
+          "id": 138457,
+          "source_form": "黏着劑",
+          "canonical_form": "黏著劑"
         },
         {
-          "id": 137986,
-          "source_form": "鴻篇巨着",
-          "canonical_form": "鴻篇巨著"
+          "id": 138458,
+          "source_form": "黏着性",
+          "canonical_form": "黏著性"
+        },
+        {
+          "id": 138537,
+          "source_form": "黑白圖象",
+          "canonical_form": "黑白圖像"
+        },
+        {
+          "id": 138892,
+          "source_form": "鼠羣",
+          "canonical_form": "鼠群"
+        },
+        {
+          "id": 139230,
+          "source_form": "上百户",
+          "canonical_form": "上百戶"
+        },
+        {
+          "id": 139587,
+          "source_form": "保温車",
+          "canonical_form": "保溫車"
+        },
+        {
+          "id": 139646,
+          "source_form": "候府",
+          "canonical_form": "侯府"
+        },
+        {
+          "id": 139673,
+          "source_form": "偷逃税",
+          "canonical_form": "偷逃稅"
+        },
+        {
+          "id": 139758,
+          "source_form": "免税區",
+          "canonical_form": "免稅區"
+        },
+        {
+          "id": 139992,
+          "source_form": "出塵脱俗",
+          "canonical_form": "出塵脫俗"
         }
       ]
     }
   },
-  "updated_through_batch": "2026-11-06-written-b71"
+  "updated_through_batch": "2026-11-06-written-b72"
 }
