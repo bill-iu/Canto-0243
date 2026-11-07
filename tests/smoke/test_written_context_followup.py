@@ -12,6 +12,7 @@ from app.utils.jyutping_codec import get_0243_code
 from app.utils.trad_chinese import to_traditional
 from ingest.lexicon_overlay import apply_lexicon_overlay
 from ingest.lexicon_sources import ingest_lexicon_json
+from tests.smoke.test_written_lexicon_supplement import input_fingerprint
 
 ROOT = Path(__file__).resolve().parents[2]
 BASE = ROOT / "data/lexicon"
@@ -73,8 +74,8 @@ class WrittenContextFollowupTests(unittest.TestCase):
         self.assertEqual(meta["revisited_candidates"], 7)
         self.assertEqual(hashlib.sha256(review_path.read_bytes()).hexdigest(), meta["review_tsv_sha256"])
         curated = json.loads((BASE / "curated_lexicon.json").read_text(encoding="utf-8"))
-        prefix = json.dumps(curated[:meta["input_curated_rows"]], ensure_ascii=False, indent=2) + "\n"
-        self.assertEqual(hashlib.sha256(prefix.encode()).hexdigest(), meta["input_curated_sha256"])
+        # This follow-up preceded B27; undo only later, explicitly recorded repairs.
+        self.assertEqual(input_fingerprint(curated, meta, 27), meta["input_curated_sha256"])
         added = [r for r in curated if r.get("batch") == BATCH]
         self.assertEqual(len(added), 15)
         self.assertEqual(len({r["char"] for r in added}), 7)

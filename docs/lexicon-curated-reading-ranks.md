@@ -645,3 +645,11 @@ mui1 女孩子泛稱未有二妹整詞根據，本批不擴入。
 著作、著名、著述與衣着、着色、着重按[著字詞義](https://jyut.net/query?q=著)分音。隸書 dai6／lai6、睥睨 pai5／pei5／bei6、盤子 pun2／pun4 及結膜 mok6／mok2 分別依現代同義詞例保留先後；不按來源字典數量判整詞高低頻。舊冥思苦想 ming5 有[完整詞學術比較](https://www.ny.edu.hk/web/cht/hkbc_journal/HKBC_11th%20Journal/489-583.pdf)支持；瞑思苦想原形較少用，按詞語常用度撤回，沒有改冥字製作新詞源。
 
 字面、讀音、碼、依據與先後見[B53 審核](../data/lexicon/reviews/2026-11-06-written-b53-supplement.tsv)和[B53 最終驗證](../data/lexicon/reviews/2026-11-06-written-b53-validation.json)。無整詞頻率者明示 AI 判斷，與詞語本身的常用度獨立。
+
+## 第五十四批整詞讀音終審（2026-11-07）
+
+新增 **1,000 組來源讀音分級**，累計 **65,117 組**。舊響應者以原證據修正 jing1→jing3；其餘 64,116 個舊分級物件逐欄保留。[響應](https://words.hk/zidin/響應)是回應附和 jing3，不套應該 jing1。轎車僅排除只見舊書的 kiu4 整詞音，保留現代 giu2／giu6／kiu2。[時間](https://words.hk/zidin/時間)兩音 gaan3／gaan1，以及[累積](https://words.hk/zidin/累積)的 leoi6 有完整詞例，不因裸字表分義而刪除。
+
+碌碌取庸碌 luk1，非礦物 luk6；種因、種過及種瓜取種植動詞 zung3；科學論斷取判定 dyun3。私放罪犯以名詞 faan2 先、faan6 文讀後，磅稱的稱採量重器物 cing3。豌豆原有日常 wun2 dau2 明確鏡錄為正常首讀，另保留 wun2 dau6、wun1 dau6；驗證中修正了新增較後讀法會排過舊首讀的問題，沒有增加 runtime 重複詞條。
+
+無實測整詞順位者明示 AI 判斷；同義原讀、語音及異讀保留依據，與詞語本身常用度獨立。完整字形、讀音、0243 碼、依據及驗證見[B54 審核](../data/lexicon/reviews/2026-11-06-written-b54-supplement.tsv)及[B54 最終驗證](../data/lexicon/reviews/2026-11-06-written-b54-validation.json)。
