@@ -671,3 +671,11 @@ mui1 女孩子泛稱未有二妹整詞根據，本批不擴入。
 [縫](https://jyut.net/query?q=縫)的開口名詞 fung6 與商務新詞典名詞又讀 fung4 保留；1916年的 fung3 不加入現代候選，也不以罅 laa3 作縫字讀音。素負盛名的盛採顯赫 sing6，寢具被採 pei5，緊接著按[完整接著](https://cantonese.org/search.php?q=接著)採 zoek6；著作 zyu3 不混入接續詞。[絨](https://jyut.net/query?q=絨)採 jung2 語音先、jung4 文讀後；[綴](https://jyut.net/query?q=綴)的連結、組字和裝飾義採 zeoi6 先、zeoi3 現代同義後讀。統計權重採 cung5、緝拿罪犯採 faan2、級長採 zoeng2，音節與0243碼一同核對。
 
 詞語本身的常用度獨立分級；有正常書讀不等於生活高頻，裸字缺少變調讀音也不將完整詞判為棄用。完整字形、讀音、碼、依據與排序見[B56 審核](../data/lexicon/reviews/2026-11-06-written-b56-supplement.tsv)及[B56 最終驗證](../data/lexicon/reviews/2026-11-06-written-b56-validation.json)。
+
+## 第五十七批整詞讀音終審（2026-11-07）
+
+新增 **1,073 組來源讀音分級**，累計 **68,389 組**；原有67,316個分級物件逐欄保留。[緩](https://cantonese.sheik.co.uk/dictionary/characters/2866/)的 wun4 為現代有據異讀，舊32組合併讀音及15條自建來源均保留；新緩詞採 wun6 先、wun4 後，沒有按單字正音表全局刪4。方向縱 zung1、放任及即使義 zung3 分開；重複 cung4 不混入總重的 cung5／zung6，職位 zoeng2 不混入總長度 coeng4。
+
+[繫](https://jyut.net/query?q=繫)鞋帶的打結義有完整 gai3 詞例，hai6 的束縛義也有效，較後保留；繫心／繫懷不套打結音。[繩](https://words.hk/zidin/繩)物件採 sing2 先、sing4 本調後，繩結等固定配詞另判；[繞](https://jyut.net/query?q=繞)採 jiu2 先、jiu5 同義異讀後。[翹](https://cantonese.sheik.co.uk/dictionary/characters/8512/)向上彎曲動作採 kiu3 語音先，kiu4 書讀保留，翹板及翹首固定詞仍用4。
+
+群英薈萃依現代完整詞例保留 kui2／wui6／wai3，沒有把缺乏依據的 wai6 入庫。腐蝕採損傷材料 sik6，不混蝕本虧耗 sit6；聚斂錢財保留 lim5／lim6，縫釦子採 kau3，不憑變調猜出 kau2。完整來源、0243碼和先後見[B57 審核](../data/lexicon/reviews/2026-11-06-written-b57-supplement.tsv)及[B57 最終驗證](../data/lexicon/reviews/2026-11-06-written-b57-validation.json)。讀音先後為整詞語境判斷，與詞語常用度分開。
