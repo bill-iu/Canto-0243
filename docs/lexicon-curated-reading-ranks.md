@@ -687,3 +687,11 @@ mui1 女孩子泛稱未有二妹整詞根據，本批不擴入。
 [背](https://jyut.net/query?q=背)誦記憶的bui6採先，有現代字典同義背誦詞例的bui3保留後；負載及背面bui3另判。[聞](https://jyut.net/query?q=聞)的man4兼耳聞及嗅聞，不機械套名聞聲譽man6。膜mok6／mok2、粒nap1／lap1、鞋haai2／haai4等有據讀法分列；語音變調不因孤字缺項就當作棄用。聾啞症ngaa2、痙攣lyun4、抹黑mut3 haak1按現代字義覆核讀音分級，詞語常用度獨立處理。
 
 自供狀gung1、自傳式zyun6、自彈taan4、臆度dok6、肥分fan6、能謀善斷dyun3及位置上soeng6按完整詞義判斷。來源、0243碼、先後、語料邊界與排除原因見[B58審核表](../data/lexicon/reviews/2026-11-06-written-b58-supplement.tsv)及[B58最終驗證](../data/lexicon/reviews/2026-11-06-written-b58-validation.json)。
+
+## 第五十九批整詞讀音終審（2026-11-07）
+
+新增 **888組讀音分級**，累計 **70,245組**；原有69,357個分級物件逐欄保留。興致hing3／興起hing1、投降hong4／下降gong3、種植zung3／種子zung2、傷口創cong1／創作cong3、荷槍ho6／荷花ho4、著有zyu3／衣著zoek3依完整詞義處理。舉手表決biu2、良品率leot6、草草率率seot1、草地上soeng6亦修正，不照單字草稿配詞。
+
+[芒果](https://www.cantonese.sheik.co.uk/dictionary/words/3965/)的mong4本調有[理大借詞資料](https://chaaklau.github.io/elw/)完整詞據，新詞mong1日常先、4後，舊芒果樹4保留。參加會議jyu6建議音先，與會完整詞典另有jyu5同義讀法，舊與會者／與會國5亦保留；會議wui2語音先、wui6原讀後。檐sim4／jim4／jam4、茼蒿tong4 hou1／tong4 ou1／tung4 hou1、自縊ai3／ngai3、偕老haai4／gaai1、莞爾wun2／wun5均有現代字義或完整詞據，不因裸字Rime缺項就判棄用。
+
+落泊潦倒依完整詞例bok6，不能套泊船paak3或地名尼泊爾pok3；原譜字音不是核准詞庫讀音。記錄gei3沒有機械混入另一字紀的gei2。來源、0243碼與先後見[B59審核表](../data/lexicon/reviews/2026-11-06-written-b59-supplement.tsv)及[B59最終驗證](../data/lexicon/reviews/2026-11-06-written-b59-validation.json)。詞語常用度與讀音先後獨立處理。

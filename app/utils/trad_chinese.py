@@ -123,6 +123,9 @@ _CONTEXTUAL_RESTORE: dict[str, str] = {
     "礙難照準": "礙難照准",
     "續藉手續": "續借手續",
     "能徵善戰": "能征善戰",
+    "舉手錶決": "舉手表決",
+    "萬貫傢俬": "萬貫家私",
+    "葉麪肥": "葉面肥",
 }
 
 # Bare word senses: preserve the input, since the converted form can have its
