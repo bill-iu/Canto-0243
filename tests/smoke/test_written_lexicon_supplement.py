@@ -95,6 +95,7 @@ BATCH_64 = "2026-11-06-written-b64"
 BATCH_65 = "2026-11-06-written-b65"
 BATCH_66 = "2026-11-06-written-b66"
 BATCH_67 = "2026-11-06-written-b67"
+BATCH_68 = "2026-11-06-written-b68"
 
 
 def review_rows(path):
@@ -570,7 +571,7 @@ class WrittenLexiconSupplementTests(unittest.TestCase):
         }
         candidates = ingest_lexicon_json(CURATED, source_id="curated")
         pairs = {(row.char, row.jyutping, row.code) for row in candidates}
-        batch = [row for row in json.loads(CURATED.read_text(encoding="utf-8")) if row.get("batch") in {BATCH, BATCH_02, BATCH_03, BATCH_04, BATCH_05, BATCH_06, BATCH_07, BATCH_08, BATCH_09, BATCH_10, BATCH_11, BATCH_12, BATCH_13, BATCH_14, BATCH_15, BATCH_16, BATCH_17, BATCH_18, BATCH_19, BATCH_20, BATCH_21, BATCH_22, BATCH_23, BATCH_24, BATCH_25, BATCH_26, BATCH_27, BATCH_28, BATCH_29, BATCH_30, BATCH_31, BATCH_32, BATCH_33, BATCH_34, BATCH_35, BATCH_36, BATCH_37, BATCH_38, BATCH_39, BATCH_40, BATCH_41, BATCH_42, BATCH_43, BATCH_44, BATCH_45, BATCH_46, BATCH_47, BATCH_48, BATCH_49, BATCH_50, BATCH_51, BATCH_52, BATCH_53, BATCH_54, BATCH_55, BATCH_56, BATCH_57, BATCH_58, BATCH_59, BATCH_60, BATCH_61, BATCH_62, BATCH_63, BATCH_64, BATCH_65, BATCH_66, BATCH_67}]
+        batch = [row for row in json.loads(CURATED.read_text(encoding="utf-8")) if row.get("batch") in {BATCH, BATCH_02, BATCH_03, BATCH_04, BATCH_05, BATCH_06, BATCH_07, BATCH_08, BATCH_09, BATCH_10, BATCH_11, BATCH_12, BATCH_13, BATCH_14, BATCH_15, BATCH_16, BATCH_17, BATCH_18, BATCH_19, BATCH_20, BATCH_21, BATCH_22, BATCH_23, BATCH_24, BATCH_25, BATCH_26, BATCH_27, BATCH_28, BATCH_29, BATCH_30, BATCH_31, BATCH_32, BATCH_33, BATCH_34, BATCH_35, BATCH_36, BATCH_37, BATCH_38, BATCH_39, BATCH_40, BATCH_41, BATCH_42, BATCH_43, BATCH_44, BATCH_45, BATCH_46, BATCH_47, BATCH_48, BATCH_49, BATCH_50, BATCH_51, BATCH_52, BATCH_53, BATCH_54, BATCH_55, BATCH_56, BATCH_57, BATCH_58, BATCH_59, BATCH_60, BATCH_61, BATCH_62, BATCH_63, BATCH_64, BATCH_65, BATCH_66, BATCH_67, BATCH_68}]
         usage = load_word_usage(CURATED.with_name("word_usage.tsv"))
         withdrawn = {literal for literal, grade in usage.items() if grade.withdraw_curated}
         self.assertTrue({(to_traditional(row["char"]), row["jyutping"], row["code"]) for row in batch if to_traditional(row["char"]) not in withdrawn}.issubset(pairs))
@@ -3222,6 +3223,64 @@ class WrittenLexiconSupplementTests(unittest.TestCase):
                 self.assertEqual(to_traditional(literal), target)
                 self.assertEqual(to_traditional(to_traditional(literal)), target)
         for literal in ("鋪路", "鋪地板", "鐘聲", "鍾情", "鍾愛", "鍾狀期", "鐘意以外", "鋪頭以外"):
+            self.assertEqual(to_traditional(literal), literal)
+
+    def test_sixty_eighth_batch_checks_full_words_and_retains_modern_variants(self):
+        curated = json.loads(CURATED.read_text(encoding="utf-8"))
+        path = REVIEW.parent / f"{BATCH_68}-supplement.tsv"
+        meta = json.loads((REVIEW.parent / f"{BATCH_68}.meta.json").read_text(encoding="utf-8"))
+        review = review_rows(path)
+        self.assertEqual(hashlib.sha256(path.read_bytes()).hexdigest(), meta["review_tsv_sha256"])
+        self.assertEqual(input_fingerprint(curated, meta, 68), meta["input_curated_sha256"])
+        self.assertEqual(meta["input_curated_rows"], 77784)
+        self.assertEqual(meta["newly_reviewed_candidates"], 2000)
+        self.assertEqual(meta["revisited_candidates"], 2)
+        self.assertEqual(meta["reading_overlay_replacements"], 1)
+        self.assertEqual(meta["curated_source_reading_repairs"], 0)
+        self.assertEqual(meta["unreviewed_pool_candidates"], 14608)
+        batch = [r for r in curated if r.get("batch") == BATCH_68]
+        self.assertEqual(len(batch), 955)
+        self.assertEqual(len({r["char"] for r in batch}), 902)
+        self.assertEqual({(r["char"], r["jyutping"], r["code"], r["evidence"]) for r in review if r["verdict"] == "accept"},
+                         {(r["char"], r["jyutping"], r["code"], r["evidence"]) for r in batch})
+        pairs = {(to_traditional(r["char"]), r["jyutping"]) for r in batch}
+        for literal, jp in [("長不大", "zoeng2 bat1 daai6"), ("長孫女", "zoeng2 syun1 neoi2"),
+                            ("長痘痘", "zoeng2 dau4 dau2"), ("長杆", "coeng4 gon1"),
+                            ("開幕會", "hoi1 mok6 wui2"), ("開會討論", "hoi1 wui2 tou2 leon6"),
+                            ("閒話少說", "haan4 waa2 siu2 syut3"), ("閒話少說", "haan4 waa6 siu2 syut3"),
+                            ("閤府", "hap6 fu2"), ("閱讀數", "jyut6 duk6 sou3"), ("間數", "gaan1 sou3"),
+                            ("阿諛諂媚", "o1 jyu4 cim2 mei6"), ("降魔", "hong4 mo1"),
+                            ("降臨到", "gong3 lam4 dou3"), ("院校長", "jyun2 haau6 zoeng2"),
+                            ("防滑墊", "fong4 waat6 zin3"), ("防滑墊", "fong4 waat6 din3"),
+                            ("陷溺", "haam6 nik6"), ("陷溺", "ham6 nik1"),
+                            ("隔膜泵", "gaak3 mok6 bam1"), ("隔膜閥", "gaak3 mok6 fat6"),
+                            ("隔行", "gaak3 hong4"), ("隨後就到", "ceoi4 hau6 zau6 dou3"),
+                            ("重孫女", "cung4 syun1 neoi2"), ("重孫女", "cung4 syun1 neoi5"), ("重孫女", "zung6 syun1 neoi2")]:
+            self.assertIn((to_traditional(literal), jp), pairs)
+        for literal, jp in [("長不大", "coeng4 bat1 daai6"), ("長杆", "coeng4 gon2"),
+                            ("開幕會", "hoi1 mok6 wui5"), ("閤府", "gap3 fu2"),
+                            ("閱讀數", "jyut6 duk6 sou2"), ("降魔", "gong3 mo1"),
+                            ("院校長", "jyun2 haau6 coeng4"), ("隔行", "gaak3 haang4")]:
+            self.assertNotIn((to_traditional(literal), jp), pairs)
+        ranks = {(r["char"], r["jyutping"]): r["pron_rank"] for r in json.loads(CURATED.with_name("curated_reading_ranks.json").read_text(encoding="utf-8"))}
+        for literal, jp in [("長痘痘", "zoeng2 dau4 dau2"), ("開幕會", "hoi1 mok6 wui2"),
+                            ("降低要求", "gong3 dai1 jiu1 kau4"), ("隔膜泵", "gaak3 mok6 bam1"), ("重孫女", "cung4 syun1 neoi2")]:
+            self.assertEqual(ranks[literal, jp], "預設")
+        self.assertEqual(ranks["重孫女", "zung6 syun1 neoi2"], "常用")
+        self.assertEqual(meta["existing_runtime_readings_mirrored"], 1)
+        self.assertEqual(meta["existing_word_new_readings"], 2)
+        original = LexiconCandidate("阿諛", "ngo1 jyu4", "30", ("fixture",))
+        valid = LexiconCandidate("重孫女", "zung6 syun1 neoi2", "239", ("fixture",))
+        fixed = apply_lexicon_overlay([original, valid], load_corrections())
+        self.assertEqual([(r.char, r.jyutping, r.code) for r in fixed], [("阿諛", "o1 jyu4", "30"), ("重孫女", "zung6 syun1 neoi2", "239")])
+        self.assertEqual(fixed[0].sources, original.sources)
+        self.assertEqual(meta["normalization_impact"]["explicit_runtime_literal_migrations"], [])
+        for target, variants in [("長捲髮", ("长卷发", "長卷發", "長卷髮", "長捲髮")),
+                                 ("開舖", ("开铺", "開鋪", "開舖")), ("降檔", ("降挡", "降擋", "降檔"))]:
+            for literal in variants:
+                self.assertEqual(to_traditional(literal), target)
+                self.assertEqual(to_traditional(to_traditional(literal)), target)
+        for literal in ("鋪路", "開鋪路面", "長卷", "長卷發以外", "阻擋", "開擋", "降擋以外"):
             self.assertEqual(to_traditional(literal), literal)
 
     def test_campaign_and_restoration_literals_keep_their_senses(self):
