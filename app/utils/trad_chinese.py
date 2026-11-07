@@ -128,6 +128,7 @@ _CONTEXTUAL_RESTORE: dict[str, str] = {
     "葉麪肥": "葉面肥",
     "語雲": "語云",
     "豔後": "豔后",
+    "辣椒幹": "辣椒乾",
 }
 
 # Bare word senses: preserve the input, since the converted form can have its
