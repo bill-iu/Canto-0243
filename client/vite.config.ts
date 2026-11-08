@@ -1,16 +1,62 @@
 import fs from 'node:fs'
+import { createHash } from 'node:crypto'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
-import type { Plugin } from 'vite'
+import type { Plugin, PluginOption } from 'vite'
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import { VitePWA } from 'vite-plugin-pwa'
+import { VitePWA, type VitePWAOptions } from 'vite-plugin-pwa'
 
 const clientRoot = path.dirname(fileURLToPath(import.meta.url))
 const repoRoot = path.resolve(clientRoot, '..')
 const readyGateCssPath = path.resolve(repoRoot, 'shared/ready-gate.css')
 const rootLyricsDb = path.resolve(repoRoot, 'lyrics.db')
 const publicLyricsDb = path.resolve(clientRoot, 'public/lyrics.db')
+
+export function rankingIndexBuildAsset(bytes: Uint8Array) {
+  const sha256 = createHash('sha256').update(bytes).digest('hex')
+  return { sha256, fileName: `ranking-index.${sha256}.json`, source: bytes }
+}
+
+export function rankingIndexAssetPlugin(asset: ReturnType<typeof rankingIndexBuildAsset>): Plugin {
+  return {
+    name: 'ranking-index-identity',
+    generateBundle() {
+      this.emitFile({ type: 'asset', fileName: asset.fileName, source: asset.source })
+    },
+  }
+}
+
+export const pwaPrecachePatterns = ['**/*.{js,css,html,woff2,wasm}']
+// Ranking JSON is persisted by its loader only after schema and SHA verification.
+// A fixed-URL SWR response could mix an old ranking table with a refreshed DB.
+export const pwaRuntimeCaching: NonNullable<VitePWAOptions['workbox']>['runtimeCaching'] = [
+  {
+    urlPattern: /\/lexicon-manifest\.json$/,
+    handler: 'NetworkFirst',
+    options: {
+      cacheName: 'lexicon-manifest-cache',
+      networkTimeoutSeconds: 3,
+      expiration: { maxEntries: 1, maxAgeSeconds: 24 * 60 * 60 },
+    },
+  },
+  {
+    urlPattern: /\/lyrics(?:\.[^/]+)?\.db(?:\.gz)?(?:\?.*)?$/,
+    handler: 'CacheFirst',
+    options: {
+      cacheName: 'database-cache',
+      expiration: { maxEntries: 1, maxAgeSeconds: 90 * 24 * 60 * 60 },
+    },
+  },
+  {
+    urlPattern: /\/sql-wasm-browser\.wasm$/,
+    handler: 'CacheFirst',
+    options: {
+      cacheName: 'sqljs-wasm-cache',
+      expiration: { maxEntries: 1, maxAgeSeconds: 90 * 24 * 60 * 60 },
+    },
+  },
+]
 
 function readyGateCssPlugin(): Plugin {
   const serve = () => {
@@ -134,13 +180,17 @@ function workbenchEntryPlugin(outDir: string): Plugin {
 export default defineConfig(({ command, mode }) => {
   const portableHost =
     mode === 'portable' || process.env.VITE_PORTABLE_HOST === '1'
+  const rankingAsset = command === 'build' && !portableHost
+    ? rankingIndexBuildAsset(fs.readFileSync(path.join(clientRoot, 'public/ranking-index.json')))
+    : undefined
 
-  const plugins: Plugin[] = [
+  const plugins: PluginOption[] = [
     react(),
     readyGateCssPlugin(),
     publicFontsLinkPlugin(),
     workbenchEntryPlugin(portableHost ? 'dist-portable' : 'dist'),
   ]
+  if (rankingAsset) plugins.push(rankingIndexAssetPlugin(rankingAsset))
   if (command === 'serve') {
     plugins.push(lexiconDevMountPlugin())
   }
@@ -176,48 +226,13 @@ export default defineConfig(({ command, mode }) => {
           'fonts/*.woff2',
         ],
         workbox: {
-          globPatterns: ['**/*.{js,css,html,woff2,wasm}'],
+          globPatterns: pwaPrecachePatterns,
           navigateFallback: 'index.html',
           navigateFallbackDenylist: [/^\/_/, /\/[^/?]+\.[^/]+$/],
           skipWaiting: true,
           clientsClaim: true,
           maximumFileSizeToCacheInBytes: 50 * 1024 * 1024, // 50MB precache limit (lyrics.db uses runtimeCaching)
-          runtimeCaching: [
-            {
-              urlPattern: /\/lexicon-manifest\.json$/,
-              handler: 'NetworkFirst',
-              options: {
-                cacheName: 'lexicon-manifest-cache',
-                networkTimeoutSeconds: 3,
-                expiration: {
-                  maxEntries: 1,
-                  maxAgeSeconds: 24 * 60 * 60
-                }
-              }
-            },
-            {
-              urlPattern: /\/lyrics(?:\.[^/]+)?\.db(?:\.gz)?(?:\?.*)?$/,
-              handler: 'CacheFirst',
-              options: {
-                cacheName: 'database-cache',
-                expiration: {
-                  maxEntries: 1,
-                  maxAgeSeconds: 90 * 24 * 60 * 60 // 90 days
-                }
-              }
-            },
-            {
-              urlPattern: /\/sql-wasm-browser\.wasm$/,
-              handler: 'CacheFirst',
-              options: {
-                cacheName: 'sqljs-wasm-cache',
-                expiration: {
-                  maxEntries: 1,
-                  maxAgeSeconds: 90 * 24 * 60 * 60
-                }
-              }
-            }
-          ]
+          runtimeCaching: pwaRuntimeCaching,
         },
         manifest: {
           name: 'Canto-0243 PWA',
@@ -282,9 +297,10 @@ export default defineConfig(({ command, mode }) => {
           chunkSizeWarningLimit: 600,
         }
       : undefined,
-    define: portableHost
-      ? { 'import.meta.env.VITE_PORTABLE_HOST': JSON.stringify('1') }
-      : undefined,
+    define: {
+      ...(portableHost ? { 'import.meta.env.VITE_PORTABLE_HOST': JSON.stringify('1') } : {}),
+      'import.meta.env.VITE_RANKING_INDEX_SHA256': JSON.stringify(rankingAsset?.sha256 || ''),
+    },
     assetsInclude: ['**/*.db'],
     server: {
       headers: {

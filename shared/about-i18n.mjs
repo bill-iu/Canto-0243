@@ -20,11 +20,11 @@ export const ABOUT_COPY = {
       '<li><strong>持續更新</strong> — 維護者持續改進詞庫與功能，並透過 Release 發佈</li>',
     lexiconTitle: '補充詞庫與讀音審核',
     lexiconBody:
-      '除上游詞庫外，亦持續補充<strong>通用中文、填詞短語及粵語口語</strong>，例如「迎風起」「花開花落」「只差一點」「講清楚」。詞條核對字面、粵拼及聲調編碼，並分開評定<strong>詞語常用度與讀音常用度</strong>：常見生活表達優先，較少用詞排後，過於冷僻的自建詞退回；先排序全部候選，再顯示首 200 項及後續結果。詞語排序參考 Essay 與 TUBELEX 中文字幕詞頻；資料不足時由 AI 按使用情境判斷，保留判斷依據。已確認錯音會移除，有依據的變讀保留。',
+      '本輪 12,608 項候選已完成審核，自建補充詞庫現有<strong>79,678 個有效表達、83,534 條讀音</strong>，涵蓋<strong>通用及書面中文、填詞短語與粵語口語</strong>，例如「迎風起」「花開花落」「只差一點」「講清楚」。逐詞核對字面、完整粵拼及聲調編碼，分開評定<strong>詞語常用度與讀音常用度</strong>：日常表達優先，較少用詞排後，過於冷僻的自建詞退回；先排序全部候選，再顯示首 200 項及後續結果。詞語排序參考 Essay 與 TUBELEX 中文字幕詞頻；資料不足時另記 AI 情境判斷及依據，AI 判斷並非實測詞頻。已確認錯音移除，有依據的現代變讀保留。',
     lexiconReadings:
-      '例如「善良」讀 <strong>sin6 loeng4</strong>（20），「圖書館」讀 <strong>tou4 syu1 gun2</strong>（039）；「迎風起」讀 <strong>jing4 fung1 hei2</strong>（039），在 <strong>0243 鬆模式</strong>可用「033起」找到。含「病」的字詞只收日常 <strong>beng6</strong>：移除 34 組 bing6 異讀，保留所有原有字面。',
+      '例如「善良」讀 <strong>sin6 loeng4</strong>（20），「圖書館」讀 <strong>tou4 syu1 gun2</strong>（039）；「迎風起」讀 <strong>jing4 fung1 hei2</strong>（039），在 <strong>0243 鬆模式</strong>可用「033起」找到。含「病」的字詞只收日常 <strong>beng6</strong>，已移除 bing6 異讀。',
     lexiconUpdate:
-      'PWA 重新開啟並完成詞庫更新後即可使用最新資料；桌面版請下載最新完整套件。Windows 開啟 Canto-0243.exe，macOS Intel 開啟 Canto-0243.app；桌面版首次啟動需連網下載執行環境，其後可離線使用。',
+      '2026-11-08 更新沿用 v1.1.2 版本名。PWA 重新開啟並完成詞庫更新後即可使用最新資料；桌面版請重新下載最新完整套件。Windows 開啟 Canto-0243.exe，macOS Intel 開啟 Canto-0243.app；桌面版首次啟動需連網下載執行環境，其後可離線使用。',
     navigationTitle: '查詢分頁與上一頁',
     navigationBody: '瀏覽器上一頁會返回目前 app 分頁的上一個查詢結果。例如在同一分頁輸入「43」，再輸入「243」，按瀏覽器上一頁即返回「43」的結果。自動搜尋亦會記錄歷史；其他 app 分頁不受影響，重新載入後仍可返回。',
     pledgeTitle: '承諾與授權',
@@ -91,11 +91,11 @@ export const ABOUT_COPY = {
       '<li><strong>持续更新</strong> — 维护者持续改进词库与功能，并透过 Release 发布</li>',
     lexiconTitle: '补充词库与读音审核',
     lexiconBody:
-      '除上游词库外，亦持续补充<strong>通用中文、填词短语及粤语口语</strong>，例如「迎风起」「花开花落」「只差一点」「讲清楚」。词条核对字面、粤拼及声调编码，并分开评定<strong>词语常用度与读音常用度</strong>：常见生活表达优先，较少用词排后，过于冷僻的自建词退回；先排序全部候选，再显示首 200 项及后续结果。词语排序参考 Essay 与 TUBELEX 中文字幕词频；资料不足时由 AI 按使用情境判断，保留判断依据。已确认错音会移除，有依据的变读保留。',
+      '本轮 12,608 项候选已完成审核，自建补充词库现有<strong>79,678 个有效表达、83,534 条读音</strong>，涵盖<strong>通用及书面中文、填词短语与粤语口语</strong>，例如「迎风起」「花开花落」「只差一点」「讲清楚」。逐词核对字面、完整粤拼及声调编码，分开评定<strong>词语常用度与读音常用度</strong>：日常表达优先，较少用词排后，过于冷僻的自建词退回；先排序全部候选，再显示首 200 项及后续结果。词语排序参考 Essay 与 TUBELEX 中文字幕词频；资料不足时另记 AI 情境判断及依据，AI 判断并非实测词频。已确认错音移除，有依据的现代变读保留。',
     lexiconReadings:
-      '例如「善良」读 <strong>sin6 loeng4</strong>（20），「图书馆」读 <strong>tou4 syu1 gun2</strong>（039）；「迎风起」读 <strong>jing4 fung1 hei2</strong>（039），在 <strong>0243 宽松模式</strong>可用「033起」找到。含「病」的字词只收日常 <strong>beng6</strong>：移除 34 组 bing6 异读，保留所有原有字面。',
+      '例如「善良」读 <strong>sin6 loeng4</strong>（20），「图书馆」读 <strong>tou4 syu1 gun2</strong>（039）；「迎风起」读 <strong>jing4 fung1 hei2</strong>（039），在 <strong>0243 宽松模式</strong>可用「033起」找到。含「病」的字词只收日常 <strong>beng6</strong>，已移除 bing6 异读。',
     lexiconUpdate:
-      'PWA 重新打开并完成词库更新后即可使用最新资料；桌面版请下载最新完整套件。Windows 打开 Canto-0243.exe，macOS Intel 打开 Canto-0243.app；桌面版首次启动需联网下载运行环境，其后可离线使用。',
+      '2026-11-08 更新沿用 v1.1.2 版本名。PWA 重新打开并完成词库更新后即可使用最新资料；桌面版请重新下载最新完整套件。Windows 打开 Canto-0243.exe，macOS Intel 打开 Canto-0243.app；桌面版首次启动需联网下载运行环境，其后可离线使用。',
     navigationTitle: '查询分页与上一页',
     navigationBody: '浏览器上一页会返回当前 app 分页的上一个查询结果。例如在同一分页输入「43」，再输入「243」，按浏览器上一页即返回「43」的结果。自动搜索也会记录历史；其他 app 分页不受影响，重新加载后仍可返回。',
     pledgeTitle: '承诺与授权',
@@ -162,11 +162,11 @@ export const ABOUT_COPY = {
       '<li><strong>Actively maintained</strong> — lexicon and features keep improving via Releases</li>',
     lexiconTitle: 'Supplementary lexicon & reading review',
     lexiconBody:
-      'Alongside upstream dictionaries, the supplement keeps adding <strong>general Chinese, lyric phrases, and colloquial Cantonese</strong>, including 「迎風起」「花開花落」「只差一點」「講清楚」. Wording, Jyutping, and tone codes are checked. <strong>Word familiarity and pronunciation preference are ranked separately</strong>: everyday expressions come first, less common terms follow, and overly obscure curated entries are withdrawn. All candidates are ranked before the first 200 results and later pages are shown. Word ranking draws on Essay and TUBELEX Chinese subtitle frequencies; AI contextual judgments fill gaps with recorded reasons. Confirmed incorrect readings are removed while supported variants are retained.',
+      'All 12,608 candidates in this review round have been reviewed. The supplementary lexicon now has <strong>79,678 active expressions and 83,534 readings</strong>, covering <strong>general and written Chinese, lyric phrases, and colloquial Cantonese</strong>, including 「迎風起」「花開花落」「只差一點」「講清楚」. Wording, whole-word Jyutping, and tone codes are checked. <strong>Word familiarity and pronunciation preference are ranked separately</strong>: everyday expressions come first, less common terms follow, and overly obscure curated entries are withdrawn. All candidates are ranked before the first 200 results and later pages are shown. Word ranking draws on Essay and TUBELEX Chinese subtitle frequencies; AI contextual judgments and their reasons are recorded separately when evidence is missing. These judgments are not measured frequencies. Confirmed incorrect readings are removed while supported modern variants are retained.',
     lexiconReadings:
-      'For example, 「善良」 is <strong>sin6 loeng4</strong> (20), and 「圖書館」 is <strong>tou4 syu1 gun2</strong> (039). 「迎風起」 is <strong>jing4 fung1 hei2</strong> (039); search for 「033起」 in <strong>0243 loose mode</strong> to find it. Expressions containing 「病」 use everyday <strong>beng6</strong>; 34 bing6 variants are removed while all existing word forms are preserved.',
+      'For example, 「善良」 is <strong>sin6 loeng4</strong> (20), and 「圖書館」 is <strong>tou4 syu1 gun2</strong> (039). 「迎風起」 is <strong>jing4 fung1 hei2</strong> (039); search for 「033起」 in <strong>0243 loose mode</strong> to find it. Expressions containing 「病」 use only everyday <strong>beng6</strong>; bing6 variants have been removed.',
     lexiconUpdate:
-      'Reopen the PWA and complete its lexicon update to use the latest data. For Desktop, download the latest complete bundle and open Canto-0243.exe on Windows or Canto-0243.app on macOS Intel. The first Desktop launch needs internet to download its runtime; later use is offline.',
+      'The 2026-11-08 update keeps the v1.1.2 version name. Reopen the PWA and complete its lexicon update to use the latest data. For Desktop, download the latest complete bundle again and open Canto-0243.exe on Windows or Canto-0243.app on macOS Intel. The first Desktop launch needs internet to download its runtime; later use is offline.',
     navigationTitle: 'Query tabs & browser Back',
     navigationBody: 'Browser Back restores the previous query and results in the current app tab. For example, type 43 and then 243 in the same tab; browser Back returns to the results for 43. Automatic searches also enter the history. Other app tabs stay unchanged, and history survives reloading.',
     pledgeTitle: 'Commitment & license',

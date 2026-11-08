@@ -3,6 +3,7 @@
 
 interface ImportMetaEnv {
   readonly VITE_PORTABLE_HOST?: string;
+  readonly VITE_RANKING_INDEX_SHA256?: string;
 }
 
 interface ImportMeta {
