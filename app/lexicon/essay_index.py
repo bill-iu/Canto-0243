@@ -5,18 +5,29 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Dict, Optional
 
-ROOT = Path(__file__).resolve().parent.parent.parent
-DEFAULT_ESSAY_PATH = ROOT / "data" / "essay" / "essay-cantonese.txt"
+from app.payload_root import get_payload_root
+
+
+def _default_path() -> Path:
+    return get_payload_root() / "data" / "essay" / "essay-cantonese.txt"
+
+
+def __getattr__(name: str):
+    if name == "DEFAULT_ESSAY_PATH":
+        return _default_path()
+    if name == "ROOT":
+        return get_payload_root()
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
 
 _freq_by_char: Dict[str, int] = {}
 _loaded = False
 
 
-def load_essay_corpus(path: Path | str = DEFAULT_ESSAY_PATH) -> int:
+def load_essay_corpus(path: Path | str | None = None) -> int:
     """Load ``詞<TAB>頻次`` lines. Returns row count."""
     global _freq_by_char, _loaded
 
-    corpus_path = Path(path)
+    corpus_path = Path(path) if path is not None else _default_path()
     index: Dict[str, int] = {}
     count = 0
 
@@ -51,7 +62,7 @@ def load_essay_corpus(path: Path | str = DEFAULT_ESSAY_PATH) -> int:
 def ensure_essay_loaded(path: Optional[Path | str] = None) -> None:
     if _loaded:
         return
-    load_essay_corpus(path or DEFAULT_ESSAY_PATH)
+    load_essay_corpus(path)
 
 
 def get_essay_frequency(char: str) -> int:

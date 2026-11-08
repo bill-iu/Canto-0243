@@ -4,6 +4,7 @@ from __future__ import annotations
 import os
 import shutil
 import tempfile
+import threading
 import unittest
 from pathlib import Path
 from unittest.mock import patch
@@ -67,6 +68,58 @@ class StartupSmokeTests(unittest.TestCase):
         self.assertTrue(payload["gate_ready"])
         self.assertTrue(payload["ready"])
 
+    def test_lifespan_runs_doubled_syllable_preload_without_entry_setup(self):
+        from app.startup import offline_preload as mod
+
+        threads = []
+        errors = []
+        thread_class = threading.Thread
+
+        def track_thread(*args, **kwargs):
+            thread = thread_class(*args, **kwargs)
+            threads.append(thread)
+            return thread
+
+        with (
+            patch.object(mod, "run_create_all_if_needed"),
+            patch.object(mod, "run_local_db_bootstrap"),
+            patch.object(mod, "start_background_word_cache_preload"),
+            patch.object(mod, "preload_static_runtime_resources"),
+            patch.object(mod, "preload_compound_syn_runtime_cache"),
+            patch.object(mod, "preload_compound_ant_runtime_cache"),
+            patch.object(mod, "preload_doubled_syllable_and_heteronym_caches") as preload,
+            patch.object(threading, "Thread", side_effect=track_thread),
+            patch.object(threading, "excepthook", side_effect=lambda args: errors.append(args.exc_value)),
+        ):
+            mod.run_lifespan_startup(env="local")
+            for thread in threads:
+                thread.join(timeout=2)
+
+        self.assertTrue(all(not thread.is_alive() for thread in threads))
+        self.assertEqual(errors, [])
+        preload.assert_called_once()
+        self.assertEqual(mod.get_background_phase_snapshot("doubled_syllable")["status"], "ready")
+
+    def test_startup_complete_waits_for_doubled_syllable_tail(self):
+        from app.startup import offline_preload as mod
+
+        set_db_probe_for_tests(lambda: True)
+        for phase in ("static_resources", "compound_syn", "compound_ant"):
+            mod._set_background_phase(phase, status="ready", progress=1.0)
+        with patch("app.utils.word_cache.get_preload_snapshot", return_value={
+            "ready": True, "status": "ready", "progress": 1.0, "error": None,
+        }):
+            payload = snapshot()
+            self.assertTrue(payload["gate_ready"])
+            self.assertFalse(payload["startup_complete"])
+            self.assertTrue(payload["tail_pending"])
+            self.assertEqual(payload["phases"]["doubled_syllable"]["status"], "pending")
+
+            mod._run_background_phase("doubled_syllable", lambda: None)
+            payload = snapshot()
+            self.assertTrue(payload["startup_complete"])
+            self.assertFalse(payload["tail_pending"])
+
     def test_require_search_ready_gate(self):
         set_db_probe_for_tests(lambda: False)
         with self.assertRaises(SearchGateBlocked):
@@ -105,6 +158,7 @@ class StartupSmokeTests(unittest.TestCase):
         mod._set_background_phase("static_resources", status="ready", progress=1.0)
         mod._set_background_phase("compound_syn", status="ready", progress=1.0)
         mod._set_background_phase("compound_ant", status="failed", progress=1.0, error="boom")
+        mod._set_background_phase("doubled_syllable", status="ready", progress=1.0)
         payload = snapshot()
         self.assertTrue(payload["startup_complete"])
         self.assertFalse(payload["tail_pending"])

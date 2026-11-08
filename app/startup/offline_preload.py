@@ -14,6 +14,7 @@ _background_state = {
     "static_resources": {"status": "pending", "progress": 0.0, "error": None},
     "compound_syn": {"status": "pending", "progress": 0.0, "error": None},
     "compound_ant": {"status": "pending", "progress": 0.0, "error": None},
+    "doubled_syllable": {"status": "pending", "progress": 0.0, "error": None},
 }
 
 
