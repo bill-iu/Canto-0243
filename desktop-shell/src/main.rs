@@ -3,6 +3,7 @@
 
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
+use std::ffi::OsStr;
 use std::path::{Path, PathBuf};
 use std::process::{Command, Stdio};
 use std::sync::atomic::{AtomicBool, Ordering};
@@ -16,6 +17,9 @@ use tao::window::WindowBuilder;
 use wry::WebViewBuilder;
 
 const PROJECT: &str = "canto-0243";
+// PyApp 0.31 preserves the project-name hyphen in its override variable.
+const PYAPP_INSTALL_DIR_ENV: &str = "PYAPP_INSTALL_DIR_CANTO-0243";
+const LEGACY_INSTALL_DIR_ENV: &str = "PYAPP_INSTALL_DIR_CANTO_0243";
 /// Windows: PyApp under payload `runtime/`. macOS ADR-0070: inside `.app` Resources.
 const INNER_SUBDIR: &str = "runtime";
 const INNER_WIN: &str = "Canto-0243-runtime.exe";
@@ -218,30 +222,51 @@ fn clear_download_quarantine(root: &Path) {
     let _ = root;
 }
 
-/// PyApp install roots under the OS data-local base.
-///
-/// Observed layouts (PyApp versions differ):
-/// - Windows (current): `%LOCALAPPDATA%/pyapp/data/canto-0243/<dist>/<ver>/`
-/// - Some builds / macOS notes: `…/pyapp/canto-0243/<dist>/<ver>/` (no `data/`)
-/// Check **both**; a mac-only strip of `data/` made Windows never see “env ready”
-/// after a successful first install (child exit 0 → splash fail after 90s).
-fn pyapp_project_candidates(base: &Path) -> [PathBuf; 2] {
-    [
-        base.join("pyapp").join("data").join(PROJECT),
-        base.join("pyapp").join(PROJECT),
-    ]
+fn manifest_package_digest(manifest: &[u8]) -> Option<String> {
+    let value: serde_json::Value = serde_json::from_slice(manifest).ok()?;
+    let digest = value.get("package_digest")?.as_str()?;
+    valid_package_digest(digest)
 }
 
-fn pyapp_install_ready() -> bool {
-    if let Ok(custom) = std::env::var(format!(
-        "PYAPP_INSTALL_DIR_{}",
-        PROJECT.to_uppercase().replace('-', "_")
-    )) {
-        if install_dir_looks_ready(Path::new(&custom)) {
-            return true;
-        }
+fn valid_package_digest(digest: &str) -> Option<String> {
+    if digest.len() == 64 && digest.bytes().all(|ch| ch.is_ascii_hexdigit()) {
+        Some(digest.to_ascii_lowercase())
+    } else {
+        None
     }
-    let base = if cfg!(windows) {
+}
+
+fn bundle_install_dir(base: &Path, digest: &str) -> Option<PathBuf> {
+    if !base.is_absolute() {
+        return None;
+    }
+    Some(
+        base.join("pyapp")
+            .join("data")
+            .join(PROJECT)
+            .join("bundles")
+            .join(valid_package_digest(digest)?),
+    )
+}
+
+fn custom_install_dir(
+    root: &Path,
+    custom: Option<&OsStr>,
+    legacy: Option<&OsStr>,
+) -> Option<PathBuf> {
+    let value = custom
+        .filter(|value| !value.is_empty())
+        .or_else(|| legacy.filter(|value| !value.is_empty()))?;
+    let path = Path::new(value);
+    Some(if path.is_absolute() {
+        path.to_path_buf()
+    } else {
+        root.join(path)
+    })
+}
+
+fn pyapp_data_base() -> Option<PathBuf> {
+    if cfg!(windows) {
         std::env::var_os("LOCALAPPDATA").map(PathBuf::from)
     } else if cfg!(target_os = "macos") {
         dirs_home().map(|h| h.join("Library/Application Support"))
@@ -249,41 +274,41 @@ fn pyapp_install_ready() -> bool {
         std::env::var_os("XDG_DATA_HOME")
             .map(PathBuf::from)
             .or_else(|| dirs_home().map(|h| h.join(".local/share")))
-    };
-    let Some(base) = base else {
-        return false;
-    };
-    for project in pyapp_project_candidates(&base) {
-        // Only under project installs — do not walk pyapp/cache (distribution
-        // trees can look like a ready env and skip real install).
-        if project.is_dir() && walk_ready(&project, 0) {
-            return true;
-        }
     }
-    false
+}
+
+fn pyapp_install_dir(root: &Path) -> Result<PathBuf, String> {
+    let root = if root.is_absolute() {
+        root.to_path_buf()
+    } else {
+        std::env::current_dir()
+            .map_err(|err| err.to_string())?
+            .join(root)
+    };
+    let custom = std::env::var_os(PYAPP_INSTALL_DIR_ENV);
+    let legacy = std::env::var_os(LEGACY_INSTALL_DIR_ENV);
+    if let Some(path) = custom_install_dir(&root, custom.as_deref(), legacy.as_deref()) {
+        if path.is_absolute() && path.to_str().is_some() {
+            return Ok(path);
+        }
+        return Err("執行環境的自訂資料夾路徑無效。請檢查 PyApp 安裝目錄設定。".into());
+    }
+    let manifest = std::fs::read(root.join("portable-manifest.json"))
+        .map_err(|_| "套件發佈資料缺失，請重新下載並完整解壓 Desktop 套件。".to_string())?;
+    let digest = manifest_package_digest(&manifest)
+        .ok_or_else(|| "套件發佈資料無效，請重新下載並完整解壓 Desktop 套件。".to_string())?;
+    pyapp_data_base()
+        .and_then(|base| bundle_install_dir(&base, &digest))
+        .ok_or_else(|| "找不到使用者的執行環境資料夾。請檢查系統使用者資料目錄設定。".to_string())
+}
+
+fn pyapp_install_ready(install_dir: &Path) -> bool {
+    // Never let another bundle or an older same-version install skip setup.
+    install_dir_looks_ready(install_dir)
 }
 
 fn dirs_home() -> Option<PathBuf> {
     std::env::var_os("HOME").map(PathBuf::from)
-}
-
-fn walk_ready(dir: &Path, depth: u8) -> bool {
-    if depth > 4 {
-        return false;
-    }
-    if install_dir_looks_ready(dir) {
-        return true;
-    }
-    let Ok(rd) = std::fs::read_dir(dir) else {
-        return false;
-    };
-    for ent in rd.flatten() {
-        let p = ent.path();
-        if p.is_dir() && walk_ready(&p, depth + 1) {
-            return true;
-        }
-    }
-    false
 }
 
 fn install_dir_looks_ready(dir: &Path) -> bool {
@@ -297,10 +322,10 @@ fn install_dir_looks_ready(dir: &Path) -> bool {
     candidates.iter().any(|p| p.is_file())
 }
 
-fn spawn_inner(root: &Path, inner: &Path) -> std::io::Result<std::process::Child> {
-    clear_download_quarantine(root);
+fn inner_command(root: &Path, inner: &Path, install_dir: &Path) -> Command {
     let mut cmd = Command::new(inner);
     cmd.current_dir(root)
+        .env(PYAPP_INSTALL_DIR_ENV, install_dir)
         .env("CANTO_PAYLOAD_ROOT", root)
         .env("PORTABLE", "1")
         .env("ENV", "local")
@@ -314,7 +339,16 @@ fn spawn_inner(root: &Path, inner: &Path) -> std::io::Result<std::process::Child
         // Keep console for first-run diagnostics? Shell is GUI; pyapp may AllocConsole.
         cmd.creation_flags(CREATE_NO_WINDOW);
     }
-    cmd.spawn()
+    cmd
+}
+
+fn spawn_inner(
+    root: &Path,
+    inner: &Path,
+    install_dir: &Path,
+) -> std::io::Result<std::process::Child> {
+    clear_download_quarantine(root);
+    inner_command(root, inner, install_dir).spawn()
 }
 
 fn product_http_ready() -> bool {
@@ -324,7 +358,9 @@ fn product_http_ready() -> bool {
     let port = std::env::var("PORT").unwrap_or_else(|_| "8000".into());
     let addr = format!("{host}:{port}");
     TcpStream::connect_timeout(
-        &addr.parse().unwrap_or_else(|_| "127.0.0.1:8000".parse().unwrap()),
+        &addr
+            .parse()
+            .unwrap_or_else(|_| "127.0.0.1:8000".parse().unwrap()),
         Duration::from_millis(250),
     )
     .is_ok()
@@ -368,12 +404,21 @@ Missing lyrics.db next to the app — keep the full extract folder together."
         std::process::exit(1);
     }
 
+    // Bind one directory before both readiness probing and every PyApp spawn.
+    let install_dir = match pyapp_install_dir(&root) {
+        Ok(path) => path,
+        Err(message) => {
+            show_fatal("Canto-0243", &message);
+            std::process::exit(1);
+        }
+    };
+
     // Clear quarantine on the real payload early so the next Finder launch is not translocated.
     clear_download_quarantine(&root);
 
     // Fast path: PyApp env already present → no splash.
-    if pyapp_install_ready() {
-        match spawn_inner(&root, &inner) {
+    if pyapp_install_ready(&install_dir) {
+        match spawn_inner(&root, &inner, &install_dir) {
             Ok(child) => {
                 // Detach: do not wait; product outlives shell.
                 std::mem::forget(child);
@@ -386,10 +431,10 @@ Missing lyrics.db next to the app — keep the full extract folder together."
         return;
     }
 
-    run_splash_and_bootstrap(root, inner);
+    run_splash_and_bootstrap(root, inner, install_dir);
 }
 
-fn run_splash_and_bootstrap(root: PathBuf, inner: PathBuf) {
+fn run_splash_and_bootstrap(root: PathBuf, inner: PathBuf, install_dir: PathBuf) {
     let event_loop = EventLoopBuilder::<UserEvent>::with_user_event().build();
     let proxy = event_loop.create_proxy();
 
@@ -418,7 +463,7 @@ fn run_splash_and_bootstrap(root: PathBuf, inner: PathBuf) {
         let _ = proxy_t.send_event(UserEvent::Stage(0));
         thread::sleep(Duration::from_millis(400));
 
-        let mut child = match spawn_inner(&root_t, &inner_t) {
+        let mut child = match spawn_inner(&root_t, &inner_t, &install_dir) {
             Ok(c) => c,
             Err(e) => {
                 let _ = proxy_t.send_event(UserEvent::Failed(format!("無法啟動執行核心：{e}")));
@@ -468,7 +513,7 @@ fn run_splash_and_bootstrap(root: PathBuf, inner: PathBuf) {
                 return;
             }
 
-            if pyapp_install_ready() && stage < 4 {
+            if pyapp_install_ready(&install_dir) && stage < 4 {
                 let _ = proxy_t.send_event(UserEvent::Stage(4));
                 stage = 4;
             }
@@ -490,11 +535,11 @@ fn run_splash_and_bootstrap(root: PathBuf, inner: PathBuf) {
             if let Some(status) = child_exited {
                 // Install finished (exit 0) but HTTP not up — re-launch once with env ready.
                 if status.success()
-                    && pyapp_install_ready()
+                    && pyapp_install_ready(&install_dir)
                     && !product_http_ready()
                     && !respawned_after_install
                 {
-                    match spawn_inner(&root_t, &inner_t) {
+                    match spawn_inner(&root_t, &inner_t, &install_dir) {
                         Ok(c) => {
                             child = c;
                             child_exited = None;
@@ -518,14 +563,14 @@ fn run_splash_and_bootstrap(root: PathBuf, inner: PathBuf) {
                 // Still allow a short grace if PyApp exits 0 after handoff (rare).
                 let bad = !status.success();
                 let grace_done = start.elapsed() > Duration::from_secs(if bad { 3 } else { 90 });
-                if grace_done && !product_http_ready() && !pyapp_install_ready() {
+                if grace_done && !product_http_ready() && !pyapp_install_ready(&install_dir) {
                     let _ = proxy_t.send_event(UserEvent::Failed(format!(
                         "啟動未完成（結束代碼 {status}）。\n請確認網路後重試；仍失敗則再雙擊 Canto-0243.app／Canto-0243.exe。"
                     )));
                     return;
                 }
                 // Install finished but product not up yet — keep waiting until hard timeout.
-                if grace_done && !product_http_ready() && pyapp_install_ready() && bad {
+                if grace_done && !product_http_ready() && pyapp_install_ready(&install_dir) && bad {
                     let _ = proxy_t.send_event(UserEvent::Failed(format!(
                         "執行環境已安裝但服務未就緒（結束代碼 {status}）。\n請再雙擊啟動一次。"
                     )));
@@ -559,7 +604,10 @@ fn run_splash_and_bootstrap(root: PathBuf, inner: PathBuf) {
             }
             Event::UserEvent(UserEvent::Failed(msg)) => {
                 done.store(true, Ordering::SeqCst);
-                let escaped = msg.replace('\\', "\\\\").replace('\'', "\\'").replace('\n', "\\n");
+                let escaped = msg
+                    .replace('\\', "\\\\")
+                    .replace('\'', "\\'")
+                    .replace('\n', "\\n");
                 let _ = webview.evaluate_script(&format!(
                     "window.setSplashError && window.setSplashError('{escaped}')"
                 ));
@@ -578,6 +626,120 @@ fn run_splash_and_bootstrap(root: PathBuf, inner: PathBuf) {
             _ => {}
         }
     });
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn manifest_digest_is_validated_before_becoming_a_path() {
+        let digest = "A".repeat(64);
+        let manifest = format!(r#"{{"package_digest":"{digest}","tag":"v1.1.2"}}"#);
+        assert_eq!(
+            manifest_package_digest(manifest.as_bytes()),
+            Some("a".repeat(64))
+        );
+        for invalid in ["", "../old", &"a".repeat(63), &"g".repeat(64)] {
+            assert!(valid_package_digest(invalid).is_none());
+        }
+        for invalid in [
+            br#"{}"#.as_slice(),
+            br#"{"package_digest":42}"#.as_slice(),
+            b"not json",
+        ] {
+            assert!(manifest_package_digest(invalid).is_none());
+        }
+    }
+
+    #[test]
+    fn same_bundle_reuses_a_path_and_new_digest_gets_a_new_path() {
+        let base = std::env::temp_dir();
+        let first = bundle_install_dir(&base, &"a".repeat(64)).unwrap();
+        assert_eq!(first, bundle_install_dir(&base, &"A".repeat(64)).unwrap());
+        assert_ne!(first, bundle_install_dir(&base, &"b".repeat(64)).unwrap());
+        assert_eq!(first.parent().unwrap().file_name().unwrap(), "bundles");
+        assert!(first.starts_with(base.join("pyapp").join("data").join(PROJECT)));
+        assert!(bundle_install_dir(Path::new("relative"), &"a".repeat(64)).is_none());
+        assert!(bundle_install_dir(&base, "../../old").is_none());
+    }
+
+    #[test]
+    fn canonical_custom_override_wins_and_legacy_override_is_bridged() {
+        let root = std::env::temp_dir();
+        let custom = root.join("custom");
+        let legacy = root.join("legacy");
+        assert_eq!(
+            custom_install_dir(&root, Some(custom.as_os_str()), Some(legacy.as_os_str())),
+            Some(custom.clone())
+        );
+        assert_eq!(
+            custom_install_dir(&root, Some(OsStr::new("")), Some(legacy.as_os_str())),
+            Some(legacy)
+        );
+        assert_eq!(
+            custom_install_dir(&root, None, Some(OsStr::new("relative-cache"))),
+            Some(root.join("relative-cache"))
+        );
+        assert_eq!(custom_install_dir(&root, None, None), None);
+    }
+
+    #[test]
+    fn inner_command_uses_the_actual_pyapp_hyphenated_override() {
+        let root = std::env::temp_dir();
+        let install = root.join("selected-cache");
+        let command = inner_command(&root, Path::new(INNER_WIN), &install);
+        assert_eq!(PYAPP_INSTALL_DIR_ENV, "PYAPP_INSTALL_DIR_CANTO-0243");
+        assert_eq!(
+            command
+                .get_envs()
+                .find(|(name, _)| *name == OsStr::new(PYAPP_INSTALL_DIR_ENV))
+                .and_then(|(_, value)| value),
+            Some(install.as_os_str())
+        );
+        assert!(!command
+            .get_envs()
+            .any(|(name, _)| name == OsStr::new(LEGACY_INSTALL_DIR_ENV)));
+    }
+
+    #[test]
+    fn another_bundle_or_legacy_install_cannot_mark_the_selected_bundle_ready() {
+        let temp = std::env::temp_dir();
+        let nonce = std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .unwrap()
+            .as_nanos();
+        let base = temp.join(format!(
+            "canto-shell-cache-test-{}-{nonce}",
+            std::process::id()
+        ));
+        let old_bundle = bundle_install_dir(&base, &"a".repeat(64)).unwrap();
+        let selected = bundle_install_dir(&base, &"b".repeat(64)).unwrap();
+        let legacy = base
+            .join("pyapp")
+            .join("data")
+            .join(PROJECT)
+            .join("old-dist")
+            .join("1.1.2");
+        for directory in [&old_bundle, &legacy] {
+            std::fs::create_dir_all(directory.join("Scripts")).unwrap();
+            std::fs::write(directory.join("Scripts/python.exe"), b"fixture").unwrap();
+        }
+        assert!(pyapp_install_ready(&old_bundle));
+        assert!(!pyapp_install_ready(&selected));
+        std::fs::create_dir_all(selected.join("Scripts")).unwrap();
+        std::fs::write(selected.join("Scripts/python.exe"), b"fixture").unwrap();
+        assert!(pyapp_install_ready(&selected));
+        assert!(old_bundle.join("Scripts/python.exe").is_file());
+        assert!(base.is_absolute() && base.parent() == Some(temp.as_path()));
+        assert!(base
+            .file_name()
+            .unwrap()
+            .to_str()
+            .unwrap()
+            .starts_with("canto-shell-cache-test-"));
+        std::fs::remove_dir_all(base).unwrap();
+    }
 }
 
 fn show_fatal(title: &str, text: &str) {

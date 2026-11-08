@@ -8,10 +8,10 @@ Canto-0243 Cantonese Rhyme Workbench — Desktop offline edition
 
 首次啟動 / First run
 --------------------
-首次執行需要網路：下載 CPython 3.11 並安裝應用程式環境（只需一次）。
+每份新套件首次執行需要網路：設定 CPython 3.11 及應用程式環境。
 其後可完全離線使用。
 
-First launch needs internet (downloads CPython 3.11 and installs the app env once).
+Each new bundle needs internet for its initial CPython 3.11 and app setup.
 Later launches work fully offline.
 
 無需預先安裝 Python / pip / uv。
@@ -70,6 +70,10 @@ macOS
 
 When a new stable release is available you will see a notice. Download the new
 package and extract over the old folder after quitting. No silent auto-update.
+
+同一版本覆蓋更新亦須重新下載完整套件。新套件會使用相應的新程式環境。
+For a same-version refresh, download the complete bundle again. The new bundle
+uses its corresponding app environment.
 
 
 內容 / Contents

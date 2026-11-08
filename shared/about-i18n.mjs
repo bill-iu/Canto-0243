@@ -24,7 +24,7 @@ export const ABOUT_COPY = {
     lexiconReadings:
       '例如「善良」讀 <strong>sin6 loeng4</strong>（20），「圖書館」讀 <strong>tou4 syu1 gun2</strong>（039）；「迎風起」讀 <strong>jing4 fung1 hei2</strong>（039），在 <strong>0243 鬆模式</strong>可用「033起」找到。含「病」的字詞只收日常 <strong>beng6</strong>，已移除 bing6 異讀。',
     lexiconUpdate:
-      '2026-11-08 更新沿用 v1.1.2 版本名。PWA 重新開啟並完成詞庫更新後即可使用最新資料；桌面版請重新下載最新完整套件。Windows 開啟 Canto-0243.exe，macOS Intel 開啟 Canto-0243.app；桌面版首次啟動需連網下載執行環境，其後可離線使用。',
+      '2026-11-08 更新沿用 v1.1.2 版本名。PWA 重新開啟並完成詞庫更新後即可使用最新資料；桌面版請重新下載最新完整套件。Windows 開啟 Canto-0243.exe，macOS Intel 開啟 Canto-0243.app；每份新桌面套件首次啟動需連網設定執行環境，其後可離線使用。',
     navigationTitle: '查詢分頁與上一頁',
     navigationBody: '瀏覽器上一頁會返回目前 app 分頁的上一個查詢結果。例如在同一分頁輸入「43」，再輸入「243」，按瀏覽器上一頁即返回「43」的結果。自動搜尋亦會記錄歷史；其他 app 分頁不受影響，重新載入後仍可返回。',
     pledgeTitle: '承諾與授權',
@@ -95,7 +95,7 @@ export const ABOUT_COPY = {
     lexiconReadings:
       '例如「善良」读 <strong>sin6 loeng4</strong>（20），「图书馆」读 <strong>tou4 syu1 gun2</strong>（039）；「迎风起」读 <strong>jing4 fung1 hei2</strong>（039），在 <strong>0243 宽松模式</strong>可用「033起」找到。含「病」的字词只收日常 <strong>beng6</strong>，已移除 bing6 异读。',
     lexiconUpdate:
-      '2026-11-08 更新沿用 v1.1.2 版本名。PWA 重新打开并完成词库更新后即可使用最新资料；桌面版请重新下载最新完整套件。Windows 打开 Canto-0243.exe，macOS Intel 打开 Canto-0243.app；桌面版首次启动需联网下载运行环境，其后可离线使用。',
+      '2026-11-08 更新沿用 v1.1.2 版本名。PWA 重新打开并完成词库更新后即可使用最新资料；桌面版请重新下载最新完整套件。Windows 打开 Canto-0243.exe，macOS Intel 打开 Canto-0243.app；每份新桌面套件首次启动需联网设置运行环境，其后可离线使用。',
     navigationTitle: '查询分页与上一页',
     navigationBody: '浏览器上一页会返回当前 app 分页的上一个查询结果。例如在同一分页输入「43」，再输入「243」，按浏览器上一页即返回「43」的结果。自动搜索也会记录历史；其他 app 分页不受影响，重新加载后仍可返回。',
     pledgeTitle: '承诺与授权',
@@ -166,7 +166,7 @@ export const ABOUT_COPY = {
     lexiconReadings:
       'For example, 「善良」 is <strong>sin6 loeng4</strong> (20), and 「圖書館」 is <strong>tou4 syu1 gun2</strong> (039). 「迎風起」 is <strong>jing4 fung1 hei2</strong> (039); search for 「033起」 in <strong>0243 loose mode</strong> to find it. Expressions containing 「病」 use only everyday <strong>beng6</strong>; bing6 variants have been removed.',
     lexiconUpdate:
-      'The 2026-11-08 update keeps the v1.1.2 version name. Reopen the PWA and complete its lexicon update to use the latest data. For Desktop, download the latest complete bundle again and open Canto-0243.exe on Windows or Canto-0243.app on macOS Intel. The first Desktop launch needs internet to download its runtime; later use is offline.',
+      'The 2026-11-08 update keeps the v1.1.2 version name. Reopen the PWA and complete its lexicon update to use the latest data. For Desktop, download the latest complete bundle again and open Canto-0243.exe on Windows or Canto-0243.app on macOS Intel. Each new Desktop bundle needs internet for its initial runtime setup; later use is offline.',
     navigationTitle: 'Query tabs & browser Back',
     navigationBody: 'Browser Back restores the previous query and results in the current app tab. For example, type 43 and then 243 in the same tab; browser Back returns to the results for 43. Automatic searches also enter the history. Other app tabs stay unchanged, and history survives reloading.',
     pledgeTitle: 'Commitment & license',

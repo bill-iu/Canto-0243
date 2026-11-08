@@ -5,17 +5,28 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Set
 
-ROOT = Path(__file__).resolve().parent.parent.parent
-DEFAULT_CURATED_PATH = ROOT / "data" / "lexicon" / "curated_common.txt"
+from app.payload_root import get_payload_root
+
+
+def _default_path() -> Path:
+    return get_payload_root() / "data" / "lexicon" / "curated_common.txt"
+
+
+def __getattr__(name: str):
+    if name == "DEFAULT_CURATED_PATH":
+        return _default_path()
+    if name == "ROOT":
+        return get_payload_root()
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
 
 _curated: Set[str] = set()
 _loaded = False
 
 
-def load_curated_common(path: Path | str = DEFAULT_CURATED_PATH) -> int:
+def load_curated_common(path: Path | str | None = None) -> int:
     global _curated, _loaded
 
-    curated_path = Path(path)
+    curated_path = Path(path) if path is not None else _default_path()
     words: Set[str] = set()
     count = 0
 
@@ -36,7 +47,7 @@ def load_curated_common(path: Path | str = DEFAULT_CURATED_PATH) -> int:
 def ensure_curated_loaded(path: Path | str | None = None) -> None:
     if _loaded:
         return
-    load_curated_common(path or DEFAULT_CURATED_PATH)
+    load_curated_common(path)
 
 
 def is_curated_common(char: str) -> bool:

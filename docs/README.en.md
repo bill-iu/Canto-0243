@@ -48,7 +48,7 @@ The PWA, Windows, and macOS Desktop use the same lexicon for this release. See t
 
 👉 https://bill-iu.github.io/Canto-0243/
 
-**Desktop offline edition** (Windows / macOS, no installer; the first launch downloads CPython 3.11, then works offline)
+**Desktop offline edition** (Windows / macOS, no installer; each new bundle needs internet for its initial CPython 3.11 runtime setup, then works offline)
 
 Download latest: [Windows Desktop zip](https://github.com/bill-iu/Canto-0243/releases/latest/download/canto-0243-desktop.zip) / [macOS Intel tar](https://github.com/bill-iu/Canto-0243/releases/latest/download/canto-0243-desktop-macos-x86_64.tar.gz) (no arm64 bundle in this release)
 

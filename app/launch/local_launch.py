@@ -139,6 +139,12 @@ def _headless_python(python: Path) -> Path:
     return pythonw if pythonw.is_file() else python
 
 
+def _python_argv(python: Path, args: list[str]) -> list[str]:
+    # Windows GUI children inherit the system code page; CJK diagnostics can
+    # otherwise crash startup even when stdout is redirected to DEVNULL.
+    return [str(python), "-X", "utf8", *args]
+
+
 def _tool_argv(tool: str) -> list[str]:
     """Prefer installed modules (wheel); fall back to scripts/*.py in a checkout."""
     return ["-m", f"app.launch.{tool}"]
@@ -173,14 +179,14 @@ def _spawn_detached(
         )
     else:
         kwargs["start_new_session"] = True
-    subprocess.Popen([str(_headless_python(python)), *args], **kwargs)
+    subprocess.Popen(_python_argv(_headless_python(python), args), **kwargs)
 
 
 def _run_quiet(python: Path, root: Path, args: list[str]) -> int:
     kwargs: dict = {"cwd": root, "check": False}
     if sys.platform == "win32":
         kwargs["creationflags"] = _win_no_window_flags()
-    return subprocess.run([str(python), *args], **kwargs).returncode
+    return subprocess.run(_python_argv(python, args), **kwargs).returncode
 
 
 def _terminate(proc: subprocess.Popen[bytes]) -> None:
@@ -350,7 +356,7 @@ def main() -> int:
         if sys.platform == "win32":
             server_kwargs["creationflags"] = _win_no_window_flags()
         server = subprocess.Popen(
-            [str(_headless_python(python)), *server_argv],
+            _python_argv(_headless_python(python), server_argv),
             **server_kwargs,
         )
 

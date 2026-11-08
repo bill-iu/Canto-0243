@@ -85,7 +85,7 @@ def _db_searchable() -> bool:
         return False
 
 
-def _collect_phases() -> tuple[dict, dict, dict, dict]:
+def _collect_phases() -> tuple[dict, dict, dict, dict, dict]:
     from app.startup.offline_preload import get_background_phase_snapshot
     from app.utils.word_cache import get_preload_snapshot
 
@@ -94,6 +94,7 @@ def _collect_phases() -> tuple[dict, dict, dict, dict]:
         get_background_phase_snapshot("static_resources"),
         get_background_phase_snapshot("compound_syn"),
         get_background_phase_snapshot("compound_ant"),
+        get_background_phase_snapshot("doubled_syllable"),
     )
 
 
@@ -114,8 +115,8 @@ def _honest_tail_progress(word_cache: dict, others: tuple[dict, ...]) -> float:
 
 def snapshot() -> dict[str, Any]:
     """就緒閘契約：/ready 與 503 body 共用此 flat JSON。"""
-    word_cache, static_resources, compound_syn, compound_ant = _collect_phases()
-    other_tail = (static_resources, compound_syn, compound_ant)
+    word_cache, static_resources, compound_syn, compound_ant, doubled_syllable = _collect_phases()
+    other_tail = (static_resources, compound_syn, compound_ant, doubled_syllable)
 
     db_ready = _db_searchable()
     word_cache_ready = bool(word_cache.get("ready"))
@@ -161,6 +162,7 @@ def snapshot() -> dict[str, Any]:
             "static_resources": static_resources,
             "compound_syn": compound_syn,
             "compound_ant": compound_ant,
+            "doubled_syllable": doubled_syllable,
         },
     }
 
