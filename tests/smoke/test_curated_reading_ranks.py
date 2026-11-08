@@ -35,6 +35,20 @@ class CuratedReadingRankTests(unittest.TestCase):
     def tearDown(self):
         reset_rime_char_for_tests()
 
+    def _load_with_char_fixture(self, rows=""):
+        # Keep the real whole-word grades in the same payload as this small
+        # character table; never depend on an untracked full Rime download.
+        tmp = TemporaryDirectory()
+        self.addCleanup(tmp.cleanup)
+        data = Path(tmp.name) / "data"
+        char_csv = data / "rime/char.csv"
+        char_csv.parent.mkdir(parents=True)
+        char_csv.write_text("char,jyutping,pron_rank\n" + rows, encoding="utf-8")
+        word_ranks = data / "lexicon/curated_reading_ranks.json"
+        word_ranks.parent.mkdir()
+        word_ranks.write_bytes(RANKS.read_bytes())
+        load_rime_char_csv(char_csv)
+
     def test_every_curated_reading_has_a_traceable_grade(self):
         source = ROOT / "data/lexicon/curated_lexicon.json"
         rime = ROOT / "data/rime/char.csv"
@@ -94,6 +108,22 @@ class CuratedReadingRankTests(unittest.TestCase):
         self.assertEqual(pron_rank_sort_value_for_word("不存在", "bat1"), 99)
 
     def test_search_and_reference_reading_order_uses_word_grades(self):
+        # These three preferred readings predate the curated source. They use
+        # the documented character fallback, not an explicit whole-word grade.
+        # Supply their actual default component grades even on CI's tiny Rime.
+        self._load_with_char_fixture(
+            "桀,git6,預設\n驁,ngou4,預設\n不,bat1,預設\n馴,seon4,預設\n"
+            "黏,nim1,預設\n稠,cau4,預設\n度,dou6,預設\n"
+            "明,ming4,預設\n火,fo2,預設\n執,zap1,預設\n仗,zoeng3,預設\n"
+        )
+        for char, jyutping in (
+            ("桀驁不馴", "git6 ngou4 bat1 seon4"),
+            ("黏稠度", "nim1 cau4 dou6"),
+            ("明火執仗", "ming4 fo2 zap1 zoeng3"),
+        ):
+            with self.subTest(fallback=char):
+                self.assertNotIn((char, jyutping), load_word_pron_ranks(RANKS))
+                self.assertEqual(pron_rank_sort_value_for_word(char, jyutping), 0)
         # A historical word reading must retain its inherited rare grade.
         self.assertEqual(pron_rank_sort_value_for_word("桀驁不馴", "git6 ngou6 bat1 seon4"), 2)
         cases = {
@@ -222,6 +252,23 @@ class CuratedReadingRankTests(unittest.TestCase):
             for key in (search_result_sort_key, authoritative_reading_sort_key):
                 with self.subTest(char=char, sort=key.__name__):
                     self.assertEqual(sorted(rows, key=key)[0].jyutping, preferred)
+
+    def test_explicit_word_grades_work_without_character_data(self):
+        self._load_with_char_fixture()
+        for char, preferred, variant in (
+            ("長於", "zoeng2 jyu1", "coeng4 jyu1"),
+            ("生澀", "saang1 gip3", "sang1 gip3"),
+            ("蘆蓆", "lou4 zek6", "lou4 zik6"),
+        ):
+            with self.subTest(char=char):
+                self.assertEqual(pron_rank_sort_value(char[0], preferred.split()[0]), 99)
+                self.assertEqual(pron_rank_sort_value_for_word(char, preferred), 0)
+                self.assertEqual(pron_rank_sort_value_for_word(char, variant), 1)
+                rows = [SimpleNamespace(char=char, jyutping=jp) for jp in (variant, preferred)]
+                for key in (search_result_sort_key, authoritative_reading_sort_key):
+                    self.assertEqual(sorted(rows, key=key)[0].jyutping, preferred)
+        # Missing legacy readings stay unknown; no invented default grade.
+        self.assertEqual(pron_rank_sort_value_for_word("桀驁不馴", "git6 ngou4 bat1 seon4"), 99)
 
     def test_explicit_payload_root_and_missing_legacy_file_keep_char_fallback(self):
         with TemporaryDirectory() as tmp:
