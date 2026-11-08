@@ -134,10 +134,15 @@ class TestLocalLaunchSeam(unittest.TestCase):
         self.assertIn("macos_app_bundle", shell)
         self.assertIn("clear_download_quarantine", shell)
         self.assertIn("xattr", shell)
-        # PyApp install roots: Windows uses pyapp/data/<project>; some builds omit data/.
-        self.assertIn("pyapp_project_candidates", shell)
-        self.assertIn('.join("pyapp").join("data").join(PROJECT)', shell)
-        self.assertIn('.join("pyapp").join(PROJECT)', shell)
+        # ADR-0068 §14: same-tag refreshes bind readiness and spawn to the
+        # selected bundle, rather than accepting any older semver install.
+        # Rust tests exercise the actual digest validation and path isolation.
+        self.assertIn("manifest_package_digest", shell)
+        self.assertIn('.join("bundles")', shell)
+        self.assertIn("PYAPP_INSTALL_DIR_CANTO-0243", shell)
+        self.assertIn('.env(PYAPP_INSTALL_DIR_ENV, install_dir)', shell)
+        self.assertIn("pyapp_install_ready(&install_dir)", shell)
+        self.assertNotIn("pyapp_project_candidates", shell)
         self.assertIn("respawned_after_install", shell)
         self.assertIn("SecTranslocateCreateOriginalPathForURL", shell)
         self.assertIn("payload_has_sidecars", shell)
