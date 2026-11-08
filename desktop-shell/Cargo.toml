@@ -11,6 +11,7 @@ name = "canto-desktop-shell"
 path = "src/main.rs"
 
 [dependencies]
+serde_json = "1"
 tao = "0.35"
 wry = "0.55"
 

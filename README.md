@@ -48,7 +48,7 @@ PWA、Windows 及 macOS Desktop 共用本版詞庫。詳見 [完整更新說明]
 
 👉 https://bill-iu.github.io/Canto-0243/
 
-**Desktop 離線版**（Windows / macOS 免安裝；首次啟動需網路下載 CPython 3.11，其後離線）  
+**Desktop 離線版**（Windows / macOS 免安裝；每份新套件首次啟動需連網設定 CPython 3.11 程式環境，其後離線）
 下載最新版：[Windows Desktop zip](https://github.com/bill-iu/Canto-0243/releases/latest/download/canto-0243-desktop.zip) / [macOS Intel tar](https://github.com/bill-iu/Canto-0243/releases/latest/download/canto-0243-desktop-macos-x86_64.tar.gz)（本版未提供 arm64 套件）
 
 完整 Releases 與詞庫檔請到 [GitHub Releases](https://github.com/bill-iu/Canto-0243/releases)

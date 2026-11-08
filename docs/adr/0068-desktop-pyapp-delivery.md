@@ -20,6 +20,8 @@
 12. **Desktop 安裝進度殼**（grill；2026-07-22 補）— 首次雙擊用**薄外層殼**（Rust + **wry/tao**，共用靜態 HTML splash；Win+Mac 同 milestone 兩 target），分階標籤顯示 PyApp bootstrap（下 CPython／建 env／裝 wheel）。進度 % 用**階段映射估計**（唔跟位元組、唔 stage 內時間假爬）：stage 0→約 5%、1→25%、2→50%、3→75%、4→95%、產品 HTTP Ready→100%；UI 為 stage 文案 +「約 N%」／en `~N%` + **定長 bar**（寬度=N）；% 只升唔降。**唔**等同產品 **就緒閘**。Env 已就緒則跳過殼。內層仍係 PyApp；**拒**用產品 React 閘包住無 Python 階段；**拒**只靠 fork PyApp 當唯一品牌 UI。
 13. **Desktop 側車 UI 瘦身**（grill；2026-07-22）— 產品 UI 仍由 `client` **portable host** 建置（`dist-portable`），但 **正式 zip／tar 組裝**須剔除 **PWA 瀏覽器引擎死重**（Desktop 查詢走 Python API + 根側車 **`lyrics.db`**，唔用 sql.js／OPFS 開庫）。**剔除 denylist（兩平台同一契約）**：`lyrics.db`、`lyrics.db.gz`、`static-syn-index.json`、`static-cilin-syn-index.json`、`static-ant-index.json`、`ranking-index.json`、`rhyme-letter-index.json`（均指 UI 樹內，**唔**刪根側車 `lyrics.db`）。**保留**：html／js／css／wasm／fonts／icons、`project-pos-index.json`、根 `lyrics.db`、`data/`、wheel、runtime／shell、`.cache/word_meta.bin`（暖啟）。**拒**「肥 mac 去對齊 Windows 臃腫」；**拒**只砍重複 db 而留 static-syn 等死重。PWA Pages 完整 prebuild **唔**受影響。
 
+14. **同版本套件安裝隔離**（2026-11-08）— 外層殼先讀 `portable-manifest.json` 的 `package_digest`（只接受 64 位十六進位 SHA-256），把 PyApp 安裝目錄固定為使用者資料目錄下的 `pyapp/data/canto-0243/bundles/<digest>`；Windows 基底為 `%LOCALAPPDATA%`，macOS 為 `~/Library/Application Support`。同一套件暖啟沿用自己的環境；同版本刷新後 digest 不同，首次啟動重新設定，可需連網，不誤用舊 wheel。就緒探測與所有 runtime spawn 使用同一目錄，不再掃其他套件／舊 semver 目錄；不刪除或搬移舊安裝。PyApp 0.31 實際覆寫變數為 **`PYAPP_INSTALL_DIR_CANTO-0243`**（保留 hyphen）；若使用者明設此變數，優先保留其自訂目錄，亦兼容舊殼曾辨認的 `PYAPP_INSTALL_DIR_CANTO_0243` 並轉傳實際變數。自訂目錄是明確繞過 digest 隔離的技術選項，更新該目錄由設定者負責；相對路徑以套件目錄為準。未自訂時，發佈指紋缺失／無效須提示重新下載完整套件，不回退重用其他安裝。
+
 ## 理由
 
 - 舊痛點：建置拷貝整棵 venv、zip 數千小檔、運送／刪除慢；macOS 無開發者帳下 `.app` 亦難當可靠入口。
