@@ -17,3 +17,6 @@
 - 必備測試：扁平 tier 單元、等號選列單元、字面優先組合、essay／curated 衝突回歸、缺字與純碼整合一致。
 - `domain/relations/ranking.py`（**近反義池**）維持獨立契約，不併入本模組。
 - 架構檢視不應再建議恢復 `essay_sort`／`mask_priority_key`，或在缺字路徑另訂 essay／curated 順序。
+## 2026-11-06 排序順序補充
+
+維護者要求詞語常用度獨立於讀音常用度，[ADR-0082](0082-word-usage-ranking-and-curated-withdrawals.md) 取代本 ADR 的 Essay 優先次序：共用結果排序先按詞語分級，再按 Essay／字幕頻道分布／curated／讀音。等號參考讀音仍以讀音等級優先，單一深模組及更外層字面／韻命中規則保留。

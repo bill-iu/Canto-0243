@@ -1,6 +1,7 @@
 /** ADR-0032 G: manifest gzip target resolution */
 import {
   buildDevLexiconTarget,
+  loadLexiconTarget,
   lexiconStorageVersion,
   resolveTargetFromManifest,
   type LexiconManifest,
@@ -58,3 +59,50 @@ if (lexiconStorageVersion(oldSnapshot) === lexiconStorageVersion(newSnapshot)
 if (lexiconStorageVersion({ version: 'legacy' }) !== 'legacy') {
   throw new Error('manifest without a fingerprint must preserve its legacy cache key');
 }
+
+// First visit can finish before SW control; a subsequent offline cold start
+// must retain the exact DB identity, not fall back to an unhashed filename.
+const originalFetch = globalThis.fetch;
+const originalCaches = Object.getOwnPropertyDescriptor(globalThis, 'caches');
+let stored: Response | undefined;
+let failPut = false;
+const offline = async (): Promise<Response> => { throw new TypeError('offline'); };
+const latest = { ...gz, lexiconVersion: 'v1.1.2', sha256: 'b'.repeat(64) };
+try {
+  Object.defineProperty(globalThis, 'caches', { configurable: true, value: {
+    async open(name: string) {
+      if (name !== 'lexicon-manifest-cache') throw new Error('wrong cache');
+      return {
+        async match() { return stored?.clone(); },
+        async put(_url: string, response: Response) {
+          if (failPut) throw new Error('quota failure');
+          stored = response.clone();
+        },
+      };
+    },
+  } });
+  globalThis.fetch = async () => Response.json(latest);
+  const online = await loadLexiconTarget();
+  if (!stored || online.sha256 !== latest.sha256) throw new Error('first manifest not persisted');
+  globalThis.fetch = offline;
+  const cached = await loadLexiconTarget();
+  if (JSON.stringify(cached) !== JSON.stringify(online)) throw new Error('offline DB identity changed');
+  const refresh = { ...latest, sha256: 'c'.repeat(64) };
+  globalThis.fetch = async () => Response.json(refresh);
+  const updated = await loadLexiconTarget();
+  if (updated.sha256 !== refresh.sha256 || updated.fetchUrl === online.fetchUrl) {
+    throw new Error('same-tag network update must replace the old manifest');
+  }
+  globalThis.fetch = offline;
+  if ((await loadLexiconTarget()).sha256 !== refresh.sha256) throw new Error('offline refresh missing');
+  failPut = true;
+  globalThis.fetch = async () => Response.json(latest);
+  let rejected = false;
+  try { await loadLexiconTarget(); } catch { rejected = true; }
+  if (!rejected) throw new Error('storage failure must not silently change DB identity');
+} finally {
+  globalThis.fetch = originalFetch;
+  if (originalCaches) Object.defineProperty(globalThis, 'caches', originalCaches);
+  else Reflect.deleteProperty(globalThis, 'caches');
+}
+console.log('lexicon manifest first-visit offline identity and same-tag refresh ok');

@@ -108,7 +108,7 @@ class LexiconSupplementProposalTests(unittest.TestCase):
                     source_literal = row["evidence"].removeprefix("essay:")
                     self.assertIn(source_literal, essay_literals)
                     self.assertEqual(to_traditional(source_literal), row["char"])
-                elif row["evidence"].startswith("cantopop:"):
+                elif row["evidence"].startswith(("cantopop:", "jieba:", "rime-upstream:", "words_hk:")):
                     self.assertIn((row["char"], row["jyutping"], row["evidence"]), corpus_reviews)
                 else:
                     self.assertEqual((row["char"], row["evidence"]), ("迎風起", "user:2026-10-19"))

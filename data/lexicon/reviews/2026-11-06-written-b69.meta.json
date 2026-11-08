@@ -1,0 +1,3751 @@
+{
+  "batch": "2026-11-06-written-b69",
+  "date": "2026-11-08",
+  "reviewer": "AI-assisted word-form, sense and whole-word Cantonese review; not human item-by-item approval",
+  "source_repository": "https://github.com/fxsjy/jieba",
+  "source_commit": "67fa2e36e72f69d9134b8a1037b83fbb070b9775",
+  "source_license": "MIT (Jieba word forms); CC-BY-4.0 (Rime original word and supplied reading; AI modifications explicitly marked)",
+  "source_files": [
+    {
+      "path": "jieba/dict.txt",
+      "url": "https://raw.githubusercontent.com/fxsjy/jieba/67fa2e36e72f69d9134b8a1037b83fbb070b9775/jieba/dict.txt",
+      "sha256": "7197c3211ddd98962b036cdf40324d1ea2bfaa12bd028e68faa70111a88e12a8",
+      "bytes": 5071852
+    },
+    {
+      "path": "extra_dict/dict.txt.big",
+      "url": "https://raw.githubusercontent.com/fxsjy/jieba/67fa2e36e72f69d9134b8a1037b83fbb070b9775/extra_dict/dict.txt.big",
+      "sha256": "b16011275c42955ccd81fc1adecc93a59dbb7926af69d93fc95d4943d40f6aad",
+      "bytes": 8583143
+    },
+    {
+      "path": "LICENSE",
+      "url": "https://raw.githubusercontent.com/fxsjy/jieba/67fa2e36e72f69d9134b8a1037b83fbb070b9775/LICENSE",
+      "sha256": "18ba0984839f85853b29fadaf992f7dba8fd0ca0fbeae34de2b8735222dc7a37",
+      "bytes": 1075
+    }
+  ],
+  "input_git_commit": "99aa70f036c4d13074fba77b74f35dc5c254538b",
+  "input_curated_sha256": "500fc9107646ae94f8f0240dc60f91face016b5aab52c10cc57b6d429ed22210",
+  "input_curated_rows": 78739,
+  "input_db_sha256": "6175f4d4d43d4b44e7e4c3a7762d8a815dd2f554aaf95867d6ec1ae2666e5cf9",
+  "newly_reviewed_candidates": 2000,
+  "revisited_candidates": 1,
+  "revisited_pool_candidates": 0,
+  "existing_word_reading_reviews": 1,
+  "existing_word_new_readings": 1,
+  "existing_runtime_readings_mirrored": 0,
+  "review_rows": 2026,
+  "review_candidate_ids": 2002,
+  "review_verdict_rows": {
+    "reject": 1109,
+    "accept": 916,
+    "repair": 1
+  },
+  "reading_repairs": 1,
+  "curated_source_reading_repairs": 0,
+  "reading_overlay_exclusions": 0,
+  "reading_overlay_replacements": 1,
+  "added_rows": 916,
+  "added_literals": 892,
+  "total_curated_rows": 79655,
+  "cumulative_reviewed_candidates": 133994,
+  "cumulative_candidate_decisions": {
+    "accept": 75452,
+    "reject": 57114,
+    "already_present": 1179,
+    "defer": 249
+  },
+  "candidate_pool": 146602,
+  "unreviewed_pool_candidates": 12608,
+  "regional_candidates_still_held": 924,
+  "selection": "Next 2000 individually reviewed candidates offsets127250:129250 IDs131994–133993;1068 initial accepts,177 withdrawn for low familiarity or narrow scope,891 selected before normalized dedup. All9 pinned Cantopop observations and all17 supplied spans plus wide contexts read. One exact old 與人相處 initial-tone repair; one preferred missing reading without a redundant runtime rank mirror.",
+  "lyric_corpus": {
+    "repository": "https://github.com/jasonleeubc/Cantopop-corpus",
+    "commit": "018e88540b917c40dc3f7248ed98908208544b54",
+    "license": "CC-BY-4.0",
+    "observations_reviewed": 9,
+    "supplied_spans_reviewed": 17,
+    "all_supplied_spans_and_wider_contexts_read": true,
+    "observations_policy": "Whole-context use evidence only, not daily frequency or automatic pronunciation approval. 需知 and 非愛 are cross-boundary fragments; 難評 occurs across 難/評分 but is retained independently for natural 難以評定. Repeated choruses do not multiply everyday frequency."
+  },
+  "frequency_meaning": "Jieba weight is neither measured word frequency nor product rank. Available whole-word Essay/TUBELEX counts take precedence; AI familiarity judgments remain explicitly separate.",
+  "normalization_policy": "Existing s2hk plus122 exact restorations and18 preserved senses/33 input keys unchanged; cache42 unchanged. No production normalizer or relation-key migrations.",
+  "second_pass_familiarity_withdrawals": 177,
+  "initial_accepted_candidates": 1068,
+  "final_accepted_candidates_before_dedup": 891,
+  "reading_policy": "No automatic promotion of character-default drafts; whole-word review plus contextual high-risk and compound-reference audit; 病=beng6 only",
+  "existing_source_reading_repairs": {
+    "scanned_runtime_rows": 257726,
+    "candidate_rows": 154,
+    "candidates": [
+      {
+        "char": "3A電池",
+        "jyutping": "saam1 ei1 din6 ci4",
+        "code": "3?20",
+        "source_flags": 32
+      },
+      {
+        "char": "中位數",
+        "jyutping": "zung1 wai2 sou3",
+        "code": "394",
+        "source_flags": 48
+      },
+      {
+        "char": "乾電池",
+        "jyutping": "gon1 din6 ci4",
+        "code": "320",
+        "source_flags": 50
+      },
+      {
+        "char": "位數",
+        "jyutping": "wai2 sou3",
+        "code": "94",
+        "source_flags": 48
+      },
+      {
+        "char": "力量",
+        "jyutping": "lik6 loeng6",
+        "code": "22",
+        "source_flags": 51
+      },
+      {
+        "char": "寸步難行",
+        "jyutping": "cyun3 bou6 naan4 hang4",
+        "code": "4200",
+        "source_flags": 48
+      },
+      {
+        "char": "寸步難行",
+        "jyutping": "cyun3 bou6 naan4 haang4",
+        "code": "4200",
+        "source_flags": 34
+      },
+      {
+        "char": "干擾",
+        "jyutping": "gon1 jiu2",
+        "code": "39",
+        "source_flags": 50
+      },
+      {
+        "char": "干擾",
+        "jyutping": "gon1 jiu5",
+        "code": "35",
+        "source_flags": 49
+      },
+      {
+        "char": "承重",
+        "jyutping": "sing4 cung5",
+        "code": "05",
+        "source_flags": 32
+      },
+      {
+        "char": "相處",
+        "jyutping": "soeng1 cyu3",
+        "code": "34",
+        "source_flags": 49
+      },
+      {
+        "char": "相處",
+        "jyutping": "soeng1 cyu5",
+        "code": "35",
+        "source_flags": 34
+      },
+      {
+        "char": "翅膀",
+        "jyutping": "ci3 pong4",
+        "code": "40",
+        "source_flags": 49
+      },
+      {
+        "char": "舊電池",
+        "jyutping": "gau6 din6 ci4",
+        "code": "220",
+        "source_flags": 32
+      },
+      {
+        "char": "蓄電池",
+        "jyutping": "cuk1 din6 ci4",
+        "code": "320",
+        "source_flags": 50
+      },
+      {
+        "char": "鋰電池",
+        "jyutping": "lei5 din6 ci4",
+        "code": "520",
+        "source_flags": 32
+      },
+      {
+        "char": "集會",
+        "jyutping": "zaap6 wui2",
+        "code": "29",
+        "source_flags": 50
+      },
+      {
+        "char": "電池",
+        "jyutping": "din6 ci4",
+        "code": "20",
+        "source_flags": 51
+      },
+      {
+        "char": "電池水",
+        "jyutping": "din6 ci4 seoi2",
+        "code": "209",
+        "source_flags": 48
+      },
+      {
+        "char": "電錶",
+        "jyutping": "din6 biu1",
+        "code": "23",
+        "source_flags": 50
+      },
+      {
+        "char": "非分之想",
+        "jyutping": "fei1 fan6 zi1 soeng2",
+        "code": "3239",
+        "source_flags": 48
+      },
+      {
+        "char": "飼料",
+        "jyutping": "zi6 liu2",
+        "code": "29",
+        "source_flags": 49
+      },
+      {
+        "char": "不定冠詞",
+        "jyutping": "bat1 ding6 gun3 ci4",
+        "code": "3240",
+        "source_flags": 18
+      },
+      {
+        "char": "翅膀",
+        "jyutping": "ci3 bong2",
+        "code": "49",
+        "source_flags": 2
+      },
+      {
+        "char": "粗飼料",
+        "jyutping": "cou1 zi6 liu6",
+        "code": "322",
+        "source_flags": 2
+      },
+      {
+        "char": "多位數",
+        "jyutping": "do1 wai6 sou3",
+        "code": "324",
+        "source_flags": 18
+      },
+      {
+        "char": "化學電池",
+        "jyutping": "faa3 hok6 din6 ci4",
+        "code": "4220",
+        "source_flags": 2
+      },
+      {
+        "char": "光電池",
+        "jyutping": "gwong1 din6 ci4",
+        "code": "320",
+        "source_flags": 18
+      },
+      {
+        "char": "知難行易",
+        "jyutping": "zi1 naan4 hang4 ji6",
+        "code": "3002",
+        "source_flags": 2
+      },
+      {
+        "char": "飼料",
+        "jyutping": "zi6 liu6",
+        "code": "22",
+        "source_flags": 2
+      },
+      {
+        "char": "武裝力量",
+        "jyutping": "mou5 zong1 lik6 loeng6",
+        "code": "5322",
+        "source_flags": 2
+      },
+      {
+        "char": "三位數",
+        "jyutping": "saam1 wai6 sou3",
+        "code": "324",
+        "source_flags": 2
+      },
+      {
+        "char": "太陽電池",
+        "jyutping": "taai3 joeng4 din6 ci4",
+        "code": "4020",
+        "source_flags": 18
+      },
+      {
+        "char": "團結就是力量",
+        "jyutping": "tyun4 git3 zau6 si6 lik6 loeng6",
+        "code": "042222",
+        "source_flags": 18
+      },
+      {
+        "char": "有生力量",
+        "jyutping": "jau5 sang1 lik6 loeng6",
+        "code": "5322",
+        "source_flags": 0
+      },
+      {
+        "char": "和睦相處",
+        "jyutping": "wo4 muk6 soeng1 cyu2",
+        "code": "0239",
+        "source_flags": 0
+      },
+      {
+        "char": "是非分明",
+        "jyutping": "si6 fei1 fan1 ming4",
+        "code": "2330",
+        "source_flags": 0
+      },
+      {
+        "char": "核力量",
+        "jyutping": "hat6 lik6 loeng6",
+        "code": "222",
+        "source_flags": 0
+      },
+      {
+        "char": "抗干擾",
+        "jyutping": "kong3 gon1 jiu2",
+        "code": "439",
+        "source_flags": 0
+      },
+      {
+        "char": "干擾素",
+        "jyutping": "gon1 jiu2 sou3",
+        "code": "394",
+        "source_flags": 0
+      },
+      {
+        "char": "非分",
+        "jyutping": "fei1 fan6",
+        "code": "32",
+        "source_flags": 0
+      },
+      {
+        "char": "干擾機",
+        "jyutping": "gon1 jiu2 gei1",
+        "code": "393",
+        "source_flags": 0
+      },
+      {
+        "char": "新生力量",
+        "jyutping": "san1 sang1 lik6 loeng6",
+        "code": "3322",
+        "source_flags": 0
+      },
+      {
+        "char": "飼料廠",
+        "jyutping": "zi6 liu2 cong2",
+        "code": "299",
+        "source_flags": 0
+      },
+      {
+        "char": "一霎那",
+        "jyutping": "jat1 saap3 naa5",
+        "code": "345",
+        "source_flags": 0
+      },
+      {
+        "char": "精飼料",
+        "jyutping": "zing1 zi6 liu2",
+        "code": "329",
+        "source_flags": 0
+      },
+      {
+        "char": "冠詞",
+        "jyutping": "gun3 ci4",
+        "code": "40",
+        "source_flags": 0
+      },
+      {
+        "char": "干擾源",
+        "jyutping": "gon1 jiu2 jyun4",
+        "code": "390",
+        "source_flags": 0
+      },
+      {
+        "char": "電池板",
+        "jyutping": "din6 ci4 baan2",
+        "code": "209",
+        "source_flags": 0
+      },
+      {
+        "char": "抗干擾性",
+        "jyutping": "kong3 gon1 jiu2 sing3",
+        "code": "4394",
+        "source_flags": 0
+      },
+      {
+        "char": "霎那間",
+        "jyutping": "saap3 naa5 gaan1",
+        "code": "453",
+        "source_flags": 0
+      },
+      {
+        "char": "個位數",
+        "jyutping": "go3 wai2 sou3",
+        "code": "494",
+        "source_flags": 0
+      },
+      {
+        "char": "青飼料",
+        "jyutping": "cing1 zi6 liu2",
+        "code": "329",
+        "source_flags": 0
+      },
+      {
+        "char": "五方雜處",
+        "jyutping": "ng5 fong1 zaap6 cyu5",
+        "code": "5325",
+        "source_flags": 0
+      },
+      {
+        "char": "力量型",
+        "jyutping": "lik6 loeng6 jing4",
+        "code": "220",
+        "source_flags": 0
+      },
+      {
+        "char": "干擾能力",
+        "jyutping": "gon1 jiu2 nang4 lik6",
+        "code": "3902",
+        "source_flags": 0
+      },
+      {
+        "char": "節約電池",
+        "jyutping": "zit3 joek3 din6 ci4",
+        "code": "4420",
+        "source_flags": 0
+      },
+      {
+        "char": "一位數",
+        "jyutping": "jat1 wai2 sou3",
+        "code": "394",
+        "source_flags": 0
+      },
+      {
+        "char": "七位數",
+        "jyutping": "cat1 wai2 sou3",
+        "code": "394",
+        "source_flags": 0
+      },
+      {
+        "char": "中國飼料",
+        "jyutping": "zung1 gwok3 zi6 liu2",
+        "code": "3429",
+        "source_flags": 0
+      },
+      {
+        "char": "主導力量",
+        "jyutping": "zyu2 dou6 lik6 loeng6",
+        "code": "9222",
+        "source_flags": 0
+      },
+      {
+        "char": "九位數",
+        "jyutping": "gau2 wai2 sou3",
+        "code": "994",
+        "source_flags": 0
+      },
+      {
+        "char": "二位數",
+        "jyutping": "ji6 wai2 sou3",
+        "code": "294",
+        "source_flags": 0
+      },
+      {
+        "char": "五位數",
+        "jyutping": "ng5 wai2 sou3",
+        "code": "594",
+        "source_flags": 0
+      },
+      {
+        "char": "交流干擾",
+        "jyutping": "gaau1 lau4 gon1 jiu2",
+        "code": "3039",
+        "source_flags": 0
+      },
+      {
+        "char": "充電電池",
+        "jyutping": "cung1 din6 din6 ci4",
+        "code": "3220",
+        "source_flags": 0
+      },
+      {
+        "char": "兩位數",
+        "jyutping": "loeng5 wai2 sou3",
+        "code": "594",
+        "source_flags": 0
+      },
+      {
+        "char": "八位數",
+        "jyutping": "baat3 wai2 sou3",
+        "code": "494",
+        "source_flags": 0
+      },
+      {
+        "char": "六位數",
+        "jyutping": "luk6 wai2 sou3",
+        "code": "294",
+        "source_flags": 0
+      },
+      {
+        "char": "力量之源",
+        "jyutping": "lik6 loeng6 zi1 jyun4",
+        "code": "2230",
+        "source_flags": 0
+      },
+      {
+        "char": "力量對比",
+        "jyutping": "lik6 loeng6 deoi3 bei2",
+        "code": "2249",
+        "source_flags": 0
+      },
+      {
+        "char": "力量懸殊",
+        "jyutping": "lik6 loeng6 jyun4 syu4",
+        "code": "2200",
+        "source_flags": 0
+      },
+      {
+        "char": "力量薄弱",
+        "jyutping": "lik6 loeng6 bok6 joek6",
+        "code": "2222",
+        "source_flags": 0
+      },
+      {
+        "char": "力量雄厚",
+        "jyutping": "lik6 loeng6 hung4 hau5",
+        "code": "2205",
+        "source_flags": 0
+      },
+      {
+        "char": "加強力量",
+        "jyutping": "gaa1 koeng4 lik6 loeng6",
+        "code": "3022",
+        "source_flags": 0
+      },
+      {
+        "char": "十位數",
+        "jyutping": "sap6 wai2 sou3",
+        "code": "294",
+        "source_flags": 0
+      },
+      {
+        "char": "原電池",
+        "jyutping": "jyun4 din6 ci4",
+        "code": "020",
+        "source_flags": 0
+      },
+      {
+        "char": "友好相處",
+        "jyutping": "jau5 hou2 soeng1 cyu5",
+        "code": "5935",
+        "source_flags": 0
+      },
+      {
+        "char": "友好相處",
+        "jyutping": "jau5 hou2 soeng1 cyu2",
+        "code": "5939",
+        "source_flags": 0
+      },
+      {
+        "char": "和平相處",
+        "jyutping": "wo4 ping4 soeng1 cyu5",
+        "code": "0035",
+        "source_flags": 0
+      },
+      {
+        "char": "和平相處",
+        "jyutping": "wo4 ping4 soeng1 cyu2",
+        "code": "0039",
+        "source_flags": 0
+      },
+      {
+        "char": "嚇阻力量",
+        "jyutping": "haak3 zo2 lik6 loeng4",
+        "code": "4920",
+        "source_flags": 0
+      },
+      {
+        "char": "四位數",
+        "jyutping": "sei3 wai2 sou3",
+        "code": "494",
+        "source_flags": 0
+      },
+      {
+        "char": "國防力量",
+        "jyutping": "gwok3 fong4 lik6 loeng6",
+        "code": "4022",
+        "source_flags": 0
+      },
+      {
+        "char": "巨大力量",
+        "jyutping": "geoi6 daai6 lik6 loeng6",
+        "code": "2222",
+        "source_flags": 0
+      },
+      {
+        "char": "席位數",
+        "jyutping": "zik6 wai2 sou3",
+        "code": "294",
+        "source_flags": 0
+      },
+      {
+        "char": "席位數",
+        "jyutping": "zik6 wai6 sou3",
+        "code": "224",
+        "source_flags": 0
+      },
+      {
+        "char": "帶電池",
+        "jyutping": "daai3 din6 ci4",
+        "code": "420",
+        "source_flags": 0
+      },
+      {
+        "char": "干擾力",
+        "jyutping": "gon1 jiu2 lik6",
+        "code": "392",
+        "source_flags": 0
+      },
+      {
+        "char": "干擾哨聲",
+        "jyutping": "gon1 jiu2 saau3 sing1",
+        "code": "3943",
+        "source_flags": 0
+      },
+      {
+        "char": "干擾器",
+        "jyutping": "gon1 jiu2 hei3",
+        "code": "394",
+        "source_flags": 0
+      },
+      {
+        "char": "幾位數",
+        "jyutping": "gei2 wai2 sou3",
+        "code": "994",
+        "source_flags": 0
+      },
+      {
+        "char": "牀位數",
+        "jyutping": "cong4 wai2 sou3",
+        "code": "094",
+        "source_flags": 0
+      },
+      {
+        "char": "牀位數",
+        "jyutping": "cong4 wai6 sou3",
+        "code": "024",
+        "source_flags": 0
+      },
+      {
+        "char": "座位數",
+        "jyutping": "zo6 wai2 sou3",
+        "code": "294",
+        "source_flags": 0
+      },
+      {
+        "char": "座位數",
+        "jyutping": "zo6 wai6 sou3",
+        "code": "224",
+        "source_flags": 0
+      },
+      {
+        "char": "廢舊電池",
+        "jyutping": "fai3 gau6 din6 ci4",
+        "code": "4220",
+        "source_flags": 0
+      },
+      {
+        "char": "廢電池",
+        "jyutping": "fai3 din6 ci4",
+        "code": "420",
+        "source_flags": 0
+      },
+      {
+        "char": "後備力量",
+        "jyutping": "hau6 bei6 lik6 loeng6",
+        "code": "2222",
+        "source_flags": 0
+      },
+      {
+        "char": "扇動翅膀",
+        "jyutping": "sin3 dung6 ci3 pong4",
+        "code": "4240",
+        "source_flags": 0
+      },
+      {
+        "char": "手機電池",
+        "jyutping": "sau2 gei1 din6 ci4",
+        "code": "9320",
+        "source_flags": 0
+      },
+      {
+        "char": "抵抗力量",
+        "jyutping": "dai2 kong3 lik6 loeng6",
+        "code": "9422",
+        "source_flags": 0
+      },
+      {
+        "char": "排除干擾",
+        "jyutping": "paai4 ceoi4 gon1 jiu2",
+        "code": "0039",
+        "source_flags": 0
+      },
+      {
+        "char": "水產飼料",
+        "jyutping": "seoi2 caan2 zi6 liu2",
+        "code": "9929",
+        "source_flags": 0
+      },
+      {
+        "char": "滯礙難行",
+        "jyutping": "zai6 ngoi6 naan4 hang4",
+        "code": "2200",
+        "source_flags": 0
+      },
+      {
+        "char": "潛在力量",
+        "jyutping": "cim4 zoi6 lik6 loeng6",
+        "code": "0222",
+        "source_flags": 0
+      },
+      {
+        "char": "燃料電池",
+        "jyutping": "jin4 liu2 din6 ci4",
+        "code": "0920",
+        "source_flags": 0
+      },
+      {
+        "char": "物質力量",
+        "jyutping": "mat6 zat1 lik6 loeng6",
+        "code": "2322",
+        "source_flags": 0
+      },
+      {
+        "char": "百位數",
+        "jyutping": "baak3 wai2 sou3",
+        "code": "494",
+        "source_flags": 0
+      },
+      {
+        "char": "相處更好",
+        "jyutping": "soeng1 cyu2 gang3 hou2",
+        "code": "3949",
+        "source_flags": 0
+      },
+      {
+        "char": "相處更好",
+        "jyutping": "soeng1 cyu5 gang3 hou2",
+        "code": "3549",
+        "source_flags": 0
+      },
+      {
+        "char": "窒礙難行",
+        "jyutping": "zat6 ngoi6 naan4 hang4",
+        "code": "2200",
+        "source_flags": 0
+      },
+      {
+        "char": "竭盡力量",
+        "jyutping": "kit3 zeon6 lik6 loeng6",
+        "code": "4222",
+        "source_flags": 0
+      },
+      {
+        "char": "精神力量",
+        "jyutping": "zing1 san4 lik6 loeng6",
+        "code": "3022",
+        "source_flags": 0
+      },
+      {
+        "char": "艱難行進",
+        "jyutping": "gaan1 naan4 haang4 zeon3",
+        "code": "3004",
+        "source_flags": 0
+      },
+      {
+        "char": "變相處理",
+        "jyutping": "bin3 soeng3 cyu2 lei5",
+        "code": "4495",
+        "source_flags": 0
+      },
+      {
+        "char": "變相處理",
+        "jyutping": "bin3 soeng3 cyu5 lei5",
+        "code": "4455",
+        "source_flags": 0
+      },
+      {
+        "char": "豬飼料",
+        "jyutping": "zyu1 zi6 liu2",
+        "code": "329",
+        "source_flags": 0
+      },
+      {
+        "char": "貢獻力量",
+        "jyutping": "gung3 hin3 lik6 loeng6",
+        "code": "4422",
+        "source_flags": 0
+      },
+      {
+        "char": "軍事力量",
+        "jyutping": "gwan1 si6 lik6 loeng6",
+        "code": "3222",
+        "source_flags": 0
+      },
+      {
+        "char": "進步力量",
+        "jyutping": "zeon3 bou6 lik6 loeng6",
+        "code": "4222",
+        "source_flags": 0
+      },
+      {
+        "char": "配製飼料",
+        "jyutping": "pui3 zai3 zi6 liu2",
+        "code": "4429",
+        "source_flags": 0
+      },
+      {
+        "char": "鎳氫電池",
+        "jyutping": "nip1 hing1 din6 ci4",
+        "code": "3320",
+        "source_flags": 0
+      },
+      {
+        "char": "鎳氫電池",
+        "jyutping": "nip6 hing1 din6 ci4",
+        "code": "2320",
+        "source_flags": 0
+      },
+      {
+        "char": "一號電池",
+        "jyutping": "jat1 hou6 din6 ci4",
+        "code": "3220",
+        "source_flags": 16
+      },
+      {
+        "char": "七號電池",
+        "jyutping": "cat1 hou6 din6 ci4",
+        "code": "3220",
+        "source_flags": 16
+      },
+      {
+        "char": "三號電池",
+        "jyutping": "saam1 hou6 din6 ci4",
+        "code": "3220",
+        "source_flags": 16
+      },
+      {
+        "char": "中堅力量",
+        "jyutping": "zung1 gin1 lik6 loeng6",
+        "code": "3322",
+        "source_flags": 16
+      },
+      {
+        "char": "二號電池",
+        "jyutping": "ji6 hou6 din6 ci4",
+        "code": "2220",
+        "source_flags": 16
+      },
+      {
+        "char": "公眾集會",
+        "jyutping": "gung1 zung3 zaap6 wui2",
+        "code": "3429",
+        "source_flags": 16
+      },
+      {
+        "char": "力量均衡",
+        "jyutping": "lik6 loeng6 gwan1 hang4",
+        "code": "2230",
+        "source_flags": 16
+      },
+      {
+        "char": "動物性飼料",
+        "jyutping": "dung6 mat6 sing3 zi6 liu2",
+        "code": "22429",
+        "source_flags": 16
+      },
+      {
+        "char": "四號電池",
+        "jyutping": "sei3 hou6 din6 ci4",
+        "code": "4220",
+        "source_flags": 16
+      },
+      {
+        "char": "太陽能電池",
+        "jyutping": "taai3 joeng4 nang4 din6 ci4",
+        "code": "40020",
+        "source_flags": 16
+      },
+      {
+        "char": "太陽電池板",
+        "jyutping": "taai3 joeng4 din6 ci4 baan2",
+        "code": "40209",
+        "source_flags": 16
+      },
+      {
+        "char": "威懾力量",
+        "jyutping": "wai1 sip3 lik6 loeng6",
+        "code": "3422",
+        "source_flags": 16
+      },
+      {
+        "char": "定冠詞",
+        "jyutping": "ding6 gun3 ci4",
+        "code": "240",
+        "source_flags": 16
+      },
+      {
+        "char": "愛港力量",
+        "jyutping": "oi3 gong2 lik6 loeng6",
+        "code": "4922",
+        "source_flags": 16
+      },
+      {
+        "char": "戰略核力量",
+        "jyutping": "zin3 loek6 hat6 lik6 loeng6",
+        "code": "42222",
+        "source_flags": 16
+      },
+      {
+        "char": "打擊軍事力量",
+        "jyutping": "daa2 gik1 gwan1 si6 lik6 loeng6",
+        "code": "933222",
+        "source_flags": 16
+      },
+      {
+        "char": "扣式電池",
+        "jyutping": "kau3 sik1 din6 ci4",
+        "code": "4320",
+        "source_flags": 16
+      },
+      {
+        "char": "異性相處",
+        "jyutping": "ji6 sing3 soeng1 cyu2",
+        "code": "2439",
+        "source_flags": 16
+      },
+      {
+        "char": "相處",
+        "jyutping": "soeng1 cyu2",
+        "code": "39",
+        "source_flags": 16
+      },
+      {
+        "char": "與人相處",
+        "jyutping": "jyu5 jan4 soeng3 cyu2",
+        "code": "5049",
+        "source_flags": 16
+      },
+      {
+        "char": "鉛酸蓄電池",
+        "jyutping": "jyun4 syun1 cuk1 din6 ci4",
+        "code": "03320",
+        "source_flags": 16
+      },
+      {
+        "char": "鋰離子電池",
+        "jyutping": "lei5 lei4 zi2 din6 ci4",
+        "code": "50920",
+        "source_flags": 16
+      },
+      {
+        "char": "集會",
+        "jyutping": "zaap6 wui6",
+        "code": "22",
+        "source_flags": 17
+      },
+      {
+        "char": "集會現場",
+        "jyutping": "zaap6 wui2 jin6 coeng4",
+        "code": "2920",
+        "source_flags": 16
+      },
+      {
+        "char": "電池座",
+        "jyutping": "din6 ci4 zo6",
+        "code": "202",
+        "source_flags": 16
+      },
+      {
+        "char": "電池組",
+        "jyutping": "din6 ci4 zou2",
+        "code": "209",
+        "source_flags": 16
+      },
+      {
+        "char": "非分之念",
+        "jyutping": "fei1 fan6 zi1 nim6",
+        "code": "3232",
+        "source_flags": 16
+      },
+      {
+        "char": "黨派集會",
+        "jyutping": "dong2 paai3 zaap6 wui2",
+        "code": "9429",
+        "source_flags": 16
+      },
+      {
+        "char": "相處咗",
+        "jyutping": "soeng1 cyu3 zo2",
+        "code": "349",
+        "source_flags": 16
+      },
+      {
+        "char": "朝夕相處",
+        "jyutping": "ziu1 zik6 soeng1 cyu3",
+        "code": "3234",
+        "source_flags": 1
+      }
+    ],
+    "exact_reading_replacements": [
+      {
+        "char": "與人相處",
+        "previous_jyutping": "jyu5 jan4 soeng3 cyu2",
+        "jyutping": "jyu5 jan4 soeng1 cyu2",
+        "source_file": "data/lexicon/raw/rime-cantonese-upstream/word.csv",
+        "source_line": 69759,
+        "source_sha256": "b7f2561ccd222358cd7d04f2a349b986831aa8d61adf60d8584d6ffc5dd6f27a",
+        "source_license": "CC-BY-4.0",
+        "reference": "https://jyutdictionary.com/dictionary/entry/相處 ; https://lshk.org/wp-content/uploads/2022/11/CRAT_Appendix2_bystroke_1.3.pdf",
+        "note": "與他人相處的相為互相soeng1，非相貌／相片soeng3；完整相處及與他人交流的現代詞例、LSHK詞表均用1。只精確改本詞原供3，不改相處cyu3有效又讀，亦不改其他相字。",
+        "previous_code": "5049",
+        "code": "5039"
+      }
+    ],
+    "all_other_context_rows_retained": 153,
+    "old_runtime_readings_deleted": 0,
+    "old_runtime_readings_replaced": 1,
+    "old_curated_source_rows_changed": 0,
+    "prior_reading_additions": [
+      {
+        "id": "existing-與人相處:1",
+        "char": "與人相處",
+        "jyutping": "jyu5 jan4 soeng1 cyu5",
+        "pron_rank": 0,
+        "kind": "missing-reading",
+        "source_literal": "與人相處",
+        "source_file": "data/lexicon/raw/rime-cantonese-upstream/word.csv",
+        "source_line": 69759,
+        "source_sha256": "b7f2561ccd222358cd7d04f2a349b986831aa8d61adf60d8584d6ffc5dd6f27a",
+        "source_reading": "jyu5 jan4 soeng3 cyu2",
+        "evidence": "rime-upstream:sha256=b7f2561ccd222358cd7d04f2a349b986831aa8d61adf60d8584d6ffc5dd6f27a:word.csv#L69759;AI:reading-supplement",
+        "reference": "https://jyutdictionary.com/dictionary/entry/相處 ; https://lshk.org/wp-content/uploads/2022/11/CRAT_Appendix2_bystroke_1.3.pdf",
+        "note": "完整相處soeng1cyu5以LSHK及粵典現代用例為據，與人前綴的整詞配音及5優先次序明列AI，不冒稱Rime原供此音。",
+        "word_usage_rank": 1,
+        "word_usage_note": "若有Essay／TUBELEX完整詞觀測沿用；否則通用表達的第1級為AI判斷，非實測頻次。"
+      }
+    ],
+    "valid_readings_retained": [
+      "雞翅膀gai1ci3pong4：原始粵典完整詞及CantoDict皆供，非必須bong2。",
+      "集會wui2及wui6*2完整詞有效；新詞2先6後。",
+      "相處cyu5、cyu3、cyu2均有完整現代用例；不能把3當處所義一概刪除。",
+      "承重sing4cung5為粵典及CantoDict完整供音；非承重牆保留5。",
+      "電錶din6biu1完整粵典例，計量義亦用1。",
+      "冠詞gun3為完整定冠詞／不定冠詞供音，不據頭冠名詞誤改1。",
+      "雄渾wan6及wan4均有完整供音；新雄渾有力6先4後。",
+      "飼料liu2及liu6、時間gaan3及gaan1完整現代詞音保留。"
+    ],
+    "policy": "Whole-word modern sources precede component semantics, source flags, or Mandarin analogy. Preserve raw inputs and all other old records and grades.",
+    "rank_mirror_withdrawn_before_final_build": {
+      "char": "與人相處",
+      "jyutping": "jyu5 jan4 soeng1 cyu2",
+      "reason": "Exact original-source overlay supplies corrected2 and its source flags. Redundant mirror would duplicate it. Existing Rime cyu2 grade retained; curated preferred5 has explicit0."
+    }
+  },
+  "additional_context_reading_sources": [
+    {
+      "id": "existing-與人相處:1",
+      "char": "與人相處",
+      "jyutping": "jyu5 jan4 soeng1 cyu5",
+      "pron_rank": 0,
+      "kind": "missing-reading",
+      "source_literal": "與人相處",
+      "source_file": "data/lexicon/raw/rime-cantonese-upstream/word.csv",
+      "source_line": 69759,
+      "source_sha256": "b7f2561ccd222358cd7d04f2a349b986831aa8d61adf60d8584d6ffc5dd6f27a",
+      "source_reading": "jyu5 jan4 soeng3 cyu2",
+      "evidence": "rime-upstream:sha256=b7f2561ccd222358cd7d04f2a349b986831aa8d61adf60d8584d6ffc5dd6f27a:word.csv#L69759;AI:reading-supplement",
+      "reference": "https://jyutdictionary.com/dictionary/entry/相處 ; https://lshk.org/wp-content/uploads/2022/11/CRAT_Appendix2_bystroke_1.3.pdf",
+      "note": "完整相處soeng1cyu5以LSHK及粵典現代用例為據，與人前綴的整詞配音及5優先次序明列AI，不冒稱Rime原供此音。",
+      "word_usage_rank": 1,
+      "word_usage_note": "若有Essay／TUBELEX完整詞觀測沿用；否則通用表達的第1級為AI判斷，非實測頻次。"
+    }
+  ],
+  "original_curated_rows_preserved": 78739,
+  "previous_source_repairs_explicit": true,
+  "review_tsv_sha256": "16f0e5715e9fa4d60d1e1f880c9a12b5f348fe5662c797945359fcb3dcfaa0ec",
+  "validation": {
+    "merged_rows": 258642,
+    "merged_literals": 239902,
+    "unique_triples": 258640,
+    "baseline_rows": 257726,
+    "all_previous_rows_and_multiplicities_retained_with_exact_reading_replacements": true,
+    "all_previous_source_flags_retained_with_exact_reading_replacements": true,
+    "explicit_existing_word_preference_checks": 1,
+    "explicit_runtime_literal_migrations": 0,
+    "existing_runtime_readings_mirrored": 0,
+    "new_existing_word_readings": 1,
+    "confirmed_old_wrong_sense_readings_removed": 1,
+    "explicit_existing_reading_replacements": 1,
+    "all_accepted_primary_reading_checks": 891,
+    "old_word_grades_preserved": 139350,
+    "new_source_readings": 916,
+    "new_pairs_retained": true,
+    "search_checks": 495,
+    "preferred_reading_checks": 24,
+    "word_usage_keys": 140242,
+    "withdrawn_curated_literals": 2051,
+    "live_db_unchanged": true,
+    "old_source_rows_preserved": 78739,
+    "old_reading_grades_preserved": 78739,
+    "explicit_previous_source_repairs": 0,
+    "explicit_previous_reading_grade_repairs": 0,
+    "old_usage_rows_preserved": 139350,
+    "old_judgments_preserved": 21609,
+    "new_source_forms": 892,
+    "new_merged_forms": 891,
+    "new_merged_readings": 916,
+    "old_runtime_readings_deleted": 0,
+    "old_runtime_readings_replaced": 1,
+    "new_merged_readings_net": 916,
+    "raw_source_forms": 76011,
+    "normalized_source_forms": 76009,
+    "new_word_usage_judgments": 346,
+    "active_curated_forms": 73958,
+    "active_curated_readings": 77538,
+    "unrelated_user_files_unchanged": true,
+    "previous_overlay_bytes_preserved": true,
+    "old_overlay_rows_added": 1,
+    "prior_candidate_decisions_preserved": 131994,
+    "explicit_prior_candidate_adjustments": 0,
+    "all_review_source_locations_verified": true,
+    "normalizer_bytes_unchanged": true,
+    "layer_cache_bytes_unchanged": true,
+    "existing_source_reading_audit": {
+      "scanned_runtime_rows": 257726,
+      "candidate_rows": 154,
+      "candidates": [
+        {
+          "char": "3A電池",
+          "jyutping": "saam1 ei1 din6 ci4",
+          "code": "3?20",
+          "source_flags": 32
+        },
+        {
+          "char": "中位數",
+          "jyutping": "zung1 wai2 sou3",
+          "code": "394",
+          "source_flags": 48
+        },
+        {
+          "char": "乾電池",
+          "jyutping": "gon1 din6 ci4",
+          "code": "320",
+          "source_flags": 50
+        },
+        {
+          "char": "位數",
+          "jyutping": "wai2 sou3",
+          "code": "94",
+          "source_flags": 48
+        },
+        {
+          "char": "力量",
+          "jyutping": "lik6 loeng6",
+          "code": "22",
+          "source_flags": 51
+        },
+        {
+          "char": "寸步難行",
+          "jyutping": "cyun3 bou6 naan4 hang4",
+          "code": "4200",
+          "source_flags": 48
+        },
+        {
+          "char": "寸步難行",
+          "jyutping": "cyun3 bou6 naan4 haang4",
+          "code": "4200",
+          "source_flags": 34
+        },
+        {
+          "char": "干擾",
+          "jyutping": "gon1 jiu2",
+          "code": "39",
+          "source_flags": 50
+        },
+        {
+          "char": "干擾",
+          "jyutping": "gon1 jiu5",
+          "code": "35",
+          "source_flags": 49
+        },
+        {
+          "char": "承重",
+          "jyutping": "sing4 cung5",
+          "code": "05",
+          "source_flags": 32
+        },
+        {
+          "char": "相處",
+          "jyutping": "soeng1 cyu3",
+          "code": "34",
+          "source_flags": 49
+        },
+        {
+          "char": "相處",
+          "jyutping": "soeng1 cyu5",
+          "code": "35",
+          "source_flags": 34
+        },
+        {
+          "char": "翅膀",
+          "jyutping": "ci3 pong4",
+          "code": "40",
+          "source_flags": 49
+        },
+        {
+          "char": "舊電池",
+          "jyutping": "gau6 din6 ci4",
+          "code": "220",
+          "source_flags": 32
+        },
+        {
+          "char": "蓄電池",
+          "jyutping": "cuk1 din6 ci4",
+          "code": "320",
+          "source_flags": 50
+        },
+        {
+          "char": "鋰電池",
+          "jyutping": "lei5 din6 ci4",
+          "code": "520",
+          "source_flags": 32
+        },
+        {
+          "char": "集會",
+          "jyutping": "zaap6 wui2",
+          "code": "29",
+          "source_flags": 50
+        },
+        {
+          "char": "電池",
+          "jyutping": "din6 ci4",
+          "code": "20",
+          "source_flags": 51
+        },
+        {
+          "char": "電池水",
+          "jyutping": "din6 ci4 seoi2",
+          "code": "209",
+          "source_flags": 48
+        },
+        {
+          "char": "電錶",
+          "jyutping": "din6 biu1",
+          "code": "23",
+          "source_flags": 50
+        },
+        {
+          "char": "非分之想",
+          "jyutping": "fei1 fan6 zi1 soeng2",
+          "code": "3239",
+          "source_flags": 48
+        },
+        {
+          "char": "飼料",
+          "jyutping": "zi6 liu2",
+          "code": "29",
+          "source_flags": 49
+        },
+        {
+          "char": "不定冠詞",
+          "jyutping": "bat1 ding6 gun3 ci4",
+          "code": "3240",
+          "source_flags": 18
+        },
+        {
+          "char": "翅膀",
+          "jyutping": "ci3 bong2",
+          "code": "49",
+          "source_flags": 2
+        },
+        {
+          "char": "粗飼料",
+          "jyutping": "cou1 zi6 liu6",
+          "code": "322",
+          "source_flags": 2
+        },
+        {
+          "char": "多位數",
+          "jyutping": "do1 wai6 sou3",
+          "code": "324",
+          "source_flags": 18
+        },
+        {
+          "char": "化學電池",
+          "jyutping": "faa3 hok6 din6 ci4",
+          "code": "4220",
+          "source_flags": 2
+        },
+        {
+          "char": "光電池",
+          "jyutping": "gwong1 din6 ci4",
+          "code": "320",
+          "source_flags": 18
+        },
+        {
+          "char": "知難行易",
+          "jyutping": "zi1 naan4 hang4 ji6",
+          "code": "3002",
+          "source_flags": 2
+        },
+        {
+          "char": "飼料",
+          "jyutping": "zi6 liu6",
+          "code": "22",
+          "source_flags": 2
+        },
+        {
+          "char": "武裝力量",
+          "jyutping": "mou5 zong1 lik6 loeng6",
+          "code": "5322",
+          "source_flags": 2
+        },
+        {
+          "char": "三位數",
+          "jyutping": "saam1 wai6 sou3",
+          "code": "324",
+          "source_flags": 2
+        },
+        {
+          "char": "太陽電池",
+          "jyutping": "taai3 joeng4 din6 ci4",
+          "code": "4020",
+          "source_flags": 18
+        },
+        {
+          "char": "團結就是力量",
+          "jyutping": "tyun4 git3 zau6 si6 lik6 loeng6",
+          "code": "042222",
+          "source_flags": 18
+        },
+        {
+          "char": "有生力量",
+          "jyutping": "jau5 sang1 lik6 loeng6",
+          "code": "5322",
+          "source_flags": 0
+        },
+        {
+          "char": "和睦相處",
+          "jyutping": "wo4 muk6 soeng1 cyu2",
+          "code": "0239",
+          "source_flags": 0
+        },
+        {
+          "char": "是非分明",
+          "jyutping": "si6 fei1 fan1 ming4",
+          "code": "2330",
+          "source_flags": 0
+        },
+        {
+          "char": "核力量",
+          "jyutping": "hat6 lik6 loeng6",
+          "code": "222",
+          "source_flags": 0
+        },
+        {
+          "char": "抗干擾",
+          "jyutping": "kong3 gon1 jiu2",
+          "code": "439",
+          "source_flags": 0
+        },
+        {
+          "char": "干擾素",
+          "jyutping": "gon1 jiu2 sou3",
+          "code": "394",
+          "source_flags": 0
+        },
+        {
+          "char": "非分",
+          "jyutping": "fei1 fan6",
+          "code": "32",
+          "source_flags": 0
+        },
+        {
+          "char": "干擾機",
+          "jyutping": "gon1 jiu2 gei1",
+          "code": "393",
+          "source_flags": 0
+        },
+        {
+          "char": "新生力量",
+          "jyutping": "san1 sang1 lik6 loeng6",
+          "code": "3322",
+          "source_flags": 0
+        },
+        {
+          "char": "飼料廠",
+          "jyutping": "zi6 liu2 cong2",
+          "code": "299",
+          "source_flags": 0
+        },
+        {
+          "char": "一霎那",
+          "jyutping": "jat1 saap3 naa5",
+          "code": "345",
+          "source_flags": 0
+        },
+        {
+          "char": "精飼料",
+          "jyutping": "zing1 zi6 liu2",
+          "code": "329",
+          "source_flags": 0
+        },
+        {
+          "char": "冠詞",
+          "jyutping": "gun3 ci4",
+          "code": "40",
+          "source_flags": 0
+        },
+        {
+          "char": "干擾源",
+          "jyutping": "gon1 jiu2 jyun4",
+          "code": "390",
+          "source_flags": 0
+        },
+        {
+          "char": "電池板",
+          "jyutping": "din6 ci4 baan2",
+          "code": "209",
+          "source_flags": 0
+        },
+        {
+          "char": "抗干擾性",
+          "jyutping": "kong3 gon1 jiu2 sing3",
+          "code": "4394",
+          "source_flags": 0
+        },
+        {
+          "char": "霎那間",
+          "jyutping": "saap3 naa5 gaan1",
+          "code": "453",
+          "source_flags": 0
+        },
+        {
+          "char": "個位數",
+          "jyutping": "go3 wai2 sou3",
+          "code": "494",
+          "source_flags": 0
+        },
+        {
+          "char": "青飼料",
+          "jyutping": "cing1 zi6 liu2",
+          "code": "329",
+          "source_flags": 0
+        },
+        {
+          "char": "五方雜處",
+          "jyutping": "ng5 fong1 zaap6 cyu5",
+          "code": "5325",
+          "source_flags": 0
+        },
+        {
+          "char": "力量型",
+          "jyutping": "lik6 loeng6 jing4",
+          "code": "220",
+          "source_flags": 0
+        },
+        {
+          "char": "干擾能力",
+          "jyutping": "gon1 jiu2 nang4 lik6",
+          "code": "3902",
+          "source_flags": 0
+        },
+        {
+          "char": "節約電池",
+          "jyutping": "zit3 joek3 din6 ci4",
+          "code": "4420",
+          "source_flags": 0
+        },
+        {
+          "char": "一位數",
+          "jyutping": "jat1 wai2 sou3",
+          "code": "394",
+          "source_flags": 0
+        },
+        {
+          "char": "七位數",
+          "jyutping": "cat1 wai2 sou3",
+          "code": "394",
+          "source_flags": 0
+        },
+        {
+          "char": "中國飼料",
+          "jyutping": "zung1 gwok3 zi6 liu2",
+          "code": "3429",
+          "source_flags": 0
+        },
+        {
+          "char": "主導力量",
+          "jyutping": "zyu2 dou6 lik6 loeng6",
+          "code": "9222",
+          "source_flags": 0
+        },
+        {
+          "char": "九位數",
+          "jyutping": "gau2 wai2 sou3",
+          "code": "994",
+          "source_flags": 0
+        },
+        {
+          "char": "二位數",
+          "jyutping": "ji6 wai2 sou3",
+          "code": "294",
+          "source_flags": 0
+        },
+        {
+          "char": "五位數",
+          "jyutping": "ng5 wai2 sou3",
+          "code": "594",
+          "source_flags": 0
+        },
+        {
+          "char": "交流干擾",
+          "jyutping": "gaau1 lau4 gon1 jiu2",
+          "code": "3039",
+          "source_flags": 0
+        },
+        {
+          "char": "充電電池",
+          "jyutping": "cung1 din6 din6 ci4",
+          "code": "3220",
+          "source_flags": 0
+        },
+        {
+          "char": "兩位數",
+          "jyutping": "loeng5 wai2 sou3",
+          "code": "594",
+          "source_flags": 0
+        },
+        {
+          "char": "八位數",
+          "jyutping": "baat3 wai2 sou3",
+          "code": "494",
+          "source_flags": 0
+        },
+        {
+          "char": "六位數",
+          "jyutping": "luk6 wai2 sou3",
+          "code": "294",
+          "source_flags": 0
+        },
+        {
+          "char": "力量之源",
+          "jyutping": "lik6 loeng6 zi1 jyun4",
+          "code": "2230",
+          "source_flags": 0
+        },
+        {
+          "char": "力量對比",
+          "jyutping": "lik6 loeng6 deoi3 bei2",
+          "code": "2249",
+          "source_flags": 0
+        },
+        {
+          "char": "力量懸殊",
+          "jyutping": "lik6 loeng6 jyun4 syu4",
+          "code": "2200",
+          "source_flags": 0
+        },
+        {
+          "char": "力量薄弱",
+          "jyutping": "lik6 loeng6 bok6 joek6",
+          "code": "2222",
+          "source_flags": 0
+        },
+        {
+          "char": "力量雄厚",
+          "jyutping": "lik6 loeng6 hung4 hau5",
+          "code": "2205",
+          "source_flags": 0
+        },
+        {
+          "char": "加強力量",
+          "jyutping": "gaa1 koeng4 lik6 loeng6",
+          "code": "3022",
+          "source_flags": 0
+        },
+        {
+          "char": "十位數",
+          "jyutping": "sap6 wai2 sou3",
+          "code": "294",
+          "source_flags": 0
+        },
+        {
+          "char": "原電池",
+          "jyutping": "jyun4 din6 ci4",
+          "code": "020",
+          "source_flags": 0
+        },
+        {
+          "char": "友好相處",
+          "jyutping": "jau5 hou2 soeng1 cyu5",
+          "code": "5935",
+          "source_flags": 0
+        },
+        {
+          "char": "友好相處",
+          "jyutping": "jau5 hou2 soeng1 cyu2",
+          "code": "5939",
+          "source_flags": 0
+        },
+        {
+          "char": "和平相處",
+          "jyutping": "wo4 ping4 soeng1 cyu5",
+          "code": "0035",
+          "source_flags": 0
+        },
+        {
+          "char": "和平相處",
+          "jyutping": "wo4 ping4 soeng1 cyu2",
+          "code": "0039",
+          "source_flags": 0
+        },
+        {
+          "char": "嚇阻力量",
+          "jyutping": "haak3 zo2 lik6 loeng4",
+          "code": "4920",
+          "source_flags": 0
+        },
+        {
+          "char": "四位數",
+          "jyutping": "sei3 wai2 sou3",
+          "code": "494",
+          "source_flags": 0
+        },
+        {
+          "char": "國防力量",
+          "jyutping": "gwok3 fong4 lik6 loeng6",
+          "code": "4022",
+          "source_flags": 0
+        },
+        {
+          "char": "巨大力量",
+          "jyutping": "geoi6 daai6 lik6 loeng6",
+          "code": "2222",
+          "source_flags": 0
+        },
+        {
+          "char": "席位數",
+          "jyutping": "zik6 wai2 sou3",
+          "code": "294",
+          "source_flags": 0
+        },
+        {
+          "char": "席位數",
+          "jyutping": "zik6 wai6 sou3",
+          "code": "224",
+          "source_flags": 0
+        },
+        {
+          "char": "帶電池",
+          "jyutping": "daai3 din6 ci4",
+          "code": "420",
+          "source_flags": 0
+        },
+        {
+          "char": "干擾力",
+          "jyutping": "gon1 jiu2 lik6",
+          "code": "392",
+          "source_flags": 0
+        },
+        {
+          "char": "干擾哨聲",
+          "jyutping": "gon1 jiu2 saau3 sing1",
+          "code": "3943",
+          "source_flags": 0
+        },
+        {
+          "char": "干擾器",
+          "jyutping": "gon1 jiu2 hei3",
+          "code": "394",
+          "source_flags": 0
+        },
+        {
+          "char": "幾位數",
+          "jyutping": "gei2 wai2 sou3",
+          "code": "994",
+          "source_flags": 0
+        },
+        {
+          "char": "牀位數",
+          "jyutping": "cong4 wai2 sou3",
+          "code": "094",
+          "source_flags": 0
+        },
+        {
+          "char": "牀位數",
+          "jyutping": "cong4 wai6 sou3",
+          "code": "024",
+          "source_flags": 0
+        },
+        {
+          "char": "座位數",
+          "jyutping": "zo6 wai2 sou3",
+          "code": "294",
+          "source_flags": 0
+        },
+        {
+          "char": "座位數",
+          "jyutping": "zo6 wai6 sou3",
+          "code": "224",
+          "source_flags": 0
+        },
+        {
+          "char": "廢舊電池",
+          "jyutping": "fai3 gau6 din6 ci4",
+          "code": "4220",
+          "source_flags": 0
+        },
+        {
+          "char": "廢電池",
+          "jyutping": "fai3 din6 ci4",
+          "code": "420",
+          "source_flags": 0
+        },
+        {
+          "char": "後備力量",
+          "jyutping": "hau6 bei6 lik6 loeng6",
+          "code": "2222",
+          "source_flags": 0
+        },
+        {
+          "char": "扇動翅膀",
+          "jyutping": "sin3 dung6 ci3 pong4",
+          "code": "4240",
+          "source_flags": 0
+        },
+        {
+          "char": "手機電池",
+          "jyutping": "sau2 gei1 din6 ci4",
+          "code": "9320",
+          "source_flags": 0
+        },
+        {
+          "char": "抵抗力量",
+          "jyutping": "dai2 kong3 lik6 loeng6",
+          "code": "9422",
+          "source_flags": 0
+        },
+        {
+          "char": "排除干擾",
+          "jyutping": "paai4 ceoi4 gon1 jiu2",
+          "code": "0039",
+          "source_flags": 0
+        },
+        {
+          "char": "水產飼料",
+          "jyutping": "seoi2 caan2 zi6 liu2",
+          "code": "9929",
+          "source_flags": 0
+        },
+        {
+          "char": "滯礙難行",
+          "jyutping": "zai6 ngoi6 naan4 hang4",
+          "code": "2200",
+          "source_flags": 0
+        },
+        {
+          "char": "潛在力量",
+          "jyutping": "cim4 zoi6 lik6 loeng6",
+          "code": "0222",
+          "source_flags": 0
+        },
+        {
+          "char": "燃料電池",
+          "jyutping": "jin4 liu2 din6 ci4",
+          "code": "0920",
+          "source_flags": 0
+        },
+        {
+          "char": "物質力量",
+          "jyutping": "mat6 zat1 lik6 loeng6",
+          "code": "2322",
+          "source_flags": 0
+        },
+        {
+          "char": "百位數",
+          "jyutping": "baak3 wai2 sou3",
+          "code": "494",
+          "source_flags": 0
+        },
+        {
+          "char": "相處更好",
+          "jyutping": "soeng1 cyu2 gang3 hou2",
+          "code": "3949",
+          "source_flags": 0
+        },
+        {
+          "char": "相處更好",
+          "jyutping": "soeng1 cyu5 gang3 hou2",
+          "code": "3549",
+          "source_flags": 0
+        },
+        {
+          "char": "窒礙難行",
+          "jyutping": "zat6 ngoi6 naan4 hang4",
+          "code": "2200",
+          "source_flags": 0
+        },
+        {
+          "char": "竭盡力量",
+          "jyutping": "kit3 zeon6 lik6 loeng6",
+          "code": "4222",
+          "source_flags": 0
+        },
+        {
+          "char": "精神力量",
+          "jyutping": "zing1 san4 lik6 loeng6",
+          "code": "3022",
+          "source_flags": 0
+        },
+        {
+          "char": "艱難行進",
+          "jyutping": "gaan1 naan4 haang4 zeon3",
+          "code": "3004",
+          "source_flags": 0
+        },
+        {
+          "char": "變相處理",
+          "jyutping": "bin3 soeng3 cyu2 lei5",
+          "code": "4495",
+          "source_flags": 0
+        },
+        {
+          "char": "變相處理",
+          "jyutping": "bin3 soeng3 cyu5 lei5",
+          "code": "4455",
+          "source_flags": 0
+        },
+        {
+          "char": "豬飼料",
+          "jyutping": "zyu1 zi6 liu2",
+          "code": "329",
+          "source_flags": 0
+        },
+        {
+          "char": "貢獻力量",
+          "jyutping": "gung3 hin3 lik6 loeng6",
+          "code": "4422",
+          "source_flags": 0
+        },
+        {
+          "char": "軍事力量",
+          "jyutping": "gwan1 si6 lik6 loeng6",
+          "code": "3222",
+          "source_flags": 0
+        },
+        {
+          "char": "進步力量",
+          "jyutping": "zeon3 bou6 lik6 loeng6",
+          "code": "4222",
+          "source_flags": 0
+        },
+        {
+          "char": "配製飼料",
+          "jyutping": "pui3 zai3 zi6 liu2",
+          "code": "4429",
+          "source_flags": 0
+        },
+        {
+          "char": "鎳氫電池",
+          "jyutping": "nip1 hing1 din6 ci4",
+          "code": "3320",
+          "source_flags": 0
+        },
+        {
+          "char": "鎳氫電池",
+          "jyutping": "nip6 hing1 din6 ci4",
+          "code": "2320",
+          "source_flags": 0
+        },
+        {
+          "char": "一號電池",
+          "jyutping": "jat1 hou6 din6 ci4",
+          "code": "3220",
+          "source_flags": 16
+        },
+        {
+          "char": "七號電池",
+          "jyutping": "cat1 hou6 din6 ci4",
+          "code": "3220",
+          "source_flags": 16
+        },
+        {
+          "char": "三號電池",
+          "jyutping": "saam1 hou6 din6 ci4",
+          "code": "3220",
+          "source_flags": 16
+        },
+        {
+          "char": "中堅力量",
+          "jyutping": "zung1 gin1 lik6 loeng6",
+          "code": "3322",
+          "source_flags": 16
+        },
+        {
+          "char": "二號電池",
+          "jyutping": "ji6 hou6 din6 ci4",
+          "code": "2220",
+          "source_flags": 16
+        },
+        {
+          "char": "公眾集會",
+          "jyutping": "gung1 zung3 zaap6 wui2",
+          "code": "3429",
+          "source_flags": 16
+        },
+        {
+          "char": "力量均衡",
+          "jyutping": "lik6 loeng6 gwan1 hang4",
+          "code": "2230",
+          "source_flags": 16
+        },
+        {
+          "char": "動物性飼料",
+          "jyutping": "dung6 mat6 sing3 zi6 liu2",
+          "code": "22429",
+          "source_flags": 16
+        },
+        {
+          "char": "四號電池",
+          "jyutping": "sei3 hou6 din6 ci4",
+          "code": "4220",
+          "source_flags": 16
+        },
+        {
+          "char": "太陽能電池",
+          "jyutping": "taai3 joeng4 nang4 din6 ci4",
+          "code": "40020",
+          "source_flags": 16
+        },
+        {
+          "char": "太陽電池板",
+          "jyutping": "taai3 joeng4 din6 ci4 baan2",
+          "code": "40209",
+          "source_flags": 16
+        },
+        {
+          "char": "威懾力量",
+          "jyutping": "wai1 sip3 lik6 loeng6",
+          "code": "3422",
+          "source_flags": 16
+        },
+        {
+          "char": "定冠詞",
+          "jyutping": "ding6 gun3 ci4",
+          "code": "240",
+          "source_flags": 16
+        },
+        {
+          "char": "愛港力量",
+          "jyutping": "oi3 gong2 lik6 loeng6",
+          "code": "4922",
+          "source_flags": 16
+        },
+        {
+          "char": "戰略核力量",
+          "jyutping": "zin3 loek6 hat6 lik6 loeng6",
+          "code": "42222",
+          "source_flags": 16
+        },
+        {
+          "char": "打擊軍事力量",
+          "jyutping": "daa2 gik1 gwan1 si6 lik6 loeng6",
+          "code": "933222",
+          "source_flags": 16
+        },
+        {
+          "char": "扣式電池",
+          "jyutping": "kau3 sik1 din6 ci4",
+          "code": "4320",
+          "source_flags": 16
+        },
+        {
+          "char": "異性相處",
+          "jyutping": "ji6 sing3 soeng1 cyu2",
+          "code": "2439",
+          "source_flags": 16
+        },
+        {
+          "char": "相處",
+          "jyutping": "soeng1 cyu2",
+          "code": "39",
+          "source_flags": 16
+        },
+        {
+          "char": "與人相處",
+          "jyutping": "jyu5 jan4 soeng3 cyu2",
+          "code": "5049",
+          "source_flags": 16
+        },
+        {
+          "char": "鉛酸蓄電池",
+          "jyutping": "jyun4 syun1 cuk1 din6 ci4",
+          "code": "03320",
+          "source_flags": 16
+        },
+        {
+          "char": "鋰離子電池",
+          "jyutping": "lei5 lei4 zi2 din6 ci4",
+          "code": "50920",
+          "source_flags": 16
+        },
+        {
+          "char": "集會",
+          "jyutping": "zaap6 wui6",
+          "code": "22",
+          "source_flags": 17
+        },
+        {
+          "char": "集會現場",
+          "jyutping": "zaap6 wui2 jin6 coeng4",
+          "code": "2920",
+          "source_flags": 16
+        },
+        {
+          "char": "電池座",
+          "jyutping": "din6 ci4 zo6",
+          "code": "202",
+          "source_flags": 16
+        },
+        {
+          "char": "電池組",
+          "jyutping": "din6 ci4 zou2",
+          "code": "209",
+          "source_flags": 16
+        },
+        {
+          "char": "非分之念",
+          "jyutping": "fei1 fan6 zi1 nim6",
+          "code": "3232",
+          "source_flags": 16
+        },
+        {
+          "char": "黨派集會",
+          "jyutping": "dong2 paai3 zaap6 wui2",
+          "code": "9429",
+          "source_flags": 16
+        },
+        {
+          "char": "相處咗",
+          "jyutping": "soeng1 cyu3 zo2",
+          "code": "349",
+          "source_flags": 16
+        },
+        {
+          "char": "朝夕相處",
+          "jyutping": "ziu1 zik6 soeng1 cyu3",
+          "code": "3234",
+          "source_flags": 1
+        }
+      ],
+      "exact_reading_replacements": [
+        {
+          "char": "與人相處",
+          "previous_jyutping": "jyu5 jan4 soeng3 cyu2",
+          "jyutping": "jyu5 jan4 soeng1 cyu2",
+          "source_file": "data/lexicon/raw/rime-cantonese-upstream/word.csv",
+          "source_line": 69759,
+          "source_sha256": "b7f2561ccd222358cd7d04f2a349b986831aa8d61adf60d8584d6ffc5dd6f27a",
+          "source_license": "CC-BY-4.0",
+          "reference": "https://jyutdictionary.com/dictionary/entry/相處 ; https://lshk.org/wp-content/uploads/2022/11/CRAT_Appendix2_bystroke_1.3.pdf",
+          "note": "與他人相處的相為互相soeng1，非相貌／相片soeng3；完整相處及與他人交流的現代詞例、LSHK詞表均用1。只精確改本詞原供3，不改相處cyu3有效又讀，亦不改其他相字。",
+          "previous_code": "5049",
+          "code": "5039"
+        }
+      ],
+      "all_other_context_rows_retained": 153,
+      "old_runtime_readings_deleted": 0,
+      "old_runtime_readings_replaced": 1,
+      "old_curated_source_rows_changed": 0,
+      "prior_reading_additions": [
+        {
+          "id": "existing-與人相處:1",
+          "char": "與人相處",
+          "jyutping": "jyu5 jan4 soeng1 cyu5",
+          "pron_rank": 0,
+          "kind": "missing-reading",
+          "source_literal": "與人相處",
+          "source_file": "data/lexicon/raw/rime-cantonese-upstream/word.csv",
+          "source_line": 69759,
+          "source_sha256": "b7f2561ccd222358cd7d04f2a349b986831aa8d61adf60d8584d6ffc5dd6f27a",
+          "source_reading": "jyu5 jan4 soeng3 cyu2",
+          "evidence": "rime-upstream:sha256=b7f2561ccd222358cd7d04f2a349b986831aa8d61adf60d8584d6ffc5dd6f27a:word.csv#L69759;AI:reading-supplement",
+          "reference": "https://jyutdictionary.com/dictionary/entry/相處 ; https://lshk.org/wp-content/uploads/2022/11/CRAT_Appendix2_bystroke_1.3.pdf",
+          "note": "完整相處soeng1cyu5以LSHK及粵典現代用例為據，與人前綴的整詞配音及5優先次序明列AI，不冒稱Rime原供此音。",
+          "word_usage_rank": 1,
+          "word_usage_note": "若有Essay／TUBELEX完整詞觀測沿用；否則通用表達的第1級為AI判斷，非實測頻次。"
+        }
+      ],
+      "valid_readings_retained": [
+        "雞翅膀gai1ci3pong4：原始粵典完整詞及CantoDict皆供，非必須bong2。",
+        "集會wui2及wui6*2完整詞有效；新詞2先6後。",
+        "相處cyu5、cyu3、cyu2均有完整現代用例；不能把3當處所義一概刪除。",
+        "承重sing4cung5為粵典及CantoDict完整供音；非承重牆保留5。",
+        "電錶din6biu1完整粵典例，計量義亦用1。",
+        "冠詞gun3為完整定冠詞／不定冠詞供音，不據頭冠名詞誤改1。",
+        "雄渾wan6及wan4均有完整供音；新雄渾有力6先4後。",
+        "飼料liu2及liu6、時間gaan3及gaan1完整現代詞音保留。"
+      ],
+      "policy": "Whole-word modern sources precede component semantics, source flags, or Mandarin analogy. Preserve raw inputs and all other old records and grades.",
+      "rank_mirror_withdrawn_before_final_build": {
+        "char": "與人相處",
+        "jyutping": "jyu5 jan4 soeng1 cyu2",
+        "reason": "Exact original-source overlay supplies corrected2 and its source flags. Redundant mirror would duplicate it. Existing Rime cyu2 grade retained; curated preferred5 has explicit0."
+      }
+    },
+    "fixed_remaining_scope": {
+      "user_objective": "把剩餘的12608個候選詞審核到完成就可以收尾，不新增新候選詞",
+      "set_on": "2026-11-08",
+      "reviewed_at_scope_freeze": 133994,
+      "candidate_pool_total": 146602,
+      "remaining_candidates_at_freeze": 12608,
+      "first_remaining_id": 133994,
+      "last_remaining_id": 146601,
+      "candidate_discovery_closed": true,
+      "completion_requires": [
+        "All existing candidate IDs 133994 through 146601 have final review decisions",
+        "Accepted existing candidates have verified whole-word readings and independent familiarity ranks",
+        "Rebuild, search and ranking validation passed for final dictionary",
+        "Authorized dev commit and push completed with source and user-state safeguards"
+      ],
+      "historical_reading_context_defers_outside_remaining_pool": 249,
+      "regional_holds_outside_remaining_pool": 924,
+      "note": "User narrowed the finish line to the frozen remaining candidate pool. Do not discover or append candidates, or extend completion to historical/regional holds. Already reviewed B69 additions still require their pending final validation."
+    },
+    "remaining_unreviewed": 12608,
+    "backend_pwa_essay_frequency_keys": 266884,
+    "essay_frequency_tables_equal": true,
+    "backend_pwa_word_grade_keys": 140242,
+    "backend_pwa_curated_reading_grade_keys": 80740,
+    "word_grade_tables_equal": true,
+    "curated_reading_grade_tables_equal": true,
+    "new_expressions": 891,
+    "existing_word_reading_additions": 1,
+    "full_final_inventory_rebuilt_and_compared": true,
+    "client_query_engine_with_new_dictionary": {
+      "checks": 2754,
+      "modes": 3,
+      "new_dictionary_loaded_in_client_engine": true,
+      "preferred_readings_equal": true,
+      "all_expected_cases_verified_exactly_once": true,
+      "parallel_workers": 4
+    },
+    "contextual_reading_pairs_checked": 158,
+    "full_pool_parity_queries": 128,
+    "full_pool_parity_rows": 131378,
+    "full_pool_ranking_equal": true,
+    "heteronym_full_pool_ranking_equal": true,
+    "representative_top200_quality_review": {
+      "43": {
+        "total_literals": 3740,
+        "top20": [
+          "覺得",
+          "發生",
+          "記得",
+          "更加",
+          "阿媽",
+          "阿妹",
+          "喪屍",
+          "對方",
+          "意思",
+          "轉身",
+          "放心",
+          "雪糕",
+          "發出",
+          "變得",
+          "至於",
+          "阿婆",
+          "對於",
+          "意識",
+          "瞬間",
+          "記憶"
+        ],
+        "top200_grades": {
+          "0": 200
+        },
+        "new_batch_in_top200": [
+          "靚妹"
+        ],
+        "everyday_precedes_less_common": true
+      },
+      "243": {
+        "total_literals": 313,
+        "top20": [
+          "下意識",
+          "洛杉磯",
+          "會計師",
+          "自信心",
+          "度假村",
+          "下半身",
+          "甚至於",
+          "上半身",
+          "下半生",
+          "下載區",
+          "下雪天",
+          "下戰書",
+          "內置式",
+          "售票機",
+          "售貨機",
+          "未剃鬚",
+          "特價書",
+          "運費單",
+          "大富翁",
+          "莫過於"
+        ],
+        "top200_grades": {
+          "0": 18,
+          "1": 95,
+          "2": 87
+        },
+        "new_batch_in_top200": [
+          "露背裝",
+          "電喇叭",
+          "電教室"
+        ],
+        "everyday_precedes_less_common": true
+      },
+      "33": {
+        "total_literals": 6687,
+        "top20": [
+          "姐姐",
+          "應該",
+          "呵呵",
+          "即刻",
+          "開心",
+          "爸爸",
+          "家姐",
+          "終於",
+          "依家",
+          "哥哥",
+          "啤啤",
+          "媽媽",
+          "中間",
+          "身邊",
+          "一邊",
+          "一刻",
+          "妹妹",
+          "聲音",
+          "污糟",
+          "之間"
+        ],
+        "top200_grades": {
+          "0": 200
+        },
+        "new_batch_in_top200": [],
+        "everyday_precedes_less_common": true
+      },
+      "333": {
+        "total_literals": 1093,
+        "top20": [
+          "朱古力",
+          "哈哈哈",
+          "不得不",
+          "分分鐘",
+          "經銷商",
+          "更衣室",
+          "分公司",
+          "私家車",
+          "差不多",
+          "收音機",
+          "乒乓波",
+          "公交車",
+          "出租車",
+          "分析師",
+          "叉燒包",
+          "通知書",
+          "飛機師",
+          "高中生",
+          "拖拉機",
+          "氨基酸"
+        ],
+        "top200_grades": {
+          "0": 50,
+          "1": 150
+        },
+        "new_batch_in_top200": [],
+        "everyday_precedes_less_common": true
+      },
+      "3333": {
+        "total_literals": 367,
+        "top20": [
+          "哈哈哈哈",
+          "公安機關",
+          "三分之一",
+          "嘻嘻哈哈",
+          "奄奄一息",
+          "開開心心",
+          "息息相關",
+          "一高一低",
+          "三室一廳",
+          "不哼一聲",
+          "得失相當",
+          "馬馬虎虎",
+          "輕輕鬆鬆",
+          "公開招標",
+          "不堪一擊",
+          "相得益彰",
+          "花花綠綠",
+          "嘰嘰喳喳",
+          "生生不息",
+          "偷偷摸摸"
+        ],
+        "top200_grades": {
+          "0": 11,
+          "1": 93,
+          "2": 96
+        },
+        "new_batch_in_top200": [],
+        "everyday_precedes_less_common": true
+      },
+      "0000": {
+        "total_literals": 96,
+        "top20": [
+          "迷迷糊糊",
+          "求求其其",
+          "完完全全",
+          "何其糊塗",
+          "來人來函",
+          "暈暈沉沉",
+          "遲遲疑疑",
+          "成為成員",
+          "全球華人",
+          "微乎其微",
+          "遙遙無期",
+          "無期徒刑",
+          "來來回回",
+          "朦朦朧朧",
+          "模模糊糊",
+          "葡萄牙人",
+          "平平常常",
+          "人無完人",
+          "神乎其神",
+          "如期完成"
+        ],
+        "top200_grades": {
+          "0": 8,
+          "1": 24,
+          "2": 64
+        },
+        "new_batch_in_top200": [],
+        "everyday_precedes_less_common": true
+      },
+      "323": {
+        "total_literals": 580,
+        "top20": [
+          "一大堆",
+          "科學家",
+          "交換機",
+          "開幕式",
+          "機動車",
+          "中學生",
+          "收視率",
+          "工業區",
+          "輸入框",
+          "刻錄機",
+          "綜合徵",
+          "一輛車",
+          "充值卡",
+          "商業街",
+          "銷售商",
+          "音樂家",
+          "不道德",
+          "不利於",
+          "菲律賓",
+          "七輛車"
+        ],
+        "top200_grades": {
+          "0": 30,
+          "1": 167,
+          "2": 3
+        },
+        "new_batch_in_top200": [
+          "雙核心"
+        ],
+        "everyday_precedes_less_common": true
+      },
+      "223": {
+        "total_literals": 496,
+        "top20": [
+          "電視機",
+          "第二朝",
+          "實驗室",
+          "做什麼",
+          "大學生",
+          "藝術家",
+          "自治區",
+          "大面積",
+          "實習生",
+          "電動車",
+          "靜靜的",
+          "服務商",
+          "右下方",
+          "大丈夫",
+          "自動波",
+          "地下室",
+          "自治州",
+          "豆腐花",
+          "服務生",
+          "士大夫"
+        ],
+        "top200_grades": {
+          "0": 37,
+          "1": 163
+        },
+        "new_batch_in_top200": [
+          "雜物箱",
+          "電話單",
+          "電視卡",
+          "電動窗",
+          "電焊機",
+          "電匯單",
+          "電熱梳",
+          "電熱絲"
+        ],
+        "everyday_precedes_less_common": true
+      },
+      "39": {
+        "total_literals": 4515,
+        "top20": [
+          "屋企",
+          "開始",
+          "一陣",
+          "公仔",
+          "當然",
+          "根本",
+          "清楚",
+          "身體",
+          "巴士",
+          "聽到",
+          "香港",
+          "師姐",
+          "公園",
+          "辛苦",
+          "得到",
+          "雙手",
+          "一早",
+          "出面",
+          "師父",
+          "開口"
+        ],
+        "top200_grades": {
+          "0": 200
+        },
+        "new_batch_in_top200": [],
+        "everyday_precedes_less_common": true
+      },
+      "22": {
+        "total_literals": 4387,
+        "top20": [
+          "但係",
+          "係咪",
+          "入面",
+          "就是",
+          "上面",
+          "學校",
+          "地下",
+          "下面",
+          "妹妹",
+          "特別",
+          "望住",
+          "淨係",
+          "後面",
+          "第二",
+          "食飯",
+          "電視",
+          "附近",
+          "定係",
+          "玩具",
+          "實在"
+        ],
+        "top200_grades": {
+          "0": 200
+        },
+        "new_batch_in_top200": [],
+        "everyday_precedes_less_common": true
+      }
+    },
+    "smoke_tests": 349,
+    "smoke_passed": 345,
+    "smoke_skipped": 4,
+    "seam_tests": 89,
+    "seam_passed": 83,
+    "seam_skipped": 6,
+    "guide_query_tests_passed": true,
+    "i18n_generation_check": true,
+    "pwa_build": true,
+    "portable_build": true,
+    "full_app_typecheck": true,
+    "ranking_and_lookup_self_checks": true,
+    "targeted_node_typecheck": true,
+    "pwa_artifact_guard": true,
+    "layer_cache_format": "42",
+    "layer_cache_cold_misses": 8,
+    "layer_cache_warm_hits": 8,
+    "layer_cache_counter_matches_uncached_db": true,
+    "previous_runtime_rows_retained_without_change": 257725,
+    "previous_runtime_reading_replacements": 1,
+    "final_reading_audit": {
+      "newly_reviewed_candidates": 2000,
+      "initial_accepted_candidates": 1068,
+      "second_pass_familiarity_withdrawals": [
+        {
+          "id": 132027,
+          "char": "雄武",
+          "previous_jyutping": "hung4 mou5",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 132048,
+          "char": "雄體",
+          "previous_jyutping": "hung4 tai2",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 132070,
+          "char": "集合競價",
+          "previous_jyutping": "zaap6 hap6 ging3 gaa3",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 132076,
+          "char": "集團型",
+          "previous_jyutping": "zaap6 tyun4 jing4",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 132077,
+          "char": "集團式",
+          "previous_jyutping": "zaap6 tyun4 sik1",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 132085,
+          "char": "集成材",
+          "previous_jyutping": "zaap6 sing4 coi4",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 132086,
+          "char": "集成板",
+          "previous_jyutping": "zaap6 sing4 baan2",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 132124,
+          "char": "集錦式",
+          "previous_jyutping": "zaap6 gam2 sik1",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 132139,
+          "char": "集體積累",
+          "previous_jyutping": "zaap6 tai2 zik1 leoi6",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 132153,
+          "char": "雌性花",
+          "previous_jyutping": "ci1 sing3 faa1",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 132172,
+          "char": "雌驢",
+          "previous_jyutping": "ci1 lou4",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 132175,
+          "char": "雌鼠",
+          "previous_jyutping": "ci1 syu2",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 132191,
+          "char": "雕塑學",
+          "previous_jyutping": "diu1 sou3 hok6",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 132199,
+          "char": "雕板",
+          "previous_jyutping": "diu1 baan2",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 132228,
+          "char": "雕飾品",
+          "previous_jyutping": "diu1 sik1 ban2",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 132230,
+          "char": "雕龍畫鳳",
+          "previous_jyutping": "diu1 lung4 waa2 fung6",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 132255,
+          "char": "雙制式",
+          "previous_jyutping": "soeng1 zai3 sik1",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 132252,
+          "char": "雙內核",
+          "previous_jyutping": "soeng1 noi6 hat6",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 132280,
+          "char": "雙後腰",
+          "previous_jyutping": "soeng1 hau6 jiu1",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 132288,
+          "char": "雙杆",
+          "previous_jyutping": "soeng1 gon1",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 132292,
+          "char": "雙桅",
+          "previous_jyutping": "soeng1 ngai4",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 132303,
+          "char": "雙片",
+          "previous_jyutping": "soeng1 pin3",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 132307,
+          "char": "雙相",
+          "previous_jyutping": "soeng1 soeng3",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 132327,
+          "char": "雙耳瓶",
+          "previous_jyutping": "soeng1 ji5 ping4",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 132330,
+          "char": "雙股螺旋",
+          "previous_jyutping": "soeng1 gu2 lo4 syun4",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 132348,
+          "char": "雙車",
+          "previous_jyutping": "soeng1 ce1",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 132364,
+          "char": "雙金屬",
+          "previous_jyutping": "soeng1 gam1 suk6",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 132396,
+          "char": "雜合",
+          "previous_jyutping": "zaap6 hap6",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 132401,
+          "char": "雜技廳",
+          "previous_jyutping": "zaap6 gei6 teng1",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 132402,
+          "char": "雜技界",
+          "previous_jyutping": "zaap6 gei6 gaai3",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 132405,
+          "char": "雜業",
+          "previous_jyutping": "zaap6 jip6",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 132407,
+          "char": "雜波",
+          "previous_jyutping": "zaap6 bo1",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 132406,
+          "char": "雜樣",
+          "previous_jyutping": "zaap6 joeng6",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 132423,
+          "char": "雜言",
+          "previous_jyutping": "zaap6 jin4",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 132424,
+          "char": "雜言雜語",
+          "previous_jyutping": "zaap6 jin4 zaap6 jyu5",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 132411,
+          "char": "雜用品",
+          "previous_jyutping": "zaap6 jung6 ban2",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 132452,
+          "char": "雞場主",
+          "previous_jyutping": "gai1 coeng4 zyu2",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 132453,
+          "char": "雞姦者",
+          "previous_jyutping": "gai1 gaan1 ze2",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 132463,
+          "char": "雞爭鵝鬥",
+          "previous_jyutping": "gai1 zang1 ngo4 dau3",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 132465,
+          "char": "雞犬不聞",
+          "previous_jyutping": "gai1 hyun2 bat1 man4",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 132481,
+          "char": "雞腿大餐",
+          "previous_jyutping": "gai1 teoi2 daai6 caan1",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 132527,
+          "char": "離型紙",
+          "previous_jyutping": "lei4 jing4 zi2",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 132542,
+          "char": "離子源",
+          "previous_jyutping": "lei4 zi2 jyun4",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 132555,
+          "char": "離差",
+          "previous_jyutping": "lei4 caa1",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 132565,
+          "char": "離心管",
+          "previous_jyutping": "lei4 sam1 gun2",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 132570,
+          "char": "離散系統",
+          "previous_jyutping": "lei4 saan3 hai6 tung2",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 132601,
+          "char": "離體保存",
+          "previous_jyutping": "lei4 tai2 bou2 cyun4",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 132664,
+          "char": "難民收容",
+          "previous_jyutping": "naan6 man4 sau1 jung4",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 132668,
+          "char": "難熔",
+          "previous_jyutping": "naan4 jung4",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 132670,
+          "char": "難症",
+          "previous_jyutping": "naan4 zing3",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 132716,
+          "char": "雨滴侵蝕",
+          "previous_jyutping": "jyu5 dik1 cam1 sik6",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 132747,
+          "char": "雪害",
+          "previous_jyutping": "syut3 hoi6",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 132773,
+          "char": "雪鳥",
+          "previous_jyutping": "syut3 niu5",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 132821,
+          "char": "雲髻",
+          "previous_jyutping": "wan4 gai3",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 132828,
+          "char": "零件庫",
+          "previous_jyutping": "ling4 gin6 fu3",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 132833,
+          "char": "零修",
+          "previous_jyutping": "ling4 sau1",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 132848,
+          "char": "零型",
+          "previous_jyutping": "ling4 jing4",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 132849,
+          "char": "零基",
+          "previous_jyutping": "ling4 gei1",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 132872,
+          "char": "零重碼",
+          "previous_jyutping": "ling4 cung4 maa5",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 132882,
+          "char": "零點能",
+          "previous_jyutping": "ling4 dim2 nang4",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 132888,
+          "char": "雷擊火",
+          "previous_jyutping": "leoi4 gik1 fo2",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 132900,
+          "char": "雷達遙感",
+          "previous_jyutping": "leoi4 daat6 jiu4 gam2",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 132910,
+          "char": "雹暴",
+          "previous_jyutping": "bok6 bou6",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 132915,
+          "char": "電位移",
+          "previous_jyutping": "din6 wai6 ji4",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 132916,
+          "char": "電位能",
+          "previous_jyutping": "din6 wai6 nang4",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 132934,
+          "char": "電刺激器",
+          "previous_jyutping": "din6 ci3 gik1 hei3",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 132947,
+          "char": "電動吊杆",
+          "previous_jyutping": "din6 dung6 diu3 gon1",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 132955,
+          "char": "電動絞盤",
+          "previous_jyutping": "din6 dung6 gaau2 pun4",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 132957,
+          "char": "電動葫蘆",
+          "previous_jyutping": "din6 dung6 wu4 lou4",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 132964,
+          "char": "電務處",
+          "previous_jyutping": "din6 mou6 cyu3",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 132965,
+          "char": "電勢差計",
+          "previous_jyutping": "din6 sai3 caa1 gai3",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 133007,
+          "char": "電子密度",
+          "previous_jyutping": "din6 zi2 mat6 dou6",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 133014,
+          "char": "電子探針",
+          "previous_jyutping": "din6 zi2 taam3 zam1",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 133015,
+          "char": "電子效應",
+          "previous_jyutping": "din6 zi2 haau6 jing3",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 133032,
+          "char": "電子禮炮",
+          "previous_jyutping": "din6 zi2 lai5 paau3",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 133036,
+          "char": "電子組態",
+          "previous_jyutping": "din6 zi2 zou2 taai3",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 133039,
+          "char": "電子自旋",
+          "previous_jyutping": "din6 zi2 zi6 syun4",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 133040,
+          "char": "電子衡器",
+          "previous_jyutping": "din6 zi2 hang4 hei3",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 133046,
+          "char": "電子負載",
+          "previous_jyutping": "din6 zi2 fu6 zoi3",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 133051,
+          "char": "電子陶瓷",
+          "previous_jyutping": "din6 zi2 tou4 ci4",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 133064,
+          "char": "電導計",
+          "previous_jyutping": "din6 dou6 gai3",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 133066,
+          "char": "電工儀表",
+          "previous_jyutping": "din6 gung1 ji4 biu2",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 133069,
+          "char": "電工機械",
+          "previous_jyutping": "din6 gung1 gei1 haai6",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 133075,
+          "char": "電弧爐",
+          "previous_jyutping": "din6 wu4 lou4",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 133104,
+          "char": "電控櫃",
+          "previous_jyutping": "din6 hung3 gwai6",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 133105,
+          "char": "電控箱",
+          "previous_jyutping": "din6 hung3 soeng1",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 133113,
+          "char": "電教館",
+          "previous_jyutping": "din6 gaau3 gun2",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 133123,
+          "char": "電極化",
+          "previous_jyutping": "din6 gik6 faa3",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 133130,
+          "char": "電機配件",
+          "previous_jyutping": "din6 gei1 pui3 gin6",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 133134,
+          "char": "電氣傳動",
+          "previous_jyutping": "din6 hei3 cyun4 dung6",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 133147,
+          "char": "電泳儀",
+          "previous_jyutping": "din6 wing6 ji4",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 133149,
+          "char": "電泳分離",
+          "previous_jyutping": "din6 wing6 fan1 lei4",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 133154,
+          "char": "電泳技術",
+          "previous_jyutping": "din6 wing6 gei6 seot6",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 133165,
+          "char": "電流密度",
+          "previous_jyutping": "din6 lau4 mat6 dou6",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 133167,
+          "char": "電流效率",
+          "previous_jyutping": "din6 lau4 haau6 leot2",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 133169,
+          "char": "電流線",
+          "previous_jyutping": "din6 lau4 sin3",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 133177,
+          "char": "電源模塊",
+          "previous_jyutping": "din6 jyun4 mou4 faai3",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 133188,
+          "char": "電焊網",
+          "previous_jyutping": "din6 hon6 mong5",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 133199,
+          "char": "電熱膜",
+          "previous_jyutping": "din6 jit6 mok2",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 133201,
+          "char": "電熱風爐",
+          "previous_jyutping": "din6 jit6 fung1 lou4",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 133211,
+          "char": "電磁線",
+          "previous_jyutping": "din6 ci4 sin3",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 133212,
+          "char": "電磁譜",
+          "previous_jyutping": "din6 ci4 pou2",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 133214,
+          "char": "電磁透鏡",
+          "previous_jyutping": "din6 ci4 tau3 geng3",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 133221,
+          "char": "電站設備",
+          "previous_jyutping": "din6 zaam6 cit3 bei6",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 133223,
+          "char": "電算中心",
+          "previous_jyutping": "din6 syun3 zung1 sam1",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 133234,
+          "char": "電纜設備",
+          "previous_jyutping": "din6 laam6 cit3 bei6",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 133272,
+          "char": "電致發光",
+          "previous_jyutping": "din6 zi3 faat3 gwong1",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 133274,
+          "char": "電荷分佈",
+          "previous_jyutping": "din6 ho6 fan1 bou3",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 133276,
+          "char": "電荷轉移",
+          "previous_jyutping": "din6 ho6 zyun2 ji4",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 133299,
+          "char": "電視病",
+          "previous_jyutping": "din6 si6 beng6",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 133316,
+          "char": "電解錳",
+          "previous_jyutping": "din6 gaai2 maang5",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 133343,
+          "char": "電透析",
+          "previous_jyutping": "din6 tau3 sik1",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 133352,
+          "char": "電鑄",
+          "previous_jyutping": "din6 zyu3",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 133355,
+          "char": "電阻加熱",
+          "previous_jyutping": "din6 zo2 gaa1 jit6",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 133356,
+          "char": "電阻爐",
+          "previous_jyutping": "din6 zo2 lou4",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 133357,
+          "char": "電阻箱",
+          "previous_jyutping": "din6 zo2 soeng1",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 133358,
+          "char": "電阻絲",
+          "previous_jyutping": "din6 zo2 si1",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 133359,
+          "char": "電阻表",
+          "previous_jyutping": "din6 zo2 biu2",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 133360,
+          "char": "電除塵",
+          "previous_jyutping": "din6 ceoi4 can4",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 133361,
+          "char": "電除塵器",
+          "previous_jyutping": "din6 ceoi4 can4 hei3",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 133371,
+          "char": "需加",
+          "previous_jyutping": "seoi1 gaa1",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 133372,
+          "char": "需將",
+          "previous_jyutping": "seoi1 zoeng1",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 133376,
+          "char": "需有",
+          "previous_jyutping": "seoi1 jau5",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 133377,
+          "char": "需款",
+          "previous_jyutping": "seoi1 fun2",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 133399,
+          "char": "震悸",
+          "previous_jyutping": "zan3 gwai3",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 133400,
+          "char": "震悼",
+          "previous_jyutping": "zan3 dou6",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 133402,
+          "char": "震懼",
+          "previous_jyutping": "zan3 geoi6",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 133411,
+          "char": "震盪性",
+          "previous_jyutping": "zan3 dong6 sing3",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 133488,
+          "char": "露地栽培",
+          "previous_jyutping": "lou6 dei6 zoi1 pui4",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 133498,
+          "char": "露屍",
+          "previous_jyutping": "lou6 si1",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 133519,
+          "char": "露蜂房",
+          "previous_jyutping": "lou6 fung1 fong4",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 133529,
+          "char": "露點儀",
+          "previous_jyutping": "lou6 dim2 ji4",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 133530,
+          "char": "露點圖",
+          "previous_jyutping": "lou6 dim2 tou4",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 133532,
+          "char": "露點照",
+          "previous_jyutping": "lou6 dim2 ziu3",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 133526,
+          "char": "露頭腳",
+          "previous_jyutping": "lou6 tau4 goek3",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 133539,
+          "char": "霸王槍",
+          "previous_jyutping": "baa3 wong4 coeng1",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 133540,
+          "char": "霸王車",
+          "previous_jyutping": "baa3 wong4 ce1",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 133548,
+          "char": "霹靂彈",
+          "previous_jyutping": "pik1 lik1 daan2",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 133549,
+          "char": "霹靂火",
+          "previous_jyutping": "pik1 lik1 fo2",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 133550,
+          "char": "霹靂炮",
+          "previous_jyutping": "pik1 lik1 paau3",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 133553,
+          "char": "霽月",
+          "previous_jyutping": "zai3 jyut6",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 133560,
+          "char": "靈壇",
+          "previous_jyutping": "ling4 taan4",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 133563,
+          "char": "靈學",
+          "previous_jyutping": "ling4 hok6",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 133565,
+          "char": "靈幡",
+          "previous_jyutping": "ling4 faan1",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 133568,
+          "char": "靈座",
+          "previous_jyutping": "ling4 zo6",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 133571,
+          "char": "靈旛",
+          "previous_jyutping": "ling4 faan1",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 133572,
+          "char": "靈樞",
+          "previous_jyutping": "ling4 syu1",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 133590,
+          "char": "靈風",
+          "previous_jyutping": "ling4 fung1",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 133597,
+          "char": "青史傳名",
+          "previous_jyutping": "cing1 si2 cyun4 ming4",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 133644,
+          "char": "青眼相看",
+          "previous_jyutping": "cing1 ngaan5 soeng1 hon3",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 133648,
+          "char": "青粗飼料",
+          "previous_jyutping": "cing1 cou1 zi6 liu6",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 133652,
+          "char": "青花魚",
+          "previous_jyutping": "cing1 faa1 jyu2",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 133659,
+          "char": "青蛤",
+          "previous_jyutping": "cing1 gap3",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 133661,
+          "char": "青蠅",
+          "previous_jyutping": "cing1 jing4",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 133668,
+          "char": "青貯飼料",
+          "previous_jyutping": "cing1 cyu5 zi6 liu2",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 133677,
+          "char": "青雀",
+          "previous_jyutping": "cing1 zoek3",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 133682,
+          "char": "青驢",
+          "previous_jyutping": "cing1 lou4",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 133704,
+          "char": "靜地",
+          "previous_jyutping": "zing6 dei6",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 133713,
+          "char": "靜影沉璧",
+          "previous_jyutping": "zing6 jing2 cam4 bik1",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 133719,
+          "char": "靜慮",
+          "previous_jyutping": "zing6 leoi6",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 133733,
+          "char": "靜脈瘤",
+          "previous_jyutping": "zing6 mak6 lau2",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 133745,
+          "char": "靜電勢",
+          "previous_jyutping": "zing6 din6 sai3",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 133746,
+          "char": "靜電印刷",
+          "previous_jyutping": "zing6 din6 jan3 caat3",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 133747,
+          "char": "靜電引力",
+          "previous_jyutping": "zing6 din6 jan5 lik6",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 133750,
+          "char": "靜電積累",
+          "previous_jyutping": "zing6 din6 zik1 leoi6",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 133751,
+          "char": "靜電能",
+          "previous_jyutping": "zing6 din6 nang4",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 133758,
+          "char": "非主業",
+          "previous_jyutping": "fei1 zyu2 jip6",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 133795,
+          "char": "非凡地",
+          "previous_jyutping": "fei1 faan4 dei6",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 133803,
+          "char": "非卿莫娶",
+          "previous_jyutping": "fei1 hing1 mok6 ceoi2",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 133812,
+          "char": "非君莫嫁",
+          "previous_jyutping": "fei1 gwan1 mok6 gaa3",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 133895,
+          "char": "非核",
+          "previous_jyutping": "fei1 hat6",
+          "previous_word_usage_rank": 1
+        },
+        {
+          "id": 133896,
+          "char": "非標",
+          "previous_jyutping": "fei1 biu1",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 133897,
+          "char": "非標件",
+          "previous_jyutping": "fei1 biu1 gin6",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 133938,
+          "char": "非特異",
+          "previous_jyutping": "fei1 dak6 ji6",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 133943,
+          "char": "非甾體",
+          "previous_jyutping": "fei1 zi1 tai2",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 133972,
+          "char": "非訟事件",
+          "previous_jyutping": "fei1 zung6 si6 gin6",
+          "previous_word_usage_rank": 2
+        },
+        {
+          "id": 133973,
+          "char": "非訴",
+          "previous_jyutping": "fei1 sou3",
+          "previous_word_usage_rank": 2
+        }
+      ],
+      "amendments": [
+        {
+          "id": 132836,
+          "char": "零冠詞",
+          "previous_jyutping": "ling4 gun1 ci4",
+          "jyutping": "ling4 gun3 ci4",
+          "note": "冠詞為冠於名詞之前，完整定冠詞／不定冠詞均讀gun3，撤回憑頭冠語義類推的gun1。",
+          "reference": "https://zh.wiktionary.org/wiki/定冠詞"
+        },
+        {
+          "id": 133349,
+          "char": "電錶箱",
+          "previous_jyutping": "din6 biu2 soeng1",
+          "jyutping": "din6 biu1 soeng1",
+          "note": "粵典完整電錶直接讀din6biu1，計量器同樣用1；撤回憑錶義類推的biu2。",
+          "reference": "https://cantowords.com/dictionary/錶"
+        },
+        {
+          "id": 133872,
+          "char": "非承重牆",
+          "previous_jyutping": "fei1 sing4 zung6 coeng4",
+          "jyutping": "fei1 sing4 cung5 coeng4",
+          "note": "完整承重sing4cung5由粵典、CC-Canto及CantoDict直接提供，重量cung5保留；不強制換成zung6。",
+          "reference": "https://jyutdictionary.com/dictionary/entry/承重"
+        },
+        {
+          "id": 132622,
+          "char": "難以相處",
+          "previous_jyutping": "naan4 ji5 soeng1 cyu5",
+          "jyutping": "naan4 ji5 soeng1 cyu5",
+          "note": "相處現代完整5、3、2均有詞級及例句支持；5優先，原草稿3並非錯音，另列較後。",
+          "reference": "https://jyutdictionary.com/dictionary/entry/相處"
+        },
+        {
+          "id": 132495,
+          "char": "雞飼料",
+          "previous_jyutping": "gai1 zi6 liu6",
+          "jyutping": "gai1 zi6 liu2",
+          "note": "完整飼料zi6liu2及zi6liu6都有既有整詞供應；日常2先，不把2當誤讀。",
+          "reference": "https://jyutdictionary.com/dictionary/entry/飼料"
+        },
+        {
+          "id": 132323,
+          "char": "雙網卡",
+          "previous_jyutping": "soeng1 mong5 kaa1",
+          "jyutping": "soeng1 mong5 kaat1",
+          "note": "網絡卡片kaat1日常先，kaa1現代又讀後；不是把kaa1全判錯。",
+          "reference": "https://jyutdictionary.com/dictionary/entry/網卡"
+        },
+        {
+          "id": 132720,
+          "char": "雨簾",
+          "previous_jyutping": "jyu5 lim4",
+          "jyutping": "jyu5 lim4",
+          "note": "完整雨簾子供lim4；雨幕lim4先，簾幕名詞lim2變調現代又讀保留。",
+          "reference": "https://en.wiktionary.org/wiki/雨簾子"
+        },
+        {
+          "id": 132093,
+          "char": "集會廣場",
+          "previous_jyutping": "zaap6 wui2 gwong2 coeng4",
+          "jyutping": "zaap6 wui2 gwong2 coeng4",
+          "note": "粵典完整集會及集會自由wui2優先；CantoDict完整集會wui6*2供有效書讀6，保留較後。",
+          "reference": "https://cantonese.sheik.co.uk/dictionary/words/4208/"
+        },
+        {
+          "id": 132094,
+          "char": "集會法",
+          "previous_jyutping": "zaap6 wui2 faat3",
+          "jyutping": "zaap6 wui2 faat3",
+          "note": "粵典完整集會及集會自由wui2優先；CantoDict完整集會wui6*2供有效書讀6，保留較後。",
+          "reference": "https://cantonese.sheik.co.uk/dictionary/words/4208/"
+        },
+        {
+          "id": 132095,
+          "char": "集會結社",
+          "previous_jyutping": "zaap6 wui2 git3 se5",
+          "jyutping": "zaap6 wui2 git3 se5",
+          "note": "粵典完整集會及集會自由wui2優先；CantoDict完整集會wui6*2供有效書讀6，保留較後。",
+          "reference": "https://cantonese.sheik.co.uk/dictionary/words/4208/"
+        },
+        {
+          "id": 132096,
+          "char": "集會自由",
+          "previous_jyutping": "zaap6 wui2 zi6 jau4",
+          "jyutping": "zaap6 wui2 zi6 jau4",
+          "note": "粵典完整集會及集會自由wui2優先；CantoDict完整集會wui6*2供有效書讀6，保留較後。",
+          "reference": "https://cantonese.sheik.co.uk/dictionary/words/4208/"
+        },
+        {
+          "id": 132097,
+          "char": "集會遊行",
+          "previous_jyutping": "zaap6 wui2 jau4 hang4",
+          "jyutping": "zaap6 wui2 jau4 hang4",
+          "note": "粵典完整集會及集會自由wui2優先；CantoDict完整集會wui6*2供有效書讀6，保留較後。",
+          "reference": "https://cantonese.sheik.co.uk/dictionary/words/4208/"
+        },
+        {
+          "id": 132002,
+          "char": "雀蛋",
+          "previous_jyutping": "zoek3 daan2",
+          "jyutping": "zoek3 daan2",
+          "note": "蛋名詞口語daan2先，書讀daan6有效後列。",
+          "reference": "https://jyutdictionary.com/dictionary/entry/雞蛋"
+        },
+        {
+          "id": 132486,
+          "char": "雞蛋糕",
+          "previous_jyutping": "gai1 daan2 gou1",
+          "jyutping": "gai1 daan2 gou1",
+          "note": "蛋名詞口語daan2先，書讀daan6有效後列。",
+          "reference": "https://jyutdictionary.com/dictionary/entry/雞蛋"
+        },
+        {
+          "id": 133092,
+          "char": "電影膠片",
+          "previous_jyutping": "din6 jing2 gaau1 pin3",
+          "jyutping": "din6 jing2 gaau1 pin2",
+          "note": "膠片影像名詞pin2變調先，書讀pin3保留。",
+          "reference": "https://jyutdictionary.com/dictionary/entry/膠片"
+        },
+        {
+          "id": 132281,
+          "char": "雙手柄",
+          "previous_jyutping": "soeng1 sau2 beng3",
+          "jyutping": "soeng1 sau2 beng3",
+          "note": "手柄完整現代詞beng3正常，不把柄的單字等級作罕見。",
+          "reference": ""
+        },
+        {
+          "id": 133469,
+          "char": "霧笛",
+          "previous_jyutping": "mou6 dek2",
+          "jyutping": "mou6 dek2",
+          "note": "笛的名詞變調dek2先，書讀dek6有效後列。",
+          "reference": "https://jyutdictionary.com/dictionary/entry/笛"
+        },
+        {
+          "id": 133709,
+          "char": "靜如處女",
+          "previous_jyutping": "zing6 jyu4 cyu5 neoi5",
+          "jyutping": "zing6 jyu4 cyu2 neoi5",
+          "note": "完整處女cyu2通常書讀優先，現代又讀cyu5保留；非處所cyu3。",
+          "reference": "https://jyutdictionary.com/dictionary/entry/處女"
+        }
+      ],
+      "accepted_before_normalized_dedup": 891,
+      "all_2000_forms_reviewed": true,
+      "all_selected_readings_reviewed_twice": true,
+      "corpus_all_supplied_spans_and_wider_contexts_read": true,
+      "corpus_observations": 9,
+      "corpus_supplied_spans": 17,
+      "previous_decision_prefix_preserved": 131994,
+      "reading_review_sealed": true,
+      "accepted_after_dedup": 891,
+      "final_source_readings_reviewed": 916,
+      "same_word_orthographic_canonicalizations": [
+        {
+          "id": 132874,
+          "source_form": "零關税",
+          "canonical_form": "零關稅"
+        },
+        {
+          "id": 133703,
+          "source_form": "靜卧在",
+          "canonical_form": "靜臥在"
+        }
+      ],
+      "rank_mirror_withdrawn_before_final_build": {
+        "char": "與人相處",
+        "jyutping": "jyu5 jan4 soeng1 cyu2",
+        "reason": "Exact original-source overlay supplies corrected2 and its source flags. Redundant mirror would duplicate it. Existing Rime cyu2 grade retained; curated preferred5 has explicit0."
+      }
+    },
+    "initial_counter_failure_resolved": "Removed redundant unpublished corrected-reading rank mirror; exact old-source overlay already supplies that pair. Final rebuild preserves old source flags and multiplicities, no code changed."
+  },
+  "updated_through_batch": "2026-11-06-written-b69",
+  "completed_on": "2026-11-08"
+}

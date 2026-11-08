@@ -6,6 +6,11 @@
   ],
   "checks": [
     {
+      "id": "ranking-index-browser",
+      "script": "ranking-index-browser-self-check.ts",
+      "tags": ["ci", "pwa", "local"]
+    },
+    {
       "id": "ipad-keyboard",
       "script": "ipad-keyboard-self-check.ts",
       "tags": ["ci", "pwa", "local"]

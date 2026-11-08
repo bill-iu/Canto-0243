@@ -1,0 +1,2 @@
+previous_char	char	jyutping	code	action	source_ids	evidence	note
+有徵無戰	有征無戰	jau5 zing1 mou4 zin3	5304	normalize_literal	rime_words	rime-cantonese-upstream:word.csv#L42940	原始詞源使用征伐的征；精確整詞還原，不變粵拼及碼，不修改徵求、象徵等其他義。

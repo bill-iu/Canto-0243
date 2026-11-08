@@ -119,12 +119,22 @@ export async function loadLexiconTarget(): Promise<LexiconTarget> {
     }
     return buildDevLexiconTarget(version, liveSize);
   }
+  const url = publicAssetUrl('lexicon-manifest.json');
+  let response: Response | undefined;
+  let manifest: LexiconManifest | undefined;
   try {
-    const res = await fetch(publicAssetUrl('lexicon-manifest.json'), { cache: 'no-cache' });
-    if (!res.ok) return fallbackTarget(version);
-    const manifest = (await res.json()) as LexiconManifest;
+    response = await fetch(url, { cache: 'no-cache' });
+    if (response.ok) manifest = (await response.clone().json()) as LexiconManifest;
+  } catch { /* Offline: use the last manifest, including its DB fingerprint. */ }
+  if (manifest?.lexiconVersion && manifest.dbFile) {
+    // The first download can precede SW control. Persist before opening the DB
+    // so the next offline launch finds the same SHA-keyed OPFS/cache snapshot.
+    await (await caches.open('lexicon-manifest-cache')).put(url, response!);
     return resolveTargetFromManifest(manifest, version);
-  } catch {
-    return fallbackTarget(version);
   }
+  try {
+    const cached = await (await caches.open('lexicon-manifest-cache')).match(url);
+    if (cached?.ok) return resolveTargetFromManifest(await cached.json(), version);
+  } catch { /* Legacy installations may not have a persisted manifest yet. */ }
+  return fallbackTarget(version);
 }

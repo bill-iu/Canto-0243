@@ -29,7 +29,7 @@ function parseCharCsv(csvText: string): Record<string, number> {
     const ch = (cols[charIdx] ?? '').trim();
     const jyut = (cols[jyutIdx] ?? '').trim();
     const rankLabel = (cols[rankIdx] ?? '').trim();
-    if (!ch || !jyut || ch.length !== 1) {
+    if (!ch || !jyut || [...ch].length !== 1) {
       continue;
     }
     const rankVal = PRON_RANK_SORT[rankLabel] ?? 99;
@@ -38,7 +38,7 @@ function parseCharCsv(csvText: string): Record<string, number> {
   return out;
 }
 
-function parseEssayCorpus(text: string): Record<string, number> {
+export function parseEssayCorpus(text: string): Record<string, number> {
   const out: Record<string, number> = {};
   for (const line of text.split(/\r?\n/)) {
     const trimmed = line.trim();
@@ -55,7 +55,8 @@ function parseEssayCorpus(text: string): Record<string, number> {
     if (!word || Number.isNaN(freq) || freq < 0) {
       continue;
     }
-    out[word] = Math.max(out[word] ?? 0, freq);
+    // Keep the final duplicate, matching Python load_essay_corpus.
+    out[word] = freq;
   }
   return out;
 }
@@ -72,16 +73,80 @@ function parseCuratedList(text: string): string[] {
   return out;
 }
 
+export function parseWordPronRanks(text: string): Record<string, number> {
+  const rows: unknown = JSON.parse(text);
+  if (!Array.isArray(rows)) throw new Error('Word reading ranks must be a list');
+  const out: Record<string, number> = {};
+  for (const row of rows) {
+    if (!row || typeof row !== 'object' || Array.isArray(row)) throw new Error('Invalid word reading rank row');
+    const actualValue = row.ingested_char === undefined ? row.char : row.ingested_char;
+    if (typeof row.char !== 'string' || typeof actualValue !== 'string' || typeof row.jyutping !== 'string' ||
+        typeof row.pron_rank !== 'string' || !Object.hasOwn(PRON_RANK_SORT, row.pron_rank)) {
+      throw new Error('Invalid word reading rank fields');
+    }
+    const char = row.char.trim();
+    const actual = actualValue.trim();
+    const jyut = row.jyutping.trim().replace(/\s+/g, ' ');
+    const value = PRON_RANK_SORT[row.pron_rank]!;
+    if ([...char].length < 2 || [...actual].length !== [...char].length ||
+        [...char].length !== jyut.split(' ').length || !/^[a-z]+[1-6](?: [a-z]+[1-6])*$/.test(jyut)) {
+      throw new Error(`Invalid word reading rank for ${char}`);
+    }
+    for (const literal of [char, actual]) {
+      const key = `${literal}\t${jyut}`;
+      if (out[key] !== undefined && out[key] !== value) throw new Error(`Conflicting word reading rank for ${literal}`);
+      out[key] = value;
+    }
+  }
+  return out;
+}
+
+export function parseWordUsage(text: string): Record<string, readonly [number, number]> {
+  const lines = text.trim().split(/\r?\n/);
+  const fields = lines.shift()?.split('\t') ?? [];
+  const charIndex = fields.indexOf('char');
+  const rankIndex = fields.indexOf('usage_rank');
+  const channelsIndex = fields.indexOf('subtitle_channels');
+  const actionIndex = fields.indexOf('action');
+  if ([charIndex, rankIndex, channelsIndex, actionIndex].some(index => index < 0) || new Set(fields).size !== fields.length) {
+    throw new Error('Invalid word usage header');
+  }
+  const out: Record<string, readonly [number, number]> = Object.create(null);
+  for (const line of lines) {
+    const values = line.split('\t');
+    const char = values[charIndex]?.trim();
+    const rankText = values[rankIndex] ?? '';
+    const channelsText = values[channelsIndex] ?? '';
+    const rank = Number(rankText);
+    const channels = Number(channelsText);
+    const action = values[actionIndex];
+    if (!char || !/^[0-3]$/.test(rankText) || !/^\d+$/.test(channelsText) ||
+        !Number.isSafeInteger(channels) || !['keep', 'withdraw_curated'].includes(action ?? '') ||
+        (rank === 3) !== (action === 'withdraw_curated')) {
+      throw new Error(`Invalid word usage row: ${char}`);
+    }
+    const previous = out[char];
+    if (previous && (previous[0] !== rank || previous[1] !== channels)) {
+      throw new Error(`Conflicting word usage grade: ${char}`);
+    }
+    out[char] = [rank, channels];
+  }
+  return out;
+}
+
 /** Load ranking signals from repo data/ (call before query-engine in Node runners). */
 export function buildRankingData(repoRoot: string): {
   essay: Record<string, number>;
   curated: string[];
   pronRank: Record<string, number>;
+  wordUsage: Record<string, readonly [number, number]>;
 } {
   const root = path.resolve(repoRoot);
   const charCsv = fs.readFileSync(path.join(root, 'data/rime/char.csv'), 'utf8');
   const essayPath = path.join(root, 'data/essay/essay-cantonese.txt');
   const curatedPath = path.join(root, 'data/lexicon/curated_common.txt');
+  const wordRanksPath = path.join(root, 'data/lexicon/curated_reading_ranks.json');
+  const wordUsagePath = path.join(root, 'data/lexicon/word_usage.tsv');
 
   const essay = fs.existsSync(essayPath)
     ? parseEssayCorpus(fs.readFileSync(essayPath, 'utf8'))
@@ -93,7 +158,8 @@ export function buildRankingData(repoRoot: string): {
   return {
     essay,
     curated,
-    pronRank: parseCharCsv(charCsv),
+    pronRank: { ...parseCharCsv(charCsv), ...parseWordPronRanks(fs.readFileSync(wordRanksPath, 'utf8')) },
+    wordUsage: fs.existsSync(wordUsagePath) ? parseWordUsage(fs.readFileSync(wordUsagePath, 'utf8')) : {},
   };
 }
 

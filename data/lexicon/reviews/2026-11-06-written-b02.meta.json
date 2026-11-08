@@ -1,0 +1,148 @@
+{
+  "batch": "2026-11-06-written-b02",
+  "date": "2026-11-06",
+  "reviewer": "AI-assisted word-form, sense and whole-word Cantonese review; not human item-by-item approval",
+  "source_repository": "https://github.com/fxsjy/jieba",
+  "source_commit": "67fa2e36e72f69d9134b8a1037b83fbb070b9775",
+  "source_license": "MIT",
+  "source_files": [
+    {
+      "path": "jieba/dict.txt",
+      "url": "https://raw.githubusercontent.com/fxsjy/jieba/67fa2e36e72f69d9134b8a1037b83fbb070b9775/jieba/dict.txt",
+      "sha256": "7197c3211ddd98962b036cdf40324d1ea2bfaa12bd028e68faa70111a88e12a8",
+      "bytes": 5071852
+    },
+    {
+      "path": "extra_dict/dict.txt.big",
+      "url": "https://raw.githubusercontent.com/fxsjy/jieba/67fa2e36e72f69d9134b8a1037b83fbb070b9775/extra_dict/dict.txt.big",
+      "sha256": "b16011275c42955ccd81fc1adecc93a59dbb7926af69d93fc95d4943d40f6aad",
+      "bytes": 8583143
+    },
+    {
+      "path": "LICENSE",
+      "url": "https://raw.githubusercontent.com/fxsjy/jieba/67fa2e36e72f69d9134b8a1037b83fbb070b9775/LICENSE",
+      "sha256": "18ba0984839f85853b29fadaf992f7dba8fd0ca0fbeae34de2b8735222dc7a37",
+      "bytes": 1075
+    }
+  ],
+  "input_git_commit": "b03ed0ed906503d2e01905583e12bd107a1d0ac1",
+  "input_curated_sha256": "eb3292094cb1e023e1176a3d91c84602a8d9dd73edb88c4f6db4bc453eeb9c65",
+  "input_curated_rows": 4583,
+  "input_db_sha256": "6175f4d4d43d4b44e7e4c3a7762d8a815dd2f554aaf95867d6ec1ae2666e5cf9",
+  "newly_reviewed_candidates": 2700,
+  "revisited_candidates": 218,
+  "review_rows": 2919,
+  "review_candidate_ids": 2918,
+  "review_verdict_rows": {
+    "accept": 2581,
+    "repair": 12,
+    "already_present": 19,
+    "reject": 307
+  },
+  "reading_repairs": 12,
+  "added_rows": 2581,
+  "added_literals": 2580,
+  "total_curated_rows": 7164,
+  "cumulative_reviewed_candidates": 7444,
+  "cumulative_candidate_decisions": {
+    "accept": 6595,
+    "reject": 799,
+    "already_present": 50
+  },
+  "candidate_pool": 146602,
+  "unreviewed_pool_candidates": 139158,
+  "regional_candidates_still_held": 924,
+  "selection": "First 2700 previously unreviewed pool IDs in descending pinned upstream dictionary weight; all 206 prior deferrals rechecked and twelve prior accepted readings repaired.",
+  "frequency_meaning": "Upstream dictionary weight, not measured corpus occurrences or a product ranking weight",
+  "normalization_policy": "Existing s2hk plus ten exact-literal restorations and two bare-literal sense exceptions (洋面 and 郁郁); proposed and actual ingest literals retained separately. Longer compounds and relation keys are not rewritten by substring replacement.",
+  "reading_policy": "No automatic promotion of character-default drafts; whole-word review plus contextual high-risk and compound-reference audit; 病=beng6 only",
+  "multiple_reading_example": {
+    "char": "長於",
+    "readings": [
+      "zoeng2 jyu1",
+      "coeng4 jyu1"
+    ],
+    "senses": [
+      "be adept at",
+      "longer than"
+    ]
+  },
+  "original_curated_rows_preserved": 568,
+  "previous_source_repairs_explicit": true,
+  "review_tsv_sha256": "55791ec70029d5f14ae638acbc98430c94b8aaf73c95e07cbc6cb73f5164213e",
+  "validation": {
+    "merged_rows": 188305,
+    "merged_literals": 173186,
+    "baseline_unique_pairs": 181710,
+    "baseline_exact_pairs_preserved": false,
+    "baseline_pairs_changed": [
+      {
+        "old_literal": "幹係",
+        "new_literal": "干係",
+        "jyutping": "gon1 hai6",
+        "code": "32"
+      },
+      {
+        "old_literal": "幹擾",
+        "new_literal": "干擾",
+        "jyutping": "gon1 jiu2",
+        "code": "39"
+      },
+      {
+        "old_literal": "幹擾",
+        "new_literal": "干擾",
+        "jyutping": "gon1 jiu5",
+        "code": "35"
+      },
+      {
+        "old_literal": "幹預",
+        "new_literal": "干預",
+        "jyutping": "gon1 jyu6",
+        "code": "32"
+      },
+      {
+        "old_literal": "長徵",
+        "new_literal": "長征",
+        "jyutping": "coeng4 zing1",
+        "code": "03"
+      },
+      {
+        "old_literal": "長徵",
+        "new_literal": "長征",
+        "jyutping": "zoeng6 zing1",
+        "code": "23"
+      },
+      {
+        "old_literal": "鬥轉星移",
+        "new_literal": "斗轉星移",
+        "jyutping": "dau2 zyun2 sing1 ji4",
+        "code": "9930"
+      }
+    ],
+    "added_source_rows": 2581,
+    "all_new_pairs_retained": true,
+    "persisted_rows_match": true,
+    "representative_search_checks": 138,
+    "live_db_unchanged": true,
+    "baseline_readings_preserved_after_recorded_literal_repairs": true,
+    "baseline_exact_pairs_retained": 181703,
+    "literal_repair_pairs": 7,
+    "smoke_tests": {
+      "run": 261,
+      "skipped": 4,
+      "result": "OK"
+    },
+    "seam_tests": {
+      "run": 89,
+      "skipped": 6,
+      "result": "OK"
+    },
+    "targeted_tests": {
+      "run": 10,
+      "result": "OK"
+    }
+  },
+  "remaining_normalization_follow_up": [
+    "Longer compounds such as 萬裏長征 require a reviewed relation-key migration before expanding the literal restoration scope."
+  ]
+}

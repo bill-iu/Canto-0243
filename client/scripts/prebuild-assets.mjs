@@ -58,6 +58,7 @@ step(
     path.join(repoRoot, 'data/rime/char.csv'),
     path.join(repoRoot, 'data/essay/essay-cantonese.txt'),
     path.join(repoRoot, 'data/lexicon/curated_common.txt'),
+    path.join(repoRoot, 'data/lexicon/curated_reading_ranks.json'),
     path.join(repoRoot, 'data/cilin/new_cilin.txt'),
     path.join(repoRoot, 'data/thesaurus/dict_synonym.txt'),
     path.join(repoRoot, 'data/thesaurus/dict_antonym.txt'),

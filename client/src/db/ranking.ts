@@ -12,11 +12,13 @@ const ANCHOR_EXCLUDED_PRON_RANKS = new Set([PRON_RANK_SORT['罕見'], PRON_RANK_
 let essayFreq = new Map<string, number>();
 let curated = new Set<string>();
 let pronRankByCharJyut = new Map<string, number>();
+let wordUsageByChar = new Map<string, readonly [number, number]>();
 
 export function initRankingData(data: {
   essay?: Record<string, number>;
   curated?: string[];
   pronRank?: Record<string, number>;
+  wordUsage?: Record<string, readonly [number, number]>;
 }): void {
   if (data.essay) {
     essayFreq = new Map(Object.entries(data.essay));
@@ -27,10 +29,17 @@ export function initRankingData(data: {
   if (data.pronRank) {
     pronRankByCharJyut = new Map(Object.entries(data.pronRank));
   }
+  if (data.wordUsage) wordUsageByChar = new Map(Object.entries(data.wordUsage));
 }
 
 function isPureHan(text: string): boolean {
   return Boolean(text) && [...text].every((ch) => /\p{Script=Han}/u.test(ch));
+}
+
+/** Match Python's pure Han, mixed Han, then other-text tiers. */
+function hanRankTier(text: string): number {
+  if (isPureHan(text)) return 0;
+  return /\p{Script=Han}/u.test(text) && /[\p{L}\p{N}]/u.test(text) ? 1 : 2;
 }
 
 function pronRankSortValue(char: string, jyutping: string): number {
@@ -55,15 +64,18 @@ export function pronRankSortValueForWord(char: string, jyutping: string): number
     return UNKNOWN_PRON_RANK;
   }
   const syllables = jyut.split(/\s+/);
-  if (text.length === 1) {
+  const chars = [...text];
+  if (chars.length === 1) {
     return pronRankSortValue(text, jyut);
   }
-  if (text.length !== syllables.length) {
+  if (chars.length !== syllables.length) {
     return UNKNOWN_PRON_RANK;
   }
+  const wordRank = pronRankByCharJyut.get(`${text}\t${syllables.join(' ')}`);
+  if (wordRank !== undefined) return wordRank;
   let max = 0;
-  for (let i = 0; i < text.length; i++) {
-    max = Math.max(max, pronRankSortValue(text[i]!, syllables[i]!));
+  for (let i = 0; i < chars.length; i++) {
+    max = Math.max(max, pronRankSortValue(chars[i]!, syllables[i]!));
   }
   return max;
 }
@@ -74,6 +86,14 @@ function essayFrequency(char: string): number {
 
 export function getEssayFrequency(char: string): number {
   return essayFrequency(char);
+}
+
+function wordUsageSortKey(char: string): readonly [number, number] {
+  const text = char.trim();
+  const usage = wordUsageByChar.get(text);
+  if (usage) return [usage[0], -usage[1]];
+  const frequency = essayFrequency(text);
+  return [frequency >= 1000 ? 0 : frequency >= 500 ? 1 : 2, 0];
 }
 
 /** Same pronunciation authority policy as app/domain/lexicon/ranking.py. */
@@ -123,18 +143,39 @@ export function literalPriorityCompare(
   return compareSearchResults(a, b);
 }
 
-export function searchResultSortKey(row: WordRow): [number, number, number, number, string, string] {
+export function searchResultSortKey(row: WordRow): [number, number, number, number, number, number, string, string] {
   const ch = String(row.char ?? '');
   const jyut = String(row.jyutping ?? '');
-  const hanTier = isPureHan(ch) ? 0 : 1;
+  const hanTier = hanRankTier(ch);
+  const [usageRank, subtitleDistribution] = wordUsageSortKey(ch);
   return [
     hanTier,
+    usageRank,
     -essayFrequency(ch),
+    subtitleDistribution,
     -curatedBoost(ch),
     pronRankSortValueForWord(ch, jyut),
     ch,
     jyut,
   ];
+}
+
+function compareRankPart(a: number | string, b: number | string): number {
+  if (a === b) return 0;
+  if (typeof a === 'string' && typeof b === 'string') {
+    // Match Python's Unicode scalar order, including supplementary Han.
+    let ai = 0;
+    let bi = 0;
+    while (ai < a.length && bi < b.length) {
+      const ac = a.codePointAt(ai)!;
+      const bc = b.codePointAt(bi)!;
+      if (ac !== bc) return ac - bc;
+      ai += ac > 0xffff ? 2 : 1;
+      bi += bc > 0xffff ? 2 : 1;
+    }
+    return a.length - b.length;
+  }
+  return a < b ? -1 : a > b ? 1 : 0;
 }
 
 export function compareSearchResults(a: WordRow, b: WordRow): number {
@@ -143,12 +184,8 @@ export function compareSearchResults(a: WordRow, b: WordRow): number {
   for (let i = 0; i < ka.length; i++) {
     const av = ka[i]!;
     const bv = kb[i]!;
-    if (av < bv) {
-      return -1;
-    }
-    if (av > bv) {
-      return 1;
-    }
+    const order = compareRankPart(av, bv);
+    if (order) return order;
   }
   return 0;
 }
@@ -166,13 +203,16 @@ export function sortQueryResults<T extends { word: string; jyutping: string }>(r
   );
 }
 
-export function heteronymSortKey(row: WordRow): [number, number, number, string, string] {
+export function heteronymSortKey(row: WordRow): [number, number, number, number, number, string, string] {
   const ch = String(row.char ?? '');
   const jyut = String(row.jyutping ?? '');
-  const hanTier = isPureHan(ch) ? 0 : 1;
+  const hanTier = hanRankTier(ch);
+  const [usageRank, subtitleDistribution] = wordUsageSortKey(ch);
   return [
     hanTier,
+    usageRank,
     -essayFrequency(ch),
+    subtitleDistribution,
     -curatedBoost(ch),
     ch,
     jyut,
@@ -185,12 +225,8 @@ export function compareHeteronym(a: WordRow, b: WordRow): number {
   for (let i = 0; i < ka.length; i++) {
     const av = ka[i]!;
     const bv = kb[i]!;
-    if (av < bv) {
-      return -1;
-    }
-    if (av > bv) {
-      return 1;
-    }
+    const order = compareRankPart(av, bv);
+    if (order) return order;
   }
   return 0;
 }
@@ -207,6 +243,7 @@ export function sortHeteronymResults<T extends { word: string; jyutping: string 
 /** ponytail: runnable self-check — `npx tsx client/scripts/ranking-self-check.ts` */
 export function rankingLogicSelfCheck(): void {
   initRankingData({
+    wordUsage: {},
     essay: { 窮困潦倒: 100, 窮苦潦倒: 50, 窮酸潦倒: 10, '高頻': 100, '低頻': 10 },
     curated: ['窮困潦倒'],
     pronRank: {

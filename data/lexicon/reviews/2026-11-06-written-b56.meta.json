@@ -1,0 +1,3237 @@
+{
+  "batch": "2026-11-06-written-b56",
+  "date": "2026-11-07",
+  "reviewer": "AI-assisted word-form, sense and whole-word Cantonese review; not human item-by-item approval",
+  "source_repository": "https://github.com/fxsjy/jieba",
+  "source_commit": "67fa2e36e72f69d9134b8a1037b83fbb070b9775",
+  "source_license": "MIT",
+  "source_files": [
+    {
+      "path": "jieba/dict.txt",
+      "url": "https://raw.githubusercontent.com/fxsjy/jieba/67fa2e36e72f69d9134b8a1037b83fbb070b9775/jieba/dict.txt",
+      "sha256": "7197c3211ddd98962b036cdf40324d1ea2bfaa12bd028e68faa70111a88e12a8",
+      "bytes": 5071852
+    },
+    {
+      "path": "extra_dict/dict.txt.big",
+      "url": "https://raw.githubusercontent.com/fxsjy/jieba/67fa2e36e72f69d9134b8a1037b83fbb070b9775/extra_dict/dict.txt.big",
+      "sha256": "b16011275c42955ccd81fc1adecc93a59dbb7926af69d93fc95d4943d40f6aad",
+      "bytes": 8583143
+    },
+    {
+      "path": "LICENSE",
+      "url": "https://raw.githubusercontent.com/fxsjy/jieba/67fa2e36e72f69d9134b8a1037b83fbb070b9775/LICENSE",
+      "sha256": "18ba0984839f85853b29fadaf992f7dba8fd0ca0fbeae34de2b8735222dc7a37",
+      "bytes": 1075
+    }
+  ],
+  "input_git_commit": "290f9d71d674911afe066cb6d637bf3abf7d59d1",
+  "input_curated_sha256": "fb0447caf0a090d918e1665413f4d3907fdc1933d863416a9356a44e6182a177",
+  "input_curated_rows": 66211,
+  "input_db_sha256": "6175f4d4d43d4b44e7e4c3a7762d8a815dd2f554aaf95867d6ec1ae2666e5cf9",
+  "newly_reviewed_candidates": 2000,
+  "revisited_candidates": 0,
+  "review_rows": 2065,
+  "review_candidate_ids": 2000,
+  "review_verdict_rows": {
+    "accept": 1105,
+    "reject": 954,
+    "already_present": 6
+  },
+  "reading_repairs": 0,
+  "added_rows": 1105,
+  "added_literals": 1042,
+  "total_curated_rows": 67316,
+  "cumulative_reviewed_candidates": 107994,
+  "cumulative_candidate_decisions": {
+    "accept": 64224,
+    "reject": 42375,
+    "already_present": 1146,
+    "defer": 249
+  },
+  "candidate_pool": 146602,
+  "unreviewed_pool_candidates": 38608,
+  "regional_candidates_still_held": 924,
+  "selection": "Next 2000 individually reviewed candidates offsets101250:103250 IDs105994–107993. All1198 initial accepts rechecked;154 cold/narrow/unstable expressions withdrawn, leaving1044 before normalization and duplicate detection. Six pinned Cantopop observations and all12 supplied spans read. Cross-word hits and repeated choruses are not whole-word frequency. All prior source objects and decisions preserved.",
+  "lyric_corpus": {
+    "repository": "https://github.com/jasonleeubc/Cantopop-corpus",
+    "commit": "018e88540b917c40dc3f7248ed98908208544b54",
+    "license": "CC-BY-4.0",
+    "observations_policy": "Pinned local lyric-word observations only; not approved readings or everyday frequency. Full-word context reviewed separately."
+  },
+  "frequency_meaning": "Upstream dictionary weight, not measured corpus occurrences or a product ranking weight. Proposed usage rank is AI contextual judgment and is not substituted for available measured whole-word frequency.",
+  "normalization_policy": "Existing s2hk plus98 exact-literal restorations and15 preserved senses across28 input keys; cache32 unchanged. No new normalizer exception, overlay edit, prior-source repair or stored relation-key migration. Original literals kept; no typos silently rewritten to manufacture a source.",
+  "second_pass_familiarity_withdrawals": 154,
+  "net_familiarity_withdrawals": 154,
+  "explicit_restored_candidates": [],
+  "initial_accepted_candidates": 1198,
+  "final_accepted_candidates_before_dedup": 1044,
+  "reading_policy": "No automatic promotion of character-default drafts; whole-word review plus contextual high-risk and compound-reference audit; 病=beng6 only",
+  "original_curated_rows_preserved": 66211,
+  "previous_source_repairs_explicit": true,
+  "review_tsv_sha256": "2881845fa960235d70658cda6335ed9ca5cd4fdf467d304c9e25f314910dd386",
+  "validation": {
+    "merged_rows": 246309,
+    "merged_literals": 228674,
+    "unique_triples": 246307,
+    "baseline_rows": 245204,
+    "all_previous_rows_and_multiplicities_retained": true,
+    "confirmed_old_wrong_sense_readings_removed": 0,
+    "all_accepted_primary_reading_checks": 1042,
+    "old_word_grades_preserved": 127967,
+    "new_source_readings": 1105,
+    "new_pairs_retained": true,
+    "search_checks": 512,
+    "preferred_reading_checks": 59,
+    "word_usage_keys": 129009,
+    "withdrawn_curated_literals": 2051,
+    "live_db_unchanged": true,
+    "backend_pwa_essay_frequency_keys": 266884,
+    "essay_frequency_tables_equal": true,
+    "backend_pwa_word_grade_keys": 129009,
+    "backend_pwa_curated_reading_grade_keys": 68135,
+    "word_grade_tables_equal": true,
+    "curated_reading_grade_tables_equal": true,
+    "old_source_rows_preserved": 66211,
+    "old_reading_grades_preserved": 66211,
+    "old_usage_rows_preserved": 127967,
+    "old_judgments_preserved": 18098,
+    "new_source_forms": 1042,
+    "new_merged_forms": 1042,
+    "existing_merged_forms_with_new_readings": [],
+    "raw_source_forms": 64777,
+    "normalized_source_forms": 64775,
+    "new_word_usage_judgments": 349,
+    "unrelated_user_files_unchanged": true,
+    "previous_overlay_bytes_preserved": true,
+    "existing_runtime_readings_mirrored": 0,
+    "exact_existing_wrong_sense_overlay_deletions": 0,
+    "new_merged_readings": 1105,
+    "new_merged_readings_net": 1105,
+    "full_final_inventory_rebuilt_and_compared": true,
+    "client_query_engine_with_new_dictionary": {
+      "checks": 408,
+      "modes": 3,
+      "new_dictionary_loaded_in_client_engine": true,
+      "preferred_readings_equal": true
+    },
+    "heteronym_full_pool_ranking_equal": true,
+    "non_han_tiers_match_backend": true,
+    "unicode_scalar_tiebreak_parity": true,
+    "new_exact_literal_restorations": {},
+    "normalization_impact": {
+      "new_exact_restorations": {},
+      "exact_restorations_total": 98,
+      "preserved_literal_senses_total": 15,
+      "preserved_literal_input_keys_total": 28,
+      "normalization_code_unchanged": true,
+      "relation_source_bytes_unchanged": true,
+      "stored_relation_literal_keys_migrated": 0,
+      "cache_format": "32",
+      "previous_runtime_rows_affected_by_normalization": 0,
+      "affected_previous_keys": 0,
+      "relation_and_supporting_files_scanned": 226,
+      "unchanged_code_sha256": {
+        "app/utils/trad_chinese.py": "3921d2e9349faed70ed43ddd60f5311a681920267e08c31cdd6dae1d01129375",
+        "ingest/lexicon_layer_cache.py": "b697038f12684e9fefa4f07617af306bb4fdc8dbca778bd451abedf877282123"
+      },
+      "relation_file_sha256": {
+        "data/antonym/.gitignore": "0c26250189ad7dc5f7ccc9576b0ab9a8357332917c5933c3d076af2ddbc44cc7",
+        "data/cilin/.gitignore": "a44e8b083c5a30f180c0565c4959f081a31636ea397cef1a328209967eb91950",
+        "data/cilin/new_cilin.txt": "25eca50c06888d7f0957c3e82eaddae2922eac99246a06ee62b4eb55cac04c06",
+        "data/relations/manual_relations.tsv": "cfaaeb616ff3906fb250d834c847fe393096d38d0cfb03f07b4ca8e9408dc88d",
+        "data/syn_ant/ant_syn_bridge_pairs.tsv": "6698ea435a1ca2c7207d022a03cef29bc84d0f0260a6c26a9925564187161f0a",
+        "data/syn_ant/campaign_final_audit.meta.json": "f619f5ddbb4d67bea16a0947016972d5ef9fb6a972b65a50e2a3590aa4e842df",
+        "data/syn_ant/campaign_len4.meta.json": "e469c9169d715ebc468bfe1ffbe8c4ddf364568229945dfdac1590686fcac196",
+        "data/syn_ant/campaign_len4.tsv": "3b81bae50d758e11a13bdb7c281cdf1bb59b96e3a9f46db2ac514365e42da285",
+        "data/syn_ant/campaign_len4_final_audit.meta.json": "9b67bcb91b3d29b53411179c2a2bee5139f651ab25209486ba09611be6f748eb",
+        "data/syn_ant/campaign_len4_no_natural.meta.json": "d0666f9417f100d21c96979bdb8ffb911c4c07cc72cef0e287533cb1b8bc51c5",
+        "data/syn_ant/campaign_len4_no_natural.tsv": "9f529ab982c03e51de806994e5f4f394c3b88c73e7270dcebb27a8698047ecf5",
+        "data/syn_ant/campaign_top5000.meta.json": "545802949cc9d74de75e31bf15931dc933c085ef8a281c0bbbf877a82d0ab7b8",
+        "data/syn_ant/campaign_top5000.tsv": "521b0a6305627c0a562ea83633c04f65404d8645eef5e9073dd06b97a1de4d72",
+        "data/syn_ant/compound_antonyms.txt": "fd8c45fb14c460edb2061759ca5be381fd311b4c66b923e5f5a4272fb1bca565",
+        "data/syn_ant/compound_synonyms.txt": "760301a8f8d303434a36c780b875ee57ceabbd5071111d73d4c58f97d75019c8",
+        "data/syn_ant/fixtures/antonym_sample.txt": "6656a61f577cb78212bf88cc7b0dd86fca8b72f0a6744909d965377060335314",
+        "data/syn_ant/fixtures/cilin_sample.txt": "3ee7f6adaed0f83531d426a0846dde3228b5de3b9690a323f70451d547c4b950",
+        "data/syn_ant/fixtures/cow_sample.txt": "b688f27ffe1a89aeef016fc9efe55c4cbc7adc0149671e3cfd565d5a8859be35",
+        "data/syn_ant/fixtures/guotong_noise_sample.txt": "2fb8fe2fbe632304f67aaf577873170f1c225e9c17a85c02392384ac54b11718",
+        "data/syn_ant/fixtures/len4_b01_accepted_draft.tsv": "9cc39036c46634afd206aee58b5d9ac3e1c6ab99645e7a1bb45a5c1e7239cc47",
+        "data/syn_ant/fixtures/len4_b01_all.txt": "fa20cd327d4640d39edff225df139713dbe709a1a06ee65e8099e58cf1b7dc4e",
+        "data/syn_ant/fixtures/len4_b01_dump.txt": "72b0bf0b5b149a32792b21b08babdf21f4bf2783ec6250b490bc4f9b5bef2b2c",
+        "data/syn_ant/fixtures/len4_b01_filtered.tsv": "5d32915f1ef944939b0030684d938678c2283b53f9e8abd0792677d5de054175",
+        "data/syn_ant/fixtures/len4_b01_no_natural_draft.tsv": "903de903b828de3c8805d812c70ce71ca4298c5800d4ae0f193492a84f36557c",
+        "data/syn_ant/fixtures/len4_b01_no_natural_final.tsv": "3fd66d7d6865af0d6927f3feab2b5b8462619b95f2b23501252df74e0b1ec566",
+        "data/syn_ant/fixtures/len4_b01_parent_pairs.tsv": "9cc39036c46634afd206aee58b5d9ac3e1c6ab99645e7a1bb45a5c1e7239cc47",
+        "data/syn_ant/fixtures/len4_b01_proposals.tsv": "c39a7146619e7de86b80499d91fcac5ba406b7794f621c575e98a53136d48758",
+        "data/syn_ant/fixtures/len4_b01_sample.tsv": "91e0a98548d6ce1bf40063776727a03b101e885c71e1200dd13b4d8e52c9be16",
+        "data/syn_ant/fixtures/len4_b01_sample.txt": "9ca90f574ceaa603d6413b6459771403110cd7fcd45747528e1fe10f85c83407",
+        "data/syn_ant/fixtures/len4_b01_unresolved.txt": "fa20cd327d4640d39edff225df139713dbe709a1a06ee65e8099e58cf1b7dc4e",
+        "data/syn_ant/fixtures/len4_b02_accepted_draft.tsv": "5189d507cb42fc9fd340d9dab2a99c878d50544490b2cf0970eb8af2554959aa",
+        "data/syn_ant/fixtures/len4_b02_filtered.tsv": "eaf9b8c9ed4260f73a3f90d2b984aa7e9c5f0125d835ff91db84a45b4c3dc82c",
+        "data/syn_ant/fixtures/len4_b02_heads.txt": "b2baa7924ef23b70b1405fb46a2bd6a067195146649b1fe3946ff37667fac803",
+        "data/syn_ant/fixtures/len4_b02_no_natural_draft.tsv": "b972ec7f17ffed4c7525ccdec917350187bdb10da8b32788971d4424bd68f733",
+        "data/syn_ant/fixtures/len4_b02_no_natural_final.tsv": "9cbb5d98822a13548f62ee75386c00ed388bbbeaabe727ba6b0e2d1c9d965dbf",
+        "data/syn_ant/fixtures/len4_b02_parent_pairs.tsv": "b62b3c5548cfb3ef53e4174848585c1d53dfc166a4be23c37dba29719b2e6d4e",
+        "data/syn_ant/fixtures/len4_b02_proposals.tsv": "12969f691dfa487ca122ada72ea8a373d3332887e15684a32e6fdd9f343e8637",
+        "data/syn_ant/fixtures/len4_b02_unresolved.txt": "b2baa7924ef23b70b1405fb46a2bd6a067195146649b1fe3946ff37667fac803",
+        "data/syn_ant/fixtures/len4_b03_accepted_draft.tsv": "ef048a8126da18a36fa47a96d87849ffd99ea26076f0ae7b29cdd32699570d98",
+        "data/syn_ant/fixtures/len4_b03_filtered.tsv": "877bd11a53939b2410a9124aa2aaf5e9bf42e8ef46878f702dcff7161ae1d9d3",
+        "data/syn_ant/fixtures/len4_b03_no_natural_draft.tsv": "b797e7ea7894777c2ecf6b8a323b5bdac4ebff22c5d4a34c1fee782c96a52430",
+        "data/syn_ant/fixtures/len4_b03_no_natural_final.tsv": "cf9ebab0e48a86cedbd6c208ad38a9301c483575f650556e0a511dfacd5bd148",
+        "data/syn_ant/fixtures/len4_b03_parent_pairs.tsv": "10c3ce880d7decf2ef5474bf116a1c584f6fb732a3ed98e8cd6b0dff0a69f4c8",
+        "data/syn_ant/fixtures/len4_b03_proposals.tsv": "e2fdba63217841450406db22a91d359fa87ea501e6f0a58bcefe9b7598779c60",
+        "data/syn_ant/fixtures/len4_b03_unresolved.txt": "d58c9fff306cf165aa87485effcfa5f9b92b570b8c7518226284344687f21db2",
+        "data/syn_ant/fixtures/len4_b04_accepted_draft.tsv": "a793be8dd09c2939fea9bca864c90085689cfab087bcad868d26c648c89a013c",
+        "data/syn_ant/fixtures/len4_b04_filtered.tsv": "fea4befec1e07dc725a0dfbc8c44faf71036cd8ba530f556e893a97efa758b9e",
+        "data/syn_ant/fixtures/len4_b04_no_natural_draft.tsv": "e6dcfc6c25f0362ffbb9e177bf402de6b2c487c5013c7db3634c8d5f9139bd7e",
+        "data/syn_ant/fixtures/len4_b04_no_natural_final.tsv": "5670611866271d0105f91ca999b67f521cb562dc7e4918c51490c16d892593ad",
+        "data/syn_ant/fixtures/len4_b04_parent_pairs.tsv": "28434ed921e137f5e34c5d22df4c6c6f22174b181837243c5d35637f59bedc72",
+        "data/syn_ant/fixtures/len4_b04_proposals.tsv": "7799cabb929b0c50bd272cb683f14669a2ab89094626db2de1f4ac837b53a00b",
+        "data/syn_ant/fixtures/len4_b04_unresolved.txt": "2d49bff2328d4ab57e5aa6c4e63dbd47874f68fc8f3c5c820365c72b6b9c5dd4",
+        "data/syn_ant/fixtures/len4_b05_accepted_draft.tsv": "e67776fdd9607dd929ee5d1478b4f873b24dace11f20101677484a5231ad28b5",
+        "data/syn_ant/fixtures/len4_b05_filtered.tsv": "20c990fe1341817ac440b0beb6c305bbd18aadbed665231fe678d8528d2ef733",
+        "data/syn_ant/fixtures/len4_b05_no_natural_draft.tsv": "ecfb8a3da8f854579ce7e29e6a39296c7f84a2fb4ca4b74f0f120dd3019adb6e",
+        "data/syn_ant/fixtures/len4_b05_no_natural_final.tsv": "7a60fda01b10a60d1acd9229506a4d0b8140d7eb65165422e3b24e83e9934df5",
+        "data/syn_ant/fixtures/len4_b05_parent_pairs.tsv": "64a00d76c62cda4ef63e3526fb3f0f404685cab8d40b1b316d353d219bb049ab",
+        "data/syn_ant/fixtures/len4_b05_proposals.tsv": "31c6c9d1faadbd08cbd8abfacdc1bb92f5c9df030f012b360127a2e216f95e8b",
+        "data/syn_ant/fixtures/len4_b05_unresolved.txt": "d7cd0fe293284d05f16eb5ef80f4a76f5158d8a5abb644032c837da5f8b649ca",
+        "data/syn_ant/fixtures/len4_b06_accepted_draft.tsv": "f545fb4978f19fa89d00aa3349c3eae99719c2b47441d1ea4154d094a7feb281",
+        "data/syn_ant/fixtures/len4_b06_filtered.tsv": "b8db1eaad70747aba5f4d677bdf20a112d822704f83bf7f3e29537f0ece4517b",
+        "data/syn_ant/fixtures/len4_b06_no_natural_draft.tsv": "13f5bd84017d3dccbabbc9f00724474aaa271df409e3678b0d4d46fb2a5a82c2",
+        "data/syn_ant/fixtures/len4_b06_no_natural_final.tsv": "e587442919610a30a665645dd514121298f0518ea45a21de682f475b7e5eed7d",
+        "data/syn_ant/fixtures/len4_b06_parent_pairs.tsv": "aa4710473f1b499e9879b75140b724e2fa3bd13e47afa67687f01c0114e4061f",
+        "data/syn_ant/fixtures/len4_b06_proposals.tsv": "a4a158c243bd73c0074ab1128de82242dce603e98f16601f9b86159f701509a2",
+        "data/syn_ant/fixtures/len4_b06_unresolved.txt": "90c8431197f11ea62ef3ba830eb6ff74b5236d405a9ae1460429abae88d4df82",
+        "data/syn_ant/fixtures/len4_final_acc_sample.tsv": "1880b5268f1f830cac1c1df63002b1897b83e25f875bbaa6470320053e32a877",
+        "data/syn_ant/fixtures/len4_final_nn_sample.tsv": "5919ff130565dc7ccc7ba71bb071b2b430b0a13a4588b13b8dbc7403bf06fdfc",
+        "data/syn_ant/fixtures/len4_final_sample_stats.json": "1405c5f5c20e40ce537adb9868d6d17e22b4d4619b022bf33a7b3257dfa70620",
+        "data/syn_ant/fixtures/post_syn_ant_b01_accepted.tsv": "33c3348ab3ab16598784ac9c2177fae5690946cc0b5341d826c5737d317961d1",
+        "data/syn_ant/fixtures/post_syn_ant_b01_filtered.tsv": "21b53511a52eb1303d00dba9ed5e498fa0354c5e58f268091bc9f2c850d9418d",
+        "data/syn_ant/fixtures/post_syn_ant_b01_no_natural_draft.tsv": "7fbaea5992272ac49b5713d3aed65ab2b1e6ea7bee8791a0adcca4f0d8c51b03",
+        "data/syn_ant/fixtures/post_syn_ant_b01_proposals.tsv": "49bea4a339fa1a511b802dd73292fb8642d8446f16742c552ef72631d5fd2190",
+        "data/syn_ant/fixtures/post_syn_ant_b02_accepted.tsv": "c6191a66f90882c611830809317ad9c440f96d52b667620dea29c05b40c4a5f6",
+        "data/syn_ant/fixtures/post_syn_ant_b02_filtered.tsv": "8a492d457546a3c264ff6b3f0076f861d4be51678e7b097ba36d2dc8c8199683",
+        "data/syn_ant/fixtures/post_syn_ant_b02_no_natural_draft.tsv": "3b12e56e60bc971a993b983b48be3b1944990f5222503def98e8c8749ef4ce41",
+        "data/syn_ant/fixtures/post_syn_ant_b02_proposals.tsv": "f8a4f3cc9d581287a0e150ff3ca3a8abac1778d777444a8c5489491e126f4b48",
+        "data/syn_ant/fixtures/post_syn_ant_b03_accepted.tsv": "07c73b2c81d70e9e8b4ed8f19ab73bdbdd8f2bb59dd02cea61e89178d1efcc94",
+        "data/syn_ant/fixtures/post_syn_ant_b03_filtered.tsv": "31fe3bdbab18aaed055a7bdc47839283297cc0d069594aa454cb5cd601b5d568",
+        "data/syn_ant/fixtures/post_syn_ant_b03_no_natural_draft.tsv": "ecb9bf9868d4f189cec9acad7ea24e62082a8c148840ab12440502181ed73290",
+        "data/syn_ant/fixtures/post_syn_ant_b03_proposals.tsv": "b99bf148234935ff3c17cc85a64a09e91aba54574f6287faebf97f4389750d99",
+        "data/syn_ant/fixtures/post_syn_ant_b04_accepted.tsv": "6b5e35ec25dd8b29c733066052f2f7e93c26c836deb5b748b5952dacc000ea3d",
+        "data/syn_ant/fixtures/post_syn_ant_b04_filtered.tsv": "d1a198c7bf5df394b8c3241b70e26dd4aaf10fcff8a0ce79f40e76a2f1613c36",
+        "data/syn_ant/fixtures/post_syn_ant_b04_proposals.tsv": "03dc53113fca7ac9a9123faf6c6d7a5f0913e3025ce58edbcfdea91fa20b5add",
+        "data/syn_ant/fixtures/post_syn_ant_b05_accepted.tsv": "c4f08498bc4d49d5f41c214be58585544b7574a7cba088df81f77c36275f7482",
+        "data/syn_ant/fixtures/post_syn_ant_b05_filtered.tsv": "df7e484d58fd3aaa422617df5ebc81370bf8a8e23b10571de8312b539c8be71b",
+        "data/syn_ant/fixtures/post_syn_ant_b05_no_natural_draft.tsv": "afbd4fc111b5f07cb5643ee2f06efe5982263e935d8a76cab3401059a7375f38",
+        "data/syn_ant/fixtures/post_syn_ant_b05_proposals.tsv": "83a690f2c0d90267829c32b551587cba0c583a18cb7e5e02a0b106eb17a554af",
+        "data/syn_ant/fixtures/post_syn_ant_gap_b02_top150.tsv": "cfe5e6ea26c78383b4b1d58ff909b95a508bb32db174c097dd8102fccf9cbe8c",
+        "data/syn_ant/fixtures/post_syn_ant_gap_b03_top150.tsv": "c54fa71967864388c2b870e2ef18d11b8d80af02e4d202092a94fd122819ede6",
+        "data/syn_ant/fixtures/post_syn_ant_gap_b04_top150.tsv": "054dfa4c7cd9c276529022fc431f2b2fbbeb8cbba9298749b1636776c1c2df6d",
+        "data/syn_ant/fixtures/post_syn_ant_gap_b05_all.tsv": "b09c534bcf84cdefc8920736717b3677316a61e981b8271029ae91daa4cf03a1",
+        "data/syn_ant/fixtures/post_syn_ant_gap_top150.tsv": "6e11f36b065fb989f08f67d7015c0436991302db4b6544887c19c250fb6dd526",
+        "data/syn_ant/fixtures/post_syn_ant_p1_nn_flip_b01_accepted.tsv": "27ce33793fc0672b07c7da2d02fd52bba69f356554f8a47e84898005b85e374e",
+        "data/syn_ant/fixtures/post_syn_ant_p1_nn_flip_b01_filtered.tsv": "27ce33793fc0672b07c7da2d02fd52bba69f356554f8a47e84898005b85e374e",
+        "data/syn_ant/fixtures/post_syn_ant_p1_nn_flip_b01_proposals.tsv": "12b9b9628879c1a1ee9e45bd865cf6212d2ce2d5b9fed5f0717c186a12524656",
+        "data/syn_ant/fixtures/post_syn_ant_ring5k10k_b01_accepted.tsv": "e7313d892386bdd47ac7a56b686123ad7b0520e7256cd18d18c973e972366d76",
+        "data/syn_ant/fixtures/post_syn_ant_ring5k10k_b01_filtered.tsv": "3e94e85ce07318f5154bd04e83c9d1c48bfe4001f0cbeb4c2d5474dc0bef1ad2",
+        "data/syn_ant/fixtures/post_syn_ant_ring5k10k_b01_no_natural_draft.tsv": "aeaa3b68cdbbb3ee8b0bc07655891bc783d0d45bc2a609b6087eed5568879bf6",
+        "data/syn_ant/fixtures/post_syn_ant_ring5k10k_b01_proposals.tsv": "9b22414073ed7b3c7ac14d78b7bdb5b5eea48ac5586c2bac26cd2b2b5cf96cc7",
+        "data/syn_ant/fixtures/post_syn_ant_ring5k10k_b01_top150.tsv": "6faf1999a0a1f866dcf8d32a7f37d5e2b3d67b57ced29e2f3e2537b99abb411d",
+        "data/syn_ant/fixtures/post_syn_ant_ring5k10k_b02_accepted.tsv": "16bcc8121254549c36b0da334a1ae6d23d506ddb7e8792c9a78ce3108c36c7d3",
+        "data/syn_ant/fixtures/post_syn_ant_ring5k10k_b02_filtered.tsv": "6dc46c6bfc9f10d018f413fdb4614a98e85e72b061501f93779234df1a747af4",
+        "data/syn_ant/fixtures/post_syn_ant_ring5k10k_b02_proposals.tsv": "6fd796ccfff5e0d94696d5651db1c5af95d77156251d7a838ede987a7e24f92c",
+        "data/syn_ant/fixtures/post_syn_ant_ring5k10k_b02_top150.tsv": "bc92633092fc5b3e3236bab1d6b87529f7a8a71b8073ed5cae7198a27a5eb7f4",
+        "data/syn_ant/fixtures/post_syn_ant_ring5k10k_b03_accepted.tsv": "ff3d2b071888629fbfbaef3c752dcd2ab0f78c1e35df9d5244109a51f563729d",
+        "data/syn_ant/fixtures/post_syn_ant_ring5k10k_b03_filtered.tsv": "ddc958b465381a7a03b7928f646cb4320e0a54627eeedc63d1d2ce0122e944bd",
+        "data/syn_ant/fixtures/post_syn_ant_ring5k10k_b03_proposals.tsv": "042099d7e9cfa472e62b2b235432a1a5cfa1105859d73aff61a831ecc923d8da",
+        "data/syn_ant/fixtures/post_syn_ant_ring5k10k_b03_top150.tsv": "5762a028ba75134a9f33e10d01819f28e3fcdacc08d932d5e0eb63900627b007",
+        "data/syn_ant/fixtures/post_syn_ant_ring5k10k_b04_accepted.tsv": "848d67924f2398af00faa448800e989cbbeb3b8eaa3e918ee73867b4a8381d04",
+        "data/syn_ant/fixtures/post_syn_ant_ring5k10k_b04_filtered.tsv": "592998acf9cd4a1ef977206e4db334d6b5258e7f68c976a5cf3b901d0ea9498a",
+        "data/syn_ant/fixtures/post_syn_ant_ring5k10k_b04_proposals.tsv": "6999a6c8923794e20450b835da3c0acd91b889e1f972c76f92cc64755e1e857e",
+        "data/syn_ant/fixtures/post_syn_ant_ring5k10k_b04_top500.tsv": "97559ba54946ed842ede16ccd567780fbf20c05cd2eccea936cff449a34de0b9",
+        "data/syn_ant/fixtures/post_syn_ant_ring5k10k_b05_accepted.tsv": "1971042c5aa0c5185d7ff32c5ec7dea4ba24c0d970cf4ada0f0a08bf1d82b089",
+        "data/syn_ant/fixtures/post_syn_ant_ring5k10k_b05_filtered.tsv": "3a68d41624bfcccf5bef779ad9e4eb6a0c16a14f8173a19accd178ea45888953",
+        "data/syn_ant/fixtures/post_syn_ant_ring5k10k_b05_proposals.tsv": "bab8408bcbc0d66d35bbea4d45b6d8d1d7ec271351836c08491b165d0788be97",
+        "data/syn_ant/fixtures/post_syn_ant_ring5k10k_b05_top500.tsv": "82a9f339d3f572c5fe2f12fa87c6fa3a30bea833db710ad68366af73bca40fdc",
+        "data/syn_ant/fixtures/post_syn_ant_ring5k10k_b06_accepted.tsv": "9051f60f5887c7f530d6ceb3c5af7c889b1376fd60a7e0e72f4b89e9929e65a6",
+        "data/syn_ant/fixtures/post_syn_ant_ring5k10k_b06_all.tsv": "7496e5606d14777196cb1da92906143879f4671255d52a6ccf044df038bf10f9",
+        "data/syn_ant/fixtures/post_syn_ant_ring5k10k_b06_filtered.tsv": "b403aa1d805819eaf15a0afd4402be775933b3b89c76eae871d28a413b193f42",
+        "data/syn_ant/fixtures/post_syn_ant_ring5k10k_b06_proposals.tsv": "bf2700fef2e2e95180a495eda2c703d44b46850fd1f78048b92924dc1e0917ad",
+        "data/syn_ant/fixtures/post_syn_ant_ring5k10k_open.tsv": "85c01ceafb097d992fa6d38dd6227ea959fc37d4334b687438d5a53925622656",
+        "data/syn_ant/fixtures/relations.tsv": "3f9c4778cf1ddfd0496c0f040f3df2293cacd7b7bf09d8868bdc56464bfed13c",
+        "data/syn_ant/project-antonyms-prompt-len4.txt": "c53c95966f0caefb50daeff3da5826ef473b0150f09f8461fa040306cc96a6cc",
+        "data/syn_ant/project-antonyms-prompt.txt": "b579cc0a6ed6a25840b341933bbe33286a4183f2bb0c2523c1537ab3e0c82fac",
+        "data/syn_ant/project/campaign_syn_len4.meta.json": "bf600de7acdae8da0eb88c03ef053eb98ebf2be89eb12dd39b52840d2fc79d95",
+        "data/syn_ant/project/campaign_syn_len4.tsv": "0b05741d8df8c8449951bf635afc57ea1c51721ca772c9d2dc394324dc761dda",
+        "data/syn_ant/project/campaign_syn_len4_final_audit.meta.json": "5f4674fbdcddb0ff8594d843666dec0db48f2a10332547545858939d11106dc4",
+        "data/syn_ant/project/campaign_syn_top5000.meta.json": "649024f18563de7838ccc1655af0b73a5c3e49f1658b41c266d01c1bf097ec31",
+        "data/syn_ant/project/campaign_syn_top5000.tsv": "09fb9eb9fecdabaa8f2b6f7781f35ec62a4ebb21d3c12c8482dbe627e5ca6df2",
+        "data/syn_ant/project/campaign_syn_top5000_final_audit.meta.json": "d4ab2ecb5408ad236303b6c2fecf0a464c6d8acd3515459aa0f9500bc4a0b693",
+        "data/syn_ant/project/fixtures/syn_len4_b01_accepted.tsv": "646fd91d35745e8f5f71bacaae67d5ad967de7e3b5c0b4e7b511de25870103fe",
+        "data/syn_ant/project/fixtures/syn_len4_b01_adequate.tsv": "f95bfad577acdb7edeccfcfd9752d443704c7fec3d5c222c00d6fd0efebbfd89",
+        "data/syn_ant/project/fixtures/syn_len4_b01_heads.tsv": "09911b143bf62c33e0dcec8a4c51aaf08fc22b4d34dd7b720c2e221f9152a10b",
+        "data/syn_ant/project/fixtures/syn_len4_b01_heads_list.txt": "16aa72348dfa45aaa9c7813076617e4a2b5e3dcbbcb5d4c065c3112e1cdf8b74",
+        "data/syn_ant/project/fixtures/syn_len4_b01_no_natural.tsv": "8ac208deb38df1645329da164a1e8a303e15282ba090c12613f184e3ed6fcc7b",
+        "data/syn_ant/project/fixtures/syn_len4_b02_accepted.tsv": "37454c3113a0fc84dbc52d523ac3336b05f2e9e9b8620d62e1fa43b78fb29c82",
+        "data/syn_ant/project/fixtures/syn_len4_b02_adequate.tsv": "c34138b598b7de9d1a913dd3355d0b2c0da74f71ab454fe3561c7b0c8ebcda24",
+        "data/syn_ant/project/fixtures/syn_len4_b02_heads.tsv": "64e896634fab456b114632bc187a5480faf11fbc3309a445232d529270f1bcff",
+        "data/syn_ant/project/fixtures/syn_len4_b02_heads_list.txt": "41afd954d77a7f1512304d03eadd5dd5cf0f7f67ee651f3dc880dff6814938ec",
+        "data/syn_ant/project/fixtures/syn_len4_b02_no_natural.tsv": "65931af1ad565fd64f619b9a65b65f02f9f6cffc85965f574622bac73c723e35",
+        "data/syn_ant/project/fixtures/syn_len4_b03_accepted.tsv": "e1708e1639d2a804dfc6eb3d21c78cec37c21bf2bb18a4c9360f34dc898d92ea",
+        "data/syn_ant/project/fixtures/syn_len4_b03_adequate.tsv": "ae874317d19c152597323d8567d57ee73d3615cf01e4ea0d94ebae3d75746064",
+        "data/syn_ant/project/fixtures/syn_len4_b03_heads.tsv": "e60f525b348fbb192ac3c422c0c6693bfc98f802442534b742173ee03651fc78",
+        "data/syn_ant/project/fixtures/syn_len4_b03_heads_list.txt": "ccf174fd4bd48a3eead1f461cc5aade8f9077f52c8bb4fbb17894e9fcf1008ca",
+        "data/syn_ant/project/fixtures/syn_len4_b03_no_natural.tsv": "07664a6a600ccd61639ca68c30de1a2ff85b6fb6a15f137b2e5817776b670958",
+        "data/syn_ant/project/fixtures/syn_len4_b04_accepted.tsv": "08c336fbd171416c638689fcd9767aab89d26f7ab78125613b34308434810a3f",
+        "data/syn_ant/project/fixtures/syn_len4_b04_adequate.tsv": "9c5b89309097175d5547be420da358130651dcf9d771ede5a78bf5e6e0e39f4f",
+        "data/syn_ant/project/fixtures/syn_len4_b04_heads.tsv": "b70c9b12eda76ebeed270a71bc7996857985103bfa70ab08f997963b0e9df063",
+        "data/syn_ant/project/fixtures/syn_len4_b04_heads_list.txt": "28049f309101556aadc121d6740dee50465cb1b1d53a8d01a0029af2b6161dca",
+        "data/syn_ant/project/fixtures/syn_len4_b04_no_natural.tsv": "7efb9efae9afee6c6850c52ad17287863f864350edd76bb2cc51972cc56f2f20",
+        "data/syn_ant/project/fixtures/syn_len4_b05_accepted.tsv": "eababe476d6182a959ab50b4a118fbdac5fba7481513dffe40edd202178fc51f",
+        "data/syn_ant/project/fixtures/syn_len4_b05_adequate.tsv": "54b5756b045658c8a6e42540f4648a3bd0bf8ed7c8ea93a230654361c9fc7dad",
+        "data/syn_ant/project/fixtures/syn_len4_b05_heads.tsv": "87d6b43afbbd1bb076936d29ea0d1103da4933647f47d42227e26930814db4d7",
+        "data/syn_ant/project/fixtures/syn_len4_b05_heads_list.txt": "4ff84de73a15323c154440ffc4bc0616a1dfaef27d751cbd56d64e48d2d0b3ad",
+        "data/syn_ant/project/fixtures/syn_len4_b05_no_natural.tsv": "fba6d686dc7224ebfebb124d9492bfea485fda1d8d769c4e9f05778c42c721b3",
+        "data/syn_ant/project/fixtures/syn_len4_b06_accepted.tsv": "816b184232f395aa79f910f5e3db10428d52b38b3d4502e8c90e6956bd45b978",
+        "data/syn_ant/project/fixtures/syn_len4_b06_adequate.tsv": "394f44b4d9f0e3019cb10dfa060bb40e4f4add869015ccc0c9645027157bc3ba",
+        "data/syn_ant/project/fixtures/syn_len4_b06_heads.tsv": "992a2749413f9976548357731dae6b1ddb3590c4baf60fdf0cb1e9efa5a4f6dd",
+        "data/syn_ant/project/fixtures/syn_len4_b06_heads_list.txt": "ed4d23de829b303a055777d1013287d726e79f06b729ab0ad2f60bd6372737b6",
+        "data/syn_ant/project/fixtures/syn_len4_b06_no_natural.tsv": "b6e9bc991f8ef0e0befd40f06804ac02f3fde1bd4849c1f0b4ee4ab334ceb235",
+        "data/syn_ant/project/fixtures/syn_len4_b07_accepted.tsv": "5ba8ce6a524f8e58407c8c3022c7d65384d0b1af8c43ff0796f1347f5b14523c",
+        "data/syn_ant/project/fixtures/syn_len4_b07_adequate.tsv": "3ffb57e2d127f5a8bb6f210bd6facaae8c426295c7095585e98fffc0a7f5a551",
+        "data/syn_ant/project/fixtures/syn_len4_b07_heads.tsv": "d35fef808bc460f59794cf8ee852f8b562e42de646667914632b9aa3a62cb5cc",
+        "data/syn_ant/project/fixtures/syn_len4_b07_heads_list.txt": "b6638dd9b4f38d21f161c6891ef8c89dd526de8e7afa02f3335b7cde5e5d8fd9",
+        "data/syn_ant/project/fixtures/syn_len4_b07_no_natural.tsv": "2723eb213947b39917cb61b5357c319dbbb6bd3a408ac0a48af1794cdce3984e",
+        "data/syn_ant/project/fixtures/syn_len4_b08_accepted.tsv": "085253d70bfbe8473d3db646738806c9d6d440a3431369a9018a51740adfeac7",
+        "data/syn_ant/project/fixtures/syn_len4_b08_adequate.tsv": "d9aec16ee29377a3c4a64469f5ce6aa0f861bb9e5f43a6a0e2396f639cbdef01",
+        "data/syn_ant/project/fixtures/syn_len4_b08_heads.tsv": "796f9e6e30890be0c60a244a94b09e5aef86261e7d2b31ca9eaf149149bbf0f7",
+        "data/syn_ant/project/fixtures/syn_len4_b08_heads_list.txt": "ca89ead3ac1141996cce166089300c598d20823d3eb29c766e6bfbf2ed1dd1a9",
+        "data/syn_ant/project/fixtures/syn_len4_b08_no_natural.tsv": "221a3688f09b2eac2f07a92a777df1c43ad2c7cae763ad2cd36ac99cff9cb5c9",
+        "data/syn_ant/project/fixtures/syn_len4_b09_accepted.tsv": "efc568043fb2cd758f05975d3246650854caa8ea775dca24db3b87c516bb9679",
+        "data/syn_ant/project/fixtures/syn_len4_b09_adequate.tsv": "65a28b16b76c29c7b40ef35b8c52b2c068b25b57b3fd88578a646950359521c7",
+        "data/syn_ant/project/fixtures/syn_len4_b09_heads.tsv": "4ba72f1bc36878e97ff99390e7b830e0a334cde361e321daa8535a976346065d",
+        "data/syn_ant/project/fixtures/syn_len4_b09_heads_list.txt": "d118d567680e2386681cd9f0034f5819c5ed1359f85d8a9bd29000b952c9780d",
+        "data/syn_ant/project/fixtures/syn_len4_b09_no_natural.tsv": "ca8ce6adef51b8b077fd37c05b539c7b81c4f5813de6d4884cd5de7d78425703",
+        "data/syn_ant/project/fixtures/syn_len4_b10_accepted.tsv": "7461532e9e99755e2d6b314055adf3bf2ef79ab32614f1c19f28433a05ae072f",
+        "data/syn_ant/project/fixtures/syn_len4_b10_adequate.tsv": "0f0d2907cb132e497bef30ac44f172e3e351640fca076395fcbcde80e8204369",
+        "data/syn_ant/project/fixtures/syn_len4_b10_heads.tsv": "ced8f0b18b77b2fa6ffcc0e91f9ac0eccf85479c591121a29c2d91a637c4e2b8",
+        "data/syn_ant/project/fixtures/syn_len4_b10_heads_list.txt": "d1d38c8f543de76c98a0b2a7b9ab5c74ade03cc23bfe60657f7f9c83d683d0a3",
+        "data/syn_ant/project/fixtures/syn_len4_b10_no_natural.tsv": "9563dd7acf366622c13ec301f01c155e2d241d3f9d2969de315bd9f2bccddba5",
+        "data/syn_ant/project/fixtures/syn_len4_final_audit_accepted_sample.tsv": "2dbe3ffc27da2e785510cfc874baf080d357872b6f689fd30fa2c36b8fdd2fdd",
+        "data/syn_ant/project/fixtures/syn_len4_final_audit_adequate_sample.tsv": "c3d7c2fd74cfea3e5a31d815fe51068c2891406c5e527cd74cad0b3bcbaada6e",
+        "data/syn_ant/project/fixtures/syn_len4_final_audit_no_natural_sample.tsv": "a2460c89ca5ea694ef5477184f7f076073e8f0c767bec405c0b7291304d2a50e",
+        "data/syn_ant/project/fixtures/syn_top5000_b01_accepted.tsv": "cd8808df5be2739aeadf87c9e35175f98f18f7cdcf714af21993ce4390894665",
+        "data/syn_ant/project/fixtures/syn_top5000_b01_adequate.tsv": "06fdd422e0bf2501881b8873e69fed0c189d6562f9f93c6c4968e17cbc4b1c19",
+        "data/syn_ant/project/fixtures/syn_top5000_b01_existing_syn.tsv": "cc0bafb4e82df98544b93bd6aeb68c37570f4490b314f70f3c1898a998c48b38",
+        "data/syn_ant/project/fixtures/syn_top5000_b01_heads.tsv": "28d12cfc20c28394e93f6611e7d101ac1d98cc438f89d10e5e8dd84bab9996b0",
+        "data/syn_ant/project/fixtures/syn_top5000_b01_no_natural.tsv": "91fc6d5c5c740ba4155d45f58cf69a9ff1a999e324423f4e0c910a88bd34a97e",
+        "data/syn_ant/project/fixtures/syn_top5000_b02_accepted.tsv": "a6a3c25dd8534a54fb36a621249b09cbab0a435d3581020f07cef91148f972c8",
+        "data/syn_ant/project/fixtures/syn_top5000_b02_adequate.tsv": "5a2b7c60d850b31602bab86acd40453120c30185ec583af715a06975e2061bff",
+        "data/syn_ant/project/fixtures/syn_top5000_b02_heads.tsv": "4956ff868e8f7579c7d922134c90339a7cb8b5ed2f042356b412d1a99ab5cecf",
+        "data/syn_ant/project/fixtures/syn_top5000_b02_no_natural.tsv": "2c33e4144538a90f2ab1b68b161069e886c61fc25627e505e2ec6896ed5bcabe",
+        "data/syn_ant/project/fixtures/syn_top5000_b03_accepted.tsv": "ee866d90b11d7479db818025aa4cdd348b0b1ad6ab666107cc120dbfd0714e73",
+        "data/syn_ant/project/fixtures/syn_top5000_b03_adequate.tsv": "fd42a69b021208ccc8fbe9c1d80ae9660db1c4cd01c4192d96c7e22d335451ca",
+        "data/syn_ant/project/fixtures/syn_top5000_b03_heads.tsv": "745f18e1da5371aa392f7f0ab098c3634b8de88c057904b5aaa8ff61d559c0d6",
+        "data/syn_ant/project/fixtures/syn_top5000_b03_no_natural.tsv": "bc6eff30663e088dd740f1c49ec41c804b9a4bfdf6de6fa7a749c4db80552d9c",
+        "data/syn_ant/project/fixtures/syn_top5000_b04_accepted.tsv": "212327d0ce2317e9b55cbef7e7915ce0bb3aec7e009bc5dc88ad9efb15c9891b",
+        "data/syn_ant/project/fixtures/syn_top5000_b04_adequate.tsv": "4b05a7882e3dc830ed6615ac20bd121aa240189ec3d9afc0628b9c1282ddcbf0",
+        "data/syn_ant/project/fixtures/syn_top5000_b04_heads.tsv": "362e9b271c126ffc93cfd1fc056c18eb73a279ed8b1ee5c499a078607aa9b50f",
+        "data/syn_ant/project/fixtures/syn_top5000_b04_no_natural.tsv": "62a867b4163f4617ceb1525d86e6978fcecc3937f4fde0b367819d4d30265023",
+        "data/syn_ant/project/fixtures/syn_top5000_b05_accepted.tsv": "46e9efc2b708a92accf731630c9cbaeba056e0c4244cfed2171749ee60b2423b",
+        "data/syn_ant/project/fixtures/syn_top5000_b05_adequate.tsv": "bad896c53fb21b20ba330d1c80d87f4518cde6265b9b0b2741f39834448fdf5b",
+        "data/syn_ant/project/fixtures/syn_top5000_b05_heads.tsv": "bd88217ae16db82f4a190531e7dd29e17aa08b0942410ae48e3608019d9a14da",
+        "data/syn_ant/project/fixtures/syn_top5000_b05_no_natural.tsv": "10bdb47c1dba0bcd3c32358dbcad5606fc5fb2043c7c17e5652bd3883810d65f",
+        "data/syn_ant/project/fixtures/syn_top5000_b06_accepted.tsv": "15601136fe701bd5558458e61efbf052ab744b3590248c5c9827857743f2434f",
+        "data/syn_ant/project/fixtures/syn_top5000_b06_adequate.tsv": "a2693d68cc38e619b23128a0d0d84244878c55070d054c5e71b038377be5d393",
+        "data/syn_ant/project/fixtures/syn_top5000_b06_heads.tsv": "675cdbf7a50c08a3d8fe97e4446789c4e8d97fc819254dd4bff5690b84842f41",
+        "data/syn_ant/project/fixtures/syn_top5000_b06_no_natural.tsv": "081ab378b882f52bd110989cc26b8aa55ce28d503d35008f55b27fafc3c4a3b3",
+        "data/syn_ant/project/fixtures/syn_top5000_final_audit_accepted_sample.tsv": "3412ffae22f632eee16cc89cdab72e6375670d59ae09610dfe914d1b09261a57",
+        "data/syn_ant/project/fixtures/syn_top5000_final_audit_adequate_sample.tsv": "49ae4dfd498f24640e246f1627ca24f6279cc9411869207caf2bba5cb8b15420",
+        "data/syn_ant/project/fixtures/syn_top5000_final_audit_no_natural_sample.tsv": "76bd8c43a719867f4cb1cd0da0481f746f1454989368155b9cc445d3d115d588",
+        "data/syn_ant/project/project-synonyms-prompt.txt": "ac69c02f318d3bf7215e89a4c7bea0b5e228ffc080634a45e6c8b486af4a5e50",
+        "data/syn_ant/project/project_adequate_existing.tsv": "4cd9cb2067c25a912a72ca6a17538d4008144bc203ff6c83ae24e792616f3652",
+        "data/syn_ant/project/project_no_natural_synonyms.tsv": "c197bb353c6f0c05b6b989cb338eb98dabf1a96888a72c9810f80043696595c7",
+        "data/syn_ant/project/project_synonyms.meta.json": "dd42030b9363b0cba9b2ac47557bb35419dd2eafb82e9c3ad05464db5077e5ba",
+        "data/syn_ant/project/project_synonyms.tsv": "f5725c327ba13a77fc4b6c227397250a9897492813197fd8dff56292263af6ce",
+        "data/syn_ant/project_antonyms.meta.json": "c67ac3f81b093186a2c4e2f36118ff0c5c4d4d25c8dade15a6fb8313c0fbacfb",
+        "data/syn_ant/project_antonyms.tsv": "577182b4c84ca25cc4ff014bc5f9f6d4e9b1329bc6a2c0fab3040ae64661cad4",
+        "data/syn_ant/project_no_natural_antonyms.meta.json": "a699b8ae49ec792ac1d194f71d04d6ce79f4828c27686f8d8a5902f0497bd20d",
+        "data/syn_ant/project_no_natural_antonyms.tsv": "24d5c38e6d595a612c712aacd6baa499f651dd1c5e2763f1ef8184fd9f31a457",
+        "data/syn_ant/raw/.gitignore": "d19364b360f6386494b8c27fdc84b73ac2c3cbed05d71924d7b2d0359047ff1c",
+        "data/syn_ant/sources.yaml": "bf542a5b75bef69e5ed91a9d5ca6a0f0e9bec1ac3d58258e17f738204a720c84",
+        "data/thesaurus/.gitignore": "980858e85eecddf8156396d55356eab1a67fec007da549fe6df200404050df09",
+        "data/thesaurus/dict_antonym.txt": "4878d6bb5a173f67bfd03b74744ec2658f0b8cba5f534e04f70084337cf7f98b",
+        "data/thesaurus/dict_synonym.txt": "5a78accfa48f1400ece36f8bc8c0afdd579dc60260f023dabcca9429c3a7f4d3"
+      }
+    },
+    "prior_runtime_rows_affected_by_new_normalization": 0,
+    "prior_word_usage_records_affected_by_new_normalization": 0,
+    "prior_stored_relation_keys_migrated": 0,
+    "previous_source_rows_preserved": 66211,
+    "previous_reading_grades_preserved": 66211,
+    "explicit_previous_reading_grade_repairs": 0,
+    "previous_word_usage_records_preserved": 127967,
+    "previous_word_usage_judgments_preserved": 18098,
+    "new_word_normalization_idempotent": true,
+    "post_review_original_spelling_regression_check": true,
+    "full_pool_parity_queries": 166,
+    "full_pool_parity_rows": 129978,
+    "full_pool_ranking_equal": true,
+    "smoke_tests": 334,
+    "smoke_passed": 330,
+    "smoke_skipped": 4,
+    "seam_tests": 89,
+    "seam_passed": 83,
+    "seam_skipped": 6,
+    "guide_query_tests": 1,
+    "guide_query_tests_passed": true,
+    "pwa_build": true,
+    "portable_build": true,
+    "full_app_typecheck": true,
+    "ranking_and_lookup_self_checks": true,
+    "targeted_node_typecheck": true,
+    "pwa_artifact_guard": true,
+    "layer_cache_format": "32",
+    "layer_cache_cold_misses": 8,
+    "layer_cache_warm_hits": 8,
+    "layer_cache_counter_matches_uncached_db": true,
+    "paging_fixture": {
+      "total": 206,
+      "first_page": 200,
+      "second_page": 6,
+      "everyday_literal_inserted_last_ranks_first": true,
+      "modes": 3
+    },
+    "final_reading_audit": {
+      "batch": "B56",
+      "initial_accepted": 1198,
+      "withdrawals": [
+        {
+          "id": 105998,
+          "char": "精神外科",
+          "previous_jyutping": "zing1 san4 ngoi6 fo1",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106018,
+          "char": "精神論",
+          "previous_jyutping": "zing1 san4 leon6",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106029,
+          "char": "精簡整編",
+          "previous_jyutping": "zing1 gaan2 zing2 pin1",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106039,
+          "char": "精義入神",
+          "previous_jyutping": "zing1 ji6 jap6 san4",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106048,
+          "char": "精血虧虛",
+          "previous_jyutping": "zing1 hyut3 kwai1 heoi1",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106055,
+          "char": "精進勇猛",
+          "previous_jyutping": "zing1 zeon3 jung5 maang5",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106064,
+          "char": "精金良玉",
+          "previous_jyutping": "zing1 gam1 loeng4 juk6",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106070,
+          "char": "精餾塔",
+          "previous_jyutping": "zing1 lau6 taap3",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106081,
+          "char": "糊粉",
+          "previous_jyutping": "wu4 fan2",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106091,
+          "char": "糖化酶",
+          "previous_jyutping": "tong4 faa3 mui4",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106092,
+          "char": "糖原分解",
+          "previous_jyutping": "tong4 jyun4 fan1 gaai2",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106093,
+          "char": "糖原生成",
+          "previous_jyutping": "tong4 jyun4 sang1 sing4",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106094,
+          "char": "糖商",
+          "previous_jyutping": "tong4 soeng1",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106095,
+          "char": "糖基",
+          "previous_jyutping": "tong4 gei1",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106096,
+          "char": "糖基化",
+          "previous_jyutping": "tong4 gei1 faa3",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106118,
+          "char": "糖耐量",
+          "previous_jyutping": "tong4 noi6 loeng6",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106121,
+          "char": "糖胺聚糖",
+          "previous_jyutping": "tong4 on1 zeoi6 tong4",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106133,
+          "char": "糖酵解",
+          "previous_jyutping": "tong4 haau1 gaai2",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106134,
+          "char": "糖酸",
+          "previous_jyutping": "tong4 syun1",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106138,
+          "char": "糙紙",
+          "previous_jyutping": "cou3 zi2",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106146,
+          "char": "糞壤",
+          "previous_jyutping": "fan3 joeng6",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106168,
+          "char": "糠油",
+          "previous_jyutping": "hong1 jau4",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106174,
+          "char": "糧作",
+          "previous_jyutping": "loeng4 zok3",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106176,
+          "char": "糧囤",
+          "previous_jyutping": "loeng4 tyun4",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106199,
+          "char": "糯稻根",
+          "previous_jyutping": "no6 dou6 gan1",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106200,
+          "char": "糰粉",
+          "previous_jyutping": "tyun4 fan2",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106201,
+          "char": "糲食粗衣",
+          "previous_jyutping": "lai6 sik6 cou1 ji1",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106202,
+          "char": "糲飯",
+          "previous_jyutping": "lai6 faan6",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106229,
+          "char": "系統疾病",
+          "previous_jyutping": "hai6 tung2 zat6 beng6",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106247,
+          "char": "系譜學",
+          "previous_jyutping": "hai6 pou2 hok6",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106248,
+          "char": "系譜法",
+          "previous_jyutping": "hai6 pou2 faat3",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106249,
+          "char": "系鏈",
+          "previous_jyutping": "hai6 lin2",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106260,
+          "char": "糾舉",
+          "previous_jyutping": "gau2 geoi2",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106262,
+          "char": "紀委書記",
+          "previous_jyutping": "gei2 wai2 syu1 gei3",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106274,
+          "char": "紀檢員",
+          "previous_jyutping": "gei2 gim2 jyun4",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106291,
+          "char": "約束運動",
+          "previous_jyutping": "joek3 cuk1 wan6 dung6",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106294,
+          "char": "約稿函",
+          "previous_jyutping": "joek3 gou2 haam4",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106299,
+          "char": "紅丸",
+          "previous_jyutping": "hung4 jyun2",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106321,
+          "char": "紅情綠意",
+          "previous_jyutping": "hung4 cing4 luk6 ji3",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106348,
+          "char": "紅管",
+          "previous_jyutping": "hung4 gun2",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106349,
+          "char": "紅管藥",
+          "previous_jyutping": "hung4 gun2 joek6",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106355,
+          "char": "紅絲暗繫",
+          "previous_jyutping": "hung4 si1 am3 hai6",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106357,
+          "char": "紅綢舞",
+          "previous_jyutping": "hung4 cau4 mou5",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106372,
+          "char": "紅葉題詩",
+          "previous_jyutping": "hung4 jip6 tai4 si1",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106392,
+          "char": "紅豆詞",
+          "previous_jyutping": "hung4 dau6 ci4",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106395,
+          "char": "紅酥手",
+          "previous_jyutping": "hung4 sou1 sau2",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106396,
+          "char": "紅鉛筆畫",
+          "previous_jyutping": "hung4 jyun4 bat1 waa2",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106397,
+          "char": "紅鋅礦",
+          "previous_jyutping": "hung4 san1 kwong3",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106416,
+          "char": "紆迴",
+          "previous_jyutping": "jyu1 wui4",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106419,
+          "char": "紈袴膏粱",
+          "previous_jyutping": "jyun4 fu3 gou1 loeng4",
+          "reason": "原紈袴字形為傳統異寫，按熟悉度仍偏冷僻，本輪不收；不改紈絝製作來源。"
+        },
+        {
+          "id": 106420,
+          "char": "紈褲",
+          "previous_jyutping": "jyun4 fu3",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106424,
+          "char": "紋枯病",
+          "previous_jyutping": "man4 fu1 beng6",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106430,
+          "char": "紋理狀",
+          "previous_jyutping": "man4 lei5 zong6",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106433,
+          "char": "納垢藏污",
+          "previous_jyutping": "naap6 gau3 cong4 wu1",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106438,
+          "char": "納採",
+          "previous_jyutping": "naap6 coi2",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106440,
+          "char": "納款",
+          "previous_jyutping": "naap6 fun2",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106443,
+          "char": "納采",
+          "previous_jyutping": "naap6 coi2",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106446,
+          "char": "純一不雜",
+          "previous_jyutping": "seon4 jat1 bat1 zaap6",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106449,
+          "char": "純合子",
+          "previous_jyutping": "seon4 hap6 zi2",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106460,
+          "char": "純林",
+          "previous_jyutping": "seon4 lam4",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106479,
+          "char": "純篤",
+          "previous_jyutping": "seon4 duk1",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106481,
+          "char": "純綿",
+          "previous_jyutping": "seon4 min4",
+          "reason": "原綿形在商品標示可見，但通用純棉已覆蓋，本輪不以近形替換增詞。"
+        },
+        {
+          "id": 106484,
+          "char": "純血馬",
+          "previous_jyutping": "seon4 hyut3 maa5",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106485,
+          "char": "純誠",
+          "previous_jyutping": "seon4 sing4",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106492,
+          "char": "紗筒",
+          "previous_jyutping": "saa1 tung2",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106493,
+          "char": "紗管",
+          "previous_jyutping": "saa1 gun2",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106496,
+          "char": "紗羅",
+          "previous_jyutping": "saa1 lo4",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106514,
+          "char": "紙帶機",
+          "previous_jyutping": "zi2 daai3 gei1",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106518,
+          "char": "紙板桶",
+          "previous_jyutping": "zi2 baan2 tung2",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106525,
+          "char": "紙漿模",
+          "previous_jyutping": "zi2 zoeng1 mou4",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106538,
+          "char": "紙硯",
+          "previous_jyutping": "zi2 jin2",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106556,
+          "char": "紙護角",
+          "previous_jyutping": "zi2 wu6 gok3",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106620,
+          "char": "素行",
+          "previous_jyutping": "sou3 hang6",
+          "reason": "品行義本身可讀 hang6，但原表達較少用，不以讀音正確取代常用度門檻。"
+        },
+        {
+          "id": 106619,
+          "char": "素緞",
+          "previous_jyutping": "sou3 dyun6",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106640,
+          "char": "紡絲機",
+          "previous_jyutping": "fong2 si1 gei1",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106641,
+          "char": "紡絲頭",
+          "previous_jyutping": "fong2 si1 tau4",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106660,
+          "char": "索購",
+          "previous_jyutping": "sok3 kau3",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106680,
+          "char": "紫蘇梗",
+          "previous_jyutping": "zi2 sou1 gang2",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106682,
+          "char": "紫袍玉帶",
+          "previous_jyutping": "zi2 pou4 juk6 daai3",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106698,
+          "char": "累卵之危",
+          "previous_jyutping": "leoi5 leon2 zi1 ngai4",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106708,
+          "char": "累教不改",
+          "previous_jyutping": "leoi6 gaau3 bat1 goi2",
+          "reason": "較少用變語，不把累換屢製作來源。"
+        },
+        {
+          "id": 106733,
+          "char": "累進法",
+          "previous_jyutping": "leoi6 zeon3 faat3",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106757,
+          "char": "細木工板",
+          "previous_jyutping": "sai3 muk6 gung1 baan2",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106783,
+          "char": "細索",
+          "previous_jyutping": "sai3 sok3",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106789,
+          "char": "細胞保護",
+          "previous_jyutping": "sai3 baau1 bou2 wu6",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106790,
+          "char": "細胞信號",
+          "previous_jyutping": "sai3 baau1 seon3 hou6",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106817,
+          "char": "終值",
+          "previous_jyutping": "zung1 zik6",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106850,
+          "char": "終產物",
+          "previous_jyutping": "zung1 caan2 mat6",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106874,
+          "char": "終養",
+          "previous_jyutping": "zung1 joeng5",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106881,
+          "char": "絃歌不輟",
+          "previous_jyutping": "jin4 go1 bat1 zyut3",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106902,
+          "char": "組塊",
+          "previous_jyutping": "zou2 faai3",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106914,
+          "char": "組織後衞",
+          "previous_jyutping": "zou2 zik1 hau6 wai6",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106920,
+          "char": "組羣",
+          "previous_jyutping": "zou2 kwan4",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106989,
+          "char": "結構域",
+          "previous_jyutping": "git3 kau3 wik6",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106992,
+          "char": "結構膠",
+          "previous_jyutping": "git3 kau3 gaau1",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 107003,
+          "char": "結球萵苣",
+          "previous_jyutping": "git3 kau4 wo1 geoi6",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 107010,
+          "char": "結穗",
+          "previous_jyutping": "git3 seoi6",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 107011,
+          "char": "結穴",
+          "previous_jyutping": "git3 jyut6",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 107015,
+          "char": "結節病",
+          "previous_jyutping": "git3 zit3 beng6",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 107023,
+          "char": "結羣性",
+          "previous_jyutping": "git3 kwan4 sing3",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 107026,
+          "char": "結草蟲",
+          "previous_jyutping": "git3 cou2 cung4",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 107031,
+          "char": "結轉額",
+          "previous_jyutping": "git3 zyun2 ngaak6",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 107053,
+          "char": "絕俗",
+          "previous_jyutping": "zyut6 zuk6",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 107065,
+          "char": "絕對權",
+          "previous_jyutping": "zyut6 deoi3 kyun4",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 107087,
+          "char": "絕熱功",
+          "previous_jyutping": "zyut6 jit6 gung1",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 107089,
+          "char": "絕熱指數",
+          "previous_jyutping": "zyut6 jit6 zi2 sou3",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 107090,
+          "char": "絕熱方程",
+          "previous_jyutping": "zyut6 jit6 fong1 cing4",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 107092,
+          "char": "絕熱線",
+          "previous_jyutping": "zyut6 jit6 sin3",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 107128,
+          "char": "絞股藍",
+          "previous_jyutping": "gaau2 gu2 laam4",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 107131,
+          "char": "絞鏈",
+          "previous_jyutping": "gaau2 lin2",
+          "reason": "原絞形為較少用寫法，不改鉸鏈製作新來源。"
+        },
+        {
+          "id": 107135,
+          "char": "絡合作用",
+          "previous_jyutping": "lok3 hap6 zok3 jung6",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 107136,
+          "char": "絡石藤",
+          "previous_jyutping": "lok3 sek6 tang4",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 107188,
+          "char": "統帥體制",
+          "previous_jyutping": "tung2 seoi3 tai2 zai3",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 107189,
+          "char": "統帶",
+          "previous_jyutping": "tung2 daai3",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 107198,
+          "char": "統理",
+          "previous_jyutping": "tung2 lei5",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 107213,
+          "char": "統計平衡",
+          "previous_jyutping": "tung2 gai3 ping4 hang4",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 107230,
+          "char": "絲光處理",
+          "previous_jyutping": "si1 gwong1 cyu5 lei5",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 107244,
+          "char": "絲素",
+          "previous_jyutping": "si1 sou3",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 107254,
+          "char": "絲膠",
+          "previous_jyutping": "si1 gaau1",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 107255,
+          "char": "絲蘿",
+          "previous_jyutping": "si1 lo4",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 107259,
+          "char": "絲裂黴素",
+          "previous_jyutping": "si1 lit6 mei4 sou3",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 107330,
+          "char": "經師人師",
+          "previous_jyutping": "ging1 si1 jan4 si1",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 107430,
+          "char": "經緯網格",
+          "previous_jyutping": "ging1 wai5 mong5 gaak3",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 107450,
+          "char": "經邦論道",
+          "previous_jyutping": "ging1 bong1 leon6 dou6",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 107474,
+          "char": "綜合語",
+          "previous_jyutping": "zung1 hap6 jyu5",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 107477,
+          "char": "綜核",
+          "previous_jyutping": "zung1 hat6",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 107511,
+          "char": "綠球藻",
+          "previous_jyutping": "luk6 kau4 zou2",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 107512,
+          "char": "綠礬",
+          "previous_jyutping": "luk6 faan4",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 107531,
+          "char": "綠蓑青笠",
+          "previous_jyutping": "luk6 so1 cing1 lap1",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 107532,
+          "char": "綠衣人",
+          "previous_jyutping": "luk6 ji1 jan4",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 107546,
+          "char": "綬帶鳥",
+          "previous_jyutping": "sau6 daai3 niu5",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 107642,
+          "char": "網格法",
+          "previous_jyutping": "mong5 gaak3 faat3",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 107738,
+          "char": "網罟",
+          "previous_jyutping": "mong5 gu2",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 107781,
+          "char": "綴輯",
+          "previous_jyutping": "zeoi6 cap1",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 107800,
+          "char": "綾絹",
+          "previous_jyutping": "ling4 gyun3",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 107906,
+          "char": "線分辨率",
+          "previous_jyutping": "sin3 fan1 bin6 leot6",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 107920,
+          "char": "線性探查",
+          "previous_jyutping": "sin3 sing3 taam3 caa4",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 107922,
+          "char": "線性檢波",
+          "previous_jyutping": "sin3 sing3 gim2 bo1",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 107923,
+          "char": "線性檢測",
+          "previous_jyutping": "sin3 sing3 gim2 caak1",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 107925,
+          "char": "線性現象",
+          "previous_jyutping": "sin3 sing3 jin6 zoeng6",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 107928,
+          "char": "線性網絡",
+          "previous_jyutping": "sin3 sing3 mong5 lok3",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 107930,
+          "char": "線性調製",
+          "previous_jyutping": "sin3 sing3 tiu4 zai3",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 107944,
+          "char": "線條透視",
+          "previous_jyutping": "sin3 tiu4 tau3 si6",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 107945,
+          "char": "線極化",
+          "previous_jyutping": "sin3 gik6 faa3",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 107946,
+          "char": "線源",
+          "previous_jyutping": "sin3 jyun4",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 107952,
+          "char": "線脹係數",
+          "previous_jyutping": "sin3 zoeng3 hai6 sou3",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 107953,
+          "char": "線膛炮",
+          "previous_jyutping": "sin3 tong4 paau3",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 107956,
+          "char": "線蟲病",
+          "previous_jyutping": "sin3 cung4 beng6",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 107962,
+          "char": "線質量",
+          "previous_jyutping": "sin3 zat1 loeng6",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 107981,
+          "char": "締構",
+          "previous_jyutping": "tai3 kau3",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 107985,
+          "char": "緣情體物",
+          "previous_jyutping": "jyun4 cing4 tai2 mat6",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 107987,
+          "char": "緣慳命蹇",
+          "previous_jyutping": "jyun4 haan1 ming6 gin2",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 107991,
+          "char": "緣法",
+          "previous_jyutping": "jyun4 faat3",
+          "reason": "較冷僻古語／變體、過窄專科詞或低復用搭配，不符合本輪常用中文、書面及填詞收錄範圍。"
+        },
+        {
+          "id": 106271,
+          "char": "紀念表",
+          "previous_jyutping": "gei2 nim6 biu2",
+          "reason": "紀念表原表字面未能穩定辨清記錄表或紀念錶，不按近形字補改成另一來源；低復用本輪撤回。"
+        }
+      ],
+      "grade_changes": [
+        {
+          "id": 105999,
+          "char": "精神家園",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 106000,
+          "char": "精神實質",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 106023,
+          "char": "精神風貌",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 106034,
+          "char": "精細結構",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 106049,
+          "char": "精裝修",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 106140,
+          "char": "糞便污水",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 106183,
+          "char": "糧油食品",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 106189,
+          "char": "糧船",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 106191,
+          "char": "糧行",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 106192,
+          "char": "糧谷",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 106205,
+          "char": "系刊",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 106232,
+          "char": "系統總線",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 106240,
+          "char": "系統集成",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 106246,
+          "char": "系花",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 106250,
+          "char": "系館",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 106304,
+          "char": "紅外掃描",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 106305,
+          "char": "紅外接口",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 106317,
+          "char": "紅帶子",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 106337,
+          "char": "紅瓶",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 106363,
+          "char": "紅色政權",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 106361,
+          "char": "紅色弱",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 106364,
+          "char": "紅色盲",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 106385,
+          "char": "紅袖添香",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 106386,
+          "char": "紅裝素裹",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 106402,
+          "char": "紅頂商人",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 106403,
+          "char": "紅頭繩",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 106405,
+          "char": "紅頭蠅",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 106451,
+          "char": "純小數",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 106477,
+          "char": "純種牛",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 106498,
+          "char": "紙上作業",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 106507,
+          "char": "紙品廠",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 106528,
+          "char": "紙版畫",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 106552,
+          "char": "紙行",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 106624,
+          "char": "素質教育",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 106642,
+          "char": "紡績",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 106643,
+          "char": "紡織印染",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 106644,
+          "char": "紡織器材",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 106647,
+          "char": "紡織機械",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 106792,
+          "char": "細胞學說",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 106848,
+          "char": "終生事業",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 106853,
+          "char": "終端產品",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 106872,
+          "char": "終身職",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 106892,
+          "char": "組合原理",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107028,
+          "char": "結訓",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107048,
+          "char": "絕世獨立",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107068,
+          "char": "絕對空間",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107070,
+          "char": "絕對速度",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107071,
+          "char": "絕對運動",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107088,
+          "char": "絕熱層",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107091,
+          "char": "絕熱材料",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107098,
+          "char": "絕緣油",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107099,
+          "char": "絕緣漆",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107101,
+          "char": "絕緣紙",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107150,
+          "char": "給定日期",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107154,
+          "char": "給水器",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107155,
+          "char": "給水泵",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107156,
+          "char": "給水站",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107158,
+          "char": "給水箱",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107178,
+          "char": "統一大業",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107179,
+          "char": "統一天下",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107186,
+          "char": "統合力",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107187,
+          "char": "統合性",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107217,
+          "char": "統計權重",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107218,
+          "char": "統計算法",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107247,
+          "char": "絲綢品",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107250,
+          "char": "絲綢面料",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107268,
+          "char": "絹帛",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107299,
+          "char": "經典力學",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107350,
+          "char": "經濟區劃",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107351,
+          "char": "經濟協作",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107353,
+          "char": "經濟合同",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107362,
+          "char": "經濟年度",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107364,
+          "char": "經濟復原",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107366,
+          "char": "經濟情報",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107371,
+          "char": "經濟擔保",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107378,
+          "char": "經濟滲透",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107386,
+          "char": "經濟評價",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107395,
+          "char": "經營品種",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107396,
+          "char": "經營型",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107399,
+          "char": "經營學",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107401,
+          "char": "經營承包",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107403,
+          "char": "經營效果",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107406,
+          "char": "經營機制",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107451,
+          "char": "經銷家",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107454,
+          "char": "經銷站",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107456,
+          "char": "經銷部",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107476,
+          "char": "綜攬",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107481,
+          "char": "綜藝片",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107529,
+          "char": "綠葉成陰",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107544,
+          "char": "綢緞莊",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107582,
+          "char": "網上家園",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107587,
+          "char": "網上沖印",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107595,
+          "char": "網上藥店",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107604,
+          "char": "網上鄰居",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107606,
+          "char": "網中網",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107614,
+          "char": "網友會",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107619,
+          "char": "網址庫",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107623,
+          "char": "網套",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107641,
+          "char": "網格布",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107664,
+          "char": "網眼布",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107665,
+          "char": "網眼狀",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107683,
+          "char": "網絡單元",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107687,
+          "char": "網絡實名",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107693,
+          "char": "網絡延時",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107696,
+          "char": "網絡教室",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107705,
+          "char": "網絡業",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107709,
+          "char": "網絡理論",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107711,
+          "char": "網絡界",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107734,
+          "char": "網絡頻段",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107736,
+          "char": "網絡體系",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107740,
+          "char": "網羅人材",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107743,
+          "char": "網膜炎",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107751,
+          "char": "網警",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107756,
+          "char": "網賺",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107764,
+          "char": "網遊版",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107766,
+          "char": "網間通話",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107770,
+          "char": "網頁快照",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107775,
+          "char": "網齡",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107815,
+          "char": "綿言細語",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107841,
+          "char": "緊急情報",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107847,
+          "char": "緊急處分",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107857,
+          "char": "緊挾",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107880,
+          "char": "緊跟形勢",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107886,
+          "char": "緊迫逼人",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107908,
+          "char": "線卡",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107915,
+          "char": "線序",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107917,
+          "char": "線性元件",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107936,
+          "char": "線控器",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107939,
+          "char": "線束",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107947,
+          "char": "線程",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107976,
+          "char": "緞帶花",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107978,
+          "char": "緞紋",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 107979,
+          "char": "緞被",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 106099,
+          "char": "糖度",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 106100,
+          "char": "糖果屋",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 106113,
+          "char": "糖盒",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 106106,
+          "char": "糖漬",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 106157,
+          "char": "糟得",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 106164,
+          "char": "糟透",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 106343,
+          "char": "紅着眼睛",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 106344,
+          "char": "紅着臉",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 106382,
+          "char": "紅衣服",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 106387,
+          "char": "紅襪子",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 106400,
+          "char": "紅鞋",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 106401,
+          "char": "紅鞋子",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 106456,
+          "char": "純屬騙局",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 106461,
+          "char": "純棉布",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 106488,
+          "char": "純酒精",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 106491,
+          "char": "紗布繃帶",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 106746,
+          "char": "細字",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 106752,
+          "char": "細心地",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 106840,
+          "char": "終極目標",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 106833,
+          "char": "終會",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 106834,
+          "char": "終有",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 106893,
+          "char": "組合成",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 106951,
+          "char": "結婚年齡",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 107040,
+          "char": "絕不允許",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 107103,
+          "char": "絕緣膠布",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 107104,
+          "char": "絕緣膠帶",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 107105,
+          "char": "絕美",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 107300,
+          "char": "經典台詞",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 107304,
+          "char": "經典影片",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 107309,
+          "char": "經典笑話",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 107331,
+          "char": "經常帳户",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 107358,
+          "char": "經濟實用",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 107393,
+          "char": "經營之道",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 107414,
+          "char": "經理級",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 107447,
+          "char": "經過努力",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 107591,
+          "char": "網上相冊",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 107600,
+          "char": "網上談情",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 107706,
+          "char": "網絡流量",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 107733,
+          "char": "網絡電話",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 107772,
+          "char": "網頁背景",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 107835,
+          "char": "緊急事件",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 107844,
+          "char": "緊急會議",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 107861,
+          "char": "緊握拳頭",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 107878,
+          "char": "緊貼在",
+          "previous_grade": 0,
+          "grade": 1
+        }
+      ],
+      "amendments": [
+        {
+          "id": 106266,
+          "char": "紀律處分",
+          "previous_jyutping": "gei2 leot6 cyu2 fan6",
+          "jyutping": "gei2 leot6 cyu2 fan1",
+          "alternatives": [
+            "gei2 leot6 cyu5 fan1",
+            "gei3 leot6 cyu2 fan1"
+          ],
+          "note": "處分完整詞LSHK詞表 cyu2/cyu5 fan1；紀律的紀 gei2 先、gei3 現代又讀後。分不由國語 fèn 推成 fan6，處也不按單字品類誤刪 cyu5。",
+          "reference": "https://cala.hk/assets/CRAT_Appendix2_bystroke_1.3.pdf ; https://jyut.net/query?q=紀"
+        },
+        {
+          "id": 107847,
+          "char": "緊急處分",
+          "previous_jyutping": "gan2 gap1 cyu2 fan1",
+          "jyutping": "gan2 gap1 cyu2 fan1",
+          "alternatives": [
+            "gan2 gap1 cyu5 fan1"
+          ],
+          "note": "處分是 cyu2 fan1；LSHK整詞亦載 cyu5 fan1，保留同義後讀。",
+          "reference": "https://cala.hk/assets/CRAT_Appendix2_bystroke_1.3.pdf"
+        },
+        {
+          "id": 106263,
+          "char": "紀實小說",
+          "previous_jyutping": "gei2 sat6 siu2 syut3",
+          "jyutping": "gei2 sat6 siu2 syut3",
+          "alternatives": [
+            "gei3 sat6 siu2 syut3"
+          ],
+          "note": "紀的現代字典 gei2 正常先讀；紀事、紀念及紀律 gei3 亦有現代依據，保留後，非一概當錯音。",
+          "reference": "https://jyut.net/query?q=紀"
+        },
+        {
+          "id": 106264,
+          "char": "紀實文學",
+          "previous_jyutping": "gei2 sat6 man4 hok6",
+          "jyutping": "gei2 sat6 man4 hok6",
+          "alternatives": [
+            "gei3 sat6 man4 hok6"
+          ],
+          "note": "紀的現代字典 gei2 正常先讀；紀事、紀念及紀律 gei3 亦有現代依據，保留後，非一概當錯音。",
+          "reference": "https://jyut.net/query?q=紀"
+        },
+        {
+          "id": 106267,
+          "char": "紀念刊",
+          "previous_jyutping": "gei2 nim6 hon1",
+          "jyutping": "gei2 nim6 hon1",
+          "alternatives": [
+            "gei3 nim6 hon1"
+          ],
+          "note": "紀的現代字典 gei2 正常先讀；紀事、紀念及紀律 gei3 亦有現代依據，保留後，非一概當錯音。",
+          "reference": "https://jyut.net/query?q=紀"
+        },
+        {
+          "id": 106269,
+          "char": "紀念活動",
+          "previous_jyutping": "gei2 nim6 wut6 dung6",
+          "jyutping": "gei2 nim6 wut6 dung6",
+          "alternatives": [
+            "gei3 nim6 wut6 dung6"
+          ],
+          "note": "紀的現代字典 gei2 正常先讀；紀事、紀念及紀律 gei3 亦有現代依據，保留後，非一概當錯音。",
+          "reference": "https://jyut.net/query?q=紀"
+        },
+        {
+          "id": 106270,
+          "char": "紀念版",
+          "previous_jyutping": "gei2 nim6 baan2",
+          "jyutping": "gei2 nim6 baan2",
+          "alternatives": [
+            "gei3 nim6 baan2"
+          ],
+          "note": "紀的現代字典 gei2 正常先讀；紀事、紀念及紀律 gei3 亦有現代依據，保留後，非一概當錯音。",
+          "reference": "https://jyut.net/query?q=紀"
+        },
+        {
+          "id": 106272,
+          "char": "紀念詞",
+          "previous_jyutping": "gei2 nim6 ci4",
+          "jyutping": "gei2 nim6 ci4",
+          "alternatives": [
+            "gei3 nim6 ci4"
+          ],
+          "note": "紀的現代字典 gei2 正常先讀；紀事、紀念及紀律 gei3 亦有現代依據，保留後，非一概當錯音。",
+          "reference": "https://jyut.net/query?q=紀"
+        },
+        {
+          "id": 106915,
+          "char": "組織紀律",
+          "previous_jyutping": "zou2 zik1 gei2 leot6",
+          "jyutping": "zou2 zik1 gei2 leot6",
+          "alternatives": [
+            "zou2 zik1 gei3 leot6"
+          ],
+          "note": "紀的現代字典 gei2 正常先讀；紀事、紀念及紀律 gei3 亦有現代依據，保留後，非一概當錯音。",
+          "reference": "https://jyut.net/query?q=紀"
+        },
+        {
+          "id": 106955,
+          "char": "結婚紀念",
+          "previous_jyutping": "git3 fan1 gei2 nim6",
+          "jyutping": "git3 fan1 gei2 nim6",
+          "alternatives": [
+            "git3 fan1 gei3 nim6"
+          ],
+          "note": "紀的現代字典 gei2 正常先讀；紀事、紀念及紀律 gei3 亦有現代依據，保留後，非一概當錯音。",
+          "reference": "https://jyut.net/query?q=紀"
+        },
+        {
+          "id": 107022,
+          "char": "結繩紀事",
+          "previous_jyutping": "git3 sing4 gei2 si6",
+          "jyutping": "git3 sing4 gei2 si6",
+          "alternatives": [
+            "git3 sing4 gei3 si6"
+          ],
+          "note": "紀的現代字典 gei2 正常先讀；紀事、紀念及紀律 gei3 亦有現代依據，保留後，非一概當錯音。",
+          "reference": "https://jyut.net/query?q=紀"
+        },
+        {
+          "id": 106280,
+          "char": "紀錄下來",
+          "previous_jyutping": "gei3 luk6 haa6 loi4",
+          "jyutping": "gei3 luk6 haa6 loi4",
+          "alternatives": [
+            "gei2 luk6 haa6 loi4"
+          ],
+          "note": "紀錄動詞 gei3 有粵語查音識字字典完整詞例；gei2 亦為現代紀錄正常讀，不因同音記錄而換字或刪2。",
+          "reference": "https://jyut.net/query?q=紀 ; https://www.ny.edu.hk/web/cht/hkbc_journal/HKBC_11th%20Journal/489-583.pdf"
+        },
+        {
+          "id": 106234,
+          "char": "系統診斷",
+          "previous_jyutping": "hai6 tung2 can2 dyun3",
+          "jyutping": "hai6 tung2 can2 dyun3",
+          "alternatives": [
+            "hai6 tung2 can2 dyun6"
+          ],
+          "note": "診斷判定義 dyun3 先；dyun6 在現代同音字彙有診斷完整詞例，同義後讀保留。",
+          "reference": "https://jyut.net/query?q=斷"
+        },
+        {
+          "id": 106623,
+          "char": "素負盛名",
+          "previous_jyutping": "sou3 fu6 sing4 ming4",
+          "jyutping": "sou3 fu6 sing6 ming4",
+          "alternatives": [],
+          "note": "盛名的盛為顯赫豐盛 sing6；sing4 是盛物容器義，不把草稿誤讀沿用。",
+          "reference": "https://jyut.net/query?q=盛"
+        },
+        {
+          "id": 106548,
+          "char": "紙縫",
+          "previous_jyutping": "zi2 laa3",
+          "jyutping": "zi2 fung6",
+          "alternatives": [
+            "zi2 fung4"
+          ],
+          "note": "縫為狹長開口名詞，fung6 有現代門縫、縫隙詞例；商務新詞典名詞義亦有 fung4 又讀。laa3 是罅字而非縫的粵拼，不以同義替字讀音冒充。fung3 只見1916，不加作現代異讀。",
+          "reference": "https://jyut.net/query?q=縫"
+        },
+        {
+          "id": 106787,
+          "char": "細縫",
+          "previous_jyutping": "sai3 laa3",
+          "jyutping": "sai3 fung6",
+          "alternatives": [
+            "sai3 fung4"
+          ],
+          "note": "縫為狹長開口名詞，fung6 有現代門縫、縫隙詞例；商務新詞典名詞義亦有 fung4 又讀。laa3 是罅字而非縫的粵拼，不以同義替字讀音冒充。fung3 只見1916，不加作現代異讀。",
+          "reference": "https://jyut.net/query?q=縫"
+        },
+        {
+          "id": 106106,
+          "char": "糖漬",
+          "previous_jyutping": "tong4 zik1",
+          "jyutping": "tong4 zik1",
+          "alternatives": [
+            "tong4 zi3",
+            "tong4 zi6"
+          ],
+          "note": "糖漬為浸糖加工，zik1 在現代漚浸義有語音，zi3 文讀及zi6久浸又讀亦現代可據；不是只剩污漬義。",
+          "reference": "https://jyut.net/query?q=漬"
+        },
+        {
+          "id": 106742,
+          "char": "細嚼",
+          "previous_jyutping": "sai3 zoek3",
+          "jyutping": "sai3 zoek3",
+          "alternatives": [
+            "sai3 ziu6",
+            "sai3 zoek6"
+          ],
+          "note": "細嚼用咀嚼義 zoek3 先；現代 ziu6 語音與 zoek6 書讀同義保留，反芻專義 ziu3 不混入。",
+          "reference": "https://jyut.net/query?q=嚼"
+        },
+        {
+          "id": 107162,
+          "char": "絨毛玩具",
+          "previous_jyutping": "jung2 mou4 wun6 geoi6",
+          "jyutping": "jung2 mou4 wun6 geoi6",
+          "alternatives": [
+            "jung4 mou4 wun6 geoi6"
+          ],
+          "note": "絨的毛織物 jung2 現代口語先、jung4 現代文讀後，均同義，不能因較少字典載變調而刪。",
+          "reference": "https://jyut.net/query?q=絨"
+        },
+        {
+          "id": 107163,
+          "char": "絨氈",
+          "previous_jyutping": "jung2 zin1",
+          "jyutping": "jung2 zin1",
+          "alternatives": [
+            "jung4 zin1"
+          ],
+          "note": "絨的毛織物 jung2 現代口語先、jung4 現代文讀後，均同義，不能因較少字典載變調而刪。",
+          "reference": "https://jyut.net/query?q=絨"
+        },
+        {
+          "id": 107165,
+          "char": "絨絲",
+          "previous_jyutping": "jung2 si1",
+          "jyutping": "jung2 si1",
+          "alternatives": [
+            "jung4 si1"
+          ],
+          "note": "絨的毛織物 jung2 現代口語先、jung4 現代文讀後，均同義，不能因較少字典載變調而刪。",
+          "reference": "https://jyut.net/query?q=絨"
+        },
+        {
+          "id": 107166,
+          "char": "絨線刺繡",
+          "previous_jyutping": "jung2 sin3 ci3 sau3",
+          "jyutping": "jung2 sin3 ci3 sau3",
+          "alternatives": [
+            "jung4 sin3 ci3 sau3"
+          ],
+          "note": "絨的毛織物 jung2 現代口語先、jung4 現代文讀後，均同義，不能因較少字典載變調而刪。",
+          "reference": "https://jyut.net/query?q=絨"
+        },
+        {
+          "id": 107167,
+          "char": "絨繩",
+          "previous_jyutping": "jung2 sing4",
+          "jyutping": "jung2 sing4",
+          "alternatives": [
+            "jung4 sing4"
+          ],
+          "note": "絨的毛織物 jung2 現代口語先、jung4 現代文讀後，均同義，不能因較少字典載變調而刪。",
+          "reference": "https://jyut.net/query?q=絨"
+        },
+        {
+          "id": 107246,
+          "char": "絲絨布",
+          "previous_jyutping": "si1 jung2 bou3",
+          "jyutping": "si1 jung2 bou3",
+          "alternatives": [
+            "si1 jung4 bou3"
+          ],
+          "note": "絨的毛織物 jung2 現代口語先、jung4 現代文讀後，均同義，不能因較少字典載變調而刪。",
+          "reference": "https://jyut.net/query?q=絨"
+        },
+        {
+          "id": 107776,
+          "char": "綴出",
+          "previous_jyutping": "zeoi6 ceot1",
+          "jyutping": "zeoi6 ceot1",
+          "alternatives": [
+            "zeoi3 ceot1"
+          ],
+          "note": "綴連、組字、裝飾義 zeoi6 為建議讀音，zeoi3 現代同義亦有明確詞例，保留後；不把停止義 zyut3 機械混入。",
+          "reference": "https://jyut.net/query?q=綴"
+        },
+        {
+          "id": 107777,
+          "char": "綴字成文",
+          "previous_jyutping": "zeoi3 zi6 sing4 man4",
+          "jyutping": "zeoi6 zi6 sing4 man4",
+          "alternatives": [
+            "zeoi3 zi6 sing4 man4"
+          ],
+          "note": "綴連、組字、裝飾義 zeoi6 為建議讀音，zeoi3 現代同義亦有明確詞例，保留後；不把停止義 zyut3 機械混入。",
+          "reference": "https://jyut.net/query?q=綴"
+        },
+        {
+          "id": 107780,
+          "char": "綴補",
+          "previous_jyutping": "zeoi6 bou2",
+          "jyutping": "zeoi6 bou2",
+          "alternatives": [
+            "zeoi3 bou2"
+          ],
+          "note": "綴連、組字、裝飾義 zeoi6 為建議讀音，zeoi3 現代同義亦有明確詞例，保留後；不把停止義 zyut3 機械混入。",
+          "reference": "https://jyut.net/query?q=綴"
+        },
+        {
+          "id": 107782,
+          "char": "綴連",
+          "previous_jyutping": "zeoi6 lin4",
+          "jyutping": "zeoi6 lin4",
+          "alternatives": [
+            "zeoi3 lin4"
+          ],
+          "note": "綴連、組字、裝飾義 zeoi6 為建議讀音，zeoi3 現代同義亦有明確詞例，保留後；不把停止義 zyut3 機械混入。",
+          "reference": "https://jyut.net/query?q=綴"
+        },
+        {
+          "id": 106223,
+          "char": "系統托盤",
+          "previous_jyutping": "hai6 tung2 tok3 pun2",
+          "jyutping": "hai6 tung2 tok3 pun2",
+          "alternatives": [
+            "hai6 tung2 tok3 pun4"
+          ],
+          "note": "托盤器皿名詞 pun2 日常先、pun4 現代書讀後，同義保留。",
+          "reference": "https://jyut.net/query?q=盤"
+        },
+        {
+          "id": 106233,
+          "char": "系統託盤",
+          "previous_jyutping": "hai6 tung2 tok3 pun2",
+          "jyutping": "hai6 tung2 tok3 pun2",
+          "alternatives": [
+            "hai6 tung2 tok3 pun4"
+          ],
+          "note": "托盤器皿名詞 pun2 日常先、pun4 現代書讀後，同義保留。",
+          "reference": "https://jyut.net/query?q=盤"
+        },
+        {
+          "id": 106516,
+          "char": "紙托盤",
+          "previous_jyutping": "zi2 tok3 pun2",
+          "jyutping": "zi2 tok3 pun2",
+          "alternatives": [
+            "zi2 tok3 pun4"
+          ],
+          "note": "托盤器皿名詞 pun2 日常先、pun4 現代書讀後，同義保留。",
+          "reference": "https://jyut.net/query?q=盤"
+        },
+        {
+          "id": 106536,
+          "char": "紙盤",
+          "previous_jyutping": "zi2 pun2",
+          "jyutping": "zi2 pun2",
+          "alternatives": [
+            "zi2 pun4"
+          ],
+          "note": "托盤器皿名詞 pun2 日常先、pun4 現代書讀後，同義保留。",
+          "reference": "https://jyut.net/query?q=盤"
+        },
+        {
+          "id": 106555,
+          "char": "紙託盤",
+          "previous_jyutping": "zi2 tok3 pun2",
+          "jyutping": "zi2 tok3 pun2",
+          "alternatives": [
+            "zi2 tok3 pun4"
+          ],
+          "note": "托盤器皿名詞 pun2 日常先、pun4 現代書讀後，同義保留。",
+          "reference": "https://jyut.net/query?q=盤"
+        },
+        {
+          "id": 106231,
+          "char": "系統盤",
+          "previous_jyutping": "hai6 tung2 pun4",
+          "jyutping": "hai6 tung2 pun2",
+          "alternatives": [
+            "hai6 tung2 pun4"
+          ],
+          "note": "系統盤為磁盤名詞，pun2 日常先、pun4 書讀後，非盤旋動詞。",
+          "reference": "https://jyut.net/query?q=盤"
+        },
+        {
+          "id": 106259,
+          "char": "糾紛案件",
+          "previous_jyutping": "gau2 fan1 on3 gin2",
+          "jyutping": "gau2 fan1 on3 gin2",
+          "alternatives": [
+            "gau2 fan1 on3 gin6"
+          ],
+          "note": "件為案件、鍵或文件的名詞 gin2 變調先，gin6 現代原讀後；不是物件詞本身冷門。",
+          "reference": "https://jyut.net/query?q=件 ; https://jyut.net/query?q=鍵"
+        },
+        {
+          "id": 106900,
+          "char": "組合鍵",
+          "previous_jyutping": "zou2 hap6 gin6",
+          "jyutping": "zou2 hap6 gin2",
+          "alternatives": [
+            "zou2 hap6 gin6"
+          ],
+          "note": "件為案件、鍵或文件的名詞 gin2 變調先，gin6 現代原讀後；不是物件詞本身冷門。",
+          "reference": "https://jyut.net/query?q=件 ; https://jyut.net/query?q=鍵"
+        },
+        {
+          "id": 107062,
+          "char": "絕密件",
+          "previous_jyutping": "zyut6 mat6 gin2",
+          "jyutping": "zyut6 mat6 gin2",
+          "alternatives": [
+            "zyut6 mat6 gin6"
+          ],
+          "note": "件為案件、鍵或文件的名詞 gin2 變調先，gin6 現代原讀後；不是物件詞本身冷門。",
+          "reference": "https://jyut.net/query?q=件 ; https://jyut.net/query?q=鍵"
+        },
+        {
+          "id": 107835,
+          "char": "緊急事件",
+          "previous_jyutping": "gan2 gap1 si6 gin2",
+          "jyutping": "gan2 gap1 si6 gin2",
+          "alternatives": [
+            "gan2 gap1 si6 gin6"
+          ],
+          "note": "件為案件、鍵或文件的名詞 gin2 變調先，gin6 現代原讀後；不是物件詞本身冷門。",
+          "reference": "https://jyut.net/query?q=件 ; https://jyut.net/query?q=鍵"
+        },
+        {
+          "id": 107771,
+          "char": "網頁文件",
+          "previous_jyutping": "mong5 jip6 man4 gin6",
+          "jyutping": "mong5 jip6 man4 gin2",
+          "alternatives": [
+            "mong5 jip6 man4 gin6"
+          ],
+          "note": "件為案件、鍵或文件的名詞 gin2 變調先，gin6 現代原讀後；不是物件詞本身冷門。",
+          "reference": "https://jyut.net/query?q=件 ; https://jyut.net/query?q=鍵"
+        },
+        {
+          "id": 106400,
+          "char": "紅鞋",
+          "previous_jyutping": "hung4 haai4",
+          "jyutping": "hung4 haai2",
+          "alternatives": [
+            "hung4 haai4"
+          ],
+          "note": "鞋名詞 haai2 日常先、haai4 現代書讀後。",
+          "reference": "https://jyut.net/query?q=鞋"
+        },
+        {
+          "id": 106401,
+          "char": "紅鞋子",
+          "previous_jyutping": "hung4 haai4 zi2",
+          "jyutping": "hung4 haai2 zi2",
+          "alternatives": [
+            "hung4 haai4 zi2"
+          ],
+          "note": "鞋名詞 haai2 日常先、haai4 現代書讀後。",
+          "reference": "https://jyut.net/query?q=鞋"
+        },
+        {
+          "id": 107658,
+          "char": "網球鞋",
+          "previous_jyutping": "mong5 kau4 haai2",
+          "jyutping": "mong5 kau4 haai2",
+          "alternatives": [
+            "mong5 kau4 haai4"
+          ],
+          "note": "鞋名詞 haai2 日常先、haai4 現代書讀後。",
+          "reference": "https://jyut.net/query?q=鞋"
+        },
+        {
+          "id": 106316,
+          "char": "紅帶",
+          "previous_jyutping": "hung4 daai3",
+          "jyutping": "hung4 daai2",
+          "alternatives": [
+            "hung4 daai3"
+          ],
+          "note": "帶狀物名詞 daai2 日常變調先、daai3 原讀後，不把帶領動詞讀法當唯一。",
+          "reference": "https://jyut.net/query?q=帶"
+        },
+        {
+          "id": 106317,
+          "char": "紅帶子",
+          "previous_jyutping": "hung4 daai3 zi2",
+          "jyutping": "hung4 daai2 zi2",
+          "alternatives": [
+            "hung4 daai3 zi2"
+          ],
+          "note": "帶狀物名詞 daai2 日常變調先、daai3 原讀後，不把帶領動詞讀法當唯一。",
+          "reference": "https://jyut.net/query?q=帶"
+        },
+        {
+          "id": 107493,
+          "char": "綠帶",
+          "previous_jyutping": "luk6 daai2",
+          "jyutping": "luk6 daai2",
+          "alternatives": [
+            "luk6 daai3"
+          ],
+          "note": "帶狀物名詞 daai2 日常變調先、daai3 原讀後，不把帶領動詞讀法當唯一。",
+          "reference": "https://jyut.net/query?q=帶"
+        },
+        {
+          "id": 107822,
+          "char": "緊固帶",
+          "previous_jyutping": "gan2 gu3 daai2",
+          "jyutping": "gan2 gu3 daai2",
+          "alternatives": [
+            "gan2 gu3 daai3"
+          ],
+          "note": "帶狀物名詞 daai2 日常變調先、daai3 原讀後，不把帶領動詞讀法當唯一。",
+          "reference": "https://jyut.net/query?q=帶"
+        },
+        {
+          "id": 107976,
+          "char": "緞帶花",
+          "previous_jyutping": "dyun6 daai2 faa1",
+          "jyutping": "dyun6 daai2 faa1",
+          "alternatives": [
+            "dyun6 daai3 faa1"
+          ],
+          "note": "帶狀物名詞 daai2 日常變調先、daai3 原讀後，不把帶領動詞讀法當唯一。",
+          "reference": "https://jyut.net/query?q=帶"
+        },
+        {
+          "id": 107104,
+          "char": "絕緣膠帶",
+          "previous_jyutping": "zyut6 jyun4 gaau1 daai2",
+          "jyutping": "zyut6 jyun4 gaau1 daai2",
+          "alternatives": [
+            "zyut6 jyun4 gaau1 daai3"
+          ],
+          "note": "帶狀物名詞 daai2 日常變調先、daai3 原讀後，不把帶領動詞讀法當唯一。",
+          "reference": "https://jyut.net/query?q=帶"
+        },
+        {
+          "id": 106571,
+          "char": "級會",
+          "previous_jyutping": "kap1 wui2",
+          "jyutping": "kap1 wui2",
+          "alternatives": [
+            "kap1 wui6"
+          ],
+          "note": "大會／級會／網友會為集會名詞，wui2 先、wui6 現代書讀後；會議固定詞仍用 wui6 ji5。",
+          "reference": "https://jyut.net/query?q=會"
+        },
+        {
+          "id": 107614,
+          "char": "網友會",
+          "previous_jyutping": "mong5 jau5 wui2",
+          "jyutping": "mong5 jau5 wui2",
+          "alternatives": [
+            "mong5 jau5 wui6"
+          ],
+          "note": "大會／級會／網友會為集會名詞，wui2 先、wui6 現代書讀後；會議固定詞仍用 wui6 ji5。",
+          "reference": "https://jyut.net/query?q=會"
+        },
+        {
+          "id": 107743,
+          "char": "網膜炎",
+          "previous_jyutping": "mong5 mok6 jim4",
+          "jyutping": "mong5 mok6 jim4",
+          "alternatives": [
+            "mong5 mok2 jim4"
+          ],
+          "note": "身體薄膜 mok6 正常書讀先，mok2 現代同義語音保留後。",
+          "reference": "https://jyut.net/query?q=膜"
+        },
+        {
+          "id": 107515,
+          "char": "綠膿桿菌",
+          "previous_jyutping": "luk6 nung4 gon2 kwan2",
+          "jyutping": "luk6 nung4 gon2 kwan2",
+          "alternatives": [
+            "luk6 nung4 gon1 kwan2"
+          ],
+          "note": "桿菌形狀 gon2 先、gon1 現代同義後，不按國語 gǎn 決定粵音。",
+          "reference": "https://jyut.net/query?q=桿"
+        },
+        {
+          "id": 107983,
+          "char": "緣分已盡",
+          "previous_jyutping": "jyun4 fan6 ji5 zeon6",
+          "jyutping": "jyun4 fan6 ji5 zeon6",
+          "alternatives": [],
+          "note": "緣分 fan6 為緣份，不用分開 fan1。",
+          "reference": "https://words.hk/zidin/緣份"
+        },
+        {
+          "id": 106575,
+          "char": "級長",
+          "previous_jyutping": "kap1 zoeng2",
+          "jyutping": "kap1 zoeng2",
+          "alternatives": [],
+          "note": "按整詞用法作 AI 輔助粵音覆核。級長為職銜 zoeng2，非長短 coeng4。",
+          "reference": "AI:whole-word-context"
+        },
+        {
+          "id": 106552,
+          "char": "紙行",
+          "previous_jyutping": "zi2 hong4",
+          "jyutping": "zi2 hong4",
+          "alternatives": [],
+          "note": "按整詞用法作 AI 輔助粵音覆核。紙行是行業商號 hong4。",
+          "reference": "AI:whole-word-context"
+        },
+        {
+          "id": 106191,
+          "char": "糧行",
+          "previous_jyutping": "loeng4 hong4",
+          "jyutping": "loeng4 hong4",
+          "alternatives": [],
+          "note": "按整詞用法作 AI 輔助粵音覆核。糧行為買賣行業商號 hong4，非步行 haang4。",
+          "reference": "AI:whole-word-context"
+        },
+        {
+          "id": 106204,
+          "char": "系出名門",
+          "previous_jyutping": "hai6 ceot1 ming4 mun4",
+          "jyutping": "hai6 ceot1 ming4 mun4",
+          "alternatives": [],
+          "note": "按整詞用法作 AI 輔助粵音覆核。",
+          "reference": "AI:whole-word-context"
+        },
+        {
+          "id": 106325,
+          "char": "紅木傢俱",
+          "previous_jyutping": "hung4 muk6 gaa1 geoi6",
+          "jyutping": "hung4 muk6 gaa1 geoi6",
+          "alternatives": [],
+          "note": "按整詞用法作 AI 輔助粵音覆核。紅木傢俱的器物俱應按整詞家具 geoi6，非俱皆 keoi1。原傢俱通行異寫保留，不改家具製作另一來源。",
+          "reference": "AI:whole-word-context"
+        },
+        {
+          "id": 106489,
+          "char": "純音樂",
+          "previous_jyutping": "seon4 jam1 ngok6",
+          "jyutping": "seon4 jam1 ngok6",
+          "alternatives": [],
+          "note": "按整詞用法作 AI 輔助粵音覆核。純音樂是音樂藝術 ngok6，非快樂 lok6。",
+          "reference": "AI:whole-word-context"
+        },
+        {
+          "id": 107969,
+          "char": "緝拿罪犯",
+          "previous_jyutping": "cap1 naa4 zeoi6 faan2",
+          "jyutping": "cap1 naa4 zeoi6 faan2",
+          "alternatives": [],
+          "note": "按整詞用法作 AI 輔助粵音覆核。罪犯為犯罪者名詞 faan2，非犯罪動詞 faan6。",
+          "reference": "AI:whole-word-context"
+        },
+        {
+          "id": 107757,
+          "char": "網路上",
+          "previous_jyutping": "mong5 lou6 soeng6",
+          "jyutping": "mong5 lou6 soeng6",
+          "alternatives": [],
+          "note": "按整詞用法作 AI 輔助粵音覆核。網路上為方位 soeng6，不套上去 soeng5。",
+          "reference": "AI:whole-word-context"
+        },
+        {
+          "id": 107844,
+          "char": "緊急會議",
+          "previous_jyutping": "gan2 gap1 wui6 ji5",
+          "jyutping": "gan2 gap1 wui6 ji5",
+          "alternatives": [],
+          "note": "按整詞用法作 AI 輔助粵音覆核。",
+          "reference": "AI:whole-word-context"
+        },
+        {
+          "id": 107859,
+          "char": "緊接著",
+          "previous_jyutping": "gan2 zip3 zyu3",
+          "jyutping": "gan2 zip3 zoek6",
+          "alternatives": [],
+          "note": "接著是完整接續詞，CC-Canto及CantoDict均明列 zip3 zoek6；zyu3 為著作等義，不以國語輕聲 zhe 推讀粵音。",
+          "reference": "https://cantonese.org/search.php?q=接著 ; https://cantonese.sheik.co.uk/dictionary/characters/1049/?cf=1&full=true"
+        },
+        {
+          "id": 107217,
+          "char": "統計權重",
+          "previous_jyutping": "tung2 gai3 kyun4 cung5",
+          "jyutping": "tung2 gai3 kyun4 cung5",
+          "alternatives": [],
+          "note": "權重為加權分量，CC-Canto整詞 kyun4 cung5，非 zung6。",
+          "reference": "https://cantonese.org/search.php?q=權"
+        },
+        {
+          "id": 107123,
+          "char": "絞斷",
+          "previous_jyutping": "gaau2 dyun6",
+          "jyutping": "gaau2 tyun5",
+          "alternatives": [
+            "gaau2 dyun6"
+          ],
+          "note": "斷開、連續中止義 tyun5 白讀先，dyun6 現代同義文讀後；不混判斷 dyun3。",
+          "reference": "https://jyut.net/query?q=斷 ; https://words.hk/zidin/斷絕"
+        },
+        {
+          "id": 107805,
+          "char": "綿綿不斷",
+          "previous_jyutping": "min4 min4 bat1 dyun6",
+          "jyutping": "min4 min4 bat1 tyun5",
+          "alternatives": [
+            "min4 min4 bat1 dyun6"
+          ],
+          "note": "斷開、連續中止義 tyun5 白讀先，dyun6 現代同義文讀後；不混判斷 dyun3。",
+          "reference": "https://jyut.net/query?q=斷 ; https://words.hk/zidin/斷絕"
+        },
+        {
+          "id": 106697,
+          "char": "累加法",
+          "previous_jyutping": "leoi6 gaa1 faat3",
+          "jyutping": "leoi6 gaa1 faat3",
+          "alternatives": [
+            "leoi5 gaa1 faat3"
+          ],
+          "note": "累積、遞加義 leoi6 有粵典完整詞證，leoi5 現代書讀亦保留，不把6誤限於疲累。",
+          "reference": "https://words.hk/zidin/累積 ; https://jyut.net/query?q=累"
+        },
+        {
+          "id": 106703,
+          "char": "累增",
+          "previous_jyutping": "leoi6 zang1",
+          "jyutping": "leoi6 zang1",
+          "alternatives": [
+            "leoi5 zang1"
+          ],
+          "note": "累積、遞加義 leoi6 有粵典完整詞證，leoi5 現代書讀亦保留，不把6誤限於疲累。",
+          "reference": "https://words.hk/zidin/累積 ; https://jyut.net/query?q=累"
+        },
+        {
+          "id": 106713,
+          "char": "累減",
+          "previous_jyutping": "leoi6 gaam2",
+          "jyutping": "leoi6 gaam2",
+          "alternatives": [
+            "leoi5 gaam2"
+          ],
+          "note": "累積、遞加義 leoi6 有粵典完整詞證，leoi5 現代書讀亦保留，不把6誤限於疲累。",
+          "reference": "https://words.hk/zidin/累積 ; https://jyut.net/query?q=累"
+        },
+        {
+          "id": 106718,
+          "char": "累積下來",
+          "previous_jyutping": "leoi6 zik1 haa6 loi4",
+          "jyutping": "leoi6 zik1 haa6 loi4",
+          "alternatives": [
+            "leoi5 zik1 haa6 loi4"
+          ],
+          "note": "累積、遞加義 leoi6 有粵典完整詞證，leoi5 現代書讀亦保留，不把6誤限於疲累。",
+          "reference": "https://words.hk/zidin/累積 ; https://jyut.net/query?q=累"
+        },
+        {
+          "id": 106719,
+          "char": "累積到",
+          "previous_jyutping": "leoi6 zik1 dou3",
+          "jyutping": "leoi6 zik1 dou3",
+          "alternatives": [
+            "leoi5 zik1 dou3"
+          ],
+          "note": "累積、遞加義 leoi6 有粵典完整詞證，leoi5 現代書讀亦保留，不把6誤限於疲累。",
+          "reference": "https://words.hk/zidin/累積 ; https://jyut.net/query?q=累"
+        },
+        {
+          "id": 106722,
+          "char": "累積盈虧",
+          "previous_jyutping": "leoi6 zik1 jing4 kwai1",
+          "jyutping": "leoi6 zik1 jing4 kwai1",
+          "alternatives": [
+            "leoi5 zik1 jing4 kwai1"
+          ],
+          "note": "累積、遞加義 leoi6 有粵典完整詞證，leoi5 現代書讀亦保留，不把6誤限於疲累。",
+          "reference": "https://words.hk/zidin/累積 ; https://jyut.net/query?q=累"
+        },
+        {
+          "id": 106729,
+          "char": "累計額",
+          "previous_jyutping": "leoi6 gai3 ngaak6",
+          "jyutping": "leoi6 gai3 ngaak6",
+          "alternatives": [
+            "leoi5 gai3 ngaak6"
+          ],
+          "note": "累積、遞加義 leoi6 有粵典完整詞證，leoi5 現代書讀亦保留，不把6誤限於疲累。",
+          "reference": "https://words.hk/zidin/累積 ; https://jyut.net/query?q=累"
+        },
+        {
+          "id": 106268,
+          "char": "紀念大會",
+          "previous_jyutping": "gei2 nim6 daai6 wui6",
+          "jyutping": "gei2 nim6 daai6 wui2",
+          "alternatives": [
+            "gei2 nim6 daai6 wui6",
+            "gei3 nim6 daai6 wui2"
+          ],
+          "note": "紀念大會為集會名詞 wui2 先、wui6 書讀後；紀念 gei2 先、gei3 現代又讀後；不擴展無需要的所有異讀乘積。",
+          "reference": "https://jyut.net/query?q=紀 ; https://jyut.net/query?q=會"
+        },
+        {
+          "id": 107251,
+          "char": "絲綿被",
+          "previous_jyutping": "si1 min4 bei6",
+          "jyutping": "si1 min4 pei5",
+          "alternatives": [],
+          "note": "被褥、棉被的被為 pei5；現代字典將 bei6 列被動、遭受義，沒有寢具同義依據，本詞不加入 bei6。",
+          "reference": "https://jyut.net/query?q=被"
+        },
+        {
+          "id": 107979,
+          "char": "緞被",
+          "previous_jyutping": "dyun6 bei6",
+          "jyutping": "dyun6 pei5",
+          "alternatives": [],
+          "note": "被褥、棉被的被為 pei5；現代字典將 bei6 列被動、遭受義，沒有寢具同義依據，本詞不加入 bei6。",
+          "reference": "https://jyut.net/query?q=被"
+        }
+      ],
+      "restored_candidates": [],
+      "final_accepted_before_dedup": 1044,
+      "corpus": {
+        "observations": 6,
+        "supplied_spans": 12,
+        "all_original_spans_read": true,
+        "source_commit": "018e88540b917c40dc3f7248ed98908208544b54",
+        "boundary_notes": {
+          "106707": "親口講你累得很有完整述補累得 leoi6 dak1，疲累6，非積累5；同一副歌三次不當三個獨立詞頻。",
+          "106756": "一秒夠細數有完整細數 sai3 sou2，數為點算動詞，非數量 sou3。",
+          "106827": "彼此終必火化有完整終必 zung1 bit1 副詞，通用書面／填詞可復用。",
+          "106833": "始終／會等到跨詞，不能當終會的整詞頻率；終會另按自然副詞加情態用法收，wui5 非集會2/6。",
+          "106834": "火花終有日耗盡有完整終有；另一首始終／有些心虛為跨詞，兩首命中不等於兩次完整詞頻。",
+          "107149": "給你／愛護過的愛護不能拆成給你愛，字串命中不足支持獨立詞，本批不收。"
+        }
+      },
+      "prior_decisions_preserved": 105994,
+      "explicit_prior_decision_repairs": [],
+      "existing_runtime_audit": {
+        "紀 gei2/gei3": "Both modern; preserve existing, context order only new.",
+        "處分 cyu5 fan1": "Modern LSHK whole word valid; do not delete old cyu5.",
+        "累 leoi6 accumulation": "Modern whole累積 words.hk valid, preserve existing6.",
+        "縫 fung4 noun": "Modern商務新詞典 noun alternate, preserve existing4.",
+        "絨 jung4/jung2": "Both modern same material, preserve existing."
+      }
+    }
+  }
+}

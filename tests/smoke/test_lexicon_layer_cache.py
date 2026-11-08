@@ -53,6 +53,28 @@ class LexiconLayerCacheTests(unittest.TestCase):
             self.assertEqual(first, cand)
             self.assertEqual(second, cand)
 
+    def test_parser_revision_replaces_legacy_normalized_literal(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            cache_dir = Path(tmp)
+            raw = cache_dir / "raw.txt"
+            raw.write_text("御駕親征", encoding="utf-8")
+            src = {"id": "fixture", "parser": "lexicon_json", "raw_path": str(raw)}
+            legacy = [LexiconCandidate("御駕親徵", "jyu6 gaa3 can1 zing1", "2433", ("fixture",))]
+            corrected = [LexiconCandidate("御駕親征", "jyu6 gaa3 can1 zing1", "2433", ("fixture",))]
+            with mock.patch(
+                "ingest.lexicon_layer_cache.ingest_source", side_effect=[legacy, corrected]
+            ) as ingest:
+                with mock.patch("ingest.lexicon_layer_cache.source_input_paths", return_value=[raw]):
+                    with mock.patch("ingest.lexicon_layer_cache.LAYER_CACHE_FORMAT", "18"):
+                        old, old_status = load_or_ingest_source(src, use_cache=True, cache_dir=cache_dir)
+                    fresh, fresh_status = load_or_ingest_source(src, use_cache=True, cache_dir=cache_dir)
+                    cached, cached_status = load_or_ingest_source(src, use_cache=True, cache_dir=cache_dir)
+            self.assertEqual((old_status, fresh_status, cached_status), ("miss", "miss", "hit"))
+            self.assertEqual(old, legacy)
+            self.assertEqual(fresh, corrected)
+            self.assertEqual(cached, corrected)
+            self.assertEqual(ingest.call_count, 2)
+
     def test_fingerprint_changes_with_file(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             raw = Path(tmp) / "a.txt"

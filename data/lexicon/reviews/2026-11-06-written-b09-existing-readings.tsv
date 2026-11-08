@@ -1,0 +1,16 @@
+char	previous_jyutping	previous_code	jyutping	code	evidence	reading_reference	reason	action
+蒼莽	cong1 mong4	30	cong1 mong5	35	kaifang:cidian_zhyue-ft-kfcd-yp-2021714.txt#L10:token30407	https://jyut.net/query?q=莽	草莽、莽撞等義的莽為 mong5；多部粵語字典一致，不採上游 mong4 錯音。精確舊讀音對覆蓋，保留其他音節及既有正讀。	set_jyutping
+粗莽	cou1 mong4	30	cou1 mong5	35	kaifang:cidian_zhyue-ft-kfcd-yp-2021714.txt#L10:token30787	https://jyut.net/query?q=莽	草莽、莽撞等義的莽為 mong5；多部粵語字典一致，不採上游 mong4 錯音。精確舊讀音對覆蓋，保留其他音節及既有正讀。已有正讀，僅刪此錯讀，避免新增完全重複列。	delete
+草莽	cou2 mong4	90	cou2 mong5	95	kaifang:cidian_zhyue-ft-kfcd-yp-2021714.txt#L10:token30979	https://jyut.net/query?q=莽	草莽、莽撞等義的莽為 mong5；多部粵語字典一致，不採上游 mong4 錯音。精確舊讀音對覆蓋，保留其他音節及既有正讀。	set_jyutping
+叢莽	cung4 mong4	00	cung4 mong5	05	kaifang:cidian_zhyue-ft-kfcd-yp-2021714.txt#L10:token32223	https://jyut.net/query?q=莽	草莽、莽撞等義的莽為 mong5；多部粵語字典一致，不採上游 mong4 錯音。精確舊讀音對覆蓋，保留其他音節及既有正讀。	set_jyutping
+榛莽	zeon1 mong4	30	zeon1 mong5	35	kaifang:cidian_zhyue-ft-kfcd-yp-2021714.txt#L10:token117886	https://jyut.net/query?q=莽	草莽、莽撞等義的莽為 mong5；多部粵語字典一致，不採上游 mong4 錯音。精確舊讀音對覆蓋，保留其他音節及既有正讀。	set_jyutping
+林莽	lam4 mong4	00	lam4 mong5	05	kaifang:cidian_zhyue-ft-kfcd-yp-2021714.txt#L10:token143696	https://jyut.net/query?q=莽	草莽、莽撞等義的莽為 mong5；多部粵語字典一致，不採上游 mong4 錯音。精確舊讀音對覆蓋，保留其他音節及既有正讀。	set_jyutping
+魯莽	lou5 mong4	50	lou5 mong5	55	kaifang:cidian_zhyue-ft-kfcd-yp-2021714.txt#L10:token152512	https://jyut.net/query?q=莽	草莽、莽撞等義的莽為 mong5；多部粵語字典一致，不採上游 mong4 錯音。精確舊讀音對覆蓋，保留其他音節及既有正讀。已有正讀，僅刪此錯讀，避免新增完全重複列。	delete
+鹵莽	lou5 mong4	50	lou5 mong5	55	kaifang:cidian_zhyue-ft-kfcd-yp-2021714.txt#L10:token152515	https://jyut.net/query?q=莽	草莽、莽撞等義的莽為 mong5；多部粵語字典一致，不採上游 mong4 錯音。精確舊讀音對覆蓋，保留其他音節及既有正讀。	set_jyutping
+魯莽行事	lou5 mong4 hang4 si6	5002	lou5 mong5 hang4 si6	5502	kaifang:cidian_zhyue-ft-kfcd-yp-2021714.txt#L10:token152518	https://jyut.net/query?q=莽	草莽、莽撞等義的莽為 mong5；多部粵語字典一致，不採上游 mong4 錯音。精確舊讀音對覆蓋，保留其他音節及既有正讀。已有正讀，僅刪此錯讀，避免新增完全重複列。	delete
+魯莽滅裂	lou5 mong4 mit6 lit6	5022	lou5 mong5 mit6 lit6	5522	kaifang:cidian_zhyue-ft-kfcd-yp-2021714.txt#L10:token152523	https://jyut.net/query?q=莽	草莽、莽撞等義的莽為 mong5；多部粵語字典一致，不採上游 mong4 錯音。精確舊讀音對覆蓋，保留其他音節及既有正讀。	set_jyutping
+莽蒼	mong4 cong1	03	mong5 cong1	53	kaifang:cidian_zhyue-ft-kfcd-yp-2021714.txt#L10:token165783	https://jyut.net/query?q=莽	草莽、莽撞等義的莽為 mong5；多部粵語字典一致，不採上游 mong4 錯音。精確舊讀音對覆蓋，保留其他音節及既有正讀。	set_jyutping
+莽漢	mong4 hon3	04	mong5 hon3	54	kaifang:cidian_zhyue-ft-kfcd-yp-2021714.txt#L10:token165869	https://jyut.net/query?q=莽	草莽、莽撞等義的莽為 mong5；多部粵語字典一致，不採上游 mong4 錯音。精確舊讀音對覆蓋，保留其他音節及既有正讀。	set_jyutping
+莽撞	mong4 zong6	02	mong5 zong6	52	kaifang:cidian_zhyue-ft-kfcd-yp-2021714.txt#L10:token165872	https://jyut.net/query?q=莽	草莽、莽撞等義的莽為 mong5；多部粵語字典一致，不採上游 mong4 錯音。精確舊讀音對覆蓋，保留其他音節及既有正讀。已有正讀，僅刪此錯讀，避免新增完全重複列。	delete
+莽莽	mong4 mong4	00	mong5 mong5	55	kaifang:cidian_zhyue-ft-kfcd-yp-2021714.txt#L10:token165920	https://jyut.net/query?q=莽	草莽、莽撞等義的莽為 mong5；多部粵語字典一致，不採上游 mong4 錯音。精確舊讀音對覆蓋，保留其他音節及既有正讀。	set_jyutping
+莽原	mong4 jyun4	00	mong5 jyun4	50	kaifang:cidian_zhyue-ft-kfcd-yp-2021714.txt#L10:token166004	https://jyut.net/query?q=莽	草莽、莽撞等義的莽為 mong5；多部粵語字典一致，不採上游 mong4 錯音。精確舊讀音對覆蓋，保留其他音節及既有正讀。	set_jyutping

@@ -585,7 +585,7 @@ _Avoid_：把詞庫勘誤介面當關係補錄、創作者-facing 入口、即�
 _Avoid_：勘誤 action（作泛稱）、把重算碼叫改粵拼、獨立 apply 當權威路徑
 
 **詞級標音 curated**：
-**詞條 SSOT 來源** 之一：maintainer 維護嘅 **詞級標音** 小表，優先序在 words.hk／開放詞典之後，僅補前序仍無之字面。可 **新增收錄**；**詞庫勘誤** overlay **唔**負責新增缺詞。為補 **專案自建反義** 缺端而收錄時，用**同一套**標音／有效字面閘，**唔**另設反義專用放寬；可單獨先合入（唔綁同 commit 之反義清單）。反義對其後放棄或永不入清單，只要字面仍合閘即可留（唔因反義沒落地強制刪）；差字面按普通 curated 回滾。**收錄 ≠ 排序抬升**：唔自動寫入 **排序用 curated**；碼搜沉底（Essay 無／低）係預期。
+**詞條 SSOT 來源** 之一：maintainer 維護嘅 **詞級標音** 小表，優先序在 words.hk／開放詞典之後，僅補前序仍無之字面。可 **新增收錄**；**詞庫勘誤** overlay **唔**負責新增缺詞。為補 **專案自建反義** 缺端而收錄時，用**同一套**標音／有效字面閘，**唔**另設反義專用放寬；可單獨先合入（唔綁同 commit 之反義清單）。反義對其後放棄或永不入清單，只要字面仍合閘即可留（唔因反義沒落地強制刪）；差字面按普通 curated 回滾。**收錄 ≠ 排序抬升**：唔自動寫入 **排序用 curated**；按獨立 **詞語常用度** 與既有詞頻排序。明確覆核為極冷僻嘅自建詞可記 `withdraw_curated` 退回有效收錄，原詞源及讀音審核留存，唔因讀音正確就自動當常用。
 _Avoid_：把**排序用 curated**同本檔混為一檔、用 CC raw 自動填表、數千條無審核 bulk 匯入、新增缺詞寫入勘誤 TSV、Beta 前一次 diff 自動灌入 legacy 讀音、為趕反義入帳放寬粵拼／碼、把 curated 當反義 pending 暫存而設自動刪期、收錄即當常用加分
 
 ### 查詢語法基礎
@@ -807,11 +807,13 @@ _Avoid_：詞頻表（作資料庫實體）、把詞頻存進詞條列、用 vec
 _Avoid_：把本檔同 `curated_lexicon.json` 混一、收錄即自動加分、用本檔當詞庫 SSOT
 
 **排序信號**：
-essay／**排序用 curated** + pron + lexical。多契約 tier：
-搜尋結果：han → -essay → -curated → pron → 字面
+**詞語常用度**／essay／字幕分布／**排序用 curated** + pron + lexical。多契約 tier：
+搜尋結果：han → usage → -essay → -subtitle_channels → -curated → pron → 字面
 等號參考：pron → -essay → !aa → jyut
-同音異讀：han → -essay → -curated → ch/jyut（內 lexical）
-**0243／碼類扁平搜尋**下，Essay＝0 且唔在 **排序用 curated** 嘅新收字沉底係**預期**（常用優先）；發現冷字靠純漢字 lookup、近反義／`!`、或之後人手加 **排序用 curated**——唔另開「新收」結果分區，亦唔為此改近反義池排序契約。
+同音異讀：han → usage → -essay → -subtitle_channels → -curated → ch/jyut（內 lexical）
+`pron` 先取 `data/lexicon/curated_reading_ranks.json` 的完整字面／粵拼等級，再回退至 Rime 單字等級最大值。分級沿用 `預設=0／常用=1／罕見=2／棄用=3`；缺資料或須按詞義判斷的條目另記 AI 判斷依據。這是讀音等級，唔係實測詞頻，亦唔自動加入 **排序用 curated**。見[自建詞庫讀音分級](docs/lexicon-curated-reading-ranks.md)。
+**詞語常用度**：`data/lexicon/word_usage.tsv` 的字面級排序信號，與讀音級 `pron_rank` 分開。`0` 日常高頻、`1` 通用書面與填詞、`2` 較少用或專門、`3` 經明確覆核的冷僻退回。既有 Essay 頻次保留，固定版本 TUBELEX 中文字幕提供補充觀測；沒有完整詞頻時另記 AI 語境判斷，唔捏造實測次數、唔按單字頻率猜整詞。語料未收 ≠ 冷僻，唔自動退回。字幕來源的頻道數合併以最大值作保守下界。自建來源只對明記 `withdraw_curated` 嘅詞退回，唔全域封禁其他詞源。
+**0243／碼類扁平搜尋**先排完整候選池再分頁；無 Essay 詞頻但已覆核為常用的自然短語可依詞語級別排前。唔另開「新收」結果分區，唔把每個新詞都抬到常用級，亦唔改近反義池的關係權重契約。見 [ADR-0082](docs/adr/0082-word-usage-ranking-and-curated-withdrawals.md)。
 _Avoid_：把契約收成一條 tier、essay_sort（實作名）、把標音 curated 當 -curated 來源、把碼搜沉底當缺陷而自動抬頻
 
 **等號參考讀音選列**：

@@ -1,0 +1,2 @@
+previous_char	char	jyutping	code	action	source_ids	evidence	note
+醜時	丑時	cau2 si4	90	normalize_literal	rime_words	rime-cantonese-upstream:word.csv#L2451	原始詞源為地支丑時，採精確整詞還原，不改粵拼或碼，亦不修改醜惡等其他詞義。https://dict.revised.moe.edu.tw/dictView.jsp?ID=122717

@@ -48,6 +48,7 @@
 | [0079](./0079-whole-word-loose-rhyme-index-intersect.md) | **整詞放寬韻索引併查**：runtime ∪／∩，唔加 DB 欄；index 未好回退掃桶 |
 | [0080](./0080-guide-syntax-and-rhyme-panes.md) | **搜尋教學** 子頁：搜尋指南／押韻指南；分組表單源渲染 |
 | [0081](./0081-request-context-and-workbench-document.md) | 明確韻母查詢 context、canonical facade 與版本化句稿儲存 |
+| [0082](./0082-word-usage-ranking-and-curated-withdrawals.md) | 詞語日常常用度、觀測詞頻與 AI 判斷分離、冷僻自建詞明確退回 |
 
 ## Stubs
 

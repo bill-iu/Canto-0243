@@ -1,0 +1,5141 @@
+{
+  "batch": "2026-11-06-written-b52",
+  "date": "2026-11-07",
+  "reviewer": "AI-assisted word-form, sense and whole-word Cantonese review; not human item-by-item approval",
+  "source_repository": "https://github.com/fxsjy/jieba",
+  "source_commit": "67fa2e36e72f69d9134b8a1037b83fbb070b9775",
+  "source_license": "MIT",
+  "source_files": [
+    {
+      "path": "jieba/dict.txt",
+      "url": "https://raw.githubusercontent.com/fxsjy/jieba/67fa2e36e72f69d9134b8a1037b83fbb070b9775/jieba/dict.txt",
+      "sha256": "7197c3211ddd98962b036cdf40324d1ea2bfaa12bd028e68faa70111a88e12a8",
+      "bytes": 5071852
+    },
+    {
+      "path": "extra_dict/dict.txt.big",
+      "url": "https://raw.githubusercontent.com/fxsjy/jieba/67fa2e36e72f69d9134b8a1037b83fbb070b9775/extra_dict/dict.txt.big",
+      "sha256": "b16011275c42955ccd81fc1adecc93a59dbb7926af69d93fc95d4943d40f6aad",
+      "bytes": 8583143
+    },
+    {
+      "path": "LICENSE",
+      "url": "https://raw.githubusercontent.com/fxsjy/jieba/67fa2e36e72f69d9134b8a1037b83fbb070b9775/LICENSE",
+      "sha256": "18ba0984839f85853b29fadaf992f7dba8fd0ca0fbeae34de2b8735222dc7a37",
+      "bytes": 1075
+    }
+  ],
+  "input_git_commit": "50eb2549203c946cb0b1a14a93863e3d2be40d44",
+  "input_curated_sha256": "0a6bc9dc59f42b5397f6811837b849d1c04857b00491bbe804d19d1010b4ce86",
+  "input_curated_rows": 62226,
+  "input_db_sha256": "6175f4d4d43d4b44e7e4c3a7762d8a815dd2f554aaf95867d6ec1ae2666e5cf9",
+  "newly_reviewed_candidates": 2000,
+  "revisited_candidates": 0,
+  "review_rows": 2039,
+  "review_candidate_ids": 2000,
+  "review_verdict_rows": {
+    "accept": 983,
+    "reject": 1026,
+    "already_present": 30
+  },
+  "reading_repairs": 0,
+  "added_rows": 983,
+  "added_literals": 944,
+  "total_curated_rows": 63209,
+  "cumulative_reviewed_candidates": 99994,
+  "cumulative_candidate_decisions": {
+    "accept": 60401,
+    "reject": 38244,
+    "already_present": 1100,
+    "defer": 249
+  },
+  "candidate_pool": 146602,
+  "unreviewed_pool_candidates": 46608,
+  "regional_candidates_still_held": 924,
+  "selection": "Next 2000 individually reviewed candidates offsets93250:95250 IDs97994–99993. All1331 initial accepts rechecked;357 cold/narrow/unstable expressions withdrawn, leaving974 before normalization and duplicate detection. Nine pinned Cantopop observations and all13 supplied spans read; cross-word fragments and chorus repetitions are not independent everyday word frequency. Previous decisions and source objects preserved.",
+  "lyric_corpus": {
+    "repository": "https://github.com/jasonleeubc/Cantopop-corpus",
+    "commit": "018e88540b917c40dc3f7248ed98908208544b54",
+    "license": "CC-BY-4.0",
+    "observations_policy": "Pinned local lyric-word observations only; not approved readings or everyday frequency. Full-word context reviewed separately."
+  },
+  "frequency_meaning": "Upstream dictionary weight, not measured corpus occurrences or a product ranking weight. Proposed usage rank is AI contextual judgment and is not substituted for available measured whole-word frequency.",
+  "normalization_policy": "Existing s2hk plus94 exact-literal restorations and15 preserved senses across28 input keys; cache30 unchanged. No new normalization exception, relation migration, previous-source reading repair or overlay deletion in B52.",
+  "second_pass_familiarity_withdrawals": 357,
+  "net_familiarity_withdrawals": 357,
+  "explicit_restored_candidates": [],
+  "initial_accepted_candidates": 1331,
+  "final_accepted_candidates_before_dedup": 974,
+  "reading_policy": "No automatic promotion of character-default drafts; whole-word review plus contextual high-risk and compound-reference audit; 病=beng6 only",
+  "original_curated_rows_preserved": 62226,
+  "previous_source_repairs_explicit": true,
+  "review_tsv_sha256": "e4853729981e587bcb828384efa30882db8fc0707ec41634956ed3b9539183d5",
+  "validation": {
+    "merged_rows": 242205,
+    "merged_literals": 224852,
+    "unique_triples": 242203,
+    "baseline_rows": 241222,
+    "all_previous_rows_and_multiplicities_retained": true,
+    "confirmed_old_wrong_sense_readings_removed": 0,
+    "all_accepted_primary_reading_checks": 944,
+    "old_word_grades_preserved": 124243,
+    "new_source_readings": 983,
+    "new_pairs_retained": true,
+    "search_checks": 563,
+    "preferred_reading_checks": 41,
+    "word_usage_keys": 125187,
+    "withdrawn_curated_literals": 2051,
+    "live_db_unchanged": true,
+    "full_final_inventory_rebuilt_and_compared": true,
+    "final_preference_adjustment": {
+      "char": "甲乙",
+      "jyutping": "gaap3 jyut6",
+      "retained_alternative": "gaap3 jyut3",
+      "modes": 3,
+      "source_inventory_identical_to_prior_full_build": true,
+      "all_primary_readings_rechecked": true,
+      "all_full_pools_reranked": true,
+      "previous_single_query_preference_superseded": true,
+      "pre_adjustment_search_report": "b52-before-preference-adjustment-validation.json"
+    },
+    "backend_pwa_essay_frequency_keys": 266884,
+    "essay_frequency_tables_equal": true,
+    "backend_pwa_word_grade_keys": 125187,
+    "backend_pwa_curated_reading_grade_keys": 63974,
+    "word_grade_tables_equal": true,
+    "curated_reading_grade_tables_equal": true,
+    "old_source_rows_preserved": 62226,
+    "old_reading_grades_preserved": 62226,
+    "old_usage_rows_preserved": 124243,
+    "old_judgments_preserved": 16963,
+    "new_source_forms": 944,
+    "new_merged_forms": 944,
+    "existing_merged_forms_with_new_readings": [],
+    "raw_source_forms": 60954,
+    "normalized_source_forms": 60952,
+    "new_word_usage_judgments": 284,
+    "unrelated_user_files_unchanged": true,
+    "previous_overlay_bytes_preserved": true,
+    "existing_runtime_readings_mirrored": 0,
+    "exact_existing_wrong_sense_overlay_deletions": 0,
+    "new_merged_readings": 983,
+    "new_merged_readings_net": 983,
+    "client_query_engine_with_new_dictionary": {
+      "checks": 285,
+      "modes": 3,
+      "new_dictionary_loaded_in_client_engine": true,
+      "preferred_readings_equal": true
+    },
+    "heteronym_full_pool_ranking_equal": true,
+    "non_han_tiers_match_backend": true,
+    "unicode_scalar_tiebreak_parity": true,
+    "new_exact_literal_restorations": {},
+    "normalization_impact": {
+      "new_exact_restorations": {},
+      "exact_restorations_total": 94,
+      "preserved_literal_senses_total": 15,
+      "preserved_literal_input_keys_total": 28,
+      "normalization_code_unchanged": true,
+      "relation_source_bytes_unchanged": true,
+      "stored_relation_literal_keys_migrated": 0,
+      "cache_format": "30",
+      "previous_runtime_rows_preserved": true
+    },
+    "prior_runtime_rows_affected_by_new_normalization": 0,
+    "prior_word_usage_records_affected_by_new_normalization": 0,
+    "prior_stored_relation_keys_migrated": 0,
+    "previous_source_rows_preserved": 62226,
+    "previous_reading_grades_preserved": 62226,
+    "explicit_previous_reading_grade_repairs": 0,
+    "previous_word_usage_records_preserved": 124243,
+    "previous_word_usage_judgments_preserved": 16963,
+    "new_word_normalization_idempotent": true,
+    "full_pool_parity_queries": 100,
+    "full_pool_parity_rows": 111701,
+    "full_pool_ranking_equal": true,
+    "smoke_tests": 330,
+    "smoke_passed": 326,
+    "smoke_skipped": 4,
+    "seam_tests": 89,
+    "seam_passed": 83,
+    "seam_skipped": 6,
+    "guide_query_tests": 1,
+    "guide_query_tests_passed": true,
+    "pwa_build": true,
+    "portable_build": true,
+    "full_app_typecheck": true,
+    "ranking_and_lookup_self_checks": true,
+    "targeted_node_typecheck": true,
+    "pwa_artifact_guard": true,
+    "layer_cache_format": "30",
+    "layer_cache_cold_misses": 8,
+    "layer_cache_warm_hits": 8,
+    "layer_cache_counter_matches_uncached_db": true,
+    "paging_fixture": {
+      "total": 206,
+      "first_page": 200,
+      "second_page": 6,
+      "everyday_literal_inserted_last_ranks_first": true,
+      "modes": 3
+    },
+    "final_reading_audit": {
+      "batch": "B52",
+      "initial_accepted": 1331,
+      "withdrawals": [
+        {
+          "id": 98004,
+          "char": "用心用意",
+          "previous_jyutping": "jung6 sam1 jung6 ji3",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98006,
+          "char": "用心竭力",
+          "previous_jyutping": "jung6 sam1 kit3 lik6",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98038,
+          "char": "用管窺天",
+          "previous_jyutping": "jung6 gun2 kwai1 tin1",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98052,
+          "char": "用非其人",
+          "previous_jyutping": "jung6 fei1 kei4 jan4",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98053,
+          "char": "用非所長",
+          "previous_jyutping": "jung6 fei1 so2 zoeng2",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98065,
+          "char": "甩脂機",
+          "previous_jyutping": "lat1 zi1 gei1",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98093,
+          "char": "由博返約",
+          "previous_jyutping": "jau4 bok3 faan2 joek3",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98112,
+          "char": "甲冠",
+          "previous_jyutping": "gaap3 gun3",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98113,
+          "char": "甲冠天下",
+          "previous_jyutping": "gaap3 gun3 tin1 haa6",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98126,
+          "char": "甲種射線",
+          "previous_jyutping": "gaap3 zung2 se6 sin3",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98127,
+          "char": "甲種粒子",
+          "previous_jyutping": "gaap3 zung2 nap1 zi2",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98134,
+          "char": "甲紫",
+          "previous_jyutping": "gaap3 zi2",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98137,
+          "char": "甲胎蛋白",
+          "previous_jyutping": "gaap3 toi1 daan2 baak6",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98138,
+          "char": "甲藻",
+          "previous_jyutping": "gaap3 zou2",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98147,
+          "char": "申告",
+          "previous_jyutping": "san1 gou3",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98154,
+          "char": "申禍無良",
+          "previous_jyutping": "san1 wo6 mou4 loeng4",
+          "reason": "申禍無良字義不明，不能憑近形重寫另一成語。"
+        },
+        {
+          "id": 98159,
+          "char": "申請入團",
+          "previous_jyutping": "san1 cing2 jap6 tyun4",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98160,
+          "char": "申請入黨",
+          "previous_jyutping": "san1 cing2 jap6 dong2",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98173,
+          "char": "男人幫",
+          "previous_jyutping": "naam4 jan2 bong1",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98194,
+          "char": "男大須婚",
+          "previous_jyutping": "naam4 daai6 seoi1 fan1",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98211,
+          "char": "男婚女聘",
+          "previous_jyutping": "naam4 fan1 neoi5 ping3",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98212,
+          "char": "男子化",
+          "previous_jyutping": "naam4 zi2 faa3",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98241,
+          "char": "男親女愛",
+          "previous_jyutping": "naam4 can1 neoi5 oi3",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98245,
+          "char": "男賊女娼",
+          "previous_jyutping": "naam4 caak6 neoi5 coeng1",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98261,
+          "char": "界面區",
+          "previous_jyutping": "gaai3 min2 keoi1",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98267,
+          "char": "畏天知命",
+          "previous_jyutping": "wai3 tin1 zi1 ming6",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98268,
+          "char": "畏威懷德",
+          "previous_jyutping": "wai3 wai1 waai4 dak1",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98274,
+          "char": "畏憚",
+          "previous_jyutping": "wai3 daan6",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98276,
+          "char": "畏服",
+          "previous_jyutping": "wai3 fuk6",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98290,
+          "char": "留城",
+          "previous_jyutping": "lau4 sing4",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98309,
+          "char": "留所服刑",
+          "previous_jyutping": "lau4 so2 fuk6 jing4",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98313,
+          "char": "留校查看",
+          "previous_jyutping": "lau4 haau6 caa4 hon3",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98320,
+          "char": "留種地",
+          "previous_jyutping": "lau4 zung2 dei6",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98321,
+          "char": "留筆",
+          "previous_jyutping": "lau4 bat1",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98323,
+          "char": "留置送達",
+          "previous_jyutping": "lau4 zi3 sung3 daat6",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98335,
+          "char": "留話機",
+          "previous_jyutping": "lau4 waa6 gei1",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98352,
+          "char": "畜妻養子",
+          "previous_jyutping": "cuk1 cai1 joeng5 zi2",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98355,
+          "char": "畜牧時代",
+          "previous_jyutping": "cuk1 muk6 si4 doi6",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98356,
+          "char": "畜牧法",
+          "previous_jyutping": "cuk1 muk6 faat3",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98363,
+          "char": "畢業分配",
+          "previous_jyutping": "bat1 jip6 fan1 pui3",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98395,
+          "char": "略注",
+          "previous_jyutping": "loek6 zyu3",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98400,
+          "char": "略言之",
+          "previous_jyutping": "loek6 jin4 zi1",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98402,
+          "char": "略語表",
+          "previous_jyutping": "loek6 jyu5 biu2",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98419,
+          "char": "番杏",
+          "previous_jyutping": "faan1 hang6",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98426,
+          "char": "番紅花色",
+          "previous_jyutping": "faan1 hung4 faa1 sik1",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98427,
+          "char": "番茄花園",
+          "previous_jyutping": "faan1 ke2 faa1 jyun4",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98428,
+          "char": "番菜",
+          "previous_jyutping": "faan1 coi3",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98437,
+          "char": "畫供",
+          "previous_jyutping": "waa2 gung1",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98443,
+          "char": "畫史",
+          "previous_jyutping": "waa2 si2",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98444,
+          "char": "畫品",
+          "previous_jyutping": "waa2 ban2",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98455,
+          "char": "畫地成牢",
+          "previous_jyutping": "waak6 dei6 sing4 lou4",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98458,
+          "char": "畫布繃架",
+          "previous_jyutping": "waa2 bou3 bang1 gaa3",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98460,
+          "char": "畫意詩情",
+          "previous_jyutping": "waa2 ji3 si1 cing4",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98468,
+          "char": "畫法幾何",
+          "previous_jyutping": "waa2 faat3 gei2 ho4",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98477,
+          "char": "畫絹",
+          "previous_jyutping": "waa2 gyun3",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98479,
+          "char": "畫聖",
+          "previous_jyutping": "waa2 sing3",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98487,
+          "char": "畫虎刻鵠",
+          "previous_jyutping": "waak6 fu2 hak1 huk6",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98490,
+          "char": "畫虎類狗",
+          "previous_jyutping": "waak6 fu2 leoi6 gau2",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98497,
+          "char": "畫謎",
+          "previous_jyutping": "waa2 mai4",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98513,
+          "char": "異俗",
+          "previous_jyutping": "ji6 zuk6",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98514,
+          "char": "異動股",
+          "previous_jyutping": "ji6 dung6 gu2",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98517,
+          "char": "異卉奇花",
+          "previous_jyutping": "ji6 wai2 kei4 faa1",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98520,
+          "char": "異名同實",
+          "previous_jyutping": "ji6 ming4 tung4 sat6",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98527,
+          "char": "異域傳奇",
+          "previous_jyutping": "ji6 wik6 cyun4 kei4",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98530,
+          "char": "異寶奇珍",
+          "previous_jyutping": "ji6 bou2 kei4 zan1",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98544,
+          "char": "異態",
+          "previous_jyutping": "ji6 taai3",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98556,
+          "char": "異構化",
+          "previous_jyutping": "ji6 kau3 faa3",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98569,
+          "char": "異聞傳說",
+          "previous_jyutping": "ji6 man4 cyun4 syut3",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98577,
+          "char": "異議書",
+          "previous_jyutping": "ji6 ji5 syu1",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98581,
+          "char": "異軍特起",
+          "previous_jyutping": "ji6 gwan1 dak6 hei2",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98583,
+          "char": "異途同歸",
+          "previous_jyutping": "ji6 tou4 tung4 gwai1",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98609,
+          "char": "當代意識",
+          "previous_jyutping": "dong1 doi6 ji3 sik1",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98624,
+          "char": "當午",
+          "previous_jyutping": "dong1 ng5",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98625,
+          "char": "當口",
+          "previous_jyutping": "dong1 hau2",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98657,
+          "char": "當機立決",
+          "previous_jyutping": "dong1 gei1 laap6 dyun6",
+          "reason": "當機立決是有據而少用的變體，不改成當機立斷而製造另一詞的來源。"
+        },
+        {
+          "id": 98659,
+          "char": "當此",
+          "previous_jyutping": "dong1 ci2",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98670,
+          "char": "當空照",
+          "previous_jyutping": "dong1 hung1 ziu3",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98679,
+          "char": "當街賣",
+          "previous_jyutping": "dong1 gaai1 maai6",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98685,
+          "char": "當道者",
+          "previous_jyutping": "dong1 dou6 ze2",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98692,
+          "char": "當面錯過",
+          "previous_jyutping": "dong1 min2 co3 gwo3",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98701,
+          "char": "畸形物",
+          "previous_jyutping": "kei1 jing4 mat6",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98703,
+          "char": "畸形體",
+          "previous_jyutping": "kei1 jing4 tai2",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98707,
+          "char": "畸胎瘤",
+          "previous_jyutping": "kei1 toi1 lau2",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98710,
+          "char": "畸重",
+          "previous_jyutping": "kei1 cung5",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98722,
+          "char": "疊加定律",
+          "previous_jyutping": "dip6 gaa1 ding6 leot6",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98723,
+          "char": "疊加定理",
+          "previous_jyutping": "dip6 gaa1 ding6 lei5",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98734,
+          "char": "疊接",
+          "previous_jyutping": "dip6 zip3",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98740,
+          "char": "疊石為山",
+          "previous_jyutping": "dip6 sek6 wai4 saan1",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98742,
+          "char": "疊蓋",
+          "previous_jyutping": "dip6 goi3",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98747,
+          "char": "疏堵",
+          "previous_jyutping": "so1 dou2",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98749,
+          "char": "疏密度",
+          "previous_jyutping": "so1 mat6 dou6",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98763,
+          "char": "疏水器",
+          "previous_jyutping": "so1 seoi2 hei3",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98765,
+          "char": "疏水閥",
+          "previous_jyutping": "so1 seoi2 fat6",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98766,
+          "char": "疏浚機",
+          "previous_jyutping": "so1 zeon3 gei1",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98767,
+          "char": "疏淤",
+          "previous_jyutping": "so1 jyu1",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98768,
+          "char": "疏淺",
+          "previous_jyutping": "so1 cin2",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98771,
+          "char": "疏疏拉拉",
+          "previous_jyutping": "so1 so1 laai1 laai1",
+          "reason": "疏疏拉拉帶明顯地域口語色彩，本輪不收。"
+        },
+        {
+          "id": 98775,
+          "char": "疏露",
+          "previous_jyutping": "so1 lou6",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98782,
+          "char": "疑則勿用",
+          "previous_jyutping": "ji4 zak1 mat6 jung6",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98793,
+          "char": "疑端",
+          "previous_jyutping": "ji4 dyun1",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98811,
+          "char": "疤斑",
+          "previous_jyutping": "baa1 baan1",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98812,
+          "char": "疤痕疙瘩",
+          "previous_jyutping": "baa1 han4 gat6 daap3",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98813,
+          "char": "疤臉",
+          "previous_jyutping": "baa1 lim5",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98814,
+          "char": "疥蟎病",
+          "previous_jyutping": "gaai3 mun5 beng6",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98823,
+          "char": "疲弊",
+          "previous_jyutping": "pei4 bai6",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98832,
+          "char": "疼憐",
+          "previous_jyutping": "tang4 lin4",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98843,
+          "char": "疾控中心",
+          "previous_jyutping": "zat6 hung3 zung1 sam1",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98845,
+          "char": "疾病機理",
+          "previous_jyutping": "zat6 beng6 gei1 lei5",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98855,
+          "char": "疾趨而過",
+          "previous_jyutping": "zat6 ceoi1 ji4 gwo3",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98856,
+          "char": "疾足先得",
+          "previous_jyutping": "zat6 zuk1 sin1 dak1",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98858,
+          "char": "疾進",
+          "previous_jyutping": "zat6 zeon3",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98865,
+          "char": "疾驅",
+          "previous_jyutping": "zat6 keoi1",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98882,
+          "char": "病孩",
+          "previous_jyutping": "beng6 haai4",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98888,
+          "char": "病怏怏",
+          "previous_jyutping": "beng6 joeng1 joeng1",
+          "reason": "病怏怏有書面變體用例，但與病殃殃／病懨懨的字形讀法不宜混拼；本輪按較少用變體撤回，不把怏 joeng2 擅改懨 jim1 或以 joeng1 猜入庫。"
+        },
+        {
+          "id": 98895,
+          "char": "病枝",
+          "previous_jyutping": "beng6 zi1",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98896,
+          "char": "病染膏肓",
+          "previous_jyutping": "beng6 jim5 gou1 fong1",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98904,
+          "char": "病殘率",
+          "previous_jyutping": "beng6 caan4 leot2",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98907,
+          "char": "病毒基因",
+          "previous_jyutping": "beng6 duk6 gei1 jan1",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98911,
+          "char": "病毒疣",
+          "previous_jyutping": "beng6 duk6 jau4",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98932,
+          "char": "病理解剖",
+          "previous_jyutping": "beng6 lei5 gaai2 fau2",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98933,
+          "char": "病理變化",
+          "previous_jyutping": "beng6 lei5 bin3 faa3",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98943,
+          "char": "病骨支離",
+          "previous_jyutping": "beng6 gwat1 zi1 lei4",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98944,
+          "char": "病體違和",
+          "previous_jyutping": "beng6 tai2 wai4 wo4",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98949,
+          "char": "痕記",
+          "previous_jyutping": "han4 gei3",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98954,
+          "char": "痘病毒",
+          "previous_jyutping": "dau2 beng6 duk6",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98960,
+          "char": "痛之入骨",
+          "previous_jyutping": "tung3 zi1 jap6 gwat1",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98961,
+          "char": "痛入心脾",
+          "previous_jyutping": "tung3 jap6 sam1 pei4",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98969,
+          "char": "痛心切骨",
+          "previous_jyutping": "tung3 sam1 cit3 gwat1",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98985,
+          "char": "痛痛病",
+          "previous_jyutping": "tung3 tung3 beng6",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 98987,
+          "char": "痛癢相關",
+          "previous_jyutping": "tung3 joeng5 soeng1 gwaan1",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99007,
+          "char": "痰跡",
+          "previous_jyutping": "taam4 zik1",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99008,
+          "char": "痰飲",
+          "previous_jyutping": "taam4 jam2",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99026,
+          "char": "瘀積",
+          "previous_jyutping": "jyu2 zik1",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99027,
+          "char": "瘀膿",
+          "previous_jyutping": "jyu2 nung4",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99029,
+          "char": "瘋丫頭",
+          "previous_jyutping": "fung1 aa1 tau4",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99034,
+          "char": "瘋婆子",
+          "previous_jyutping": "fung1 po4 zi2",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99044,
+          "char": "瘋語",
+          "previous_jyutping": "fung1 jyu5",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99046,
+          "char": "瘋馬",
+          "previous_jyutping": "fung1 maa5",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99053,
+          "char": "瘟雞",
+          "previous_jyutping": "wan1 gai1",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99055,
+          "char": "瘢點",
+          "previous_jyutping": "baan1 dim2",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99058,
+          "char": "瘦丐",
+          "previous_jyutping": "sau3 koi3",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99067,
+          "char": "瘦稜稜",
+          "previous_jyutping": "sau3 ling4 ling4",
+          "reason": "瘦稜稜為地域性疊語，本輪不收。"
+        },
+        {
+          "id": 99073,
+          "char": "瘦骨嶙嶙",
+          "previous_jyutping": "sau3 gwat1 leon4 leon4",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99079,
+          "char": "瘧蟲",
+          "previous_jyutping": "joek6 cung4",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99080,
+          "char": "瘴癘之氣",
+          "previous_jyutping": "zoeng3 lai6 zi1 hei3",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99085,
+          "char": "療毒",
+          "previous_jyutping": "liu4 duk6",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99091,
+          "char": "癌基因",
+          "previous_jyutping": "ngaam4 gei1 jan1",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99103,
+          "char": "癟癟的",
+          "previous_jyutping": "bit6 bit6 dik1",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99104,
+          "char": "癟着嘴",
+          "previous_jyutping": "bit6 zoek6 zeoi2",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99105,
+          "char": "癟谷",
+          "previous_jyutping": "bit6 guk1",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99107,
+          "char": "癢覺",
+          "previous_jyutping": "joeng5 gok3",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99111,
+          "char": "癩癬",
+          "previous_jyutping": "laai3 sin2",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99113,
+          "char": "癬疥",
+          "previous_jyutping": "sin2 gaai3",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99114,
+          "char": "癭病",
+          "previous_jyutping": "jing2 beng6",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99115,
+          "char": "癭瘤",
+          "previous_jyutping": "jing2 lau2",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99117,
+          "char": "癰腫",
+          "previous_jyutping": "jung1 zung2",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99120,
+          "char": "癱廢",
+          "previous_jyutping": "taan1 fai3",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99133,
+          "char": "登山涉嶺",
+          "previous_jyutping": "dang1 saan1 sip3 ling5",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99134,
+          "char": "登山涉水",
+          "previous_jyutping": "dang1 saan1 sip3 seoi2",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99155,
+          "char": "登陸器",
+          "previous_jyutping": "dang1 luk6 hei3",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99160,
+          "char": "登高必賦",
+          "previous_jyutping": "dang1 gou1 bit1 fu3",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99161,
+          "char": "登高自卑",
+          "previous_jyutping": "dang1 gou1 zi6 bei1",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99190,
+          "char": "發信機",
+          "previous_jyutping": "faat3 seon3 gei1",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99191,
+          "char": "發信站",
+          "previous_jyutping": "faat3 seon3 zaam6",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99199,
+          "char": "發光強度",
+          "previous_jyutping": "faat3 gwong1 koeng4 dou6",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99203,
+          "char": "發光粉",
+          "previous_jyutping": "faat3 gwong1 fan2",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99206,
+          "char": "發凡",
+          "previous_jyutping": "faat3 faan4",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99207,
+          "char": "發凡起例",
+          "previous_jyutping": "faat3 faan4 hei2 lai6",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99218,
+          "char": "發包人",
+          "previous_jyutping": "faat3 baau1 jan4",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99219,
+          "char": "發包方",
+          "previous_jyutping": "faat3 baau1 fong1",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99223,
+          "char": "發咒",
+          "previous_jyutping": "faat3 zau3",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99237,
+          "char": "發報器",
+          "previous_jyutping": "faat3 bou3 hei3",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99245,
+          "char": "發射功率",
+          "previous_jyutping": "faat3 se6 gung1 leot2",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99249,
+          "char": "發射物",
+          "previous_jyutping": "faat3 se6 mat6",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99251,
+          "char": "發射臂",
+          "previous_jyutping": "faat3 se6 bei3",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99258,
+          "char": "發展黨員",
+          "previous_jyutping": "faat3 zin2 dong2 jyun4",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99266,
+          "char": "發引",
+          "previous_jyutping": "faat3 jan5",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99267,
+          "char": "發彩信",
+          "previous_jyutping": "faat3 coi2 seon3",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99276,
+          "char": "發情週期",
+          "previous_jyutping": "faat3 cing4 zau1 kei4",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99277,
+          "char": "發惱",
+          "previous_jyutping": "faat3 nou5",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99282,
+          "char": "發抒心志",
+          "previous_jyutping": "faat3 syu1 sam1 zi3",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99283,
+          "char": "發掉",
+          "previous_jyutping": "faat3 diu6",
+          "reason": "原歌詞是蒸發掉內部切段；發掉本身穩定復用不足，不將副歌三次當獨立頻率。"
+        },
+        {
+          "id": 99284,
+          "char": "發排",
+          "previous_jyutping": "faat3 paai4",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99287,
+          "char": "發揚成績",
+          "previous_jyutping": "faat3 joeng4 sing4 zik1",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99294,
+          "char": "發揮餘熱",
+          "previous_jyutping": "faat3 fai1 jyu4 jit6",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99298,
+          "char": "發政施仁",
+          "previous_jyutping": "faat3 zing3 si1 jan4",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99306,
+          "char": "發暗",
+          "previous_jyutping": "faat3 am3",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99311,
+          "char": "發案地",
+          "previous_jyutping": "faat3 on3 dei6",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99312,
+          "char": "發案率",
+          "previous_jyutping": "faat3 on3 leot2",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99317,
+          "char": "發標人",
+          "previous_jyutping": "faat3 biu1 jan4",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99319,
+          "char": "發氣",
+          "previous_jyutping": "faat3 hei3",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99320,
+          "char": "發汗劑",
+          "previous_jyutping": "faat3 hon6 zai1",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99321,
+          "char": "發泡機",
+          "previous_jyutping": "faat3 pou5 gei1",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99324,
+          "char": "發濁音",
+          "previous_jyutping": "faat3 zuk6 jam1",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99325,
+          "char": "發火器",
+          "previous_jyutping": "faat3 fo2 hei3",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99327,
+          "char": "發炎性",
+          "previous_jyutping": "faat3 jim4 sing3",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99331,
+          "char": "發熱板",
+          "previous_jyutping": "faat3 jit6 baan2",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99332,
+          "char": "發熱管",
+          "previous_jyutping": "faat3 jit6 gun2",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99347,
+          "char": "發生源",
+          "previous_jyutping": "faat3 sang1 jyun4",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99355,
+          "char": "發疹子",
+          "previous_jyutping": "faat3 can2 zi2",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99363,
+          "char": "發矇解惑",
+          "previous_jyutping": "faat3 mung4 gaai2 waak6",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99384,
+          "char": "發育條件",
+          "previous_jyutping": "faat3 juk6 tiu4 gin2",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99388,
+          "char": "發育調節",
+          "previous_jyutping": "faat3 juk6 tiu4 zit3",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99395,
+          "char": "發舊",
+          "previous_jyutping": "faat3 gau6",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99396,
+          "char": "發船",
+          "previous_jyutping": "faat3 syun4",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99397,
+          "char": "發芽勢",
+          "previous_jyutping": "faat3 ngaa4 sai3",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99398,
+          "char": "發芽生殖",
+          "previous_jyutping": "faat3 ngaa4 sang1 zik6",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99399,
+          "char": "發芽試驗",
+          "previous_jyutping": "faat3 ngaa4 si3 jim6",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99401,
+          "char": "發蒙振落",
+          "previous_jyutping": "faat3 mung4 zan3 lok6",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99405,
+          "char": "發藍",
+          "previous_jyutping": "faat3 laam4",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99406,
+          "char": "發行業",
+          "previous_jyutping": "faat3 hang4 jip6",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99418,
+          "char": "發覺出",
+          "previous_jyutping": "faat3 gok3 ceot1",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99424,
+          "char": "發護髮",
+          "previous_jyutping": "faat3 wu6 faat3",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99426,
+          "char": "發財路",
+          "previous_jyutping": "faat3 coi4 lou6",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99434,
+          "char": "發起燒來",
+          "previous_jyutping": "faat3 hei2 siu1 loi4",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99435,
+          "char": "發跡史",
+          "previous_jyutping": "faat3 zik1 si2",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99437,
+          "char": "發車場",
+          "previous_jyutping": "faat3 ce1 coeng4",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99443,
+          "char": "發送站",
+          "previous_jyutping": "faat3 sung3 zaam6",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99447,
+          "char": "發進",
+          "previous_jyutping": "faat3 zeon3",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99450,
+          "char": "發運人",
+          "previous_jyutping": "faat3 wan6 jan4",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99457,
+          "char": "發酵飼料",
+          "previous_jyutping": "faat3 haau1 zi6 liu2",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99458,
+          "char": "發野",
+          "previous_jyutping": "faat3 je5",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99465,
+          "char": "發音器",
+          "previous_jyutping": "faat3 jam1 hei3",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99466,
+          "char": "發音學",
+          "previous_jyutping": "faat3 jam1 hok6",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99471,
+          "char": "發點",
+          "previous_jyutping": "faat3 dim2",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99475,
+          "char": "白前",
+          "previous_jyutping": "baak6 cin4",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99477,
+          "char": "白喉毒素",
+          "previous_jyutping": "baak6 hau4 duk6 sou3",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99480,
+          "char": "白堊質",
+          "previous_jyutping": "baak6 ok3 zat1",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99482,
+          "char": "白對蝦",
+          "previous_jyutping": "baak6 deoi3 haa1",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99486,
+          "char": "白扯",
+          "previous_jyutping": "baak6 ce2",
+          "reason": "白扯帶明顯中國北方口語色彩，不符本輪範圍。"
+        },
+        {
+          "id": 99492,
+          "char": "白條豬",
+          "previous_jyutping": "baak6 tiu4 zyu1",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99493,
+          "char": "白條雞",
+          "previous_jyutping": "baak6 tiu4 gai1",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99498,
+          "char": "白浪掀天",
+          "previous_jyutping": "baak6 long6 hin1 tin1",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99503,
+          "char": "白玉微瑕",
+          "previous_jyutping": "baak6 juk6 mei4 haa4",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99514,
+          "char": "白盔",
+          "previous_jyutping": "baak6 kwai1",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99518,
+          "char": "白米分級",
+          "previous_jyutping": "baak6 mai5 fan1 kap1",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99520,
+          "char": "白糊糊",
+          "previous_jyutping": "baak6 wu4 wu4",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99522,
+          "char": "白腹",
+          "previous_jyutping": "baak6 fuk1",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99524,
+          "char": "白色棉",
+          "previous_jyutping": "baak6 sik1 min4",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99527,
+          "char": "白芨",
+          "previous_jyutping": "baak6 kap6",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99530,
+          "char": "白茯苓",
+          "previous_jyutping": "baak6 fuk6 ling4",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99537,
+          "char": "白血",
+          "previous_jyutping": "baak6 hyut3",
+          "reason": "原歌詞是明白／血肉跨詞；白血作獨立詞日常復用不足，不把這次命中當白血詞頻。"
+        },
+        {
+          "id": 99540,
+          "char": "白話八股",
+          "previous_jyutping": "baak6 waa2 baat3 gu2",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99548,
+          "char": "白面書郎",
+          "previous_jyutping": "baak6 min6 syu1 long4",
+          "reason": "白面書郎為教育部辭典有據變體，非郎字誤寫；日常遠少於白面書生，本輪不收，也不改作書生來源。"
+        },
+        {
+          "id": 99552,
+          "char": "白頭相併",
+          "previous_jyutping": "baak6 tau4 soeng1 ping3",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99555,
+          "char": "白頭鳥",
+          "previous_jyutping": "baak6 tau4 niu5",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99559,
+          "char": "白首不渝",
+          "previous_jyutping": "baak6 sau2 bat1 jyu4",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99560,
+          "char": "白首之心",
+          "previous_jyutping": "baak6 sau2 zi1 sam1",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99562,
+          "char": "白首同歸",
+          "previous_jyutping": "baak6 sau2 tung4 gwai1",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99563,
+          "char": "白首如新",
+          "previous_jyutping": "baak6 sau2 jyu4 san1",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99564,
+          "char": "白首相知",
+          "previous_jyutping": "baak6 sau2 soeng1 zi1",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99568,
+          "char": "白骨再肉",
+          "previous_jyutping": "baak6 gwat1 zoi3 juk6",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99569,
+          "char": "白骨露野",
+          "previous_jyutping": "baak6 gwat1 lou6 je5",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99572,
+          "char": "白髮皤然",
+          "previous_jyutping": "baak6 faat3 po4 jin4",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99578,
+          "char": "白麝香",
+          "previous_jyutping": "baak6 se6 hoeng1",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99579,
+          "char": "白麪書郎",
+          "previous_jyutping": "baak6 min6 syu1 long4",
+          "reason": "白麪書郎對應較少用白面書郎；不是把郎換生的誤字修正，本輪不收。"
+        },
+        {
+          "id": 99582,
+          "char": "白鼬",
+          "previous_jyutping": "baak6 jau2",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99583,
+          "char": "白齒青眉",
+          "previous_jyutping": "baak6 ci2 cing1 mei4",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99584,
+          "char": "百丈竿頭",
+          "previous_jyutping": "baak3 zoeng6 gon1 tau4",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99588,
+          "char": "百不一遇",
+          "previous_jyutping": "baak3 bat1 jat1 jyu6",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99589,
+          "char": "百不當一",
+          "previous_jyutping": "baak3 bat1 dong3 jat1",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99591,
+          "char": "百世不易",
+          "previous_jyutping": "baak3 sai3 bat1 ji6",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99592,
+          "char": "百世不磨",
+          "previous_jyutping": "baak3 sai3 bat1 mo4",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99593,
+          "char": "百世之師",
+          "previous_jyutping": "baak3 sai3 zi1 si1",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99597,
+          "char": "百事無成",
+          "previous_jyutping": "baak3 si6 mou4 sing4",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99601,
+          "char": "百代過客",
+          "previous_jyutping": "baak3 doi6 gwo3 haak3",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99603,
+          "char": "百依百從",
+          "previous_jyutping": "baak3 ji1 baak3 cung4",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99611,
+          "char": "百口難分",
+          "previous_jyutping": "baak3 hau2 naan4 fan1",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99616,
+          "char": "百問不厭",
+          "previous_jyutping": "baak3 man6 bat1 jim3",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99617,
+          "char": "百問不煩",
+          "previous_jyutping": "baak3 man6 bat1 faan4",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99622,
+          "char": "百壽圖",
+          "previous_jyutping": "baak3 sau6 tou4",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99632,
+          "char": "百尺無枝",
+          "previous_jyutping": "baak3 cek3 mou4 zi1",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99633,
+          "char": "百川赴海",
+          "previous_jyutping": "baak3 cyun1 fu6 hoi2",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99638,
+          "char": "百年之業",
+          "previous_jyutping": "baak3 nin4 zi1 jip6",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99643,
+          "char": "百年好事",
+          "previous_jyutping": "baak3 nin4 hou2 si6",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99649,
+          "char": "百年諧老",
+          "previous_jyutping": "baak3 nin4 haai4 lou5",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99656,
+          "char": "百忍成金",
+          "previous_jyutping": "baak3 jan2 sing4 gam1",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99658,
+          "char": "百念皆灰",
+          "previous_jyutping": "baak3 nim6 gaai1 fui1",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99662,
+          "char": "百態橫生",
+          "previous_jyutping": "baak3 taai3 waang4 sang1",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99666,
+          "char": "百憂解",
+          "previous_jyutping": "baak3 jau1 gaai2",
+          "reason": "百憂解為特定藥品商標，不當一般詞收錄。"
+        },
+        {
+          "id": 99668,
+          "char": "百折不移",
+          "previous_jyutping": "baak3 zit3 bat1 ji4",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99669,
+          "char": "百折千回",
+          "previous_jyutping": "baak3 zit3 cin1 wui4",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99671,
+          "char": "百挑不厭",
+          "previous_jyutping": "baak3 tiu1 bat1 jim3",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99672,
+          "char": "百景",
+          "previous_jyutping": "baak3 ging2",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99680,
+          "char": "百歲之好",
+          "previous_jyutping": "baak3 seoi3 zi1 hou2",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99681,
+          "char": "百歲之後",
+          "previous_jyutping": "baak3 seoi3 zi1 hau6",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99686,
+          "char": "百死一生",
+          "previous_jyutping": "baak3 sei2 jat1 sang1",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99689,
+          "char": "百無一成",
+          "previous_jyutping": "baak3 mou4 jat1 sing4",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99691,
+          "char": "百無一能",
+          "previous_jyutping": "baak3 mou4 jat1 nang4",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99693,
+          "char": "百無所成",
+          "previous_jyutping": "baak3 mou4 so2 sing4",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99694,
+          "char": "百無是處",
+          "previous_jyutping": "baak3 mou4 si6 cyu3",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99695,
+          "char": "百犬吠聲",
+          "previous_jyutping": "baak3 hyun2 fai6 sing1",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99696,
+          "char": "百獸率舞",
+          "previous_jyutping": "baak3 sau3 seot1 mou5",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99700,
+          "char": "百紫千紅",
+          "previous_jyutping": "baak3 zi2 cin1 hung4",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99701,
+          "char": "百結",
+          "previous_jyutping": "baak3 git3",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99706,
+          "char": "百聞",
+          "previous_jyutping": "baak3 man4",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99717,
+          "char": "百般花樣",
+          "previous_jyutping": "baak3 bun1 faa1 joeng6",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99739,
+          "char": "百足不僵",
+          "previous_jyutping": "baak3 zuk1 bat1 goeng1",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99740,
+          "char": "百身何贖",
+          "previous_jyutping": "baak3 san1 ho4 suk6",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99741,
+          "char": "百載樹人",
+          "previous_jyutping": "baak3 zoi3 syu6 jan4",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99743,
+          "char": "百里之才",
+          "previous_jyutping": "baak3 lei5 zi1 coi4",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99745,
+          "char": "百鍊成剛",
+          "previous_jyutping": "baak3 lin6 sing4 gong3",
+          "reason": "百鍊成剛有文本變體用例；本輪按較少用變體撤回，不改成百煉成鋼，也不沿鋼 gong3 回填剛字。"
+        },
+        {
+          "id": 99752,
+          "char": "百骸",
+          "previous_jyutping": "baak3 hoi4",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99753,
+          "char": "百鬼眾魅",
+          "previous_jyutping": "baak3 gwai2 zung3 mei6",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99758,
+          "char": "皂片",
+          "previous_jyutping": "zou6 pin3",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99761,
+          "char": "皂白須分",
+          "previous_jyutping": "zou6 baak6 seoi1 fan1",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99764,
+          "char": "皂石",
+          "previous_jyutping": "zou6 sek6",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99765,
+          "char": "皂礬",
+          "previous_jyutping": "zou6 faan4",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99767,
+          "char": "皂素",
+          "previous_jyutping": "zou6 sou3",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99773,
+          "char": "皆成文章",
+          "previous_jyutping": "gaai1 sing4 man4 zoeng1",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99780,
+          "char": "皇家禮炮",
+          "previous_jyutping": "wong4 gaa1 lai5 paau3",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99786,
+          "char": "皇考",
+          "previous_jyutping": "wong4 haau2",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99789,
+          "char": "皎如日星",
+          "previous_jyutping": "gaau2 jyu4 jat6 sing1",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99790,
+          "char": "皎陽似火",
+          "previous_jyutping": "gaau2 joeng4 ci5 fo2",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99792,
+          "char": "皓齒蛾眉",
+          "previous_jyutping": "hou6 ci2 ngo4 mei4",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99795,
+          "char": "皮件廠",
+          "previous_jyutping": "pei4 gin6 cong2",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99805,
+          "char": "皮墊圈",
+          "previous_jyutping": "pei4 zin3 hyun1",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99806,
+          "char": "皮孔",
+          "previous_jyutping": "pei4 hung2",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99810,
+          "char": "皮帶機",
+          "previous_jyutping": "pei4 daai2 gei1",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99811,
+          "char": "皮帶秤",
+          "previous_jyutping": "pei4 daai2 cing3",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99815,
+          "char": "皮掌",
+          "previous_jyutping": "pei4 zoeng2",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99816,
+          "char": "皮書",
+          "previous_jyutping": "pei4 syu1",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99819,
+          "char": "皮毛之見",
+          "previous_jyutping": "pei4 mou4 zi1 gin3",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99823,
+          "char": "皮相之見",
+          "previous_jyutping": "pei4 soeng3 zi1 gin3",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99824,
+          "char": "皮相之談",
+          "previous_jyutping": "pei4 soeng3 zi1 taam4",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99826,
+          "char": "皮碗",
+          "previous_jyutping": "pei4 wun2",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99829,
+          "char": "皮管子",
+          "previous_jyutping": "pei4 gun2 zi2",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99830,
+          "char": "皮線",
+          "previous_jyutping": "pei4 sin3",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99837,
+          "char": "皮膚毒性",
+          "previous_jyutping": "pei4 fu1 duk6 sing3",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99848,
+          "char": "皮輥",
+          "previous_jyutping": "pei4 gwan2",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99857,
+          "char": "皮領",
+          "previous_jyutping": "pei4 ling5",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99858,
+          "char": "皮鼓",
+          "previous_jyutping": "pei4 gu2",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99859,
+          "char": "皸手繭足",
+          "previous_jyutping": "gwan1 sau2 gaan2 zuk1",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99868,
+          "char": "盆景土",
+          "previous_jyutping": "pun4 ging2 tou2",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99870,
+          "char": "盆景配件",
+          "previous_jyutping": "pun4 ging2 pui3 gin6",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99872,
+          "char": "盆盆罐罐",
+          "previous_jyutping": "pun4 pun4 gun3 gun3",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99875,
+          "char": "盈尺之地",
+          "previous_jyutping": "jing4 cek3 zi1 dei6",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99878,
+          "char": "盈篇累牘",
+          "previous_jyutping": "jing4 pin1 leoi6 duk6",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99879,
+          "char": "盈缺",
+          "previous_jyutping": "jing4 kyut3",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99880,
+          "char": "盈虛",
+          "previous_jyutping": "jing4 heoi1",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99887,
+          "char": "盒式帶",
+          "previous_jyutping": "hap6 sik1 daai3",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99889,
+          "char": "盒式磁盤",
+          "previous_jyutping": "hap6 sik1 ci4 pun4",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99894,
+          "char": "盔胄",
+          "previous_jyutping": "kwai1 zau6",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99899,
+          "char": "盛名難負",
+          "previous_jyutping": "sing6 ming4 naan4 fu3",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99905,
+          "char": "盛必慮衰",
+          "previous_jyutping": "sing6 bit1 leoi6 seoi1",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99914,
+          "char": "盛氣臨人",
+          "previous_jyutping": "sing6 hei3 lam4 jan4",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99931,
+          "char": "盛食厲兵",
+          "previous_jyutping": "sing6 sik6 lai6 bing1",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99939,
+          "char": "盜國大盜",
+          "previous_jyutping": "dou6 gwok3 daai6 dou6",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99944,
+          "char": "盜屍者",
+          "previous_jyutping": "dou6 si1 ze2",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99946,
+          "char": "盜憎主人",
+          "previous_jyutping": "dou6 zang1 zyu2 jan4",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99949,
+          "char": "盜林",
+          "previous_jyutping": "dou6 lam4",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99955,
+          "char": "盜犯",
+          "previous_jyutping": "dou6 faan6",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99958,
+          "char": "盜碼者",
+          "previous_jyutping": "dou6 maa5 ze2",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99971,
+          "char": "盜鈴掩耳",
+          "previous_jyutping": "dou6 ling4 jim2 ji5",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99973,
+          "char": "盜鐘掩耳",
+          "previous_jyutping": "dou6 zung1 jim2 ji5",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99976,
+          "char": "盜首",
+          "previous_jyutping": "dou6 sau2",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        },
+        {
+          "id": 99991,
+          "char": "盡全心",
+          "previous_jyutping": "zeon6 cyun4 sam1",
+          "reason": "罕用古語／成語變體、用途過窄的專科名稱或低復用搭配，日常及一般書面使用不足，本輪不收。"
+        }
+      ],
+      "restored_candidates": [],
+      "grade_changes": [
+        {
+          "id": 98018,
+          "char": "用户端",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98040,
+          "char": "用色",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98041,
+          "char": "用藥治療",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98043,
+          "char": "用計",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98047,
+          "char": "用足",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98051,
+          "char": "用錢如水",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98064,
+          "char": "甩幹",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98090,
+          "char": "由人操縱",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98101,
+          "char": "由此證明",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98104,
+          "char": "由盛而衰",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98106,
+          "char": "由誰來",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98123,
+          "char": "甲狀腺癌",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98148,
+          "char": "申報材料",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98149,
+          "char": "申報者",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98152,
+          "char": "申明立場",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98156,
+          "char": "申訴者",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98163,
+          "char": "申請材料",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98169,
+          "char": "申述立場",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98170,
+          "char": "男一號",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98177,
+          "char": "男保姆",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98179,
+          "char": "男傭人",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98180,
+          "char": "男兒淚",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98181,
+          "char": "男兒身",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98187,
+          "char": "男士們",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98203,
+          "char": "男女皆可",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98204,
+          "char": "男女私情",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98205,
+          "char": "男女老小",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98218,
+          "char": "男屍",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98219,
+          "char": "男式大衣",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98221,
+          "char": "男性疾病",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98222,
+          "char": "男性病",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98224,
+          "char": "男服務員",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98226,
+          "char": "男模特",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98235,
+          "char": "男用",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98237,
+          "char": "男聲版",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98238,
+          "char": "男藍",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98244,
+          "char": "男變女",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98246,
+          "char": "男賓止步",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98250,
+          "char": "男青年",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98251,
+          "char": "男靴",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98266,
+          "char": "畏冷",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98269,
+          "char": "畏寒",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98278,
+          "char": "畏水",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98280,
+          "char": "畏罪潛逃",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98281,
+          "char": "畏罪自殺",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98293,
+          "char": "留字",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98297,
+          "char": "留守人員",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98310,
+          "char": "留日學生",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98312,
+          "char": "留校察看",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98324,
+          "char": "留美",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98325,
+          "char": "留美學生",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98326,
+          "char": "留職停薪",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98327,
+          "char": "留芳後世",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98328,
+          "char": "留英",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98331,
+          "char": "留言條",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98333,
+          "char": "留言版",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98344,
+          "char": "留面子",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98346,
+          "char": "留鬍子",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98348,
+          "char": "留點神",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98365,
+          "char": "畢業會考",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98368,
+          "char": "畢業設計",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98371,
+          "char": "畢生精力",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98378,
+          "char": "略偏",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98380,
+          "char": "略具",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98381,
+          "char": "略具雛形",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98382,
+          "char": "略加修飾",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98383,
+          "char": "略加點綴",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98394,
+          "char": "略有結餘",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98401,
+          "char": "略記",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98403,
+          "char": "略談",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98408,
+          "char": "略述",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98409,
+          "char": "略述大意",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98412,
+          "char": "略高一籌",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98416,
+          "char": "番外篇",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98421,
+          "char": "番瀉葉",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98425,
+          "char": "番紅花",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98433,
+          "char": "畫中有畫",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98434,
+          "char": "畫中游",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98438,
+          "char": "畫冊設計",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98447,
+          "char": "畫圖板",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98448,
+          "char": "畫圖筆",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98449,
+          "char": "畫圖紙",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98453,
+          "char": "畫地力牢",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98463,
+          "char": "畫會",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98470,
+          "char": "畫界",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98476,
+          "char": "畫符唸咒",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98481,
+          "char": "畫臉",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98486,
+          "char": "畫虎不成",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98495,
+          "char": "畫表",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98503,
+          "char": "畫面質量",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98523,
+          "char": "異地相逢",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98547,
+          "char": "異於",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98561,
+          "char": "異母兄弟",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98566,
+          "char": "異稟",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98571,
+          "char": "異能者",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98586,
+          "char": "異類相吸",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98589,
+          "char": "當一天和尚撞一天鐘",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98601,
+          "char": "當今世界",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98603,
+          "char": "當今社會",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98619,
+          "char": "當前情況",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98620,
+          "char": "當前狀況",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98621,
+          "char": "當前頁",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98630,
+          "char": "當地政府",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98665,
+          "char": "當眾宣佈",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98667,
+          "char": "當眾表明",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98668,
+          "char": "當眾表示",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98675,
+          "char": "當耳旁風",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98684,
+          "char": "當過兵",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98687,
+          "char": "當鋪老闆",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98691,
+          "char": "當面言明",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98759,
+          "char": "疏於防備",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98760,
+          "char": "疏於防範",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98784,
+          "char": "疑團滿腹",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98785,
+          "char": "疑團莫釋",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98792,
+          "char": "疑竇叢生",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98801,
+          "char": "疑雲重重",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98802,
+          "char": "疑雲難消",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98804,
+          "char": "疑點重重",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98818,
+          "char": "疲倦起來",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98824,
+          "char": "疲懶",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98868,
+          "char": "病事假",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98869,
+          "char": "病亡",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98871,
+          "char": "病入骨隨",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98872,
+          "char": "病入骨髓",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98874,
+          "char": "病勢危殆",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98878,
+          "char": "病塌",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98879,
+          "char": "病媒",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98881,
+          "char": "病字旁",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98885,
+          "char": "病容滿面",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98886,
+          "char": "病後初愈",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98893,
+          "char": "病態心理",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98897,
+          "char": "病根未除",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98899,
+          "char": "病歷室",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98909,
+          "char": "病毒庫",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98912,
+          "char": "病毒碼",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98918,
+          "char": "病毒軟件",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98919,
+          "char": "病毒郵件",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98923,
+          "char": "病況危急",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98926,
+          "char": "病犬",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98930,
+          "char": "病理科",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98934,
+          "char": "病由口入",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98941,
+          "char": "病豬",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98945,
+          "char": "症侯",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98963,
+          "char": "痛失良機",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98965,
+          "char": "痛徹心骨",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98966,
+          "char": "痛徹骨髓",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98968,
+          "char": "痛心入骨",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98973,
+          "char": "痛悔前非",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98974,
+          "char": "痛惡",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98978,
+          "char": "痛揍",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98979,
+          "char": "痛揍一頓",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98980,
+          "char": "痛斷肝腸",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98990,
+          "char": "痛自悔改",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98992,
+          "char": "痛苦失聲",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 98997,
+          "char": "痛風病",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99003,
+          "char": "痠痛不已",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99050,
+          "char": "瘟疫區",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99060,
+          "char": "瘦弱不堪",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99084,
+          "char": "療效顯著",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99088,
+          "char": "療程短",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99093,
+          "char": "癌症前期",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99096,
+          "char": "癌症病患",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99109,
+          "char": "癥結所在",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99121,
+          "char": "癱瘓病人",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99131,
+          "char": "登報作廢",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99136,
+          "char": "登月小艇",
+          "previous_grade": 2,
+          "grade": 1
+        },
+        {
+          "id": 99157,
+          "char": "登革熱病",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99174,
+          "char": "發予",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99181,
+          "char": "發佈公告",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99182,
+          "char": "發佈命令",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99183,
+          "char": "發佈新聞",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99185,
+          "char": "發佈頁",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99186,
+          "char": "發佈頁面",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99194,
+          "char": "發傳單",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99195,
+          "char": "發傳真",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99198,
+          "char": "發光字",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99202,
+          "char": "發光物",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99204,
+          "char": "發光閃爍",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99233,
+          "char": "發回重審",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99243,
+          "char": "發威動怒",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99247,
+          "char": "發射成功",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99252,
+          "char": "發射衞星",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99254,
+          "char": "發展勢頭",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99255,
+          "char": "發展壯大",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99256,
+          "char": "發展緩慢",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99257,
+          "char": "發展趨向",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99268,
+          "char": "發往",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99289,
+          "char": "發揮作用",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99290,
+          "char": "發揮優勢",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99293,
+          "char": "發揮特長",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99297,
+          "char": "發放貸款",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99305,
+          "char": "發明專利",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99318,
+          "char": "發款",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99336,
+          "char": "發燒級",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99337,
+          "char": "發燒音響",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99340,
+          "char": "發狂地",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99344,
+          "char": "發現矛盾",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99348,
+          "char": "發生爆炸",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99352,
+          "char": "發生鉅變",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99373,
+          "char": "發給你",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99374,
+          "char": "發給您",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99379,
+          "char": "發聲明",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99381,
+          "char": "發育不全",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99383,
+          "char": "發育成",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99386,
+          "char": "發育畸形",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99389,
+          "char": "發育階段",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99393,
+          "char": "發自體內",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99394,
+          "char": "發至",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99408,
+          "char": "發行股票",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99412,
+          "char": "發表演說",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99413,
+          "char": "發表聲明",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99414,
+          "char": "發表談話",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99415,
+          "char": "發表議論",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99422,
+          "char": "發話器",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99423,
+          "char": "發議論",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99428,
+          "char": "發貨地",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99440,
+          "char": "發送數據",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99442,
+          "char": "發送窗口",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99444,
+          "char": "發送給",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99446,
+          "char": "發送至",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99453,
+          "char": "發酵出來",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99454,
+          "char": "發酵劑",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99456,
+          "char": "發酵酒",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99461,
+          "char": "發電報",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99463,
+          "char": "發電能力",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99470,
+          "char": "發高熱",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99479,
+          "char": "白垢",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99488,
+          "char": "白方",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99490,
+          "char": "白晝黑夜",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99491,
+          "char": "白板紙",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99495,
+          "char": "白殼蛋",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99499,
+          "char": "白海豚",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99515,
+          "char": "白眼相看",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99529,
+          "char": "白茉莉",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99534,
+          "char": "白螞蟻",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99539,
+          "char": "白襪子",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99541,
+          "char": "白費口舌",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99545,
+          "char": "白金版",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99547,
+          "char": "白霧",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99553,
+          "char": "白頭相守",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99567,
+          "char": "白駱駝",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99571,
+          "char": "白髮斑白",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99574,
+          "char": "白鯽",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99575,
+          "char": "白鰱魚",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99576,
+          "char": "白鰻",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99580,
+          "char": "白黑不分",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99581,
+          "char": "白黑顛倒",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99624,
+          "char": "百姓生活",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99626,
+          "char": "百姓遭殃",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99639,
+          "char": "百年之約",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99640,
+          "char": "百年偕老",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99641,
+          "char": "百年史",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99642,
+          "char": "百年大業",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99644,
+          "char": "百年孤獨",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99646,
+          "char": "百年紀念",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99648,
+          "char": "百年誕辰",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99663,
+          "char": "百態紛呈",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99667,
+          "char": "百折不屈",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99674,
+          "char": "百業凋敝",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99676,
+          "char": "百業蕭條",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99678,
+          "char": "百步穿場",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99679,
+          "char": "百步穿揚",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99697,
+          "char": "百科辭典",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99712,
+          "char": "百般折磨",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99713,
+          "char": "百般挑剔",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99714,
+          "char": "百般撫慰",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99715,
+          "char": "百般為難",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99716,
+          "char": "百般狡辯",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99718,
+          "char": "百般阻撓",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99719,
+          "char": "百花凋零",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99720,
+          "char": "百花叢",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99722,
+          "char": "百花盛開",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99727,
+          "char": "百萬計",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99738,
+          "char": "百貨類",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99750,
+          "char": "百餘人",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99754,
+          "char": "百鳥之王",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99755,
+          "char": "百鳥爭鳴",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99763,
+          "char": "皂盒",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99766,
+          "char": "皂粉",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99777,
+          "char": "皆驚",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99785,
+          "char": "皇皇巨着",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99787,
+          "char": "皇袍",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99796,
+          "char": "皮具廠",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99797,
+          "char": "皮包商",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99800,
+          "char": "皮卡車",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99801,
+          "char": "皮厚餡少",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99808,
+          "char": "皮帶傳動",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99818,
+          "char": "皮條客",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99820,
+          "char": "皮毛衣",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99825,
+          "char": "皮破血流",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99832,
+          "char": "皮肉之傷",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99835,
+          "char": "皮膚性病",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99838,
+          "char": "皮膚癢",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99839,
+          "char": "皮膚癬",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99840,
+          "char": "皮膜",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99841,
+          "char": "皮茄克",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99842,
+          "char": "皮薄餡多",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99845,
+          "char": "皮貨商",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99851,
+          "char": "皮革業",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99853,
+          "char": "皮革製品",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99854,
+          "char": "皮靴子",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99855,
+          "char": "皮鞋廠",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99856,
+          "char": "皮鞭子",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99861,
+          "char": "皺眉蹙眼",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99863,
+          "char": "皺紋紙",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99871,
+          "char": "盆植",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99873,
+          "char": "盈利模式",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99888,
+          "char": "盒式磁帶",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99898,
+          "char": "盛名難副",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99902,
+          "char": "盛大舉行",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99906,
+          "char": "盛怒之下",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99907,
+          "char": "盛情接待",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99908,
+          "char": "盛情款待",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99909,
+          "char": "盛意難卻",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99913,
+          "char": "盛極必衰",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99915,
+          "char": "盛水不漏",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99919,
+          "char": "盛筵必散",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99921,
+          "char": "盛行一時",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99930,
+          "char": "盛開着",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99943,
+          "char": "盜屍",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99947,
+          "char": "盜打",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99948,
+          "char": "盜搶",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99950,
+          "char": "盜案",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99953,
+          "char": "盜版碟",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99954,
+          "char": "盜版軟件",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99957,
+          "char": "盜用公款",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99959,
+          "char": "盜號",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99960,
+          "char": "盜號者",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99961,
+          "char": "盜賊團",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99963,
+          "char": "盜賣公物",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99964,
+          "char": "盜賣案",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99965,
+          "char": "盜賣者",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99969,
+          "char": "盜車人",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99972,
+          "char": "盜鏈",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99974,
+          "char": "盜領",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99981,
+          "char": "盟軍部隊",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99986,
+          "char": "盡付東流",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99987,
+          "char": "盡信",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99988,
+          "char": "盡做壞事",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99993,
+          "char": "盡其在我",
+          "previous_grade": 0,
+          "grade": 1
+        },
+        {
+          "id": 99136,
+          "char": "登月小艇",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 99673,
+          "char": "百會",
+          "previous_grade": 1,
+          "grade": 2
+        }
+      ],
+      "amendments": [
+        {
+          "id": 98057,
+          "char": "甩不掉",
+          "previous_jyutping": "lat1 bat1 diu6",
+          "jyutping": "lat1 bat1 diu6",
+          "alternatives": [
+            "seot1 bat1 diu6"
+          ],
+          "note": "擺脫／分離語境 lat1 優先，拋開甩開之現代 seot1 保留較後；非將所有甩字讀音互套。",
+          "reference": "https://words.hk/zidin/甩 ; https://jyut.net/query?q=甩"
+        },
+        {
+          "id": 98058,
+          "char": "甩不開",
+          "previous_jyutping": "lat1 bat1 hoi1",
+          "jyutping": "lat1 bat1 hoi1",
+          "alternatives": [
+            "seot1 bat1 hoi1"
+          ],
+          "note": "擺脫／分離語境 lat1 優先，拋開甩開之現代 seot1 保留較後；非將所有甩字讀音互套。",
+          "reference": "https://words.hk/zidin/甩 ; https://jyut.net/query?q=甩"
+        },
+        {
+          "id": 98059,
+          "char": "甩出",
+          "previous_jyutping": "lat1 ceot1",
+          "jyutping": "seot1 ceot1",
+          "alternatives": [
+            "lat1 ceot1"
+          ],
+          "note": "拋出揮出取現代 seot1 優先；東西脫落而出的 lat1 語境保留，整詞順位為 AI 判斷。",
+          "reference": "https://jyut.net/query?q=甩"
+        },
+        {
+          "id": 98060,
+          "char": "甩出來",
+          "previous_jyutping": "lat1 ceot1 loi4",
+          "jyutping": "seot1 ceot1 loi4",
+          "alternatives": [
+            "lat1 ceot1 loi4"
+          ],
+          "note": "拋出揮出取現代 seot1 優先；東西脫落而出的 lat1 語境保留，整詞順位為 AI 判斷。",
+          "reference": "https://jyut.net/query?q=甩"
+        },
+        {
+          "id": 98061,
+          "char": "甩出去",
+          "previous_jyutping": "lat1 ceot1 heoi3",
+          "jyutping": "seot1 ceot1 heoi3",
+          "alternatives": [
+            "lat1 ceot1 heoi3"
+          ],
+          "note": "拋出揮出取現代 seot1 優先；東西脫落而出的 lat1 語境保留，整詞順位為 AI 判斷。",
+          "reference": "https://jyut.net/query?q=甩"
+        },
+        {
+          "id": 98062,
+          "char": "甩到",
+          "previous_jyutping": "lat1 dou2",
+          "jyutping": "seot1 dou3",
+          "alternatives": [
+            "lat1 dou3"
+          ],
+          "note": "到作動作所及位置的補語 dou3；揮擲 seot1 優先，脫落 lat1 為另一正常語境，非一律套到達成功 dou2。",
+          "reference": "https://jyut.net/query?q=甩"
+        },
+        {
+          "id": 98063,
+          "char": "甩動",
+          "previous_jyutping": "lat1 dung6",
+          "jyutping": "seot1 dung6",
+          "alternatives": [],
+          "note": "擺動及離心甩乾屬主動揮擲運動 seot1，不能沿脫落 lat1；乾 gon1 為除水。",
+          "reference": "https://jyut.net/query?q=甩 ; https://dictionary.cambridge.org/zhs/詞典/漢語-繁體-英語/甩"
+        },
+        {
+          "id": 98064,
+          "char": "甩乾",
+          "previous_jyutping": "lat1 gon1",
+          "jyutping": "seot1 gon1",
+          "alternatives": [],
+          "note": "擺動及離心甩乾屬主動揮擲運動 seot1，不能沿脫落 lat1；乾 gon1 為除水。",
+          "reference": "https://jyut.net/query?q=甩 ; https://dictionary.cambridge.org/zhs/詞典/漢語-繁體-英語/甩"
+        },
+        {
+          "id": 98066,
+          "char": "甩脫",
+          "previous_jyutping": "lat1 tyut3",
+          "jyutping": "lat1 tyut3",
+          "alternatives": [],
+          "note": "甩為脫離／脫落義 lat1，原稿有效，非主動甩擲 seot1 的全局替換。",
+          "reference": "https://words.hk/zidin/甩"
+        },
+        {
+          "id": 98067,
+          "char": "甩膠",
+          "previous_jyutping": "lat1 gaau1",
+          "jyutping": "lat1 gaau1",
+          "alternatives": [],
+          "note": "甩為脫離／脫落義 lat1，原稿有效，非主動甩擲 seot1 的全局替換。",
+          "reference": "https://words.hk/zidin/甩"
+        },
+        {
+          "id": 98068,
+          "char": "甩走",
+          "previous_jyutping": "lat1 zau2",
+          "jyutping": "lat1 zau2",
+          "alternatives": [],
+          "note": "甩為脫離／脫落義 lat1，原稿有效，非主動甩擲 seot1 的全局替換。",
+          "reference": "https://words.hk/zidin/甩"
+        },
+        {
+          "id": 98109,
+          "char": "甲乙",
+          "previous_jyutping": "gaap3 jyut3",
+          "jyutping": "gaap3 jyut6",
+          "alternatives": [
+            "gaap3 jyut3"
+          ],
+          "note": "甲乙按香港完整天干詞例及1992建議，日常 jyut6 優先，jyut3 文讀保留；沒有以字書數量當日常頻率。",
+          "reference": "https://words.hk/zidin/天干地支 ; https://jyut.net/query?q=乙"
+        },
+        {
+          "id": 98202,
+          "char": "男女生",
+          "previous_jyutping": "naam4 neoi5 sang1",
+          "jyutping": "naam4 neoi5 sang1",
+          "alternatives": [],
+          "note": "粵典完整男生為 naam4 sang1；本批男女學生語境採 sang1，不按生育 saang1 機械蓋過。",
+          "reference": "https://words.hk/zidin/男生"
+        },
+        {
+          "id": 98232,
+          "char": "男生女生",
+          "previous_jyutping": "naam4 sang1 neoi5 sang1",
+          "jyutping": "naam4 sang1 neoi5 sang1",
+          "alternatives": [],
+          "note": "粵典完整男生為 naam4 sang1；本批男女學生語境採 sang1，不按生育 saang1 機械蓋過。",
+          "reference": "https://words.hk/zidin/男生"
+        },
+        {
+          "id": 98233,
+          "char": "男生宿舍",
+          "previous_jyutping": "naam4 sang1 suk1 se3",
+          "jyutping": "naam4 sang1 suk1 se3",
+          "alternatives": [],
+          "note": "粵典完整男生為 naam4 sang1；本批男女學生語境採 sang1，不按生育 saang1 機械蓋過。",
+          "reference": "https://words.hk/zidin/男生"
+        },
+        {
+          "id": 98351,
+          "char": "畜力車",
+          "previous_jyutping": "cuk1 lik6 ce1",
+          "jyutping": "cuk1 lik6 ce1",
+          "alternatives": [],
+          "note": "現代字書畜牧、畜養均 cuk1；huk1 僅舊書，不能按國語畜／蓄分義憑空增加 huk1。",
+          "reference": "https://jyut.net/query?q=畜"
+        },
+        {
+          "id": 98353,
+          "char": "畜牧學",
+          "previous_jyutping": "cuk1 muk6 hok6",
+          "jyutping": "cuk1 muk6 hok6",
+          "alternatives": [],
+          "note": "現代字書畜牧、畜養均 cuk1；huk1 僅舊書，不能按國語畜／蓄分義憑空增加 huk1。",
+          "reference": "https://jyut.net/query?q=畜"
+        },
+        {
+          "id": 98463,
+          "char": "畫會",
+          "previous_jyutping": "waa2 wui2",
+          "jyutping": "waa2 wui2",
+          "alternatives": [
+            "waa2 wui6"
+          ],
+          "note": "繪畫組織名詞會 wui2 日常變調優先，文讀 wui6 排後，不採能力 wui5。",
+          "reference": "AI:whole-word-context"
+        },
+        {
+          "id": 98588,
+          "char": "當一回事",
+          "previous_jyutping": "dong3 jat1 wui4 si6",
+          "jyutping": "dong3 jat1 wui4 si6",
+          "alternatives": [],
+          "note": "當作／認作或妥當取 dong3，非擔任職位與時間 dong1。",
+          "reference": "https://jyut.net/query?q=當"
+        },
+        {
+          "id": 98626,
+          "char": "當否",
+          "previous_jyutping": "dong3 fau2",
+          "jyutping": "dong3 fau2",
+          "alternatives": [],
+          "note": "當作／認作或妥當取 dong3，非擔任職位與時間 dong1。",
+          "reference": "https://jyut.net/query?q=當"
+        },
+        {
+          "id": 98627,
+          "char": "當回事",
+          "previous_jyutping": "dong3 wui4 si6",
+          "jyutping": "dong3 wui4 si6",
+          "alternatives": [],
+          "note": "當作／認作或妥當取 dong3，非擔任職位與時間 dong1。",
+          "reference": "https://jyut.net/query?q=當"
+        },
+        {
+          "id": 98655,
+          "char": "當是",
+          "previous_jyutping": "dong3 si6",
+          "jyutping": "dong3 si6",
+          "alternatives": [],
+          "note": "當作／認作或妥當取 dong3，非擔任職位與時間 dong1。",
+          "reference": "https://jyut.net/query?q=當"
+        },
+        {
+          "id": 98675,
+          "char": "當耳旁風",
+          "previous_jyutping": "dong3 ji5 pong4 fung1",
+          "jyutping": "dong3 ji5 pong4 fung1",
+          "alternatives": [],
+          "note": "當作／認作或妥當取 dong3，非擔任職位與時間 dong1。",
+          "reference": "https://jyut.net/query?q=當"
+        },
+        {
+          "id": 98591,
+          "char": "當上",
+          "previous_jyutping": "dong1 soeng5",
+          "jyutping": "dong1 soeng5",
+          "alternatives": [],
+          "note": "擔任職務或角色取 dong1，與認作 dong3 分義，原完整短語保留。",
+          "reference": "https://jyut.net/query?q=當"
+        },
+        {
+          "id": 98594,
+          "char": "當不上",
+          "previous_jyutping": "dong1 bat1 soeng5",
+          "jyutping": "dong1 bat1 soeng5",
+          "alternatives": [],
+          "note": "擔任職務或角色取 dong1，與認作 dong3 分義，原完整短語保留。",
+          "reference": "https://jyut.net/query?q=當"
+        },
+        {
+          "id": 98638,
+          "char": "當學徒",
+          "previous_jyutping": "dong1 hok6 tou4",
+          "jyutping": "dong1 hok6 tou4",
+          "alternatives": [],
+          "note": "擔任職務或角色取 dong1，與認作 dong3 分義，原完整短語保留。",
+          "reference": "https://jyut.net/query?q=當"
+        },
+        {
+          "id": 98645,
+          "char": "當家花旦",
+          "previous_jyutping": "dong1 gaa1 faa1 daan3",
+          "jyutping": "dong1 gaa1 faa1 daan3",
+          "alternatives": [],
+          "note": "擔任職務或角色取 dong1，與認作 dong3 分義，原完整短語保留。",
+          "reference": "https://jyut.net/query?q=當"
+        },
+        {
+          "id": 98674,
+          "char": "當老闆",
+          "previous_jyutping": "dong1 lou5 baan2",
+          "jyutping": "dong1 lou5 baan2",
+          "alternatives": [],
+          "note": "擔任職務或角色取 dong1，與認作 dong3 分義，原完整短語保留。",
+          "reference": "https://jyut.net/query?q=當"
+        },
+        {
+          "id": 98680,
+          "char": "當起",
+          "previous_jyutping": "dong1 hei2",
+          "jyutping": "dong1 hei2",
+          "alternatives": [],
+          "note": "擔任職務或角色取 dong1，與認作 dong3 分義，原完整短語保留。",
+          "reference": "https://jyut.net/query?q=當"
+        },
+        {
+          "id": 98683,
+          "char": "當過",
+          "previous_jyutping": "dong1 gwo3",
+          "jyutping": "dong1 gwo3",
+          "alternatives": [],
+          "note": "擔任職務或角色取 dong1，與認作 dong3 分義，原完整短語保留。",
+          "reference": "https://jyut.net/query?q=當"
+        },
+        {
+          "id": 98684,
+          "char": "當過兵",
+          "previous_jyutping": "dong1 gwo3 bing1",
+          "jyutping": "dong1 gwo3 bing1",
+          "alternatives": [],
+          "note": "擔任職務或角色取 dong1，與認作 dong3 分義，原完整短語保留。",
+          "reference": "https://jyut.net/query?q=當"
+        },
+        {
+          "id": 98871,
+          "char": "病入骨髓",
+          "previous_jyutping": "beng6 jap6 gwat1 seoi5",
+          "jyutping": "beng6 jap6 gwat1 seoi5",
+          "alternatives": [],
+          "note": "病固定 beng6；病入骨髓以髓 seoi5，原隨形誤字不沿 ceoi4。",
+          "reference": "AI:whole-word-context"
+        },
+        {
+          "id": 98872,
+          "char": "病入骨髓",
+          "previous_jyutping": "beng6 jap6 gwat1 seoi5",
+          "jyutping": "beng6 jap6 gwat1 seoi5",
+          "alternatives": [],
+          "note": "病固定 beng6；病入骨髓以髓 seoi5，原隨形誤字不沿 ceoi4。",
+          "reference": "AI:whole-word-context"
+        },
+        {
+          "id": 98974,
+          "char": "痛惡",
+          "previous_jyutping": "tung3 wu3",
+          "jyutping": "tung3 wu3",
+          "alternatives": [],
+          "note": "痛惡取厭惡、憎恨 wu3，非罪惡 ok3；不是所有惡字一律同讀。",
+          "reference": "https://jyut.net/query?q=惡"
+        },
+        {
+          "id": 98918,
+          "char": "病毒軟件",
+          "previous_jyutping": "beng6 duk6 jyun5 gin2",
+          "jyutping": "beng6 duk6 jyun5 gin2",
+          "alternatives": [
+            "beng6 duk6 jyun5 gin6"
+          ],
+          "note": "郵件／文件／軟件等完整日常件 gin2 優先，正式 gin6 保留較後；獨立詞先後為 AI 語境判斷。",
+          "reference": "https://words.hk/zidin/文件 ; https://words.hk/zidin/軟件 ; https://jyut.net/query?q=件"
+        },
+        {
+          "id": 98919,
+          "char": "病毒郵件",
+          "previous_jyutping": "beng6 duk6 jau4 gin2",
+          "jyutping": "beng6 duk6 jau4 gin2",
+          "alternatives": [
+            "beng6 duk6 jau4 gin6"
+          ],
+          "note": "郵件／文件／軟件等完整日常件 gin2 優先，正式 gin6 保留較後；獨立詞先後為 AI 語境判斷。",
+          "reference": "https://words.hk/zidin/文件 ; https://words.hk/zidin/軟件 ; https://jyut.net/query?q=件"
+        },
+        {
+          "id": 99179,
+          "char": "發件",
+          "previous_jyutping": "faat3 gin2",
+          "jyutping": "faat3 gin2",
+          "alternatives": [
+            "faat3 gin6"
+          ],
+          "note": "郵件／文件／軟件等完整日常件 gin2 優先，正式 gin6 保留較後；獨立詞先後為 AI 語境判斷。",
+          "reference": "https://words.hk/zidin/文件 ; https://words.hk/zidin/軟件 ; https://jyut.net/query?q=件"
+        },
+        {
+          "id": 99180,
+          "char": "發件箱",
+          "previous_jyutping": "faat3 gin2 soeng1",
+          "jyutping": "faat3 gin2 soeng1",
+          "alternatives": [
+            "faat3 gin6 soeng1"
+          ],
+          "note": "郵件／文件／軟件等完整日常件 gin2 優先，正式 gin6 保留較後；獨立詞先後為 AI 語境判斷。",
+          "reference": "https://words.hk/zidin/文件 ; https://words.hk/zidin/軟件 ; https://jyut.net/query?q=件"
+        },
+        {
+          "id": 99300,
+          "char": "發文件",
+          "previous_jyutping": "faat3 man4 gin2",
+          "jyutping": "faat3 man4 gin2",
+          "alternatives": [
+            "faat3 man4 gin6"
+          ],
+          "note": "郵件／文件／軟件等完整日常件 gin2 優先，正式 gin6 保留較後；獨立詞先後為 AI 語境判斷。",
+          "reference": "https://words.hk/zidin/文件 ; https://words.hk/zidin/軟件 ; https://jyut.net/query?q=件"
+        },
+        {
+          "id": 99954,
+          "char": "盜版軟件",
+          "previous_jyutping": "dou6 baan2 jyun5 gin2",
+          "jyutping": "dou6 baan2 jyun5 gin2",
+          "alternatives": [
+            "dou6 baan2 jyun5 gin6"
+          ],
+          "note": "郵件／文件／軟件等完整日常件 gin2 優先，正式 gin6 保留較後；獨立詞先後為 AI 語境判斷。",
+          "reference": "https://words.hk/zidin/文件 ; https://words.hk/zidin/軟件 ; https://jyut.net/query?q=件"
+        },
+        {
+          "id": 98992,
+          "char": "痛苦失聲",
+          "previous_jyutping": "tung3 fu2 sat1 seng1",
+          "jyutping": "tung3 fu2 sat1 seng1",
+          "alternatives": [
+            "tung3 fu2 sat1 sing1"
+          ],
+          "note": "失聲／回聲／響聲的聲音義口語 seng1 優先，文讀 sing1 保留，不套聲明詞讀法。",
+          "reference": "https://jyut.net/query?q=聲"
+        },
+        {
+          "id": 99208,
+          "char": "發出回聲",
+          "previous_jyutping": "faat3 ceot1 wui4 seng1",
+          "jyutping": "faat3 ceot1 wui4 seng1",
+          "alternatives": [
+            "faat3 ceot1 wui4 sing1"
+          ],
+          "note": "失聲／回聲／響聲的聲音義口語 seng1 優先，文讀 sing1 保留，不套聲明詞讀法。",
+          "reference": "https://jyut.net/query?q=聲"
+        },
+        {
+          "id": 99353,
+          "char": "發生響聲",
+          "previous_jyutping": "faat3 sang1 hoeng2 seng1",
+          "jyutping": "faat3 sang1 hoeng2 seng1",
+          "alternatives": [
+            "faat3 sang1 hoeng2 sing1"
+          ],
+          "note": "失聲／回聲／響聲的聲音義口語 seng1 優先，文讀 sing1 保留，不套聲明詞讀法。",
+          "reference": "https://jyut.net/query?q=聲"
+        },
+        {
+          "id": 99338,
+          "char": "發片",
+          "previous_jyutping": "faat3 pin2",
+          "jyutping": "faat3 pin2",
+          "alternatives": [
+            "faat3 pin3"
+          ],
+          "note": "發片取發行唱片，片 pin2 優先，文讀 pin3 排後；不是髮片假髮的另一詞來源。",
+          "reference": "https://jyut.net/query?q=片"
+        },
+        {
+          "id": 99453,
+          "char": "發酵出來",
+          "previous_jyutping": "faat3 haau1 ceot1 loi4",
+          "jyutping": "faat3 haau1 ceot1 loi4",
+          "alternatives": [
+            "faat3 gaau3 ceot1 loi4"
+          ],
+          "note": "現代字書完整發酵 haau1／gaau3 並存，發酵語境1優先3後；不加醇酒義 haau2 或罕見 haau3。",
+          "reference": "https://jyut.net/query?q=酵"
+        },
+        {
+          "id": 99454,
+          "char": "發酵劑",
+          "previous_jyutping": "faat3 haau1 zai1",
+          "jyutping": "faat3 haau1 zai1",
+          "alternatives": [
+            "faat3 gaau3 zai1"
+          ],
+          "note": "現代字書完整發酵 haau1／gaau3 並存，發酵語境1優先3後；不加醇酒義 haau2 或罕見 haau3。",
+          "reference": "https://jyut.net/query?q=酵"
+        },
+        {
+          "id": 99456,
+          "char": "發酵酒",
+          "previous_jyutping": "faat3 haau1 zau2",
+          "jyutping": "faat3 haau1 zau2",
+          "alternatives": [
+            "faat3 gaau3 zau2"
+          ],
+          "note": "現代字書完整發酵 haau1／gaau3 並存，發酵語境1優先3後；不加醇酒義 haau2 或罕見 haau3。",
+          "reference": "https://jyut.net/query?q=酵"
+        },
+        {
+          "id": 99500,
+          "char": "白淨淨",
+          "previous_jyutping": "baak6 zeng6 zeng6",
+          "jyutping": "baak6 zeng6 zeng6",
+          "alternatives": [],
+          "note": "完整白淨為 baak6 zeng6，疊語保持淨 zeng6；非照字面 zing6。",
+          "reference": "https://words.hk/zidin/白淨 ; https://scholars.hkbu.edu.hk/files/125058072/125057280-POON-Ka-Lok-Thomas-Full-text.pdf"
+        },
+        {
+          "id": 99541,
+          "char": "白費口舌",
+          "previous_jyutping": "baak6 fai3 hau2 sit6",
+          "jyutping": "baak6 fai3 hau2 sit6",
+          "alternatives": [
+            "baak6 fai3 hau2 sit3"
+          ],
+          "note": "口舌的言語義 sit6 優先，現代同義 sit3 排後；不加入 kwut3 的另一字義。",
+          "reference": "https://jyut.net/query?q=舌 ; https://cantonese.sheik.co.uk/dictionary/characters/323/?full=true"
+        },
+        {
+          "id": 99774,
+          "char": "皆曰",
+          "previous_jyutping": "gaai1 joek6",
+          "jyutping": "gaai1 joek6",
+          "alternatives": [
+            "gaai1 jyut6"
+          ],
+          "note": "說、稱義曰 joek6 現代習讀優先，原讀 jyut6 仍有現代書目，保留較後。",
+          "reference": "https://jyut.net/query?q=曰"
+        },
+        {
+          "id": 99840,
+          "char": "皮膜",
+          "previous_jyutping": "pei4 mok2",
+          "jyutping": "pei4 mok6",
+          "alternatives": [
+            "pei4 mok2"
+          ],
+          "note": "皮膜為書面薄皮／包膜材料，採 mok6 優先，同義現代語音 mok2 排後；不沿膜拜 mou4。",
+          "reference": "https://jyut.net/query?q=膜"
+        },
+        {
+          "id": 99895,
+          "char": "盛到",
+          "previous_jyutping": "sing4 dou3",
+          "jyutping": "sing4 dou3",
+          "alternatives": [
+            "sing6 dou3"
+          ],
+          "note": "裝入容器義 sing4 優先；香港中學生中文詞典2004亦收 sing6 盛飯／盛湯的同義讀法，保留較後，不當錯音刪掉。",
+          "reference": "https://jyut.net/query?q=盛"
+        },
+        {
+          "id": 99900,
+          "char": "盛在",
+          "previous_jyutping": "sing4 zoi6",
+          "jyutping": "sing4 zoi6",
+          "alternatives": [
+            "sing6 zoi6"
+          ],
+          "note": "裝入容器義 sing4 優先；香港中學生中文詞典2004亦收 sing6 盛飯／盛湯的同義讀法，保留較後，不當錯音刪掉。",
+          "reference": "https://jyut.net/query?q=盛"
+        },
+        {
+          "id": 99903,
+          "char": "盛好",
+          "previous_jyutping": "sing4 hou2",
+          "jyutping": "sing4 hou2",
+          "alternatives": [
+            "sing6 hou2"
+          ],
+          "note": "裝入容器義 sing4 優先；香港中學生中文詞典2004亦收 sing6 盛飯／盛湯的同義讀法，保留較後，不當錯音刪掉。",
+          "reference": "https://jyut.net/query?q=盛"
+        },
+        {
+          "id": 99904,
+          "char": "盛得",
+          "previous_jyutping": "sing4 dak1",
+          "jyutping": "sing4 dak1",
+          "alternatives": [
+            "sing6 dak1"
+          ],
+          "note": "裝入容器義 sing4 優先；香港中學生中文詞典2004亦收 sing6 盛飯／盛湯的同義讀法，保留較後，不當錯音刪掉。",
+          "reference": "https://jyut.net/query?q=盛"
+        },
+        {
+          "id": 99915,
+          "char": "盛水不漏",
+          "previous_jyutping": "sing4 seoi2 bat1 lau6",
+          "jyutping": "sing4 seoi2 bat1 lau6",
+          "alternatives": [
+            "sing6 seoi2 bat1 lau6"
+          ],
+          "note": "裝入容器義 sing4 優先；香港中學生中文詞典2004亦收 sing6 盛飯／盛湯的同義讀法，保留較後，不當錯音刪掉。",
+          "reference": "https://jyut.net/query?q=盛"
+        },
+        {
+          "id": 99920,
+          "char": "盛菜",
+          "previous_jyutping": "sing4 coi3",
+          "jyutping": "sing4 coi3",
+          "alternatives": [
+            "sing6 coi3"
+          ],
+          "note": "裝入容器義 sing4 優先；香港中學生中文詞典2004亦收 sing6 盛飯／盛湯的同義讀法，保留較後，不當錯音刪掉。",
+          "reference": "https://jyut.net/query?q=盛"
+        },
+        {
+          "id": 99924,
+          "char": "盛起",
+          "previous_jyutping": "sing4 hei2",
+          "jyutping": "sing4 hei2",
+          "alternatives": [
+            "sing6 hei2"
+          ],
+          "note": "裝入容器義 sing4 優先；香港中學生中文詞典2004亦收 sing6 盛飯／盛湯的同義讀法，保留較後，不當錯音刪掉。",
+          "reference": "https://jyut.net/query?q=盛"
+        },
+        {
+          "id": 99925,
+          "char": "盛過",
+          "previous_jyutping": "sing4 gwo3",
+          "jyutping": "sing4 gwo3",
+          "alternatives": [
+            "sing6 gwo3"
+          ],
+          "note": "裝入容器義 sing4 優先；香港中學生中文詞典2004亦收 sing6 盛飯／盛湯的同義讀法，保留較後，不當錯音刪掉。",
+          "reference": "https://jyut.net/query?q=盛"
+        },
+        {
+          "id": 99926,
+          "char": "盛過來",
+          "previous_jyutping": "sing4 gwo3 loi4",
+          "jyutping": "sing4 gwo3 loi4",
+          "alternatives": [
+            "sing6 gwo3 loi4"
+          ],
+          "note": "裝入容器義 sing4 優先；香港中學生中文詞典2004亦收 sing6 盛飯／盛湯的同義讀法，保留較後，不當錯音刪掉。",
+          "reference": "https://jyut.net/query?q=盛"
+        },
+        {
+          "id": 99927,
+          "char": "盛過去",
+          "previous_jyutping": "sing4 gwo3 heoi3",
+          "jyutping": "sing4 gwo3 heoi3",
+          "alternatives": [
+            "sing6 gwo3 heoi3"
+          ],
+          "note": "裝入容器義 sing4 優先；香港中學生中文詞典2004亦收 sing6 盛飯／盛湯的同義讀法，保留較後，不當錯音刪掉。",
+          "reference": "https://jyut.net/query?q=盛"
+        },
+        {
+          "id": 99928,
+          "char": "盛酒",
+          "previous_jyutping": "sing4 zau2",
+          "jyutping": "sing4 zau2",
+          "alternatives": [
+            "sing6 zau2"
+          ],
+          "note": "裝入容器義 sing4 優先；香港中學生中文詞典2004亦收 sing6 盛飯／盛湯的同義讀法，保留較後，不當錯音刪掉。",
+          "reference": "https://jyut.net/query?q=盛"
+        },
+        {
+          "id": 99932,
+          "char": "盛魚",
+          "previous_jyutping": "sing4 jyu2",
+          "jyutping": "sing4 jyu2",
+          "alternatives": [
+            "sing6 jyu2"
+          ],
+          "note": "裝入容器義 sing4 優先；香港中學生中文詞典2004亦收 sing6 盛飯／盛湯的同義讀法，保留較後，不當錯音刪掉。",
+          "reference": "https://jyut.net/query?q=盛"
+        },
+        {
+          "id": 98429,
+          "char": "番薯藤",
+          "previous_jyutping": "faan1 syu2 tang4",
+          "jyutping": "faan1 syu2 tang4",
+          "alternatives": [
+            "faan1 syu4 tang4"
+          ],
+          "note": "完整番薯 faan1 syu4*2 有現代詞例；先口語2後文讀4。",
+          "reference": "https://www.cantonese.sheik.co.uk/dictionary/words/1970/"
+        },
+        {
+          "id": 99529,
+          "char": "白茉莉",
+          "previous_jyutping": "baak6 mut6 lei2",
+          "jyutping": "baak6 mut6 lei2",
+          "alternatives": [
+            "baak6 mut6 lei6"
+          ],
+          "note": "完整茉莉 mut6 lei6*2 及 CC-CANTO lei2 均有據，先日常2，文讀6排後。",
+          "reference": "https://cantonese.sheik.co.uk/dictionary/characters/3040/?full=true ; https://cantonese.org/search.php?q=mu"
+        },
+        {
+          "id": 99640,
+          "char": "百年偕老",
+          "previous_jyutping": "baak3 nin4 gaai1 lou5",
+          "jyutping": "baak3 nin4 gaai1 lou5",
+          "alternatives": [
+            "baak3 nin4 haai4 lou5"
+          ],
+          "note": "偕同、偕老義 gaai1 現代建議讀音；haai4 為現代同義又讀，保留排後。",
+          "reference": "https://jyut.net/query?q=偕"
+        },
+        {
+          "id": 98131,
+          "char": "甲級戰犯",
+          "previous_jyutping": "gaap3 kap1 zin3 faan2",
+          "jyutping": "gaap3 kap1 zin3 faan2",
+          "alternatives": [],
+          "note": "甲級戰犯沿完整戰犯日常 faan2，非犯罪動詞 faan6 的機械替換。",
+          "reference": "https://words.hk/zidin/天干地支"
+        },
+        {
+          "id": 98589,
+          "char": "當一天和尚撞一天鐘",
+          "previous_jyutping": "dong1 jat1 tin1 wo4 soeng2 zong6 jat1 tin1 zung1",
+          "jyutping": "dong1 jat1 tin1 wo4 soeng2 zong6 jat1 tin1 zung1",
+          "alternatives": [],
+          "note": "和尚日常完整詞 wo4 soeng2 有 LSHK 詞表支持，非尚且的裸字 soeng6。",
+          "reference": "https://cala.hk/assets/CRAT_Appendix2_bystroke_1.5.pdf"
+        },
+        {
+          "id": 98603,
+          "char": "當今社會",
+          "previous_jyutping": "dong1 gam1 se5 wui2",
+          "jyutping": "dong1 gam1 se5 wui2",
+          "alternatives": [],
+          "note": "社會的會為聚合名詞，wui2 日常變調正常，非能力 wui5。",
+          "reference": "https://words.hk/zidin/社會"
+        },
+        {
+          "id": 99214,
+          "char": "發動羣眾",
+          "previous_jyutping": "faat3 dung6 kwan4 zung3",
+          "jyutping": "faat3 dung6 kwan4 zung3",
+          "alternatives": [],
+          "note": "羣眾／群眾為同字異體，kwan4 zung3 正常；不因 Rime 缺羣對照判未知音。",
+          "reference": "AI:orthographic-equivalence"
+        },
+        {
+          "id": 99602,
+          "char": "百位數",
+          "previous_jyutping": "baak3 wai2 sou3",
+          "jyutping": "baak3 wai2 sou3",
+          "alternatives": [],
+          "note": "百位數的位為數位 wai2，與位置、位數完整詞相合；單字等級不代表本詞生僻。",
+          "reference": "https://jyut.net/query?q=位"
+        },
+        {
+          "id": 99841,
+          "char": "皮茄克",
+          "previous_jyutping": "pei4 gaa1 hak1",
+          "jyutping": "pei4 gaa1 hak1",
+          "alternatives": [],
+          "note": "茄克為外來衣物名 gaa1 hak1，已有基線完整茄克支持，非蔬菜茄 ke4。",
+          "reference": "baseline:validation-b51.db:茄克"
+        }
+      ],
+      "final_accepted_before_dedup": 974,
+      "corpus": {
+        "observations": 9,
+        "supplied_spans": 13,
+        "all_original_spans_read": true,
+        "source_commit": "018e88540b917c40dc3f7248ed98908208544b54",
+        "boundary_notes": {
+          "98319": "原文為留留力，普通動詞重疊，不能據此當獨立留留的整詞頻率。",
+          "98431": "畫下為完整動詞短語，原譜 waak6 haa6 與繪畫語境相合。",
+          "98566": "原文為天賦異稟；異稟可獨立作書面名詞，但此命中非獨立詞頻。",
+          "98662": "原文就當／用一次挫敗跨詞，不能支持當用獨立入庫。",
+          "98975": "完整痛愛着我的歌詞語境支持痛愛；副歌重複不作獨立日常頻率。",
+          "99169": "原文一發／不中跨詞，並非發不的完整表達。",
+          "99244": "美夢發完為完整述語，發完亦可用於訊息送畢；歌曲次數非日常頻率。",
+          "99283": "原歌詞是蒸發掉內部切段；發掉本身穩定復用不足，不將副歌三次當獨立頻率。",
+          "99537": "原歌詞是明白／血肉跨詞；白血作獨立詞日常復用不足，不把這次命中當白血詞頻。"
+        }
+      },
+      "prior_decisions_preserved": 97994,
+      "final_preference_adjustment": {
+        "id": 98109,
+        "char": "甲乙",
+        "previous_primary": "gaap3 jyut3",
+        "primary": "gaap3 jyut6",
+        "both_readings_and_source_objects_preserved": true,
+        "reason": "甲乙按香港完整天干詞例及1992建議，日常 jyut6 優先，jyut3 文讀保留；沒有以字書數量當日常頻率。",
+        "reference": "https://words.hk/zidin/天干地支 ; https://jyut.net/query?q=乙"
+      }
+    }
+  }
+}

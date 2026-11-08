@@ -18,7 +18,7 @@ from ingest.lexicon_sources import ingest_source
 from ingest.syn_ant_manifest import resolve_source_path
 
 # Bump when candidate pickle layout or parser output semantics change.
-LAYER_CACHE_FORMAT = "1"
+LAYER_CACHE_FORMAT = "43"
 DEFAULT_CACHE_DIR = ROOT / ".cache" / "lexicon-layers"
 _SAFE = re.compile(r"[^a-zA-Z0-9._-]+")
 
@@ -58,7 +58,7 @@ def source_input_paths(src: dict[str, Any], *, repo_root: Path | None = None) ->
     raw = resolve_lexicon_raw_path(src, repo_root=root) or resolve_source_path(src)
     if raw is not None:
         paths.append(Path(raw))
-    for key in ("allowlist_path", "reject_suffixes_path", "reject_literals_path"):
+    for key in ("allowlist_path", "reject_suffixes_path", "reject_literals_path", "word_usage_path"):
         raw_rel = src.get(key) or ""
         if not raw_rel:
             continue

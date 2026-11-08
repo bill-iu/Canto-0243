@@ -279,6 +279,7 @@ def build_lookup_layout(q: str, exact_matches: List[Word], db: Session) -> List[
     if not exact_matches:
         return []
 
+    exact_matches = sorted(exact_matches, key=search_result_sort_key)
     results: List[dict] = []
     seen: set[str] = set()
     len_q = len(q)

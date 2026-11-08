@@ -22,10 +22,16 @@
 <!-- /version:zh-Hans -->
 
 <!-- words-count:zh-Hans -->
-目前总词条列数：**181,712**（`lyrics.db` · `words` 表）
+目前总词条列数：**264,637**（`lyrics.db` · `words` 表）
 <!-- /words-count:zh-Hans -->
 
-**v1.1.2 词库与搜索修正（2026-10-21）**
+**v1.1.2 补词、读音与常用度更新（2026-11-08，覆盖更新）**
+
+* 自建补充词库扩充至 **79,678 个有效表达、83,534 条读音**，涵盖通用及书面中文、填词短语与粤语口语。本轮最后冻结的 **12,608 项候选已完成终审，未审为 0**。
+* 词语常用度与读音常用度分开评定：日常表达优先，较少用词排后，经复核的冷僻自建词退回；完整候选池先排序，再显示首 200 项及后续结果。保留有依据的现代变读，修正确认的错音与误形。
+* PWA、Windows 及 macOS Desktop 同步采用本次词库与排序更新，并包含「病」只读 `beng6`、每个 app 分页独立的上一页历史，以及默认「中」字号恢复原有大小的修正。
+
+**先前 v1.1.2 词库与搜索修正（2026-10-21）**
 
 * 含「病」的字词只收日常 `beng6`：移除 34 组 `bing6` 异读，其中 23 组已有 `beng6`，另外 11 组改为 `beng6`；所有原有字面保留。
 * 浏览器上一页按当前 app 分页的查询历史返回：同一分页自动查询 `43` → `243` 后，按上一页即返回 `43` 的结果；其他 app 分页不受影响，重新加载后也保留历史。
@@ -53,6 +59,10 @@ PWA、Windows 及 macOS Desktop 共用本版词库。详见 [完整更新说明]
 ---
 
 ## 功能
+
+**词语与读音分开排序** — 已为全部 81,729 个自建字面建立词语常用度分级，经复核退回 2,051 个冷僻表达。日常生活、通用书面与填词表达按常用度排列，读音另按整词语境及读音分级排序。
+
+词语排序参考既有 Essay 词频与 TUBELEX 中文字幕观测；资料不足时另记 AI 情境判断，已完成 24,693 项。AI 判断并非实测词频，原始观测与判断依据分开留档。详见[常用度与退回记录](lexicon-word-usage-design.md)及[自建词库读音分级](lexicon-curated-reading-ranks.md)（繁体中文）。
 
 * **0243搜索三档**：**0243模式** `mode=m1`（松档等价）· **02493模式** `mode=m2`（仅 `4↔5` 松档）· **394052模式** `mode=m3`（六声码逐位精确；词库存储用 394052，三声 `4`、五声 `5` 分明）。
 * **多种查询语法**：纯汉字 · 纯数字 · **粤拼查询** · **平仄串列**（`PZ`／`ZP`，自动切换至 m3）· **加号锚**（`23+好=`）· **韵／声锚**（`就=`）· **串列韵／声锚** · **四字部分韵／声锚**（`穷?潦倒=`）· **前缀通配等号** · 整词等号／码夹。
@@ -136,6 +146,7 @@ Desktop 产品界面为本机 **`/app/`**（`client/dist-portable`；`cd client 
 
 本应用程序得以实现，全赖语言学家、开源维护者及社群贡献者的出色工作。我们十分荣幸能整合以下项目的数据（与产品「关于」页一致；再分发前请阅读各上游完整条款）：
 
+* [TUBELEX 中文字幕词频](https://github.com/naist-nlp/tubelex)：整词频率与频道分布作为排序依据，采用 [BSD 3-Clause](../data/lexicon/licenses/tubelex-BSD-3-Clause.txt)。
 * [words.hk（粤典）](https://words.hk/)：采用**非商业开放授权**（详见 [words.hk /hoifong](https://words.hk/base/hoifong/)）。
 * [Rime 粤语词典补缺来源](https://github.com/CanCLID/rime-cantonese-upstream)：采用 [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)。
 * [Cantonese.md 歇后语字面](https://github.com/daimaruhk/Cantonese.md)：采用 [CC0 1.0](https://github.com/daimaruhk/Cantonese.md/blob/main/LICENSE-DATA)（仅 term／answer＋粤拼；无正文解释）。
@@ -166,4 +177,4 @@ Desktop 产品界面为本机 **`/app/`**（`client/dist-portable`；`cd client 
 
 ---
 
-**最后更新**：2026-10-21（v1.1.2 病字日常读音、每分页上一页及 PWA／Desktop 同步更新）
+**最后更新**：2026-11-08（v1.1.2 覆盖更新：补词、整词读音复核与词语常用度排序，PWA／Desktop 同步）

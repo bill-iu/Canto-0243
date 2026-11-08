@@ -1,0 +1,116 @@
+{
+  "batch": "2026-11-06-written-b22",
+  "date": "2026-11-06",
+  "reviewer": "AI-assisted word-form, sense and whole-word Cantonese review; not human item-by-item approval",
+  "source_repository": "https://github.com/fxsjy/jieba",
+  "source_commit": "67fa2e36e72f69d9134b8a1037b83fbb070b9775",
+  "source_license": "MIT",
+  "source_files": [
+    {
+      "path": "jieba/dict.txt",
+      "url": "https://raw.githubusercontent.com/fxsjy/jieba/67fa2e36e72f69d9134b8a1037b83fbb070b9775/jieba/dict.txt",
+      "sha256": "7197c3211ddd98962b036cdf40324d1ea2bfaa12bd028e68faa70111a88e12a8",
+      "bytes": 5071852
+    },
+    {
+      "path": "extra_dict/dict.txt.big",
+      "url": "https://raw.githubusercontent.com/fxsjy/jieba/67fa2e36e72f69d9134b8a1037b83fbb070b9775/extra_dict/dict.txt.big",
+      "sha256": "b16011275c42955ccd81fc1adecc93a59dbb7926af69d93fc95d4943d40f6aad",
+      "bytes": 8583143
+    },
+    {
+      "path": "LICENSE",
+      "url": "https://raw.githubusercontent.com/fxsjy/jieba/67fa2e36e72f69d9134b8a1037b83fbb070b9775/LICENSE",
+      "sha256": "18ba0984839f85853b29fadaf992f7dba8fd0ca0fbeae34de2b8735222dc7a37",
+      "bytes": 1075
+    }
+  ],
+  "input_git_commit": "8ba1c065d08a0121a9e39ead733bb23cd81e483b",
+  "input_curated_sha256": "92a12acaaf602b8ab9d9b124d74e828ca7478f1ba95020984d1f1b6c822a8a8e",
+  "input_curated_rows": 33193,
+  "input_db_sha256": "6175f4d4d43d4b44e7e4c3a7762d8a815dd2f554aaf95867d6ec1ae2666e5cf9",
+  "newly_reviewed_candidates": 2000,
+  "revisited_candidates": 0,
+  "review_rows": 2063,
+  "review_candidate_ids": 2000,
+  "review_verdict_rows": {
+    "accept": 1781,
+    "defer": 114,
+    "reject": 154,
+    "already_present": 14
+  },
+  "reading_repairs": 0,
+  "added_rows": 1781,
+  "added_literals": 1718,
+  "total_curated_rows": 34974,
+  "cumulative_reviewed_candidates": 39994,
+  "cumulative_candidate_decisions": {
+    "accept": 33770,
+    "reject": 5693,
+    "already_present": 300,
+    "defer": 231
+  },
+  "candidate_pool": 146602,
+  "unreviewed_pool_candidates": 106608,
+  "regional_candidates_still_held": 924,
+  "selection": "Next 2000 individually reviewed candidates, continuation offsets 33250:35250. Word-context review distinguishes 中毒 zung3, 乘間 gaan3, 予取予奪 jyu4, 人涉卬否 ngong4 and 人為財死 wai6. Valid modern alternates remain with explicit primary order. 享帚自珍 and 人極計生 retain independently verified historical forms. Reusable common phrases, classical idioms and technical terminology are eligible. Proper names, unconfirmed fragments and clearly regional colloquialisms remain excluded. Unresolved readings stay deferred.",
+  "frequency_meaning": "Upstream dictionary weight, not measured corpus occurrences or a product ranking weight",
+  "normalization_policy": "Existing s2hk with 64 exact-literal restorations and three bare-literal sense exceptions. Adds exact 幹雲蔽日→干雲蔽日, 二週目→二周目, 交流乾擾→交流干擾 and 人工幹預→人工干預 restorations. One existing full-source 人工干預 literal migrates without changing its reading or code, with pinned Rime provenance recorded separately. All 33193 prior curated rows and grade objects remain unchanged. Cache format 13 invalidates old parses. Proposed, formal and ingested literals remain separately traceable.",
+  "reading_policy": "No automatic promotion of character-default drafts; whole-word review plus contextual high-risk and compound-reference audit; 病=beng6 only",
+  "original_curated_rows_preserved": 33193,
+  "previous_source_repairs_explicit": true,
+  "review_tsv_sha256": "21cdd6d4f255f7fcb3bc0580ec522b2d7d72d39a6ce4cb1f17df6bf687cb59fe",
+  "validation": {
+    "merged_rows": 216109,
+    "merged_literals": 200348,
+    "unique_pairs": 216107,
+    "baseline_unique_pairs": 214326,
+    "normalized_baseline_unique_pairs": 214326,
+    "all_baseline_pairs_retained_after_explicit_literal_migrations": true,
+    "baseline_counter_retained_after_explicit_literal_migrations": true,
+    "existing_literal_migrations": 1,
+    "existing_curated_reading_repairs": 0,
+    "existing_pairs_deduplicated": 0,
+    "added_source_rows": 1781,
+    "all_new_pairs_retained": true,
+    "persisted_rows_match": true,
+    "existing_exact_duplicate_groups": 2,
+    "representative_search_checks": 349,
+    "live_db_unchanged": true,
+    "backend_pwa_word_grade_keys": 35400,
+    "previous_reading_grades_preserved": 33193,
+    "explicit_previous_reading_grade_repairs": 0,
+    "new_word_normalization_idempotent": true,
+    "smoke_tests": 289,
+    "smoke_passed": 285,
+    "smoke_skipped": 4,
+    "seam_tests": 89,
+    "seam_passed": 83,
+    "seam_skipped": 6,
+    "pwa_build": true,
+    "portable_build": true,
+    "ranking_and_lookup_self_checks": true,
+    "targeted_node_typecheck": true,
+    "pwa_artifact_guard": true,
+    "layer_cache_format": "13",
+    "layer_cache_cold_misses": 8,
+    "layer_cache_warm_hits": 8,
+    "layer_cache_counter_matches_uncached_db": true
+  },
+  "existing_literal_review_path": "2026-11-06-written-b22-existing-literals.tsv",
+  "existing_literal_review_sha256": "c957740890c27ec0664d639aa16d063739335983316c3c4de1c23666834a81a5",
+  "existing_literal_migrations": 1,
+  "existing_literal_source_sha256": {
+    "data/lexicon/raw/rime-cantonese-upstream/word.csv": "b7f2561ccd222358cd7d04f2a349b986831aa8d61adf60d8584d6ffc5dd6f27a"
+  },
+  "net_added_curated_literals": 1718,
+  "added_grade_basis": {
+    "rime-components": 1561,
+    "ai-context": 218,
+    "rime-orthographic": 2
+  },
+  "added_grade_distribution": {
+    "預設": 1566,
+    "常用": 215
+  }
+}

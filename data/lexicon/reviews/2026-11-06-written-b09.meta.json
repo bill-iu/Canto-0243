@@ -1,0 +1,273 @@
+{
+  "batch": "2026-11-06-written-b09",
+  "date": "2026-11-06",
+  "reviewer": "AI-assisted word-form, sense and whole-word Cantonese review; not human item-by-item approval",
+  "source_repository": "https://github.com/fxsjy/jieba",
+  "source_commit": "67fa2e36e72f69d9134b8a1037b83fbb070b9775",
+  "source_license": "MIT",
+  "source_files": [
+    {
+      "path": "jieba/dict.txt",
+      "url": "https://raw.githubusercontent.com/fxsjy/jieba/67fa2e36e72f69d9134b8a1037b83fbb070b9775/jieba/dict.txt",
+      "sha256": "7197c3211ddd98962b036cdf40324d1ea2bfaa12bd028e68faa70111a88e12a8",
+      "bytes": 5071852
+    },
+    {
+      "path": "extra_dict/dict.txt.big",
+      "url": "https://raw.githubusercontent.com/fxsjy/jieba/67fa2e36e72f69d9134b8a1037b83fbb070b9775/extra_dict/dict.txt.big",
+      "sha256": "b16011275c42955ccd81fc1adecc93a59dbb7926af69d93fc95d4943d40f6aad",
+      "bytes": 8583143
+    },
+    {
+      "path": "LICENSE",
+      "url": "https://raw.githubusercontent.com/fxsjy/jieba/67fa2e36e72f69d9134b8a1037b83fbb070b9775/LICENSE",
+      "sha256": "18ba0984839f85853b29fadaf992f7dba8fd0ca0fbeae34de2b8735222dc7a37",
+      "bytes": 1075
+    }
+  ],
+  "input_git_commit": "521c99f5274223e5c6933dc317d48c5493237b98",
+  "input_curated_sha256": "4264a2bfa6678be8250bfe2e6040c4be153569d3c030610303aba4397d2ec5b1",
+  "input_curated_rows": 11356,
+  "input_db_sha256": "6175f4d4d43d4b44e7e4c3a7762d8a815dd2f554aaf95867d6ec1ae2666e5cf9",
+  "newly_reviewed_candidates": 2000,
+  "revisited_candidates": 0,
+  "review_rows": 2018,
+  "review_candidate_ids": 2000,
+  "review_verdict_rows": {
+    "reject": 177,
+    "accept": 1833,
+    "already_present": 6,
+    "defer": 2
+  },
+  "reading_repairs": 0,
+  "added_rows": 1833,
+  "added_literals": 1815,
+  "total_curated_rows": 13189,
+  "cumulative_reviewed_candidates": 13994,
+  "cumulative_candidate_decisions": {
+    "accept": 12579,
+    "reject": 1323,
+    "already_present": 84,
+    "defer": 8
+  },
+  "candidate_pool": 146602,
+  "unreviewed_pool_candidates": 132608,
+  "regional_candidates_still_held": 924,
+  "selection": "Next 2000 previously unreviewed pool IDs in descending pinned upstream dictionary weight; continuation offsets 7250:9250. 行風 and 咪咪 remain deferred pending word-context reading evidence. Existing deferred candidates are preserved. AI-inferred readings and legitimate alternatives are labeled explicitly.",
+  "frequency_meaning": "Upstream dictionary weight, not measured corpus occurrences or a product ranking weight",
+  "normalization_policy": "Existing s2hk with twenty-one exact-literal restorations plus two bare-literal sense exceptions; adds exact 機械系, 干擾機 and 斗式 restorations. All three are absent from the full B08 build and live database, so no old canonical pair is migrated. Proposed, formal and actual ingest literals remain separate.",
+  "reading_policy": "No automatic promotion of character-default drafts; whole-word review plus contextual high-risk and compound-reference audit; 病=beng6 only",
+  "original_curated_rows_preserved": 11356,
+  "previous_source_repairs_explicit": true,
+  "review_tsv_sha256": "e3624b217d7551bf74c89329be3d7aa6f2ba714314b20758fcc72e134b9caccd",
+  "validation": {
+    "merged_rows": 194326,
+    "merged_unique_pairs": 194324,
+    "merged_literals": 179170,
+    "baseline_unique_pairs": 192495,
+    "only_explicit_old_readings_replaced": true,
+    "baseline_pairs_retained": 192480,
+    "baseline_pairs_changed": [
+      {
+        "char": "蒼莽",
+        "previous_jyutping": "cong1 mong4",
+        "previous_code": "30",
+        "jyutping": "cong1 mong5",
+        "code": "35",
+        "evidence": "kaifang:cidian_zhyue-ft-kfcd-yp-2021714.txt#L10:token30407",
+        "reading_reference": "https://jyut.net/query?q=莽",
+        "reason": "草莽、莽撞等義的莽為 mong5；多部粵語字典一致，不採上游 mong4 錯音。精確舊讀音對覆蓋，保留其他音節及既有正讀。",
+        "action": "set_jyutping"
+      },
+      {
+        "char": "粗莽",
+        "previous_jyutping": "cou1 mong4",
+        "previous_code": "30",
+        "jyutping": "cou1 mong5",
+        "code": "35",
+        "evidence": "kaifang:cidian_zhyue-ft-kfcd-yp-2021714.txt#L10:token30787",
+        "reading_reference": "https://jyut.net/query?q=莽",
+        "reason": "草莽、莽撞等義的莽為 mong5；多部粵語字典一致，不採上游 mong4 錯音。精確舊讀音對覆蓋，保留其他音節及既有正讀。已有正讀，僅刪此錯讀，避免新增完全重複列。",
+        "action": "delete"
+      },
+      {
+        "char": "草莽",
+        "previous_jyutping": "cou2 mong4",
+        "previous_code": "90",
+        "jyutping": "cou2 mong5",
+        "code": "95",
+        "evidence": "kaifang:cidian_zhyue-ft-kfcd-yp-2021714.txt#L10:token30979",
+        "reading_reference": "https://jyut.net/query?q=莽",
+        "reason": "草莽、莽撞等義的莽為 mong5；多部粵語字典一致，不採上游 mong4 錯音。精確舊讀音對覆蓋，保留其他音節及既有正讀。",
+        "action": "set_jyutping"
+      },
+      {
+        "char": "叢莽",
+        "previous_jyutping": "cung4 mong4",
+        "previous_code": "00",
+        "jyutping": "cung4 mong5",
+        "code": "05",
+        "evidence": "kaifang:cidian_zhyue-ft-kfcd-yp-2021714.txt#L10:token32223",
+        "reading_reference": "https://jyut.net/query?q=莽",
+        "reason": "草莽、莽撞等義的莽為 mong5；多部粵語字典一致，不採上游 mong4 錯音。精確舊讀音對覆蓋，保留其他音節及既有正讀。",
+        "action": "set_jyutping"
+      },
+      {
+        "char": "榛莽",
+        "previous_jyutping": "zeon1 mong4",
+        "previous_code": "30",
+        "jyutping": "zeon1 mong5",
+        "code": "35",
+        "evidence": "kaifang:cidian_zhyue-ft-kfcd-yp-2021714.txt#L10:token117886",
+        "reading_reference": "https://jyut.net/query?q=莽",
+        "reason": "草莽、莽撞等義的莽為 mong5；多部粵語字典一致，不採上游 mong4 錯音。精確舊讀音對覆蓋，保留其他音節及既有正讀。",
+        "action": "set_jyutping"
+      },
+      {
+        "char": "林莽",
+        "previous_jyutping": "lam4 mong4",
+        "previous_code": "00",
+        "jyutping": "lam4 mong5",
+        "code": "05",
+        "evidence": "kaifang:cidian_zhyue-ft-kfcd-yp-2021714.txt#L10:token143696",
+        "reading_reference": "https://jyut.net/query?q=莽",
+        "reason": "草莽、莽撞等義的莽為 mong5；多部粵語字典一致，不採上游 mong4 錯音。精確舊讀音對覆蓋，保留其他音節及既有正讀。",
+        "action": "set_jyutping"
+      },
+      {
+        "char": "魯莽",
+        "previous_jyutping": "lou5 mong4",
+        "previous_code": "50",
+        "jyutping": "lou5 mong5",
+        "code": "55",
+        "evidence": "kaifang:cidian_zhyue-ft-kfcd-yp-2021714.txt#L10:token152512",
+        "reading_reference": "https://jyut.net/query?q=莽",
+        "reason": "草莽、莽撞等義的莽為 mong5；多部粵語字典一致，不採上游 mong4 錯音。精確舊讀音對覆蓋，保留其他音節及既有正讀。已有正讀，僅刪此錯讀，避免新增完全重複列。",
+        "action": "delete"
+      },
+      {
+        "char": "鹵莽",
+        "previous_jyutping": "lou5 mong4",
+        "previous_code": "50",
+        "jyutping": "lou5 mong5",
+        "code": "55",
+        "evidence": "kaifang:cidian_zhyue-ft-kfcd-yp-2021714.txt#L10:token152515",
+        "reading_reference": "https://jyut.net/query?q=莽",
+        "reason": "草莽、莽撞等義的莽為 mong5；多部粵語字典一致，不採上游 mong4 錯音。精確舊讀音對覆蓋，保留其他音節及既有正讀。",
+        "action": "set_jyutping"
+      },
+      {
+        "char": "魯莽行事",
+        "previous_jyutping": "lou5 mong4 hang4 si6",
+        "previous_code": "5002",
+        "jyutping": "lou5 mong5 hang4 si6",
+        "code": "5502",
+        "evidence": "kaifang:cidian_zhyue-ft-kfcd-yp-2021714.txt#L10:token152518",
+        "reading_reference": "https://jyut.net/query?q=莽",
+        "reason": "草莽、莽撞等義的莽為 mong5；多部粵語字典一致，不採上游 mong4 錯音。精確舊讀音對覆蓋，保留其他音節及既有正讀。已有正讀，僅刪此錯讀，避免新增完全重複列。",
+        "action": "delete"
+      },
+      {
+        "char": "魯莽滅裂",
+        "previous_jyutping": "lou5 mong4 mit6 lit6",
+        "previous_code": "5022",
+        "jyutping": "lou5 mong5 mit6 lit6",
+        "code": "5522",
+        "evidence": "kaifang:cidian_zhyue-ft-kfcd-yp-2021714.txt#L10:token152523",
+        "reading_reference": "https://jyut.net/query?q=莽",
+        "reason": "草莽、莽撞等義的莽為 mong5；多部粵語字典一致，不採上游 mong4 錯音。精確舊讀音對覆蓋，保留其他音節及既有正讀。",
+        "action": "set_jyutping"
+      },
+      {
+        "char": "莽蒼",
+        "previous_jyutping": "mong4 cong1",
+        "previous_code": "03",
+        "jyutping": "mong5 cong1",
+        "code": "53",
+        "evidence": "kaifang:cidian_zhyue-ft-kfcd-yp-2021714.txt#L10:token165783",
+        "reading_reference": "https://jyut.net/query?q=莽",
+        "reason": "草莽、莽撞等義的莽為 mong5；多部粵語字典一致，不採上游 mong4 錯音。精確舊讀音對覆蓋，保留其他音節及既有正讀。",
+        "action": "set_jyutping"
+      },
+      {
+        "char": "莽漢",
+        "previous_jyutping": "mong4 hon3",
+        "previous_code": "04",
+        "jyutping": "mong5 hon3",
+        "code": "54",
+        "evidence": "kaifang:cidian_zhyue-ft-kfcd-yp-2021714.txt#L10:token165869",
+        "reading_reference": "https://jyut.net/query?q=莽",
+        "reason": "草莽、莽撞等義的莽為 mong5；多部粵語字典一致，不採上游 mong4 錯音。精確舊讀音對覆蓋，保留其他音節及既有正讀。",
+        "action": "set_jyutping"
+      },
+      {
+        "char": "莽撞",
+        "previous_jyutping": "mong4 zong6",
+        "previous_code": "02",
+        "jyutping": "mong5 zong6",
+        "code": "52",
+        "evidence": "kaifang:cidian_zhyue-ft-kfcd-yp-2021714.txt#L10:token165872",
+        "reading_reference": "https://jyut.net/query?q=莽",
+        "reason": "草莽、莽撞等義的莽為 mong5；多部粵語字典一致，不採上游 mong4 錯音。精確舊讀音對覆蓋，保留其他音節及既有正讀。已有正讀，僅刪此錯讀，避免新增完全重複列。",
+        "action": "delete"
+      },
+      {
+        "char": "莽莽",
+        "previous_jyutping": "mong4 mong4",
+        "previous_code": "00",
+        "jyutping": "mong5 mong5",
+        "code": "55",
+        "evidence": "kaifang:cidian_zhyue-ft-kfcd-yp-2021714.txt#L10:token165920",
+        "reading_reference": "https://jyut.net/query?q=莽",
+        "reason": "草莽、莽撞等義的莽為 mong5；多部粵語字典一致，不採上游 mong4 錯音。精確舊讀音對覆蓋，保留其他音節及既有正讀。",
+        "action": "set_jyutping"
+      },
+      {
+        "char": "莽原",
+        "previous_jyutping": "mong4 jyun4",
+        "previous_code": "00",
+        "jyutping": "mong5 jyun4",
+        "code": "50",
+        "evidence": "kaifang:cidian_zhyue-ft-kfcd-yp-2021714.txt#L10:token166004",
+        "reading_reference": "https://jyut.net/query?q=莽",
+        "reason": "草莽、莽撞等義的莽為 mong5；多部粵語字典一致，不採上游 mong4 錯音。精確舊讀音對覆蓋，保留其他音節及既有正讀。",
+        "action": "set_jyutping"
+      }
+    ],
+    "added_source_rows": 1833,
+    "all_new_pairs_retained": true,
+    "persisted_rows_match": true,
+    "representative_search_checks": 165,
+    "live_db_unchanged": true,
+    "validation_notes": "Full eight-source build, persistence equality, representative and preferred-reading loops passed in validate_b09_r2.py. Fixed a harness case that changed haang4 to hong4 without changing its tone code; resumed all nine wrong-code checks against the same verified DB using hang6 for a distinct code.",
+    "previous_reading_grades_preserved": 11356,
+    "new_word_normalization_idempotent": true,
+    "backend_pwa_word_grade_keys": 13363,
+    "smoke_tests": 275,
+    "smoke_passed": 271,
+    "smoke_skipped": 4,
+    "seam_tests": 89,
+    "seam_passed": 83,
+    "seam_skipped": 6,
+    "pwa_build": true,
+    "ranking_and_lookup_self_checks": true,
+    "targeted_node_typecheck": true,
+    "pwa_artifact_guard": true
+  },
+  "existing_source_reading_repairs": 15,
+  "existing_reading_review_path": "2026-11-06-written-b09-existing-readings.tsv",
+  "existing_reading_review_sha256": "aa280e61d5ca6256c0d2f690970681a6c5278d5bd6e0ff58e5b0b9b974bbc136",
+  "existing_reading_source": {
+    "path": "data/lexicon/raw/kaifang/cidian_zhyue-ft-kfcd-yp-2021714.txt",
+    "sha256": "3756a8923d9dc8f4507dbe4a8deeea93f5420f7a139b9e28587ef2bddf444be7",
+    "upstream": "https://kaifangcidian.com/xiazai/yue/",
+    "license": "CC BY 3.0",
+    "location": "L10 flat JSON array; zero-based literal token index recorded per row"
+  },
+  "input_corrections_sha256": "cc51be57f85492dbef71ff10e9a8c5cf31531bf6194bb912a4ba88c9094a5353",
+  "corrections_sha256": "ee2b55f2541d781abcb6e7522c0869fa163a72e8ea9d5f84f1007421e7b25a27",
+  "existing_reading_actions": {
+    "set_jyutping": 11,
+    "delete": 4
+  }
+}

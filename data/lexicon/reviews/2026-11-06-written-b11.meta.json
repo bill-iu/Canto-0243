@@ -1,0 +1,115 @@
+{
+  "batch": "2026-11-06-written-b11",
+  "date": "2026-11-06",
+  "reviewer": "AI-assisted word-form, sense and whole-word Cantonese review; not human item-by-item approval",
+  "source_repository": "https://github.com/fxsjy/jieba",
+  "source_commit": "67fa2e36e72f69d9134b8a1037b83fbb070b9775",
+  "source_license": "MIT",
+  "source_files": [
+    {
+      "path": "jieba/dict.txt",
+      "url": "https://raw.githubusercontent.com/fxsjy/jieba/67fa2e36e72f69d9134b8a1037b83fbb070b9775/jieba/dict.txt",
+      "sha256": "7197c3211ddd98962b036cdf40324d1ea2bfaa12bd028e68faa70111a88e12a8",
+      "bytes": 5071852
+    },
+    {
+      "path": "extra_dict/dict.txt.big",
+      "url": "https://raw.githubusercontent.com/fxsjy/jieba/67fa2e36e72f69d9134b8a1037b83fbb070b9775/extra_dict/dict.txt.big",
+      "sha256": "b16011275c42955ccd81fc1adecc93a59dbb7926af69d93fc95d4943d40f6aad",
+      "bytes": 8583143
+    },
+    {
+      "path": "LICENSE",
+      "url": "https://raw.githubusercontent.com/fxsjy/jieba/67fa2e36e72f69d9134b8a1037b83fbb070b9775/LICENSE",
+      "sha256": "18ba0984839f85853b29fadaf992f7dba8fd0ca0fbeae34de2b8735222dc7a37",
+      "bytes": 1075
+    }
+  ],
+  "input_git_commit": "9370730f0d8b034978e5bcda7dda8692f103a70e",
+  "input_curated_sha256": "a4294bbf6b35c26701d9d6ca3d976df9c5cec287463d249c642eb1630d7981b7",
+  "input_curated_rows": 14976,
+  "input_db_sha256": "6175f4d4d43d4b44e7e4c3a7762d8a815dd2f554aaf95867d6ec1ae2666e5cf9",
+  "newly_reviewed_candidates": 2000,
+  "revisited_candidates": 0,
+  "review_rows": 2026,
+  "review_candidate_ids": 2000,
+  "review_verdict_rows": {
+    "reject": 245,
+    "accept": 1765,
+    "already_present": 13,
+    "defer": 3
+  },
+  "reading_repairs": 0,
+  "added_rows": 1765,
+  "added_literals": 1739,
+  "total_curated_rows": 16741,
+  "cumulative_reviewed_candidates": 17994,
+  "cumulative_candidate_decisions": {
+    "accept": 16073,
+    "reject": 1799,
+    "already_present": 110,
+    "defer": 12
+  },
+  "candidate_pool": 146602,
+  "unreviewed_pool_candidates": 128608,
+  "regional_candidates_still_held": 924,
+  "selection": "Next 2000 previously unreviewed pool IDs in descending pinned upstream dictionary weight; continuation offsets 11250:13250. 劈劈啪啪, 忽喇喇 and 撲稜稜 remain deferred pending complete sound-word evidence; all earlier deferred candidates remain. AI-inferred readings and legitimate alternatives are labeled explicitly.",
+  "frequency_meaning": "Upstream dictionary weight, not measured corpus occurrences or a product ranking weight",
+  "normalization_policy": "Existing s2hk with twenty-five exact-literal restorations plus two bare-literal sense exceptions. Adds 白面書生, 斗門, 車斗 and 家具城. One exact existing 白麪書生 pair is migrated, with provenance ledger; the three other spellings are absent from the live and full B10 databases. Proposed, formal and actual ingest literals remain separate.",
+  "reading_policy": "No automatic promotion of character-default drafts; whole-word review plus contextual high-risk and compound-reference audit; 病=beng6 only",
+  "original_curated_rows_preserved": 14976,
+  "previous_source_repairs_explicit": true,
+  "review_tsv_sha256": "05d4d2732f8b3aa817f0251c0595678cb8c6302562359d2accdca484327f423c",
+  "validation": {
+    "merged_rows": 197878,
+    "merged_literals": 182664,
+    "unique_pairs": 197876,
+    "baseline_unique_pairs": 196111,
+    "baseline_pairs_retained": 196110,
+    "only_recorded_literal_migration": true,
+    "existing_literal_migrations": [
+      {
+        "previous_char": "白麪書生",
+        "char": "白面書生",
+        "jyutping": "baak6 min6 syu1 sang1",
+        "code": "2233"
+      }
+    ],
+    "added_source_rows": 1765,
+    "all_new_pairs_retained": true,
+    "persisted_rows_match": true,
+    "existing_exact_duplicate_groups": 2,
+    "representative_search_checks": 57,
+    "live_db_unchanged": true,
+    "backend_pwa_word_grade_keys": 16959,
+    "previous_reading_grades_preserved": 14976,
+    "new_word_normalization_idempotent": true,
+    "smoke_tests": 278,
+    "smoke_passed": 274,
+    "smoke_skipped": 4,
+    "seam_tests": 89,
+    "seam_passed": 83,
+    "seam_skipped": 6,
+    "pwa_build": true,
+    "ranking_and_lookup_self_checks": true,
+    "targeted_node_typecheck": true,
+    "pwa_artifact_guard": true,
+    "layer_cache_format": "2",
+    "layer_cache_cold_misses": 8,
+    "layer_cache_warm_hits": 8,
+    "layer_cache_counter_matches_uncached_db": true
+  },
+  "existing_literal_review_path": "2026-11-06-written-b11-existing-literals.tsv",
+  "existing_literal_review_sha256": "dc16bc8d90f8b21111e3708b1e5bc0290cabc48b7d250246fbe7d5552ff4ee93",
+  "existing_literal_migrations": 1,
+  "normalization_source_files": [
+    {
+      "path": "data/lexicon/raw/rime-cantonese-upstream/word.csv",
+      "sha256": "b7f2561ccd222358cd7d04f2a349b986831aa8d61adf60d8584d6ffc5dd6f27a"
+    },
+    {
+      "path": "data/lexicon/raw/kaifang/cidian_zhyue-ft-kfcd-yp-2021714.txt",
+      "sha256": "3756a8923d9dc8f4507dbe4a8deeea93f5420f7a139b9e28587ef2bddf444be7"
+    }
+  ]
+}

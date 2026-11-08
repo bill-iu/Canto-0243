@@ -88,7 +88,7 @@ export async function executeWordLookup(
     matches = (await composeTransientWordRows(db, parsed.raw_q)) as WordRow[];
   }
 
-  const built = await buildLookupLayout(parsed.raw_q, deduplicateWordRows(matches), db);
+  const built = await buildLookupLayout(parsed.raw_q, matches, db);
   return {
     items: built.slice(offset, offset + limit),
     total: built.length,

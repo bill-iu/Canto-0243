@@ -1,0 +1,1004 @@
+id	char	ingested_char	jyutping	code	category	evidence	verdict	note	previous_jyutping	previous_verdict	source_literal	source_file	source_line	source_frequency	proposed_char	draft_jyutping	reading_reference	source_tag
+6394	線形	線形	sin3 jing4	40	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L409083	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			線形	extra_dict/dict.txt.big	409083	64	線形	sin3 jing4		n
+6395	翻倒	翻倒	faan1 dou2	39	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L263185	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			翻倒	jieba/dict.txt	263185	64	翻倒	faan1 dou2		v
+6396	臨場發揮	臨場發揮	lam4 coeng4 faat3 fai1	0043	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L15641	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			临场发挥	jieba/dict.txt	15641	64	臨場發揮	lam4 coeng4 faat3 fai1		v
+6397	自查	自查	zi6 caa4	20	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L270279	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			自查	jieba/dict.txt	270279	64	自查	zi6 caa4		vn
+6398	自由派	自由派	zi6 jau4 paai3	204	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L270477	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			自由派	jieba/dict.txt	270477	64	自由派	zi6 jau4 paai3		n
+6399	自貢					jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L434504	reject	proper_name:四川城市名。			自貢	extra_dict/dict.txt.big	434504	64	自貢	zi6 gung3		v
+6400	致病性	致病性	zi3 beng6 sing3	424	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L270949	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			致病性	jieba/dict.txt	270949	64	致病性	zi3 beng6 sing3		n
+6401	船底	船底	syun4 dai2	09	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L271708	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			船底	jieba/dict.txt	271708	64	船底	syun4 dai2		s
+6402	菌類	菌類	kwan2 leoi6	92	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L277233	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			菌类	jieba/dict.txt	277233	64	菌類	kwan2 leoi6		n
+6403	落基					jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L278287	reject	proper_name:落基山脈的名稱片段。			落基	jieba/dict.txt	278287	64	落基	lok6 gei1		n
+6404	解聘	解聘	gaai2 ping3	94	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L287591	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			解聘	jieba/dict.txt	287591	64	解聘	gaai2 ping3		v
+6405	調處	調處	tiu4 cyu2	09	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L469796	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。已另核對語境讀音。			調處	extra_dict/dict.txt.big	469796	64	調處	diu6 cyu3		v
+6406	諸職司	諸職司	zyu1 zik1 si1	333	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L470585	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			諸職司	extra_dict/dict.txt.big	470585	64	諸職司	zyu1 zik1 si1		n
+6407	辭掉	辭掉	ci4 diu6	02	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L303765	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			辞掉	jieba/dict.txt	303765	64	辭掉	ci4 diu6		v
+6408	選擇權	選擇權	syun2 zaak6 kyun4	920	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L308377	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			选择权	jieba/dict.txt	308377	64	選擇權	syun2 zaak6 kyun4		n
+6409	鍋蓋	鍋蓋	wo1 goi3	34	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L523365	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			鍋蓋	extra_dict/dict.txt.big	523365	64	鍋蓋	wo1 goi3		n
+6410	鏡框	鏡框	geng3 kwaang1	43	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L524036	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			鏡框	extra_dict/dict.txt.big	524036	64	鏡框	geng3 kwaang1		n
+6411	開發者	開發者	hoi1 faat3 ze2	349	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L130498	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			开发者	jieba/dict.txt	130498	64	開發者	hoi1 faat3 ze2		n
+6412	間作	間作	gaan3 zok3	44	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L531412	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。已另核對語境讀音。			間作	extra_dict/dict.txt.big	531412	64	間作	gaan1 zok3		n
+6413	附肢	附肢	fu6 zi1	23	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L326165	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			附肢	jieba/dict.txt	326165	64	附肢	fu6 zi1		n
+6414	電泳	電泳	din6 wing6	22	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L229435	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			电泳	jieba/dict.txt	229435	64	電泳	din6 wing6		n
+6415	非晶態	非晶態	fei1 zing1 taai3	334	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L332376	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			非晶态	jieba/dict.txt	332376	64	非晶態	fei1 zing1 taai3		n
+6416	預設	預設	jyu6 cit3	24	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L554588	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			預設	extra_dict/dict.txt.big	554588	64	預設	jyu6 cit3		vn
+6417	食盒	食盒	sik6 hap6	22	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L336962	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			食盒	jieba/dict.txt	336962	64	食盒	sik6 hap6		n
+6418	麪食	麪食	min6 sik6	22	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L332946	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			面食	jieba/dict.txt	332946	64	麪食	min6 sik6		n
+6419	麻花	麻花	maa4 faa1	03	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L345413	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			麻花	jieba/dict.txt	345413	64	麻花	maa4 faa1		n
+6421	世祖	世祖	sai3 zou2	49	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L10828	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			世祖	jieba/dict.txt	10828	63	世祖	sai3 zou2		n
+6422	主戰派	主戰派	zyu2 zin3 paai3	944	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L16310	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			主战派	jieba/dict.txt	16310	63	主戰派	zyu2 zin3 paai3		n
+6423	乾果	乾果	gon1 gwo2	39	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L27374	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			乾果	extra_dict/dict.txt.big	27374	63	乾果	gon1 gwo2		n
+6424	亞行					jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L24189	reject	proper_name:亞洲開發銀行縮略。			亚行	jieba/dict.txt	24189	63	亞行	aa3 haang4		j
+6425	假手	假手	gaa2 sau2	99	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L37217	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			假手	jieba/dict.txt	37217	63	假手	gaa2 sau2		n
+6426	備選	備選	bei6 syun2	29	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L55099	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			備選	extra_dict/dict.txt.big	55099	63	備選	bei6 syun2		v
+6427	公關部	公關部	gung1 gwaan1 bou6	332	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L42592	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			公关部	jieba/dict.txt	42592	63	公關部	gung1 gwaan1 bou6		n
+6428	出奔	出奔	ceot1 ban1	33	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L50844	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			出奔	jieba/dict.txt	50844	63	出奔	ceot1 ban1		v
+6430	前列腺癌	前列腺癌	cin4 lit6 sin3 ngaam4	0240	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L55805	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			前列腺癌	jieba/dict.txt	55805	63	前列腺癌	cin4 lit6 sin3 ngaam4		n
+6431	勞動部門	勞動部門	lou4 dung6 bou6 mun4	0220	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L58490	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			劳动部门	jieba/dict.txt	58490	63	勞動部門	lou4 dung6 bou6 mun4		n
+6435	台長	台長	toi4 zoeng2	09	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L74049	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。已另核對語境讀音。			台长	jieba/dict.txt	74049	63	台長	toi4 coeng4		n
+6436	各段	各段	gok3 dyun6	42	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L75606	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			各段	jieba/dict.txt	75606	63	各段	gok3 dyun6		r
+6437	同於	同於	tung4 jyu1	03	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L76525	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			同于	jieba/dict.txt	76525	63	同於	tung4 jyu1		c
+6438	同質	同質	tung4 zat1	03	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L113902	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			同質	extra_dict/dict.txt.big	113902	63	同質	tung4 zat1		n
+6439	垂直帶	垂直帶	seoi4 zik6 daai3	024	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L91938	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			垂直带	jieba/dict.txt	91938	63	垂直帶	seoi4 zik6 daai3		n
+6440	執行者	執行者	zap1 hang4 ze2	309	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L139432	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。已另核對語境讀音。			執行者	extra_dict/dict.txt.big	139432	63	執行者	zap1 haang4 ze2		n
+6441	外設	外設	ngoi6 cit3	24	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L145661	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			外設	extra_dict/dict.txt.big	145661	63	外設	ngoi6 cit3		vn
+6442	大辦	大辦	daai6 baan6	22	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L97903	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			大办	jieba/dict.txt	97903	63	大辦	daai6 baan6		n
+6443	奶製品	奶製品	naai5 zai3 ban2	549	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L103564	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			奶制品	jieba/dict.txt	103564	63	奶製品	naai5 zai3 ban2		n
+6444	密鑰	密鑰	mat6 joek6	22	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L172690	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			密鑰	extra_dict/dict.txt.big	172690	63	密鑰	mat6 joek6		n
+6445	封堵	封堵	fung1 dou2	39	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L115392	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			封堵	jieba/dict.txt	115392	63	封堵	fung1 dou2		v
+6446	岩土	岩土	ngaam4 tou2	09	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L120720	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			岩土	jieba/dict.txt	120720	63	岩土	ngaam4 tou2		n
+6447	平四	平四	ping4 sei3	04	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L126458	accept	按交誼舞舞種義收錄；華中科技大學等教學活動有跨地域用例。			平四	jieba/dict.txt	126458	63	平四	ping4 sei3	https://youth.hust.edu.cn/info/1144/1750.htm	t
+6448	幸甚	幸甚	hang6 sam6	22	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L127426	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			幸甚	jieba/dict.txt	127426	63	幸甚	hang6 sam6		a
+6449	幹完	幹完	gon3 jyun4	40	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L126086	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			干完	jieba/dict.txt	126086	63	幹完	gon3 jyun4		v
+6450	心功能	心功能	sam1 gung1 nang4	330	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L137273	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			心功能	jieba/dict.txt	137273	63	心功能	sam1 gung1 nang4		n
+6451	成礦作用	成礦作用	sing4 kwong3 zok3 jung6	0442	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L144320	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			成矿作用	jieba/dict.txt	144320	63	成礦作用	sing4 kwong3 zok3 jung6		n
+6452	截殺	截殺	zit6 saat3	24	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L145008	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			截杀	jieba/dict.txt	145008	63	截殺	zit6 saat3		v
+6453	拖入	拖入	to1 jap6	32	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L151997	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			拖入	jieba/dict.txt	151997	63	拖入	to1 jap6		v
+6454	指揮塔	指揮塔	zi2 fai1 taap3	934	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L153567	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			指挥塔	jieba/dict.txt	153567	63	指揮塔	zi2 fai1 taap3		n
+6456	改錯	改錯	goi2 co3	94	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L249860	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			改錯	extra_dict/dict.txt.big	249860	63	改錯	goi2 co3		v
+6457	月工資	月工資	jyut6 gung1 zi1	233	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L273327	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			月工資	extra_dict/dict.txt.big	273327	63	月工資	jyut6 gung1 zi1		n
+6458	本隊	本隊	bun2 deoi6	92	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L177890	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			本队	jieba/dict.txt	177890	63	本隊	bun2 deoi6		n
+6459	東西部	東西部	dung1 sai1 bou6	332	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L11893	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			东西部	jieba/dict.txt	11893	63	東西部	dung1 sai1 bou6		f
+6460	東門外	東門外	dung1 mun4 ngoi6	302	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L11960	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			东门外	jieba/dict.txt	11960	63	東門外	dung1 mun4 ngoi6		s
+6461	板橋	板橋	baan2 kiu4	90	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L183100	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			板桥	jieba/dict.txt	183100	63	板橋	baan2 kiu4		n
+6462	某事	某事	mau5 si6	52	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L184673	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			某事	jieba/dict.txt	184673	63	某事	mau5 si6		r
+6463	椎間盤	椎間盤	zeoi1 gaan1 pun4	330	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L294125	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			椎間盤	extra_dict/dict.txt.big	294125	63	椎間盤	zeoi1 gaan1 pun4		n
+6464	標有	標有	biu1 jau5	35	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L185800	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			标有	jieba/dict.txt	185800	63	標有	biu1 jau5		v
+6465	氟化物	氟化物	fat1 faa3 mat6	342	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L196449	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			氟化物	jieba/dict.txt	196449	63	氟化物	fat1 faa3 mat6		n
+6466	海相	海相	hoi2 soeng3	94	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L206936	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。已另核對語境讀音。			海相	jieba/dict.txt	206936	63	海相	hoi2 soeng1		n
+6467	渦扇	渦扇	wo1 sin3	34	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L207771	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			涡扇	jieba/dict.txt	207771	63	渦扇	wo1 sin3		n
+6468	炸藥包	炸藥包	zaa3 joek6 baau1	423	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L214956	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			炸药包	jieba/dict.txt	214956	63	炸藥包	zaa3 joek6 baau1		n
+6469	獐子	獐子	zoeng1 zi2	39	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L221762	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			獐子	jieba/dict.txt	221762	63	獐子	zoeng1 zi2		n
+6470	獵手	獵手	lip6 sau2	29	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L221311	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			猎手	jieba/dict.txt	221311	63	獵手	lip6 sau2		n
+6472	異彩	異彩	ji6 coi2	29	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L131143	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			异彩	jieba/dict.txt	131143	63	異彩	ji6 coi2		a
+6473	白白的	白白的	baak6 baak6 dik1	223	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L232558	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			白白的	jieba/dict.txt	232558	63	白白的	baak6 baak6 dik1		z
+6474	的哥	的哥	dik1 go1	33	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L233783	accept	按出租車司機的通行國語稱呼收錄；廣州交通部門持續使用，不一概視為北方方言。			的哥	jieba/dict.txt	233783	63	的哥	dik1 go1	https://jtj.gz.gov.cn/zwgg/ywgg/ggjt/czqc/content/post_9568867.html	n
+6475	皇軍	皇軍	wong4 gwan1	03	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L233812	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			皇军	jieba/dict.txt	233812	63	皇軍	wong4 gwan1		n
+6476	睡醒	睡醒	seoi6 sing2	29	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L237621	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			睡醒	jieba/dict.txt	237621	63	睡醒	seoi6 sing2		v
+6477	知錯	知錯	zi1 co3	34	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L378480	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			知錯	extra_dict/dict.txt.big	378480	63	知錯	zi1 co3		v
+6478	礦物學	礦物學	kwong3 mat6 hok6	422	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L239399	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			矿物学	jieba/dict.txt	239399	63	礦物學	kwong3 mat6 hok6		n
+6479	箱內	箱內	soeng1 noi6	32	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L399535	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			箱內	extra_dict/dict.txt.big	399535	63	箱內	soeng1 noi6		s
+6480	系統論	系統論	hai6 tung2 leon6	292	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L403193	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			系統論	extra_dict/dict.txt.big	403193	63	系統論	hai6 tung2 leon6		n
+6481	綠意	綠意	luk6 ji3	24	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L407932	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			綠意	extra_dict/dict.txt.big	407932	63	綠意	luk6 ji3		n
+6482	膿血	膿血	nung4 hyut3	04	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L268639	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			脓血	jieba/dict.txt	268639	63	膿血	nung4 hyut3		n
+6483	與其說	與其説	jyu5 kei4 syut3	504	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L10250	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			与其说	jieba/dict.txt	10250	63	與其說	jyu5 kei4 syut3		c
+6484	舟子	舟子	zau1 zi2	39	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L271422	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			舟子	jieba/dict.txt	271422	63	舟子	zau1 zi2		n
+6485	花果	花果	faa1 gwo2	39	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L273157	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			花果	jieba/dict.txt	273157	63	花果	faa1 gwo2		n
+6486	苦處	苦處	fu2 cyu3	94	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L274524	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			苦处	jieba/dict.txt	274524	63	苦處	fu2 cyu3		n
+6487	藤本	藤本	tang4 bun2	09	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L280730	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			藤本	jieba/dict.txt	280730	63	藤本	tang4 bun2		n
+6488	虎踞	虎踞	fu2 geoi3	94	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L280944	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			虎踞	jieba/dict.txt	280944	63	虎踞	fu2 geoi3		v
+6489	表演賽	表演賽	biu2 jin2 coi3	994	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L458281	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			表演賽	extra_dict/dict.txt.big	458281	63	表演賽	biu2 jin2 coi3		n
+6490	西南方	西南方	sai1 naam4 fong1	303	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L285489	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			西南方	jieba/dict.txt	285489	63	西南方	sai1 naam4 fong1		f
+6491	詭譎	詭譎	gwai2 kyut3	94	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L468251	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			詭譎	extra_dict/dict.txt.big	468251	63	詭譎	gwai2 kyut3		a
+6492	該刊	該刊	goi1 hon1	33	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L468351	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			該刊	extra_dict/dict.txt.big	468351	63	該刊	goi1 hon1		r
+6493	毀棄					jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L194160	already_present	正式入庫正規化後已有同字面及讀音；不重複收錄。			毁弃	jieba/dict.txt	194160	63	譭棄	wai2 hei3	https://dict.revised.moe.edu.tw/dictView.jsp?ID=85252&la=0&powerMode=0	v
+6494	豐腴	豐腴	fung1 jyu4	30	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L15515	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			丰腴	jieba/dict.txt	15515	63	豐腴	fung1 jyu4		a
+6495	豪華團	豪華團	hou4 waa4 tyun4	000	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L294225	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			豪华团	jieba/dict.txt	294225	63	豪華團	hou4 waa4 tyun4		n
+6496	買好	買好	maai5 hou2	59	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L19207	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			买好	jieba/dict.txt	19207	63	買好	maai5 hou2		v
+6497	軍屯	軍屯	gwan1 tyun4	30	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L46801	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			军屯	jieba/dict.txt	46801	63	軍屯	gwan1 tyun4		n
+6498	連戰	連戰	lin4 zin3	04	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L306688	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			连战	jieba/dict.txt	306688	63	連戰	lin4 zin3		v
+6499	金石學	金石學	gam1 sek6 hok6	322	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L316887	accept	金石學取金屬／石刻義 sek6；不沿用上游金石誤用容量單位 daam3 的讀音。			金石学	jieba/dict.txt	316887	63	金石學	gam1 daam3 hok6	https://cantonese.sheik.co.uk/dictionary/characters/20/?cf=1&full=true	n
+6500	針尖	針尖	zam1 zim1	33	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L520895	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			針尖	extra_dict/dict.txt.big	520895	63	針尖	zam1 zim1		n
+6501	閩浙					jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L531626	reject	proper_name:省份地理縮稱。			閩浙	extra_dict/dict.txt.big	531626	63	閩浙	man5 zit3		j
+6502	陣型	陣型	zan6 jing4	20	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L324648	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			阵型	jieba/dict.txt	324648	63	陣型	zan6 jing4		n
+6503	項城					jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L554035	reject	proper_name:河南地名。			項城	extra_dict/dict.txt.big	554035	63	項城	hong6 sing4		n
+6504	領軍人物	領軍人物	ling5 gwan1 jan4 mat6	5302	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L554934	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			領軍人物	extra_dict/dict.txt.big	554934	63	領軍人物	ling5 gwan1 jan4 mat6		n
+6505	食用菌	食用菌	sik6 jung6 kwan2	229	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L336953	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			食用菌	jieba/dict.txt	336953	63	食用菌	sik6 jung6 kwan2		n
+6506	高歡					jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L341664	reject	proper_name:歷史人物姓名。			高欢	jieba/dict.txt	341664	63	高歡	gou1 fun1		v
+6507	魔獸	魔獸	mo1 sau3	34	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L342869	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			魔兽	jieba/dict.txt	342869	63	魔獸	mo1 sau3		n
+6508	鹼基	鹼基	gaan2 gei1	93	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L240874	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			碱基	jieba/dict.txt	240874	63	鹼基	gaan2 gei1		n
+6509	默想	默想	mak6 soeng2	29	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L347536	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			默想	jieba/dict.txt	347536	63	默想	mak6 soeng2		v
+6510	點位	點位	dim2 wai2	99	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L214984	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。已另核對語境讀音。			点位	jieba/dict.txt	214984	63	點位	dim2 wai6		n
+6511	一拖					jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L1855	reject	proper_name:企業名稱縮略。			一拖	jieba/dict.txt	1855	62	一拖	jat1 to1		j
+6512	上戶	上户	soeng6 wu6	22	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L10731	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。已另核對語境讀音。			上戶	extra_dict/dict.txt.big	10731	62	上户	soeng5 wu6		n
+6513	不啻	不啻	bat1 ci3	34	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L8821	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			不啻	jieba/dict.txt	8821	62	不啻	bat1 ci3		d
+6514	九姓					jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L18418	reject	proper_name:史籍九姓胡等族群稱謂縮略，未確認通用獨立義。			九姓	jieba/dict.txt	18418	62	九姓	gau2 sing3		n
+6516	二階	二階	ji6 gaai1	23	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L21387	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			二阶	jieba/dict.txt	21387	62	二階	ji6 gaai1		n
+6517	今春	今春	gam1 ceon1	33	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L26657	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			今春	jieba/dict.txt	26657	62	今春	gam1 ceon1		t
+6518	住店	住店	zyu6 dim3	24	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L31901	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			住店	jieba/dict.txt	31901	62	住店	zyu6 dim3		n
+6520	入仕	入仕	jap6 si6	22	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L40928	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			入仕	jieba/dict.txt	40928	62	入仕	jap6 si6		v
+6521	全屬	全屬	cyun4 suk6	02	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L41337	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			全属	jieba/dict.txt	41337	62	全屬	cyun4 suk6		n
+6522	八卦刀	八卦刀	baat3 gwaa3 dou1	443	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L42034	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			八卦刀	jieba/dict.txt	42034	62	八卦刀	baat3 gwaa3 dou1		n
+6523	公安廳	公安廳	gung1 on1 teng1	333	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L42833	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			公安厅	jieba/dict.txt	42833	62	公安廳	gung1 on1 teng1		n
+6524	共工					jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L44254	reject	proper_name:神話人物／氏族專名。			共工	jieba/dict.txt	44254	62	共工	gung6 gung1		n
+6525	出塞	出塞	ceot1 coi3	34	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L50811	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。已另核對語境讀音。			出塞	jieba/dict.txt	50811	62	出塞	ceot1 sak1		v
+6526	出榜	出榜	ceot1 bong2	39	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L50924	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			出榜	jieba/dict.txt	50924	62	出榜	ceot1 bong2		v
+6527	分佈式	分佈式	fan1 bou3 sik1	343	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L75761	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			分佈式	extra_dict/dict.txt.big	75761	62	分佈式	fan1 bou3 sik1		n
+6528	初十	初十	co1 sap6	32	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L54074	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			初十	jieba/dict.txt	54074	62	初十	co1 sap6		t
+6529	剛硬	剛硬	gong1 ngaang6	32	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L53847	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			刚硬	jieba/dict.txt	53847	62	剛硬	gong1 ngaang6		a
+6530	半坡	半坡	bun3 bo1	43	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L63201	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			半坡	jieba/dict.txt	63201	62	半坡	bun3 bo1		n
+6531	反擊戰	反擊戰	faan2 gik1 zin3	934	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L70175	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			反击战	jieba/dict.txt	70175	62	反擊戰	faan2 gik1 zin3		n
+6532	反日	反日	faan2 jat6	92	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L70394	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			反日	jieba/dict.txt	70394	62	反日	faan2 jat6		d
+6533	含水層	含水層	ham4 seoi2 cang4	090	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L78759	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			含水层	jieba/dict.txt	78759	62	含水層	ham4 seoi2 cang4		n
+6534	嚴查	嚴查	jim4 caa4	00	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L13178	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			严查	jieba/dict.txt	13178	62	嚴查	jim4 caa4		v
+6536	場強	場強	coeng4 koeng4	00	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L91119	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			场强	jieba/dict.txt	91119	62	場強	coeng4 koeng4		n
+6537	大集					jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L99721	reject	regional_northern:以北方鄉村集市語境為主，未核實本輪通用獨立義。			大集	jieba/dict.txt	99721	62	大集	daai6 zaap6		n
+6538	學術團體	學術團體	hok6 seot6 tyun4 tai2	2209	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L108215	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			学术团体	jieba/dict.txt	108215	62	學術團體	hok6 seot6 tyun4 tai2		n
+6539	宗子	宗子	zung1 zi2	39	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L110610	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			宗子	jieba/dict.txt	110610	62	宗子	zung1 zi2		n
+6540	家宴	家宴	gaa1 jin3	34	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L113020	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			家宴	jieba/dict.txt	113020	62	家宴	gaa1 jin3		n
+6541	屯紮	屯紮	tyun4 zaat3	04	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L119814	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			屯扎	jieba/dict.txt	119814	62	屯紮	tyun4 zaat3		v
+6542	左撇子	左撇子	zo2 pit3 zi2	949	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L122424	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			左撇子	jieba/dict.txt	122424	62	左撇子	zo2 pit3 zi2		n
+6543	差值	差值	caa1 zik6	32	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L122864	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			差值	jieba/dict.txt	122864	62	差值	caa1 zik6		n
+6544	年輕化	年輕化	nin4 hing1 faa3	034	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L194763	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			年輕化	extra_dict/dict.txt.big	194763	62	年輕化	nin4 hing1 faa3		n
+6545	彈子	彈子	daan2 zi2	99	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L133708	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			弹子	jieba/dict.txt	133708	62	彈子	daan2 zi2		n
+6546	快板	快板	faai3 baan2	49	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L138512	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			快板	jieba/dict.txt	138512	62	快板	faai3 baan2		n
+6548	栗鈣土	栗鈣土	leot6 koi3 tou2	249	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L220722	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			慄鈣土	extra_dict/dict.txt.big	220722	62	慄鈣土	leot6 koi3 tou2	https://wwwq.moex.gov.tw/exam/wHandExamQandA_File.ashx?c=513&code=102170&q=1&s=0120&t=Q	n
+6549	懷揣	懷揣	waai4 caai1	03	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L138814	accept	藏於懷中、懷有的詞義採 caai1；保留有詞典詞例支持的 cyun2 又讀，另列分級。			怀揣	jieba/dict.txt	138814	62	懷揣	waai4 cyun2	https://jyut.net/query?q=揣	v
+6549:2	懷揣	懷揣	waai4 cyun2	09	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L138814	accept	朗文等詞典亦記 cyun2 為藏在懷裏的又讀；保留支持變體，不收估量義 ceoi2。			怀揣	jieba/dict.txt	138814	62	懷揣	waai4 cyun2	https://jyut.net/query?q=揣	v
+6550	戰略家	戰略家	zin3 loek6 gaa1	423	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L144821	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			战略家	jieba/dict.txt	144821	62	戰略家	zin3 loek6 gaa1		n
+6551	房地產商	房地產商	fong4 dei6 caan2 soeng1	0293	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L145378	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			房地产商	jieba/dict.txt	145378	62	房地產商	fong4 dei6 caan2 soeng1		j
+6552	承壓	承壓	sing4 aat3	04	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L148320	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			承压	jieba/dict.txt	148320	62	承壓	sing4 aat3		v
+6553	折價	折價	zit3 gaa3	44	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L149373	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			折价	jieba/dict.txt	149373	62	折價	zit3 gaa3		n
+6554	拐點	拐點	gwaai2 dim2	99	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L151750	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			拐点	jieba/dict.txt	151750	62	拐點	gwaai2 dim2		n
+6555	掛到	掛到	gwaa3 dou2	49	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L153335	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			挂到	jieba/dict.txt	153335	62	掛到	gwaa3 dou2		v
+6556	擁護者	擁護者	jung2 wu6 ze2	929	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L152642	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			拥护者	jieba/dict.txt	152642	62	擁護者	jung2 wu6 ze2		n
+6557	攤主	攤主	taan1 zyu2	39	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L158443	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			摊主	jieba/dict.txt	158443	62	攤主	taan1 zyu2		n
+6558	散文家	散文家	saan2 man4 gaa1	903	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162295	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			散文家	jieba/dict.txt	162295	62	散文家	saan2 man4 gaa1		n
+6559	整場	整場	zing2 coeng4	90	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163462	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			整场	jieba/dict.txt	163462	62	整場	zing2 coeng4		n
+6560	晉綏					jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L268333	reject	proper_name:省份地理縮稱。			晉綏	extra_dict/dict.txt.big	268333	62	晉綏	zeon3 seoi1		j
+6561	每隊	每隊	mui5 deoi6	52	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L194551	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			每队	jieba/dict.txt	194551	62	每隊	mui5 deoi6		r
+6562	治平	治平	zi6 ping4	20	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L201820	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			治平	jieba/dict.txt	201820	62	治平	zi6 ping4		v
+6563	法律系	法律系	faat3 leot6 hai6	422	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L202394	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			法律系	jieba/dict.txt	202394	62	法律系	faat3 leot6 hai6		n
+6564	海道	海道	hoi2 dou6	92	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L207082	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			海道	jieba/dict.txt	207082	62	海道	hoi2 dou6		n
+6565	混響	混響	wan6 hoeng2	29	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L208884	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			混响	jieba/dict.txt	208884	62	混響	wan6 hoeng2		vn
+6566	淺黃色	淺黃色	cin2 wong4 sik1	903	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L205473	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			浅黄色	jieba/dict.txt	205473	62	淺黃色	cin2 wong4 sik1		n
+6567	準確度	準確度	zeon2 kok3 dou6	942	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L48929	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			准确度	jieba/dict.txt	48929	62	準確度	zeon2 kok3 dou6		n
+6568	準軍事	準軍事	zeon2 gwan1 si6	932	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L48874	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			准军事	jieba/dict.txt	48874	62	準軍事	zeon2 gwan1 si6		n
+6570	牛蛙	牛蛙	ngau4 waa1	03	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L218919	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			牛蛙	jieba/dict.txt	218919	62	牛蛙	ngau4 waa1		n
+6571	王礫					jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L223998	reject	proper_name:人名片段。			王砾	jieba/dict.txt	223998	62	王礫	wong4 lik1		n
+6572	畢業證	畢業證	bat1 jip6 zing3	324	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L195053	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			毕业证	jieba/dict.txt	195053	62	畢業證	bat1 jip6 zing3		n
+6574	省院					jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L236543	reject	fragment:省級法院／檢察院等機構縮略，單獨詞義不穩定。			省院	jieba/dict.txt	236543	62	省院	saang2 jyun2		n
+6575	看客	看客	hon3 haak3	44	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L236678	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			看客	jieba/dict.txt	236678	62	看客	hon3 haak3		v
+6576	石炭	石炭	sek6 taan3	24	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L239047	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			石炭	jieba/dict.txt	239047	62	石炭	sek6 taan3		n
+6577	硝石	硝石	siu1 sek6	32	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L240165	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			硝石	jieba/dict.txt	240165	62	硝石	siu1 sek6		n
+6578	神機	神機	san4 gei1	03	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L242452	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			神机	jieba/dict.txt	242452	62	神機	san4 gei1		n
+6579	空對地	空對地	hung1 deoi3 dei6	342	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L246876	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			空对地	jieba/dict.txt	246876	62	空對地	hung1 deoi3 dei6		n
+6580	籃球隊	籃球隊	laam4 kau4 deoi6	002	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L252024	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。已另核對語境讀音。			篮球队	jieba/dict.txt	252024	62	籃球隊	laam4 kau4 deoi2		n
+6581	粉色	粉色	fan2 sik1	93	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L252656	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			粉色	jieba/dict.txt	252656	62	粉色	fan2 sik1		n
+6582	粘結	粘結	nim1 git3	34	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L401801	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			粘結	extra_dict/dict.txt.big	401801	62	粘結	nim1 git3		v
+6584	繁殖期	繁殖期	faan4 zik6 kei4	020	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L254763	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			繁殖期	jieba/dict.txt	254763	62	繁殖期	faan4 zik6 kei4		n
+6585	老丈人	老丈人	lou5 zoeng6 jan4	520	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L263395	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			老丈人	jieba/dict.txt	263395	62	老丈人	lou5 zoeng6 jan4		n
+6586	股東會	股東會	gu2 dung1 wui2	939	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L266235	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。已另核對語境讀音。			股东会	jieba/dict.txt	266235	62	股東會	gu2 dung1 wui5		n
+6587	落款	落款	lok6 fun2	29	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L278336	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			落款	jieba/dict.txt	278336	62	落款	lok6 fun2		n
+6588	里長	里長	lei5 zoeng2	59	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L517129	accept	行政里長取 lei5 zoeng2；修正上游／轉字的裏字及長字分字初稿。			里長	extra_dict/dict.txt.big	517129	62	裏長	leoi5 coeng4		n
+6589	規模化	規模化	kwai1 mou4 faa3	304	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L463312	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			規模化	extra_dict/dict.txt.big	463312	62	規模化	kwai1 mou4 faa3		n
+6590	試驗室	試驗室	si3 jim6 sat1	423	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L468084	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			試驗室	extra_dict/dict.txt.big	468084	62	試驗室	si3 jim6 sat1		n
+6591	詩學	詩學	si1 hok6	32	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L468141	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			詩學	extra_dict/dict.txt.big	468141	62	詩學	si1 hok6		n
+6593	調治	調治	tiu4 zi6	02	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L469721	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。已另核對語境讀音。			調治	extra_dict/dict.txt.big	469721	62	調治	diu6 zi6		vn
+6594	講經	講經	gong2 ging1	93	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L471007	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			講經	extra_dict/dict.txt.big	471007	62	講經	gong2 ging1		n
+6595	走低	走低	zau2 dai1	93	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L298159	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			走低	jieba/dict.txt	298159	62	走低	zau2 dai1		v
+6597	轉錄	轉錄	zyun2 luk6	92	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L494632	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。已另核對語境讀音。			轉錄	extra_dict/dict.txt.big	494632	62	轉錄	zyun3 luk6		v
+6598	迴歸年	迴歸年	wui4 gwai1 nin4	030	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L87433	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			回归年	jieba/dict.txt	87433	62	迴歸年	wui4 gwai1 nin4		n
+6599	週轉期	週轉期	zau1 zyun2 kei4	390	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L80956	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			周转期	jieba/dict.txt	80956	62	週轉期	zau1 zyun2 kei4		n
+6600	遷出	遷出	cin1 ceot1	33	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L304487	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			迁出	jieba/dict.txt	304487	62	遷出	cin1 ceot1		v
+6601	部長級	部長級	bou6 zoeng2 kap1	293	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L512889	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			部長級	extra_dict/dict.txt.big	512889	62	部長級	bou6 zoeng2 kap1		n
+6602	里長					jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L315079	already_present	正式入庫正規化後已有同字面及讀音；不重複收錄。			里长	jieba/dict.txt	315079	62	里長	lei5 coeng4		n
+6603	重重疊疊	重重疊疊	cung4 cung4 dip6 dip6	0022	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L315611	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。已另核對語境讀音。			重重叠叠	jieba/dict.txt	315611	62	重重疊疊	cung4 cung5 dap6 dap6	data/lexicon/raw/rime-cantonese-upstream/word.csv#L83040	z
+6604	銅鼎	銅鼎	tung4 ding2	09	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L522011	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			銅鼎	extra_dict/dict.txt.big	522011	62	銅鼎	tung4 ding2		n
+6605	鍋子	鍋子	wo1 zi2	39	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L523347	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			鍋子	extra_dict/dict.txt.big	523347	62	鍋子	wo1 zi2		n
+6606	電影史	電影史	din6 jing2 si2	299	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L229300	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			电影史	jieba/dict.txt	229300	62	電影史	din6 jing2 si2		n
+6607	需要量	需要量	seoi1 jiu3 loeng6	342	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L330837	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。已另核對語境讀音。			需要量	jieba/dict.txt	330837	62	需要量	seoi1 jiu3 loeng4		n
+6608	高層次	高層次	gou1 cang4 ci3	304	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L341303	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			高层次	jieba/dict.txt	341303	62	高層次	gou1 cang4 ci3		b
+6609	黴變	黴變	mei4 bin3	04	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L330939	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			霉变	jieba/dict.txt	330939	62	黴變	mei4 bin3		v
+6611	下臣	下臣	haa6 san4	20	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L8243	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			下臣	jieba/dict.txt	8243	61	下臣	haa6 san4		n
+6612	主罰	主罰	zyu2 fat6	92	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L16447	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			主罚	jieba/dict.txt	16447	61	主罰	zyu2 fat6		n
+6613	乾熱風	乾熱風	gon1 jit6 fung1	323	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L27408	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			乾熱風	extra_dict/dict.txt.big	27408	61	乾熱風	gon1 jit6 fung1		n
+6615	交通網	交通網	gaau1 tung1 mong5	335	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L34917	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			交通網	extra_dict/dict.txt.big	34917	61	交通網	gaau1 tung1 mong5		n
+6618	以上者	以上者	ji5 soeng6 ze2	529	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L27948	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			以上者	jieba/dict.txt	27948	61	以上者	ji5 soeng6 ze2		c
+6620	伸伸					jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L31280	reject	fragment:動詞重複切片，未確認獨立常用表達。			伸伸	jieba/dict.txt	31280	61	伸伸	san1 san1		v
+6622	信息工程	信息工程	seon3 sik1 gung1 cing4	4330	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L35624	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			信息工程	jieba/dict.txt	35624	61	信息工程	seon3 sik1 gung1 cing4		n
+6623	信用證	信用證	seon3 jung6 zing3	424	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L50659	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			信用證	extra_dict/dict.txt.big	50659	61	信用證	seon3 jung6 zing3		n
+6624	儀徵					jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L28351	reject	proper_name:江蘇地名。			仪征	jieba/dict.txt	28351	61	儀徵	ji4 zing1		n
+6626	全劇	全劇	cyun4 kek6	02	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L41187	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			全剧	jieba/dict.txt	41187	61	全劇	cyun4 kek6		n
+6627	全院	全院	cyun4 jyun2	09	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L41736	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			全院	jieba/dict.txt	41736	61	全院	cyun4 jyun2		n
+6628	兵臨	兵臨	bing1 lam4	30	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L45007	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			兵临	jieba/dict.txt	45007	61	兵臨	bing1 lam4		v
+6629	冷然	冷然	laang5 jin4	50	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L48583	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			冷然	jieba/dict.txt	48583	61	冷然	laang5 jin4		d
+6630	出陣	出陣	ceot1 zan6	32	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L51163	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			出阵	jieba/dict.txt	51163	61	出陣	ceot1 zan6		v
+6631	刻石	刻石	hak1 sek6	32	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L55601	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			刻石	jieba/dict.txt	55601	61	刻石	hak1 sek6		n
+6632	化學藥品	化學藥品	faa3 hok6 joek6 ban2	4229	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L59564	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			化学药品	jieba/dict.txt	59564	61	化學藥品	faa3 hok6 joek6 ban2		n
+6633	古畫	古畫	gu2 waa2	99	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L72797	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			古画	jieba/dict.txt	72797	61	古畫	gu2 waa2		n
+6635	司隸校					jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L75073	reject	fragment:司隸校尉截斷片段。			司隶校	jieba/dict.txt	75073	61	司隸校	si1 dai6 haau6		n
+6636	圖強	圖強	tou4 koeng4	00	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L89349	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			图强	jieba/dict.txt	89349	61	圖強	tou4 koeng4		n
+6637	土堆	土堆	tou2 deoi1	93	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L89818	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			土堆	jieba/dict.txt	89818	61	土堆	tou2 deoi1		n
+6638	土布	土布	tou2 bou3	94	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L89891	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			土布	jieba/dict.txt	89891	61	土布	tou2 bou3		n
+6639	城子					jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L92580	reject	fragment:多見地名成分，未核實可收的通用獨立詞義。			城子	jieba/dict.txt	92580	61	城子	sing4 zi2		n
+6640	執行機構	執行機構	zap1 hang4 gei1 kau3	3034	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L139427	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			執行機構	extra_dict/dict.txt.big	139427	61	執行機構	zap1 hang4 gei1 kau3		n
+6641	堆積物	堆積物	deoi1 zik1 mat6	332	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L93273	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			堆积物	jieba/dict.txt	93273	61	堆積物	deoi1 zik1 mat6		n
+6642	大喇嘛	大喇嘛	daai6 laa1 maa4	230	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L98097	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			大喇嘛	jieba/dict.txt	98097	61	大喇嘛	daai6 laa1 maa4		n
+6644	奇癢	奇癢	kei4 joeng5	05	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L102174	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			奇痒	jieba/dict.txt	102174	61	奇癢	kei4 joeng5		a
+6645	宗主	宗主	zung1 zyu2	39	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L110542	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			宗主	jieba/dict.txt	110542	61	宗主	zung1 zyu2		n
+6646	密密的	密密的	mat6 mat6 dik1	223	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L113844	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			密密的	jieba/dict.txt	113844	61	密密的	mat6 mat6 dik1		z
+6648	小房	小房	siu2 fong4	90	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L116596	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			小房	jieba/dict.txt	116596	61	小房	siu2 fong4		n
+6649	底艙	底艙	dai2 cong1	93	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L129027	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			底舱	jieba/dict.txt	129027	61	底艙	dai2 cong1		n
+6650	強令	強令	koeng5 ling6	52	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L205555	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。已另核對語境讀音。			強令	extra_dict/dict.txt.big	205555	61	強令	koeng4 ling6		n
+6651	心血管病	心血管病	sam1 hyut3 gun2 beng6	3492	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L137781	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			心血管病	jieba/dict.txt	137781	61	心血管病	sam1 hyut3 gun2 beng6		n
+6652	扒拉					jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L146357	reject	regional_northern:扒拉屬地域口語，本輪排除。			扒拉	jieba/dict.txt	146357	61	扒拉	paa2 laai1		v
+6653	打游擊					jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L146719	already_present	Exact existing literal; do not duplicate.			打游击	jieba/dict.txt	146719	61	打游擊	daa2 jau4 gik1		v
+6654	抓走	抓走	zaau2 zau2	99	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L148812	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			抓走	jieba/dict.txt	148812	61	抓走	zaau2 zau2		v
+6655	操作性	操作性	cou1 zok3 sing3	344	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L159364	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			操作性	jieba/dict.txt	159364	61	操作性	cou1 zok3 sing3		n
+6656	擠擠					jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L154163	reject	fragment:動詞重複切片，未確認獨立常用表達。			挤挤	jieba/dict.txt	154163	61	擠擠	zai1 zai1		v
+6657	文胸	文胸	man4 hung1	03	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164447	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			文胸	jieba/dict.txt	164447	61	文胸	man4 hung1		n
+6658	旋臂	旋臂	syun4 bei3	04	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L167698	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			旋臂	jieba/dict.txt	167698	61	旋臂	syun4 bei3		n
+6659	早年間	早年間	zou2 nin4 gaan1	903	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L264535	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			早年間	extra_dict/dict.txt.big	264535	61	早年間	zou2 nin4 gaan1		t
+6660	晶閘管	晶閘管	zing1 zaap6 gun2	329	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L269828	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			晶閘管	extra_dict/dict.txt.big	269828	61	晶閘管	zing1 zaap6 gun2		n
+6661	木架	木架	muk6 gaa3	24	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L176956	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			木架	jieba/dict.txt	176956	61	木架	muk6 gaa3		n
+6662	枱面	枱面	toi2 min6	92	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L74056	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			台面	jieba/dict.txt	74056	61	枱面	toi2 min6		n
+6663	正理	正理	zing3 lei5	45	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L192283	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			正理	jieba/dict.txt	192283	61	正理	zing3 lei5		a
+6664	求新	求新	kau4 san1	03	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L198111	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			求新	jieba/dict.txt	198111	61	求新	kau4 san1		v
+6665	汗巾	汗巾	hon6 gan1	23	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L198630	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			汗巾	jieba/dict.txt	198630	61	汗巾	hon6 gan1		n
+6666	法輪功					jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L318318	reject	proper_name:修煉門派專名。			法輪功	extra_dict/dict.txt.big	318318	61	法輪功	faat3 leon4 gung1		n
+6667	流雲	流雲	lau4 wan4	00	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L204995	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			流云	jieba/dict.txt	204995	61	流雲	lau4 wan4		n
+6668	淺淺的	淺淺的	cin2 cin2 dik1	993	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L205423	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			浅浅的	jieba/dict.txt	205423	61	淺淺的	cin2 cin2 dik1		z
+6669	減災	減災	gaam2 zoi1	93	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L49205	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			减灾	jieba/dict.txt	49205	61	減災	gaam2 zoi1		vn
+6670	減負	減負	gaam2 fu6	92	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L49237	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			减负	jieba/dict.txt	49237	61	減負	gaam2 fu6		v
+6671	無存	無存	mou4 cyun4	00	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L168172	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			无存	jieba/dict.txt	168172	61	無存	mou4 cyun4		v
+6672	無痛	無痛	mou4 tung3	04	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L168663	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			无痛	jieba/dict.txt	168663	61	無痛	mou4 tung3		a
+6673	無黨派	無黨派	mou4 dong2 paai3	094	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L167946	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			无党派	jieba/dict.txt	167946	61	無黨派	mou4 dong2 paai3		n
+6674	牛股	牛股	ngau4 gu2	09	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L218893	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			牛股	jieba/dict.txt	218893	61	牛股	ngau4 gu2		n
+6675	犯罪人	犯罪人	faan6 zeoi6 jan4	220	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L220240	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			犯罪人	jieba/dict.txt	220240	61	犯罪人	faan6 zeoi6 jan4		n
+6676	病患者	病患者	beng6 waan6 ze2	229	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L231202	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			病患者	jieba/dict.txt	231202	61	病患者	beng6 waan6 ze2		n
+6677	發回	發回	faat3 wui4	40	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L70726	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			发回	jieba/dict.txt	70726	61	發回	faat3 wui4		v
+6678	發現者	發現者	faat3 jin6 ze2	429	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L71011	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			发现者	jieba/dict.txt	71011	61	發現者	faat3 jin6 ze2		n
+6679	發車	發車	faat3 ce1	43	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L71221	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			发车	jieba/dict.txt	71221	61	發車	faat3 ce1		v
+6681	相贈	相贈	soeng1 zang6	32	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L375607	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			相贈	extra_dict/dict.txt.big	375607	61	相贈	soeng1 zang6		v
+6682	知識面	知識面	zi1 sik1 min6	332	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L378441	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			知識面	extra_dict/dict.txt.big	378441	61	知識面	zi1 sik1 min6		n
+6683	社會黨人	社會黨人	se5 wui2 dong2 jan4	5990	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L241708	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			社会党人	jieba/dict.txt	241708	61	社會黨人	se5 wui2 dong2 jan4		n
+6684	空調器	空調器	hung1 tiu4 hei3	304	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L392425	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			空調器	extra_dict/dict.txt.big	392425	61	空調器	hung1 tiu4 hei3		n
+6685	競技場	競技場	ging3 gei6 coeng4	420	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L248245	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			竞技场	jieba/dict.txt	248245	61	競技場	ging3 gei6 coeng4		n
+6687	答題卡	答題卡	daap3 tai4 kaa1	403	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L398375	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			答題卡	extra_dict/dict.txt.big	398375	61	答題卡	daap3 tai4 kaa1		n
+6688	米粥	米粥	mai5 zuk1	53	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L252403	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			米粥	jieba/dict.txt	252403	61	米粥	mai5 zuk1		n
+6689	粗粗	粗粗	cou1 cou1	33	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L252816	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			粗粗	jieba/dict.txt	252816	61	粗粗	cou1 cou1		a
+6691	絕好	絕好	zyut6 hou2	29	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L406787	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			絕好	extra_dict/dict.txt.big	406787	61	絕好	zyut6 hou2		d
+6692	經濟系	經濟系	ging1 zai3 hai6	342	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L407637	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			經濟系	extra_dict/dict.txt.big	407637	61	經濟系	ging1 zai3 hai6		n
+6693	網校	網校	mong5 haau6	52	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L408558	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			網校	extra_dict/dict.txt.big	408558	61	網校	mong5 haau6		n
+6694	總裝備部					jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L140114	reject	proper_name:特定軍事機構名稱。			总装备部	jieba/dict.txt	140114	61	總裝備部	zung2 zong1 bei6 bou6		n
+6695	羊脂	羊脂	joeng4 zi1	03	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L261944	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			羊脂	jieba/dict.txt	261944	61	羊脂	joeng4 zi1		n
+6696	聖物	聖物	sing3 mat6	42	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L90218	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			圣物	jieba/dict.txt	90218	61	聖物	sing3 mat6		n
+6697	蛋白尿	蛋白尿	daan2 baak6 niu6	922	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L281582	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			蛋白尿	jieba/dict.txt	281582	61	蛋白尿	daan2 baak6 niu6		n
+6698	蝴蝶谷					jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L282164	reject	proper_name:地名／作品中的山谷專名。			蝴蝶谷	jieba/dict.txt	282164	61	蝴蝶谷	wu4 dip6 guk1		n
+6699	融匯	融匯	jung4 wui6	02	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L455121	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			融匯	extra_dict/dict.txt.big	455121	61	融匯	jung4 wui6		n
+6700	製表	製表	zai3 biu2	49	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L55310	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			制表	jieba/dict.txt	55310	61	製表	zai3 biu2		n
+6701	複審	複審	fuk1 sam2	39	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L95358	accept	保留教育部／考試機關正式文書使用的複審字形，不無條件改成覆或復。			复审	jieba/dict.txt	95358	61	複審	fuk1 sam2	https://edu.law.moe.gov.tw/LawContent.aspx?id=FL051227	v
+6702	訂正	訂正	ding6 zing3	24	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L466173	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			訂正	extra_dict/dict.txt.big	466173	61	訂正	ding6 zing3		v
+6703	訂約	訂約	ding6 joek3	24	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L466183	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			訂約	extra_dict/dict.txt.big	466183	61	訂約	ding6 joek3		n
+6704	調酒師	調酒師	tiu4 zau2 si1	093	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L469857	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。已另核對語境讀音。			調酒師	extra_dict/dict.txt.big	469857	61	調酒師	diu6 zau2 si1		n
+6705	讚歌	讚歌	zaan3 go1	43	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L472748	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			讚歌	extra_dict/dict.txt.big	472748	61	讚歌	zaan3 go1		v
+6706	軸突	軸突	zuk6 dat6	22	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L493256	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			軸突	extra_dict/dict.txt.big	493256	61	軸突	zuk6 dat6		n
+6707	運動量	運動量	wan6 dung6 loeng6	222	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L305237	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。已另核對語境讀音。			运动量	jieba/dict.txt	305237	61	運動量	wan6 dung6 loeng4		n
+6708	醫學獎	醫學獎	ji1 hok6 zoeng2	329	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L60765	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			医学奖	jieba/dict.txt	60765	61	醫學獎	ji1 hok6 zoeng2		n
+6710	鈴鐺	鈴鐺	ling4 dong1	03	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L521208	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			鈴鐺	extra_dict/dict.txt.big	521208	61	鈴鐺	ling4 dong1		n
+6711	銀花	銀花	ngan4 faa1	03	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L521749	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			銀花	extra_dict/dict.txt.big	521749	61	銀花	ngan4 faa1		n
+6712	銀錠	銀錠	ngan4 ding3	04	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L521831	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			銀錠	extra_dict/dict.txt.big	521831	61	銀錠	ngan4 ding3		n
+6713	隔聲	隔聲	gaak3 sing1	43	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L328849	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			隔声	jieba/dict.txt	328849	61	隔聲	gaak3 sing1		n
+6714	電子元件	電子元件	din6 zi2 jyun4 gin6	2902	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L229123	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			电子元件	jieba/dict.txt	229123	61	電子元件	din6 zi2 jyun4 gin6		n
+6715	非分	非分	fei1 fan6	32	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L332213	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。已另核對語境讀音。			非分	jieba/dict.txt	332213	61	非分	fei1 fan1		d
+6716	靠背	靠背	kaau3 bui3	44	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L332641	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			靠背	jieba/dict.txt	332641	61	靠背	kaau3 bui3		v
+6717	頭頸部	頭頸部	tau4 geng2 bou6	092	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L101821	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			头颈部	jieba/dict.txt	101821	61	頭頸部	tau4 geng2 bou6		n
+6718	上代	上代	soeng6 doi6	22	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L7092	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。已另核對語境讀音。			上代	jieba/dict.txt	7092	60	上代	soeng5 doi6		t
+6719	下世紀	下世紀	haa6 sai3 gei2	249	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L11613	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			下世紀	extra_dict/dict.txt.big	11613	60	下世紀	haa6 sai3 gei2		t
+6720	中直					jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L14981	reject	fragment:中央直屬等機構語境縮略，沒有穩定獨立義。			中直	jieba/dict.txt	14981	60	中直	zung1 zik6		j
+6722	任情	任情	jam6 cing4	20	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L28805	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			任情	jieba/dict.txt	28805	60	任情	jam6 cing4		n
+6723	佔去	佔去	zim3 heoi3	44	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L45292	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			佔去	extra_dict/dict.txt.big	45292	60	佔去	zim3 heoi3		v
+6724	佛事	佛事	fat6 si6	22	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L32959	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			佛事	jieba/dict.txt	32959	60	佛事	fat6 si6		n
+6725	保護法	保護法	bou2 wu6 faat3	924	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L35113	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			保护法	jieba/dict.txt	35113	60	保護法	bou2 wu6 faat3		n
+6727	健全人	健全人	gin6 cyun4 jan4	200	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L37808	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			健全人	jieba/dict.txt	37808	60	健全人	gin6 cyun4 jan4		n
+6728	偷人	偷人	tau1 jan4	30	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L37966	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			偷人	jieba/dict.txt	37966	60	偷人	tau1 jan4		v
+6729	光譜學	光譜學	gwong1 pou2 hok6	392	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L58768	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			光譜學	extra_dict/dict.txt.big	58768	60	光譜學	gwong1 pou2 hok6		n
+6730	准入	准入	zeon2 jap6	92	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L48870	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			准入	jieba/dict.txt	48870	60	准入	zeon2 jap6		v
+6731	創新性	創新性	cong3 san1 sing3	434	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L53963	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			创新性	jieba/dict.txt	53963	60	創新性	cong3 san1 sing3		n
+6732	北師大					jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L60157	reject	proper_name:大學名稱縮略。			北师大	jieba/dict.txt	60157	60	北師大	bak1 si1 daai6		j
+6735	卵泡	卵泡	leon2 paau3	94	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L67643	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。已另核對語境讀音。			卵泡	jieba/dict.txt	67643	60	卵泡	leon2 pou5	https://dict.revised.moe.edu.tw/dictView.jsp?ID=66833&la=1&powerMode=0; https://jyut.net/query?q=泡	n
+6736	合格者	合格者	hap6 gaak3 ze2	249	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L75920	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			合格者	jieba/dict.txt	75920	60	合格者	hap6 gaak3 ze2		n
+6737	吸進	吸進	kap1 zeon3	34	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L79939	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			吸进	jieba/dict.txt	79939	60	吸進	kap1 zeon3		v
+6738	哮喘病	哮喘病	haau1 cyun2 beng6	392	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L83325	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			哮喘病	jieba/dict.txt	83325	60	哮喘病	haau1 cyun2 beng6		n
+6739	嘯桐					jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L84812	reject	proper_name:人名／字號。			啸桐	jieba/dict.txt	84812	60	嘯桐	siu3 tung4		n
+6740	噴塗	噴塗	pan3 tou4	40	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L85434	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			喷涂	jieba/dict.txt	85434	60	噴塗	pan3 tou4		z
+6741	坐等	坐等	co5 dang2	59	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L91482	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			坐等	jieba/dict.txt	91482	60	坐等	co5 dang2		v
+6742	堅定性	堅定性	gin1 ding6 sing3	324	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L91627	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			坚定性	jieba/dict.txt	91627	60	堅定性	gin1 ding6 sing3		n
+6743	報告團	報告團	bou3 gou3 tyun4	440	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L140574	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			報告團	extra_dict/dict.txt.big	140574	60	報告團	bou3 gou3 tyun4		n
+6744	墊付	墊付	zin3 fu6	42	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L92136	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			垫付	jieba/dict.txt	92136	60	墊付	zin3 fu6		v
+6745	大棒	大棒	daai6 paang5	25	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L98816	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			大棒	jieba/dict.txt	98816	60	大棒	daai6 paang5		n
+6746	大段	大段	daai6 dyun6	22	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L98845	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			大段	jieba/dict.txt	98845	60	大段	daai6 dyun6		n
+6747	奉化					jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L102275	reject	proper_name:浙江地名。			奉化	jieba/dict.txt	102275	60	奉化	fung6 faa3		v
+6748	女娃					jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L103304	reject	regional_or_name:地域兒童稱呼或神話人名，本輪不收。			女娃	jieba/dict.txt	103304	60	女娃	neoi5 waa1		n
+6749	家兄	家兄	gaa1 hing1	33	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L112960	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			家兄	jieba/dict.txt	112960	60	家兄	gaa1 hing1		n
+6750	小商	小商	siu2 soeng1	93	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L116244	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			小商	jieba/dict.txt	116244	60	小商	siu2 soeng1		n
+6751	岩石學	岩石學	ngaam4 sek6 hok6	022	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L120771	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			岩石学	jieba/dict.txt	120771	60	岩石學	ngaam4 sek6 hok6		n
+6752	州牧	州牧	zau1 muk6	32	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L121598	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			州牧	jieba/dict.txt	121598	60	州牧	zau1 muk6		n
+6753	工質	工質	gung1 zat1	33	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L186934	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			工質	extra_dict/dict.txt.big	186934	60	工質	gung1 zat1		n
+6754	席面	席面	zik6 min6	22	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L125536	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			席面	jieba/dict.txt	125536	60	席面	zik6 min6		n
+6755	心身	心身	sam1 san1	33	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L137802	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			心身	jieba/dict.txt	137802	60	心身	sam1 san1		n
+6758	情致	情致	cing4 zi3	04	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L141630	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			情致	jieba/dict.txt	141630	60	情致	cing4 zi3		n
+6760	撂下	撂下	liu1 haa6	32	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L158835	accept	教育部辭典有放下、拋下的通用國語義，未一概視為北方方言。			撂下	jieba/dict.txt	158835	60	撂下	liu1 haa6	https://dict.revised.moe.edu.tw/dictView.jsp?ID=63235&la=0&powerMode=0	v
+6761	救起	救起	gau3 hei2	49	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161696	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			救起	jieba/dict.txt	161696	60	救起	gau3 hei2		v
+6762	整軍	整軍	zing2 gwan1	93	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163424	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			整军	jieba/dict.txt	163424	60	整軍	zing2 gwan1		n
+6763	椰島					jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L189504	reject	proper_name:海南等地的別稱。			椰岛	jieba/dict.txt	189504	60	椰島	je4 dou2		n
+6765	民主制	民主制	man4 zyu2 zai3	094	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L195688	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			民主制	jieba/dict.txt	195688	60	民主制	man4 zyu2 zai3		n
+6766	氮化合物	氮化合物	daam6 faa3 hap6 mat6	2422	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L196670	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			氮化合物	jieba/dict.txt	196670	60	氮化合物	daam6 faa3 hap6 mat6		n
+6767	流行歌曲	流行歌曲	lau4 hang4 go1 kuk1	0033	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L205298	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			流行歌曲	jieba/dict.txt	205298	60	流行歌曲	lau4 hang4 go1 kuk1		n
+6768	淨額	淨額	zing6 ngaak6	22	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L48817	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			净额	jieba/dict.txt	48817	60	淨額	zing6 ngaak6		n
+6770	營部	營部	jing4 bou6	02	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L345005	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			營部	extra_dict/dict.txt.big	345005	60	營部	jing4 bou6		n
+6771	狠勁	狠勁	han2 ging6	92	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L220791	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			狠劲	jieba/dict.txt	220791	60	狠勁	han2 ging6		a
+6772	理論界	理論界	lei5 leon6 gaai3	524	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L358068	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			理論界	extra_dict/dict.txt.big	358068	60	理論界	lei5 leon6 gaai3		n
+6773	甚微	甚微	sam6 mei4	20	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L227050	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			甚微	jieba/dict.txt	227050	60	甚微	sam6 mei4		d
+6775	申請者	申請者	san1 cing2 ze2	399	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L363140	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			申請者	extra_dict/dict.txt.big	363140	60	申請者	san1 cing2 ze2		n
+6776	略作	略作	loek6 zok3	24	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L230564	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			略作	jieba/dict.txt	230564	60	略作	loek6 zok3		v
+6777	當事	當事	dong1 si6	32	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L134329	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			当事	jieba/dict.txt	134329	60	當事	dong1 si6		n
+6778	發條	發條	faat3 tiu4	40	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L70937	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			发条	jieba/dict.txt	70937	60	發條	faat3 tiu4		n
+6779	省軍區	省軍區	saang2 gwan1 keoi1	933	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L236437	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			省军区	jieba/dict.txt	236437	60	省軍區	saang2 gwan1 keoi1		n
+6780	真菌性	真菌性	zan1 kwan2 sing3	394	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L237092	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			真菌性	jieba/dict.txt	237092	60	真菌性	zan1 kwan2 sing3		n
+6781	磁場強度	磁場強度	ci4 coeng4 koeng4 dou6	0002	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L241042	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			磁场强度	jieba/dict.txt	241042	60	磁場強度	ci4 coeng4 koeng4 dou6		n
+6782	示範性	示範性	si6 faan6 sing3	224	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L383599	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			示範性	extra_dict/dict.txt.big	383599	60	示範性	si6 faan6 sing3		n
+6783	祛風	祛風	keoi1 fung1	33	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L384496	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			祛風	extra_dict/dict.txt.big	384496	60	祛風	keoi1 fung1		v
+6784	科技人員	科技人員	fo1 gei6 jan4 jyun4	3200	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L244534	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			科技人员	jieba/dict.txt	244534	60	科技人員	fo1 gei6 jan4 jyun4		n
+6785	等值	等值	dang2 zik6	92	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L250747	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			等值	jieba/dict.txt	250747	60	等值	dang2 zik6		n
+6786	經濟學說	經濟學説	ging1 zai3 hok6 syut3	3424	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L407589	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			經濟學說	extra_dict/dict.txt.big	407589	60	經濟學說	ging1 zai3 hok6 syut3		n
+6787	老範					jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L422563	reject	proper_name:姓氏稱呼。			老範	extra_dict/dict.txt.big	422563	60	老範	lou5 faan6		n
+6788	肉芽腫	肉芽腫	juk6 ngaa4 zung2	209	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L265884	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			肉芽肿	jieba/dict.txt	265884	60	肉芽腫	juk6 ngaa4 zung2		n
+6789	腿骨	腿骨	teoi2 gwat1	93	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L269529	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			腿骨	jieba/dict.txt	269529	60	腿骨	teoi2 gwat1		n
+6790	蓖麻	蓖麻	bei1 maa4	30	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L279542	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			蓖麻	jieba/dict.txt	279542	60	蓖麻	bei1 maa4	https://jyut.net/query?q=蓖	n
+6791	衝程	衝程	cung1 cing4	30	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L48197	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			冲程	jieba/dict.txt	48197	60	衝程	cung1 cing4		n
+6792	褥子	褥子	juk6 zi2	29	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L285226	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			褥子	jieba/dict.txt	285226	60	褥子	juk6 zi2		n
+6793	該縣	該縣	goi1 jyun6	32	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L468429	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			該縣	extra_dict/dict.txt.big	468429	60	該縣	goi1 jyun6		r
+6795	變電所	變電所	bin3 din6 so2	429	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L71920	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			变电所	jieba/dict.txt	71920	60	變電所	bin3 din6 so2		n
+6797	豬肝	豬肝	zyu1 gon1	33	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L221574	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			猪肝	jieba/dict.txt	221574	60	豬肝	zyu1 gon1		n
+6798	足踝	足踝	zuk1 waa5	35	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L299911	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			足踝	jieba/dict.txt	299911	60	足踝	zuk1 waa5		n
+6799	軍事學術	軍事學術	gwan1 si6 hok6 seot6	3222	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L46680	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			军事学术	jieba/dict.txt	46680	60	軍事學術	gwan1 si6 hok6 seot6		n
+6800	軍地	軍地	gwan1 dei6	32	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L46773	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			军地	jieba/dict.txt	46773	60	軍地	gwan1 dei6		n
+6801	轉崗	轉崗	zyun2 gong1	93	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L494365	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。已另核對語境讀音。			轉崗	extra_dict/dict.txt.big	494365	60	轉崗	zyun3 gong1		v
+6802	轉輪	轉輪	zyun3 leon4	40	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L494604	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			轉輪	extra_dict/dict.txt.big	494604	60	轉輪	zyun3 leon4		n
+6803	農工商	農工商	nung4 gung1 soeng1	033	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L47131	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			农工商	jieba/dict.txt	47131	60	農工商	nung4 gung1 soeng1		n
+6804	這方	這方	ze5 fong1	53	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L305821	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。已另核對語境讀音。			这方	jieba/dict.txt	305821	60	這方	ze2 fong1		r
+6805	還原性	還原性	waan4 jyun4 sing3	004	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L305681	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			还原性	jieba/dict.txt	305681	60	還原性	waan4 jyun4 sing3		n
+6806	鐵籠	鐵籠	tit3 lung4	40	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L524549	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			鐵籠	extra_dict/dict.txt.big	524549	60	鐵籠	tit3 lung4		n
+6807	間冰期	間冰期	gaan3 bing1 kei4	430	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L531413	accept	間冰期屬分隔冰期的詞義；再核漢語詞條的間讀 jiàn 及粵語間隔義，改採 gaan3，不沿用 gaan1 分字初稿。AI 整詞語義判讀，未標成直接詞級粵音辭典條目。			間冰期	extra_dict/dict.txt.big	531413	60	間冰期	gaan1 bing1 kei4	https://en.wiktionary.org/wiki/間冰期; https://jyut.net/query?q=間	n
+6808	雄鷹	雄鷹	hung4 jing1	03	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L543696	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			雄鷹	extra_dict/dict.txt.big	543696	60	雄鷹	hung4 jing1		n
+6809	青鳥	青鳥	cing1 niu5	35	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L550338	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			青鳥	extra_dict/dict.txt.big	550338	60	青鳥	cing1 niu5		n
+6811	鮮食	鮮食	sin1 sik6	32	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L573086	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			鮮食	extra_dict/dict.txt.big	573086	60	鮮食	sin1 sik6		n
+6812	鹽礦	鹽礦	jim4 kwong3	04	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L234524	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			盐矿	jieba/dict.txt	234524	60	鹽礦	jim4 kwong3		n
+6813	鼓勁	鼓勁	gu2 ging6	92	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L347723	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			鼓劲	jieba/dict.txt	347723	60	鼓勁	gu2 ging6		v
+6814	三資企業	三資企業	saam1 zi1 kei5 jip6	3352	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L9970	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			三資企業	extra_dict/dict.txt.big	9970	59	三資企業	saam1 zi1 kei5 jip6		j
+6816	上週末	上週末	soeng6 zau1 mut6	232	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L7192	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			上周末	jieba/dict.txt	7192	59	上週末	soeng6 zau1 mut6		n
+6818	休息日	休息日	jau1 sik1 jat6	332	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L29806	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			休息日	jieba/dict.txt	29806	59	休息日	jau1 sik1 jat6		t
+6819	兵符	兵符	bing1 fu4	30	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L45101	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			兵符	jieba/dict.txt	45101	59	兵符	bing1 fu4		n
+6820	出口值	出口值	ceot1 hau2 zik6	392	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L50755	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			出口值	jieba/dict.txt	50755	59	出口值	ceot1 hau2 zik6		n
+6821	別家	別家	bit6 gaa1	23	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L79491	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			別家	extra_dict/dict.txt.big	79491	59	別家	bit6 gaa1		r
+6823	前所					jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L55921	reject	fragment:常見於前所未有等較長表達，未確認通用獨立詞義。			前所	jieba/dict.txt	55921	59	前所	cin4 so2		n
+6824	創利	創利	cong3 lei6	42	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L53921	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			创利	jieba/dict.txt	53921	59	創利	cong3 lei6		n
+6825	勞動所					jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L58464	reject	fragment:機構縮略／語句切片，詞義不穩定。			劳动所	jieba/dict.txt	58464	59	勞動所	lou4 dung6 so2		n
+6826	北温帶	北温帶	bak1 wan1 daai3	334	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L60299	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			北温带	jieba/dict.txt	60299	59	北温帶	bak1 wan1 daai3		n
+6827	十六大					jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L61665	reject	proper_name:特定黨代會序次名稱。			十六大	jieba/dict.txt	61665	59	十六大	sap6 luk6 daai6		j
+6828	南線	南線	naam4 sin3	04	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L97925	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			南線	extra_dict/dict.txt.big	97925	59	南線	naam4 sin3		f
+6829	只讀	只讀	zi2 duk6	92	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L108337	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			只讀	extra_dict/dict.txt.big	108337	59	只讀	zi2 duk6		v
+6830	召募	召募	ziu6 mou6	22	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L73258	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			召募	jieba/dict.txt	73258	59	召募	ziu6 mou6		v
+6831	圓弧	圓弧	jyun4 wu4	00	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L89529	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			圆弧	jieba/dict.txt	89529	59	圓弧	jyun4 wu4		n
+6832	堅城	堅城	gin1 sing4	30	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L91613	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			坚城	jieba/dict.txt	91613	59	堅城	gin1 sing4		v
+6833	壩體	壩體	baa3 tai2	49	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L91689	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			坝体	jieba/dict.txt	91689	59	壩體	baa3 tai2		n
+6834	大限度					jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L99703	reject	fragment:最大限度等表達的截斷片段。			大限度	jieba/dict.txt	99703	59	大限度	daai6 haan6 dou6		n
+6835	天呀	天呀	tin1 aa3	34	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L100056	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。已另核對語境讀音。			天呀	jieba/dict.txt	100056	59	天呀	tin1 aa4	https://cantowords.com/dictionary/天	e
+6836	嫩芽	嫩芽	nyun6 ngaa4	20	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L106142	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			嫩芽	jieba/dict.txt	106142	59	嫩芽	nyun6 ngaa4		n
+6838	廣告商	廣告商	gwong2 gou3 soeng1	943	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L127775	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			广告商	jieba/dict.txt	127775	59	廣告商	gwong2 gou3 soeng1		n
+6839	忽明忽暗	忽明忽暗	fat1 ming4 fat1 am3	3034	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L138712	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			忽明忽暗	jieba/dict.txt	138712	59	忽明忽暗	fat1 ming4 fat1 am3		z
+6840	應交	應交	jing1 gaau1	33	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L128677	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			应交	jieba/dict.txt	128677	59	應交	jing1 gaau1		v
+6841	懷上	懷上	waai4 soeng5	05	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L138752	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			怀上	jieba/dict.txt	138752	59	懷上	waai4 soeng5		s
+6842	戰幕	戰幕	zin3 mok6	42	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L144710	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			战幕	jieba/dict.txt	144710	59	戰幕	zin3 mok6		n
+6843	挖土	挖土	waat3 tou2	49	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L153935	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			挖土	jieba/dict.txt	153935	59	挖土	waat3 tou2		n
+6844	接球	接球	zip3 kau4	40	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L156349	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			接球	jieba/dict.txt	156349	59	接球	zip3 kau4		n
+6846	揚子鱷	揚子鱷	joeng4 zi2 ngok6	092	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L147669	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			扬子鳄	jieba/dict.txt	147669	59	揚子鱷	joeng4 zi2 ngok6		n
+6847	攜帶者	攜帶者	kwai4 daai3 ze2	049	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L158113	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			携带者	jieba/dict.txt	158113	59	攜帶者	kwai4 daai3 ze2		n
+6848	攜程					jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L158126	reject	proper_name:企業品牌。			携程	jieba/dict.txt	158126	59	攜程	kwai4 cing4		n
+6851	新創	新創	san1 cong3	34	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L165920	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			新创	jieba/dict.txt	165920	59	新創	san1 cong3		n
+6852	新幹線	新幹線	san1 gon3 sin3	344	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L166142	accept	按通行中文交通名物收錄（高速鐵路系統／列車），單項審核，未啟用上游專名全庫。			新干线	jieba/dict.txt	166142	59	新幹線	san1 gon3 sin3		n
+6853	曲曲折折	曲曲折折	kuk1 kuk1 zit3 zit3	3344	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L174187	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			曲曲折折	jieba/dict.txt	174187	59	曲曲折折	kuk1 kuk1 zit3 zit3		z
+6854	村村	村村	cyun1 cyun1	33	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L180948	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			村村	jieba/dict.txt	180948	59	村村	cyun1 cyun1		n
+6855	核能力	核能力	hat6 nang4 lik6	202	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L186504	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			核能力	jieba/dict.txt	186504	59	核能力	hat6 nang4 lik6		n
+6856	梭子魚	梭子魚	so1 zi2 jyu2	399	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L292845	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			梭子魚	extra_dict/dict.txt.big	292845	59	梭子魚	so1 zi2 jyu2		n
+6857	椰乾	椰乾	je4 gon1	03	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L189505	accept	按乾燥椰肉／椰乾義採 gon1，修正簡轉繁及分字幹 gon3 初稿；不改寫表示樹幹的椰幹。			椰干	jieba/dict.txt	189505	59	椰幹	je4 gon3		n
+6858	權奸	權奸	kyun4 gaan1	03	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L179168	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			权奸	jieba/dict.txt	179168	59	權奸	kyun4 gaan1		n
+6859	歲末	歲末	seoi3 mut6	42	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L120553	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			岁末	jieba/dict.txt	120553	59	歲末	seoi3 mut6		t
+6860	比做	比做	bei2 zou6	92	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L194738	accept	台大紅樓夢公開課教材有比做的比較／比喻用例；與已有比作分列。			比做	jieba/dict.txt	194738	59	比做	bei2 zou6	https://ocw.aca.ntu.edu.tw/course_item_files/1150	v
+6861	毫髮	毫髮	hou4 faat3	04	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L195561	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			毫发	jieba/dict.txt	195561	59	毫髮	hou4 faat3		v
+6862	水磨	水磨	seoi2 mo6	92	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L197512	accept	水力磨具義採 mo6；另保留水磨加工／水磨工夫義 mo4，按詞義分級。			水磨	jieba/dict.txt	197512	59	水磨	seoi2 mo4	https://jyut.net/query?q=磨	n
+6862:2	水磨	水磨	seoi2 mo4	90	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L197512	accept	水磨加工方式／水磨工夫的動作義，與水力磨具 mo6 區別。			水磨	jieba/dict.txt	197512	59	水磨	seoi2 mo4	https://jyut.net/query?q=磨	n
+6863	泡桐	泡桐	paau1 tung4	30	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L202679	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。已另核對語境讀音。			泡桐	jieba/dict.txt	202679	59	泡桐	pou5 tung4	https://en.wiktionary.org/wiki/Module:zh/data/yue-word/027	n
+6864	海狼	海狼	hoi2 long4	90	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L206895	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			海狼	jieba/dict.txt	206895	59	海狼	hoi2 long4		n
+6865	海選	海選	hoi2 syun2	99	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L207079	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			海选	jieba/dict.txt	207079	59	海選	hoi2 syun2		n
+6866	濁流	濁流	zuk6 lau4	20	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L205537	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			浊流	jieba/dict.txt	205537	59	濁流	zuk6 lau4		n
+6867	烏力					jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L17160	reject	proper_name:音譯人名或較長詞的片段。			乌力	jieba/dict.txt	17160	59	烏力	wu1 lik6		n
+6868	片劑	片劑	pin3 zai1	43	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L218376	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			片剂	jieba/dict.txt	218376	59	片劑	pin3 zai1		n
+6869	產下	產下	caan2 haa6	92	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L24802	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			产下	jieba/dict.txt	24802	59	產下	caan2 haa6		n
+6870	盜掘	盜掘	dou6 gwat6	22	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L234920	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			盗掘	jieba/dict.txt	234920	59	盜掘	dou6 gwat6		v
+6871	碰碰					jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L240846	reject	fragment:動詞重複切片，未確認獨立常用表達。			碰碰	jieba/dict.txt	240846	59	碰碰	pung3 pung3		v
+6872	端端正正	端端正正	dyun1 dyun1 zing3 zing3	3344	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L248640	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			端端正正	jieba/dict.txt	248640	59	端端正正	dyun1 dyun1 zing3 zing3		z
+6873	糊糊					jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L253553	reject	regional_northern:糊糊的食品義屬地域用語，其他用例多為重疊詞切片。			糊糊	jieba/dict.txt	253553	59	糊糊	wu4 wu4		a
+6874	紡紗機	紡紗機	fong2 saa1 gei1	933	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L405021	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			紡紗機	extra_dict/dict.txt.big	405021	59	紡紗機	fong2 saa1 gei1		n
+6875	細菌性	細菌性	sai3 kwan2 sing3	494	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L406045	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			細菌性	extra_dict/dict.txt.big	406045	59	細菌性	sai3 kwan2 sing3		n
+6877	統合	統合	tung2 hap6	92	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L407116	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			統合	extra_dict/dict.txt.big	407116	59	統合	tung2 hap6		v
+6879	聯絡員	聯絡員	lyun4 lok3 jyun4	040	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L265398	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			联络员	jieba/dict.txt	265398	59	聯絡員	lyun4 lok3 jyun4		n
+6881	落腳點	落腳點	lok6 goek3 dim2	249	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L278369	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			落脚点	jieba/dict.txt	278369	59	落腳點	lok6 goek3 dim2		n
+6882	藏家	藏家	cong4 gaa1	03	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L280587	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			藏家	jieba/dict.txt	280587	59	藏家	cong4 gaa1		n
+6883	蛇毒	蛇毒	se4 duk6	02	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L281526	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			蛇毒	jieba/dict.txt	281526	59	蛇毒	se4 duk6		n
+6884	表面積	表面積	biu2 min6 zik1	923	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L283991	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			表面积	jieba/dict.txt	283991	59	表面積	biu2 min6 zik1		n
+6885	西頭	西頭	sai1 tau4	30	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L285615	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			西头	jieba/dict.txt	285615	59	西頭	sai1 tau4		s
+6886	財經類	財經類	coi4 ging1 leoi6	032	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L480014	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			財經類	extra_dict/dict.txt.big	480014	59	財經類	coi4 ging1 leoi6		n
+6887	超跌	超跌	ciu1 dit3	34	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L299505	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			超跌	jieba/dict.txt	299505	59	超跌	ciu1 dit3		v
+6888	軍事史	軍事史	gwan1 si6 si2	329	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L46672	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			军事史	jieba/dict.txt	46672	59	軍事史	gwan1 si6 si2		n
+6889	軟癱	軟癱	jyun5 taan1	53	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L493124	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			軟癱	extra_dict/dict.txt.big	493124	59	軟癱	jyun5 taan1		n
+6890	載流子	載流子	zoi3 lau4 zi2	409	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L493384	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			載流子	extra_dict/dict.txt.big	493384	59	載流子	zoi3 lau4 zi2		n
+6891	迷住	迷住	mai4 zyu6	02	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L307373	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			迷住	jieba/dict.txt	307373	59	迷住	mai4 zyu6		v
+6892	速滑	速滑	cuk1 waat6	32	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L309513	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			速滑	jieba/dict.txt	309513	59	速滑	cuk1 waat6		v
+6893	重商主義	重商主義	zung6 soeng1 zyu2 ji6	2392	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L315188	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。已另核對語境讀音。			重商主义	jieba/dict.txt	315188	59	重商主義	cung4 soeng1 zyu2 ji6		n
+6894	首付	首付	sau2 fu6	92	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L337672	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			首付	jieba/dict.txt	337672	59	首付	sau2 fu6		v
+6895	高等級	高等級	gou1 dang2 kap1	393	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L570142	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			高等級	extra_dict/dict.txt.big	570142	59	高等級	gou1 dang2 kap1		b
+6896	一絲絲	一絲絲	jat1 si1 si1	333	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L263	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			一丝丝	jieba/dict.txt	263	58	一絲絲	jat1 si1 si1		mq
+6897	上桌	上桌	soeng5 coek3	54	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L7422	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			上桌	jieba/dict.txt	7422	58	上桌	soeng5 coek3		n
+6898	中小學校	中小學校	zung1 siu2 hok6 haau6	3922	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L14567	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			中小学校	jieba/dict.txt	14567	58	中小學校	zung1 siu2 hok6 haau6		j
+6899	中緯度	中緯度	zung1 wai5 dou6	352	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L21488	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			中緯度	extra_dict/dict.txt.big	21488	58	中緯度	zung1 wai5 dou6		n
+6900	事務部	事務部	si6 mou6 bou6	222	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L19922	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			事务部	jieba/dict.txt	19922	58	事務部	si6 mou6 bou6		n
+6901	人販子	人販子	jan4 faan3 zi2	049	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L36930	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。已另核對語境讀音。			人販子	extra_dict/dict.txt.big	36930	58	人販子	jan4 faan5 zi2		n
+6902	今夏	今夏	gam1 haa6	32	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L26615	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			今夏	jieba/dict.txt	26615	58	今夏	gam1 haa6		t
+6904	併攏	併攏	bing6 lung5	25	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L47216	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。已另核對語境讀音。			併攏	extra_dict/dict.txt.big	47216	58	併攏	ping3 lung5		v
+6905	保健食品	保健食品	bou2 gin6 sik6 ban2	9229	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L34926	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			保健食品	jieba/dict.txt	34926	58	保健食品	bou2 gin6 sik6 ban2		n
+6906	保安廳	保安廳	bou2 on1 teng1	933	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L35034	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			保安厅	jieba/dict.txt	35034	58	保安廳	bou2 on1 teng1		n
+6907	倒置	倒置	dou2 zi3	94	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L36443	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			倒置	jieba/dict.txt	36443	58	倒置	dou2 zi3		v
+6908	僵死	僵死	goeng1 sei2	39	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L38696	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			僵死	jieba/dict.txt	38696	58	僵死	goeng1 sei2		v
+6909	八門	八門	baat3 mun4	40	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L64050	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			八門	extra_dict/dict.txt.big	64050	58	八門	baat3 mun4		n
+6910	兼收	兼收	gim1 sau1	33	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L45554	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			兼收	jieba/dict.txt	45554	58	兼收	gim1 sau1		v
+6911	反貪局	反貪局	faan2 taam1 guk6	932	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L104785	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			反貪局	extra_dict/dict.txt.big	104785	58	反貪局	faan2 taam1 guk6		j
+6912	可燃	可燃	ho2 jin4	90	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L73634	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			可燃	jieba/dict.txt	73634	58	可燃	ho2 jin4		v
+6913	唯物主義者	唯物主義者	wai4 mat6 zyu2 ji6 ze2	02929	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L84063	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			唯物主义者	jieba/dict.txt	84063	58	唯物主義者	wai4 mat6 zyu2 ji6 ze2		n
+6914	商品率	商品率	soeng1 ban2 leot6	392	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L84432	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。已另核對語境讀音。			商品率	jieba/dict.txt	84432	58	商品率	soeng1 ban2 leot2		n
+6915	圓環	圓環	jyun4 waan4	00	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L89592	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			圆环	jieba/dict.txt	89592	58	圓環	jyun4 waan4		n
+6916	夏秋季	夏秋季	haa6 cau1 gwai3	234	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L95746	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			夏秋季	jieba/dict.txt	95746	58	夏秋季	haa6 cau1 gwai3		t
+6917	夜郎					jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L97492	reject	proper_name:古國／地名。			夜郎	jieba/dict.txt	97492	58	夜郎	je6 long4		n
+6918	大木	大木	daai6 muk6	22	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L98749	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			大木	jieba/dict.txt	98749	58	大木	daai6 muk6		n
+6919	奇書	奇書	kei4 syu1	03	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L102068	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			奇书	jieba/dict.txt	102068	58	奇書	kei4 syu1		n
+6920	好找	好找	hou2 zaau2	99	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L103941	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			好找	jieba/dict.txt	103941	58	好找	hou2 zaau2		v
+6921	宣慰	宣慰	syun1 wai3	34	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L112449	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			宣慰	jieba/dict.txt	112449	58	宣慰	syun1 wai3		v
+6922	專科生	專科生	zyun1 fo1 saang1	333	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L10570	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			专科生	jieba/dict.txt	10570	58	專科生	zyun1 fo1 saang1		n
+6923	小型化	小型化	siu2 jing4 faa3	904	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L116298	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			小型化	jieba/dict.txt	116298	58	小型化	siu2 jing4 faa3		n
+6924	尾端	尾端	mei5 dyun1	53	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L118861	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			尾端	jieba/dict.txt	118861	58	尾端	mei5 dyun1		n
+6925	山雨	山雨	saan1 jyu5	35	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L120452	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			山雨	jieba/dict.txt	120452	58	山雨	saan1 jyu5		n
+6926	工作制	工作制	gung1 zok3 zai3	344	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L121812	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			工作制	jieba/dict.txt	121812	58	工作制	gung1 zok3 zai3		n
+6927	工商部門	工商部門	gung1 soeng1 bou6 mun4	3320	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L186537	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			工商部門	extra_dict/dict.txt.big	186537	58	工商部門	gung1 soeng1 bou6 mun4		n
+6928	市舶司	市舶司	si5 bok6 si1	523	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L123897	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			市舶司	jieba/dict.txt	123897	58	市舶司	si5 bok6 si1		n
+6929	年終獎	年終獎	nin4 zung1 zoeng2	039	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L194696	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			年終獎	extra_dict/dict.txt.big	194696	58	年終獎	nin4 zung1 zoeng2		n
+6930	忠君	忠君	zung1 gwan1	33	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L138287	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			忠君	jieba/dict.txt	138287	58	忠君	zung1 gwan1		n
+6931	快刀	快刀	faai3 dou1	43	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L138443	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			快刀	jieba/dict.txt	138443	58	快刀	faai3 dou1		n
+6932	恰逢	恰逢	hap1 fung4	30	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L140731	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			恰逢	jieba/dict.txt	140731	58	恰逢	hap1 fung4		v
+6933	情性	情性	cing4 sing3	04	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L141488	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			情性	jieba/dict.txt	141488	58	情性	cing4 sing3		n
+6934	想定	想定	soeng2 ding6	92	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L142261	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			想定	jieba/dict.txt	142261	58	想定	soeng2 ding6		v
+6935	成品油	成品油	sing4 ban2 jau4	090	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L144117	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			成品油	jieba/dict.txt	144117	58	成品油	sing4 ban2 jau4		n
+6936	所在國	所在國	so2 zoi6 gwok3	924	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L145545	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			所在国	jieba/dict.txt	145545	58	所在國	so2 zoi6 gwok3		n
+6937	所感	所感	so2 gam2	99	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L145571	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			所感	jieba/dict.txt	145571	58	所感	so2 gam2		n
+6938	承受力	承受力	sing4 sau6 lik6	022	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L148327	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			承受力	jieba/dict.txt	148327	58	承受力	sing4 sau6 lik6		n
+6939	推土	推土	teoi1 tou2	39	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L156628	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			推土	jieba/dict.txt	156628	58	推土	teoi1 tou2		v
+6940	描述符	描述符	miu4 seot6 fu4	020	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L157061	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			描述符	jieba/dict.txt	157061	58	描述符	miu4 seot6 fu4		n
+6941	敲敲					jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163322	reject	fragment:動詞重複切片，未確認獨立常用表達。			敲敲	jieba/dict.txt	163322	58	敲敲	haau1 haau1		v
+6942	斷頭	斷頭	dyun6 tau4	20	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L165029	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			断头	jieba/dict.txt	165029	58	斷頭	dyun6 tau4		v
+6943	旅遊業界	旅遊業界	leoi5 jau4 jip6 gaai3	5024	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L167574	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			旅游业界	jieba/dict.txt	167574	58	旅遊業界	leoi5 jau4 jip6 gaai3		n
+6944	有軌	有軌	jau5 gwai2	59	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L274470	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			有軌	extra_dict/dict.txt.big	274470	58	有軌	jau5 gwai2		b
+6945	村邊	村邊	cyun1 bin1	33	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L180968	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			村边	jieba/dict.txt	180968	58	村邊	cyun1 bin1		s
+6946	板材	板材	baan2 coi4	90	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L183091	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			板材	jieba/dict.txt	183091	58	板材	baan2 coi4		n
+6948	江主席					jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L198805	reject	proper_name:人名加職稱。			江主席	jieba/dict.txt	198805	58	江主席	gong1 zyu2 zik6		n
+6949	沖斷	沖斷	cung1 dyun6	32	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L48150	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			冲断	jieba/dict.txt	48150	58	沖斷	cung1 dyun6		v
+6950	消耗量	消耗量	siu1 hou3 loeng6	342	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L207490	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。已另核對語境讀音。			消耗量	jieba/dict.txt	207490	58	消耗量	siu1 hou3 loeng4		n
+6951	深諳	深諳	sam1 am1	33	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L327264	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			深諳	extra_dict/dict.txt.big	327264	58	深諳	sam1 am1		v
+6953	漲跌	漲跌	zoeng2 dit3	94	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L207908	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。已另核對語境讀音。			涨跌	jieba/dict.txt	207908	58	漲跌	zoeng3 dit3		v
+6954	火力發電	火力發電	fo2 lik6 faat3 din6	9242	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L213782	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			火力发电	jieba/dict.txt	213782	58	火力發電	fo2 lik6 faat3 din6		n
+6955	煤油燈	煤油燈	mui4 jau4 dang1	003	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L216696	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			煤油灯	jieba/dict.txt	216696	58	煤油燈	mui4 jau4 dang1		n
+6956	犯罪率	犯罪率	faan6 zeoi6 leot6	222	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L220252	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。已另核對語境讀音。			犯罪率	jieba/dict.txt	220252	58	犯罪率	faan6 zeoi6 leot2		n
+6957	獨立團	獨立團	duk6 laap6 tyun4	220	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L221014	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			独立团	jieba/dict.txt	221014	58	獨立團	duk6 laap6 tyun4		n
+6958	球類	球類	kau4 leoi6	02	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L225670	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			球类	jieba/dict.txt	225670	58	球類	kau4 leoi6		n
+6959	生存期	生存期	sang1 cyun4 kei4	300	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L227368	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			生存期	jieba/dict.txt	227368	58	生存期	sang1 cyun4 kei4		n
+6960	發明人	發明人	faat3 ming4 jan4	400	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L70925	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			发明人	jieba/dict.txt	70925	58	發明人	faat3 ming4 jan4		n
+6961	發煙	發煙	faat3 jin1	43	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L70983	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			发烟	jieba/dict.txt	70983	58	發煙	faat3 jin1		v
+6962	盲從	盲從	maang4 cung4	00	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L235476	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			盲从	jieba/dict.txt	235476	58	盲從	maang4 cung4		n
+6963	硫酸銅	硫酸銅	lau4 syun1 tung4	030	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L381472	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			硫酸銅	extra_dict/dict.txt.big	381472	58	硫酸銅	lau4 syun1 tung4		n
+6964	示範點	示範點	si6 faan6 dim2	229	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L383612	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			示範點	extra_dict/dict.txt.big	383612	58	示範點	si6 faan6 dim2		n
+6965	科學史	科學史	fo1 hok6 si2	329	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L244401	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			科学史	jieba/dict.txt	244401	58	科學史	fo1 hok6 si2		n
+6966	空車	空車	hung1 ce1	33	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L392474	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			空車	extra_dict/dict.txt.big	392474	58	空車	hung1 ce1		n
+6967	空軍一號					jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L246798	reject	proper_name:特定專機名稱。			空军一号	jieba/dict.txt	246798	58	空軍一號	hung1 gwan1 jat1 hou6		n
+6968	竹簍	竹簍	zuk1 lau5	35	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L248791	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			竹篓	jieba/dict.txt	248791	58	竹簍	zuk1 lau5		n
+6969	紅棉	紅棉	hung4 min4	00	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L403798	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			紅棉	extra_dict/dict.txt.big	403798	58	紅棉	hung4 min4		n
+6970	經驗主義	經驗主義	ging1 jim6 zyu2 ji6	3292	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L407816	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			經驗主義	extra_dict/dict.txt.big	407816	58	經驗主義	ging1 jim6 zyu2 ji6		n
+6971	綾羅	綾羅	ling4 lo4	00	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L408844	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			綾羅	extra_dict/dict.txt.big	408844	58	綾羅	ling4 lo4		v
+6972	考務	考務	haau2 mou6	92	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L264080	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			考务	jieba/dict.txt	264080	58	考務	haau2 mou6		vn
+6973	聖女	聖女	sing3 neoi5	45	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L90138	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			圣女	jieba/dict.txt	90138	58	聖女	sing3 neoi5		n
+6974	肺水腫	肺水腫	fai3 seoi2 zung2	499	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L266639	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			肺水肿	jieba/dict.txt	266639	58	肺水腫	fai3 seoi2 zung2		n
+6975	膽道	膽道	daam2 dou6	92	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L266890	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			胆道	jieba/dict.txt	266890	58	膽道	daam2 dou6		n
+6976	苦勸	苦勸	fu2 hyun3	94	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L274501	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			苦劝	jieba/dict.txt	274501	58	苦勸	fu2 hyun3		v
+6977	苦熬	苦熬	fu2 ngou4	90	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L274590	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			苦熬	jieba/dict.txt	274590	58	苦熬	fu2 ngou4		a
+6978	菜園子	菜園子	coi3 jyun4 zi2	409	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L277277	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			菜园子	jieba/dict.txt	277277	58	菜園子	coi3 jyun4 zi2		n
+6979	虎子	虎子	fu2 zi2	99	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L280862	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			虎子	jieba/dict.txt	280862	58	虎子	fu2 zi2		n
+6980	製藥廠	製藥廠	zai3 joek6 cong2	429	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L55303	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			制药厂	jieba/dict.txt	55303	58	製藥廠	zai3 joek6 cong2		n
+6981	西北面	西北面	sai1 bak1 min6	332	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L285460	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			西北面	jieba/dict.txt	285460	58	西北面	sai1 bak1 min6		f
+6982	記入	記入	gei3 jap6	42	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L466849	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			記入	extra_dict/dict.txt.big	466849	58	記入	gei3 jap6		v
+6983	該廠	該廠	goi1 cong2	39	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L468380	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			該廠	extra_dict/dict.txt.big	468380	58	該廠	goi1 cong2		r
+6984	論文集	論文集	leon6 man4 zaap6	202	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L470220	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			論文集	extra_dict/dict.txt.big	470220	58	論文集	leon6 man4 zaap6		n
+6985	資料室	資料室	zi1 liu2 sat1	393	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L481425	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			資料室	extra_dict/dict.txt.big	481425	58	資料室	zi1 liu2 sat1		n
+6987	趣味性	趣味性	ceoi3 mei6 sing3	424	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L299805	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			趣味性	jieba/dict.txt	299805	58	趣味性	ceoi3 mei6 sing3		n
+6988	軍陣	軍陣	gwan1 zan6	32	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L46954	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			军阵	jieba/dict.txt	46954	58	軍陣	gwan1 zan6		n
+6989	通量	通量	tung1 loeng6	32	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L309339	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。已另核對語境讀音。			通量	jieba/dict.txt	309339	58	通量	tung1 loeng4		n
+6990	進藏	進藏	zeon3 zong6	42	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L306075	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。已另核對語境讀音。			进藏	jieba/dict.txt	306075	58	進藏	zeon3 cong4		v
+6991	選擇地					jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L308368	reject	fragment:有選擇地／選擇地點等較長結構的切片，未核實獨立詞義。			选择地	jieba/dict.txt	308368	58	選擇地	syun2 zaak6 dei6		n
+6992	部副					jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L312752	reject	fragment:機構職稱切片。			部副	jieba/dict.txt	312752	58	部副	bou6 fu3		n
+6993	醫家	醫家	ji1 gaa1	33	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L60790	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			医家	jieba/dict.txt	60790	58	醫家	ji1 gaa1		n
+6994	野物	野物	je5 mat6	52	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L315736	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			野物	jieba/dict.txt	315736	58	野物	je5 mat6		n
+6995	錯劃	錯劃	co3 waak6	42	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L523198	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			錯劃	extra_dict/dict.txt.big	523198	58	錯劃	co3 waak6		n
+6996	鐵質	鐵質	tit3 zat1	43	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L524623	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			鐵質	extra_dict/dict.txt.big	524623	58	鐵質	tit3 zat1		n
+6997	長風	長風	coeng4 fung1	03	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L529438	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			長風	extra_dict/dict.txt.big	529438	58	長風	coeng4 fung1		n
+6998	關上門	關上門	gwaan1 soeng5 mun4	350	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L44430	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			关上门	jieba/dict.txt	44430	58	關上門	gwaan1 soeng5 mun4		n
+6999	院方	院方	jyun2 fong1	93	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L327830	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			院方	jieba/dict.txt	327830	58	院方	jyun2 fong1		n
+7001	雙槍	雙槍	soeng1 coeng1	33	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L69795	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			双枪	jieba/dict.txt	69795	58	雙槍	soeng1 coeng1		n
+7002	首局	首局	sau2 guk6	92	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L337756	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			首局	jieba/dict.txt	337756	58	首局	sau2 guk6		n
+7003	駛來	駛來	sai2 loi4	90	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L564964	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			駛來	extra_dict/dict.txt.big	564964	58	駛來	sai2 loi4		v
+7004	中職	中職	zung1 zik1	33	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L15112	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			中职	jieba/dict.txt	15112	57	中職	zung1 zik1		n
+7005	中隊長	中隊長	zung1 deoi6 zoeng2	329	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L15307	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。已另核對語境讀音。			中队长	jieba/dict.txt	15307	57	中隊長	zung1 deoi6 coeng4		n
+7006	人才觀	人才觀	jan4 coi4 gun1	003	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L36408	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			人才觀	extra_dict/dict.txt.big	36408	57	人才觀	jan4 coi4 gun1		n
+7008	伙食費	伙食費	fo2 sik6 fai3	924	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L42653	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			伙食費	extra_dict/dict.txt.big	42653	57	伙食費	fo2 sik6 fai3		n
+7009	作假	作假	zok3 gaa2	49	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L33119	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			作假	jieba/dict.txt	33119	57	作假	zok3 gaa2		n
+7010	偉晶岩	偉晶巖	wai5 zing1 ngaam4	530	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L30440	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			伟晶岩	jieba/dict.txt	30440	57	偉晶岩	wai5 zing1 ngaam4		n
+7011	偉晶巖					jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L53356	already_present	正式入庫正規化後已有同字面及讀音；不重複收錄。			偉晶岩	extra_dict/dict.txt.big	53356	57	偉晶巖	wai5 zing1 ngaam4		n
+7012	八卦掌	八卦掌	baat3 gwaa3 zoeng2	449	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L42039	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			八卦掌	jieba/dict.txt	42039	57	八卦掌	baat3 gwaa3 zoeng2		n
+7013	公意	公意	gung1 ji3	34	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L42949	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			公意	jieba/dict.txt	42949	57	公意	gung1 ji3		n
+7015	共度	共度	gung6 dou6	22	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L44257	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			共度	jieba/dict.txt	44257	57	共度	gung6 dou6		d
+7016	共青團員	共青團員	gung6 cing1 tyun4 jyun4	2300	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L44413	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			共青团员	jieba/dict.txt	44413	57	共青團員	gung6 cing1 tyun4 jyun4		n
+7017	別集	別集	bit6 zaap6	22	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L79686	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			別集	extra_dict/dict.txt.big	79686	57	別集	bit6 zaap6		v
+7018	加寬	加寬	gaa1 fun1	33	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L57365	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			加宽	jieba/dict.txt	57365	57	加寬	gaa1 fun1		v
+7019	半期	半期	bun3 kei4	40	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L63350	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			半期	jieba/dict.txt	63350	57	半期	bun3 kei4		t
+7020	原子結構	原子結構	jyun4 zi2 git3 kau3	0944	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L102215	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			原子結構	extra_dict/dict.txt.big	102215	57	原子結構	jyun4 zi2 git3 kau3		n
+7022	吹打	吹打	ceoi1 daa2	39	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L80016	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			吹打	jieba/dict.txt	80016	57	吹打	ceoi1 daa2		v
+7023	哥倆					jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L83139	reject	regional_northern:哥倆為明顯北方親屬口語。			哥俩	jieba/dict.txt	83139	57	哥倆	go1 loeng5		n
+7024	外運	外運	ngoi6 wan6	22	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L96439	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			外运	jieba/dict.txt	96439	57	外運	ngoi6 wan6		n
+7025	夫君	夫君	fu1 gwan1	33	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L101334	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			夫君	jieba/dict.txt	101334	57	夫君	fu1 gwan1		n
+7026	如春	如春	jyu4 ceon1	03	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L104201	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			如春	jieba/dict.txt	104201	57	如春	jyu4 ceon1		t
+7028	宮前	宮前	gung1 cin4	30	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L112638	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			宫前	jieba/dict.txt	112638	57	宮前	gung1 cin4		s
+7029	容姑					jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L113306	reject	proper_name:人物稱呼。			容姑	jieba/dict.txt	113306	57	容姑	jung4 gu1		n
+7030	專稿	專稿	zyun1 gou2	39	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L10578	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			专稿	jieba/dict.txt	10578	57	專稿	zyun1 gou2		n
+7031	小舅子	小舅子	siu2 kau5 zi2	959	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L117136	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			小舅子	jieba/dict.txt	117136	57	小舅子	siu2 kau5 zi2		n
+7032	尾閭	尾閭	mei5 leoi4	50	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L181833	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			尾閭	extra_dict/dict.txt.big	181833	57	尾閭	mei5 leoi4		n
+7034	帝師	帝師	dai3 si1	43	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L125270	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			帝师	jieba/dict.txt	125270	57	帝師	dai3 si1		n
+7035	情話	情話	cing4 waa6	02	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L218328	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			情話	extra_dict/dict.txt.big	218328	57	情話	cing4 waa6		n
+7036	意外險	意外險	ji3 ngoi6 him2	429	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L142549	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			意外险	jieba/dict.txt	142549	57	意外險	ji3 ngoi6 him2		n
+7037	房主	房主	fong4 zyu2	09	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L145340	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			房主	jieba/dict.txt	145340	57	房主	fong4 zyu2		n
+7038	抗倭	抗倭	kong3 wo1	43	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L149133	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			抗倭	jieba/dict.txt	149133	57	抗倭	kong3 wo1		v
+7039	拍品	拍品	paak3 ban2	49	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L151631	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			拍品	jieba/dict.txt	151631	57	拍品	paak3 ban2		n
+7040	控制技術	控制技術	hung3 zai3 gei6 seot6	4422	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L156501	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			控制技术	jieba/dict.txt	156501	57	控制技術	hung3 zai3 gei6 seot6		n
+7041	擺攤	擺攤	baai2 taan1	93	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L158270	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			摆摊	jieba/dict.txt	158270	57	擺攤	baai2 taan1		v
+7043	數據結構	數據結構	sou3 geoi3 git3 kau3	4444	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162991	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			数据结构	jieba/dict.txt	162991	57	數據結構	sou3 geoi3 git3 kau3		n
+7044	有損於	有損於	jau5 syun2 jyu1	593	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L175620	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			有损于	jieba/dict.txt	175620	57	有損於	jau5 syun2 jyu1		v
+7045	核輻射	核輻射	hat6 fuk1 se6	232	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L289818	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			核輻射	extra_dict/dict.txt.big	289818	57	核輻射	hat6 fuk1 se6		n
+7046	槍桿子	槍桿子	coeng1 gon1 zi2	339	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L184354	accept	槍桿兩種讀法有詞級差異；本詞沿用公開詞級 coeng1 gon1 zi2，不因桿單字另讀而硬改。			枪杆子	jieba/dict.txt	184354	57	槍桿子	coeng1 gon1 zi2	https://en.wiktionary.org/wiki/Module:zh/data/yue-word/027	n
+7047	正邪	正邪	zing3 ce4	40	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L192420	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			正邪	jieba/dict.txt	192420	57	正邪	zing3 ce4		a
+7048	法會	法會	faat3 wui2	49	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L202165	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。已另核對語境讀音。			法会	jieba/dict.txt	202165	57	法會	faat3 wui5	https://cantowords.com/dictionary/普渡	n
+7049	派遣軍	派遣軍	paai3 hin2 gwan1	493	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L204974	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			派遣军	jieba/dict.txt	204974	57	派遣軍	paai3 hin2 gwan1		n
+7050	海北					jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L206503	reject	proper_name:地理名稱。			海北	jieba/dict.txt	206503	57	海北	hoi2 bak1		s
+7051	消息報					jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L325169	reject	proper_name:報刊名稱。			消息報	extra_dict/dict.txt.big	325169	57	消息報	siu1 sik1 bou3		vn
+7053	減振器	減振器	gaam2 zan3 hei3	944	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L49185	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			减振器	jieba/dict.txt	49185	57	減振器	gaam2 zan3 hei3		n
+7054	湘鄂贛					jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L330618	reject	proper_name:省份地理縮稱。			湘鄂贛	extra_dict/dict.txt.big	330618	57	湘鄂贛	soeng1 ngok6 gam3		j
+7055	演奏者	演奏者	jin2 zau3 ze2	949	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L212544	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			演奏者	jieba/dict.txt	212544	57	演奏者	jin2 zau3 ze2		n
+7057	營養學	營養學	jing4 joeng5 hok6	052	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L345031	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			營養學	extra_dict/dict.txt.big	345031	57	營養學	jing4 joeng5 hok6		n
+7058	生育期	生育期	saang1 juk6 kei4	320	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L227798	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			生育期	jieba/dict.txt	227798	57	生育期	saang1 juk6 kei4		n
+7059	用書	用書	jung6 syu1	23	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L227920	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			用书	jieba/dict.txt	227920	57	用書	jung6 syu1		n
+7060	發熱量	發熱量	faat3 jit6 loeng6	422	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L70998	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。已另核對語境讀音。			发热量	jieba/dict.txt	70998	57	發熱量	faat3 jit6 loeng4		n
+7061	相承	相承	soeng1 sing4	30	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L236146	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			相承	jieba/dict.txt	236146	57	相承	soeng1 sing4		v
+7062	真值	真值	zan1 zik6	32	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L236839	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			真值	jieba/dict.txt	236839	57	真值	zan1 zik6		n
+7064	砌牆	砌牆	cai3 coeng4	40	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L239527	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			砌墙	jieba/dict.txt	239527	57	砌牆	cai3 coeng4		n
+7065	硬質	硬質	ngaang6 zat1	23	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L381737	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			硬質	extra_dict/dict.txt.big	381737	57	硬質	ngaang6 zat1		n
+7066	礦化	礦化	kwong3 faa3	44	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L239363	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			矿化	jieba/dict.txt	239363	57	礦化	kwong3 faa3		n
+7067	票面	票面	piu3 min6	42	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L242804	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			票面	jieba/dict.txt	242804	57	票面	piu3 min6		n
+7068	私鹽	私鹽	si1 jim4	30	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L243890	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			私盐	jieba/dict.txt	243890	57	私鹽	si1 jim4		n
+7069	筆調	筆調	bat1 diu6	32	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L249103	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			笔调	jieba/dict.txt	249103	57	筆調	bat1 diu6		n
+7070	管委會	管委會	gun2 wai2 wui2	999	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L251631	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。已另核對語境讀音。			管委会	jieba/dict.txt	251631	57	管委會	gun2 wai2 wui5		j
+7071	粥樣	粥樣	zuk1 joeng6	32	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L253032	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			粥样	jieba/dict.txt	253032	57	粥樣	zuk1 joeng6		b
+7072	紀檢委	紀檢委	gei2 gim2 wai2	999	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L403435	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			紀檢委	extra_dict/dict.txt.big	403435	57	紀檢委	gei2 gim2 wai2		j
+7073	素問					jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L404900	reject	book_title:《素問》篇章／書名。			素問	extra_dict/dict.txt.big	404900	57	素問	sou3 man6		n
+7074	細語	細語	sai3 jyu5	45	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L406056	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			細語	extra_dict/dict.txt.big	406056	57	細語	sai3 jyu5		n
+7075	經合	經合	ging1 hap6	32	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L407477	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			經合	extra_dict/dict.txt.big	407477	57	經合	ging1 hap6		vn
+7076	經堂	經堂	ging1 tong4	30	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L407493	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			經堂	extra_dict/dict.txt.big	407493	57	經堂	ging1 tong4		n
+7077	能譜	能譜	nang4 pou2	09	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L429919	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			能譜	extra_dict/dict.txt.big	429919	57	能譜	nang4 pou2		n
+7078	脊索	脊索	zek3 sok3	44	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L268472	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			脊索	jieba/dict.txt	268472	57	脊索	zek3 sok3		n
+7079	腦組織	腦組織	nou5 zou2 zik1	593	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L268587	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			脑组织	jieba/dict.txt	268587	57	腦組織	nou5 zou2 zik1		n
+7080	著文	著文	zyu3 man4	40	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L278455	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。已另核對語境讀音。			著文	jieba/dict.txt	278455	57	著文	zoek3 man4		n
+7082	行為人	行為人	hang4 wai4 jan4	000	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L282808	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			行为人	jieba/dict.txt	282808	57	行為人	hang4 wai4 jan4		n
+7083	衣被	衣被	ji1 pei5	35	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L283517	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。已另核對語境讀音。			衣被	jieba/dict.txt	283517	57	衣被	ji1 bei6		n
+7084	觀者	觀者	gun1 ze2	39	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L463922	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			觀者	extra_dict/dict.txt.big	463922	57	觀者	gun1 ze2		n
+7086	調閲	調閲	diu6 jyut6	22	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L469864	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			調閱	extra_dict/dict.txt.big	469864	57	調閲	diu6 jyut6		v
+7087	財長	財長	coi4 zoeng2	09	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L480034	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。已另核對語境讀音。			財長	extra_dict/dict.txt.big	480034	57	財長	coi4 coeng4		n
+7088	資源共享	資源共享	zi1 jyun4 gung6 hoeng2	3029	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L481489	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			資源共享	extra_dict/dict.txt.big	481489	57	資源共享	zi1 jyun4 gung6 hoeng2		n
+7090	近藤					jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L305567	reject	proper_name:日本姓氏。			近藤	jieba/dict.txt	305567	57	近藤	gan6 tang4		n
+7091	進取心	進取心	zeon3 ceoi2 sam1	493	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L305939	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			进取心	jieba/dict.txt	305939	57	進取心	zeon3 ceoi2 sam1		n
+7092	道經	道經	dou6 ging1	23	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L507756	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			道經	extra_dict/dict.txt.big	507756	57	道經	dou6 ging1		n
+7093	鄰村	鄰村	leon4 cyun1	03	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L312186	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			邻村	jieba/dict.txt	312186	57	鄰村	leon4 cyun1		n
+7094	野戰炮	野戰炮	je5 zin3 paau3	544	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L315706	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			野战炮	jieba/dict.txt	315706	57	野戰炮	je5 zin3 paau3		n
+7095	金屬元素	金屬元素	gam1 suk6 jyun4 sou3	3204	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L316368	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			金属元素	jieba/dict.txt	316368	57	金屬元素	gam1 suk6 jyun4 sou3		n
+7096	鍋灶	鍋灶	wo1 zou3	34	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L523362	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			鍋竈	extra_dict/dict.txt.big	523362	57	鍋灶	wo1 zou3		n
+7098	雙翼	雙翼	soeng1 jik6	32	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L69954	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			双翼	jieba/dict.txt	69954	57	雙翼	soeng1 jik6		n
+7099	高專	高專	gou1 zyun1	33	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L340879	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			高专	jieba/dict.txt	340879	57	高專	gou1 zyun1		j
+7100	高風險	高風險	gou1 fung1 him2	339	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L570774	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			高風險	extra_dict/dict.txt.big	570774	57	高風險	gou1 fung1 him2		n
+7101	黨八股	黨八股	dong2 baat3 gu2	949	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L40724	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			党八股	jieba/dict.txt	40724	57	黨八股	dong2 baat3 gu2		n
+7103	上規模	上規模	soeng5 kwai1 mou4	530	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L11347	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			上規模	extra_dict/dict.txt.big	11347	56	上規模	soeng5 kwai1 mou4		b
+7104	中小城市	中小城市	zung1 siu2 sing4 si5	3905	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L14564	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			中小城市	jieba/dict.txt	14564	56	中小城市	zung1 siu2 sing4 si5		j
+7105	中科大					jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L15011	reject	proper_name:大學名稱縮略。			中科大	jieba/dict.txt	15011	56	中科大	zung1 fo1 daai6		j
+7106	以法	以法	ji5 faat3	54	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L28176	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			以法	jieba/dict.txt	28176	56	以法	ji5 faat3		v
+7107	仲裁員	仲裁員	zung6 coi4 jyun4	200	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L28497	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			仲裁员	jieba/dict.txt	28497	56	仲裁員	zung6 coi4 jyun4		n
+7108	位尊	位尊	wai6 zyun1	23	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L31551	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			位尊	jieba/dict.txt	31551	56	位尊	wai6 zyun1		v
+7109	作戰部	作戰部	zok3 zin3 bou6	442	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L33206	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			作战部	jieba/dict.txt	33206	56	作戰部	zok3 zin3 bou6		n
+7110	元古代	元古代	jyun4 gu2 doi6	092	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L38932	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			元古代	jieba/dict.txt	38932	56	元古代	jyun4 gu2 doi6		t
+7111	入駐	入駐	jap6 zyu3	24	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L60707	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			入駐	extra_dict/dict.txt.big	60707	56	入駐	jap6 zyu3		v
+7112	內政部長	內政部長	noi6 zing3 bou6 zoeng2	2429	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L60956	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。已另核對語境讀音。			內政部長	extra_dict/dict.txt.big	60956	56	內政部長	noi6 zing3 bou6 coeng4		n
+7113	制海權	制海權	zai3 hoi2 kyun4	490	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L55262	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			制海权	jieba/dict.txt	55262	56	制海權	zai3 hoi2 kyun4		n
+7115	去往	去往	heoi3 wong5	45	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L69029	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			去往	jieba/dict.txt	69029	56	去往	heoi3 wong5		t
+7116	各業	各業	gok3 jip6	42	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L75415	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			各业	jieba/dict.txt	75415	56	各業	gok3 jip6		r
+7117	同質化	同質化	tung4 zat1 faa3	034	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L113903	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			同質化	extra_dict/dict.txt.big	113903	56	同質化	tung4 zat1 faa3		n
+7118	命婦	命婦	ming6 fu5	25	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L81269	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			命妇	jieba/dict.txt	81269	56	命婦	ming6 fu5		n
+7119	唐末	唐末	tong4 mut6	02	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L83779	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			唐末	jieba/dict.txt	83779	56	唐末	tong4 mut6		t
+7120	唱曲	唱曲	coeng3 kuk1	43	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L84117	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			唱曲	jieba/dict.txt	84117	56	唱曲	coeng3 kuk1		n
+7121	嗷嗷	嗷嗷	ngou4 ngou4	00	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L85649	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			嗷嗷	jieba/dict.txt	85649	56	嗷嗷	ngou4 ngou4		o
+7122	土生	土生	tou2 saang1	93	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L89953	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			土生	jieba/dict.txt	89953	56	土生	tou2 saang1		n
+7123	土石	土石	tou2 sek6	92	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L89960	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			土石	jieba/dict.txt	89960	56	土石	tou2 sek6		n
+7124	地質部	地質部	dei6 zat1 bou6	232	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L136947	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			地質部	extra_dict/dict.txt.big	136947	56	地質部	dei6 zat1 bou6		n
+7125	垂直掃描頻率	垂直掃描頻率	seoi4 zik6 sou3 miu4 pan4 leot6	024002	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L91941	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。已另核對語境讀音。			垂直扫描频率	jieba/dict.txt	91941	56	垂直掃描頻率	seoi4 zik6 sou3 miu4 pan4 leot2		n
+7126	基丹					jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L92805	reject	proper_name:音譯人名。			基丹	jieba/dict.txt	92805	56	基丹	gei1 daan1		n
+7127	基因組	基因組	gei1 jan1 zou2	339	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L139623	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			基因組	extra_dict/dict.txt.big	139623	56	基因組	gei1 jan1 zou2		n
+7128	壩頂	壩頂	baa3 ding2	49	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L91700	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			坝顶	jieba/dict.txt	91700	56	壩頂	baa3 ding2		n
+7129	官衙	官衙	gun1 ngaa4	30	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L111040	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			官衙	jieba/dict.txt	111040	56	官衙	gun1 ngaa4		n
+7130	島礁	島礁	dou2 ziu1	93	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L120703	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			岛礁	jieba/dict.txt	120703	56	島礁	dou2 ziu1		n
+7131	市立	市立	si5 laap6	52	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L123891	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			市立	jieba/dict.txt	123891	56	市立	si5 laap6		v
+7132	帳戶卡	帳户卡	zoeng3 wu6 kaa1	423	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L124991	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			帐户卡	jieba/dict.txt	124991	56	帳户卡	zoeng3 wu6 kaa1		n
+7133	建中					jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L130062	reject	proper_name_or_fragment:年號、校名縮略或在建中切片，未確認通用獨立義。			建中	jieba/dict.txt	130062	56	建中	gin3 zung1		v
+7134	引黃	引黃	jan5 wong4	50	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L202146	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			引黃	extra_dict/dict.txt.big	202146	56	引黃	jan5 wong4		v
+7135	得愈	得愈	dak1 jyu6	32	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L136251	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			得愈	jieba/dict.txt	136251	56	得愈	dak1 jyu6		v
+7136	應用型	應用型	jing3 jung6 jing4	420	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L128854	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			应用型	jieba/dict.txt	128854	56	應用型	jing3 jung6 jing4		n
+7137	懸樑	懸樑	jyun4 loeng4	00	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L141203	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			悬梁	jieba/dict.txt	141203	56	懸樑	jyun4 loeng4		n
+7138	手扶	手扶	sau2 fu4	90	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L145863	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			手扶	jieba/dict.txt	145863	56	手扶	sau2 fu4		b
+7139	技校	技校	gei6 haau6	22	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L148563	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			技校	jieba/dict.txt	148563	56	技校	gei6 haau6		n
+7140	抹掉	抹掉	maat3 diu6	42	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L150527	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			抹掉	jieba/dict.txt	150527	56	抹掉	maat3 diu6		v
+7141	挾帶	挾帶	hip3 daai3	44	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L154030	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			挟带	jieba/dict.txt	154030	56	挾帶	hip3 daai3		v
+7142	授職	授職	sau6 zik1	23	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L155389	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			授职	jieba/dict.txt	155389	56	授職	sau6 zik1		v
+7143	掛出	掛出	gwaa3 ceot1	43	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L153333	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			挂出	jieba/dict.txt	153333	56	掛出	gwaa3 ceot1		v
+7144	接收站	接收站	zip3 sau1 zaam6	432	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L156311	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			接收站	jieba/dict.txt	156311	56	接收站	zip3 sau1 zaam6		n
+7145	插值	插值	caap3 zik6	42	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L157326	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			插值	jieba/dict.txt	157326	56	插值	caap3 zik6		n
+7146	摺疊式	摺疊式	zip3 dip6 sik1	423	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L149409	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			折叠式	jieba/dict.txt	149409	56	摺疊式	zip3 dip6 sik1		b
+7147	撐開	撐開	caang1 hoi1	33	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L245939	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			撐開	extra_dict/dict.txt.big	245939	56	撐開	caang1 hoi1		v
+7148	撞入	撞入	zong6 jap6	22	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L159027	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			撞入	jieba/dict.txt	159027	56	撞入	zong6 jap6		v
+7149	改性	改性	goi2 sing3	94	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L160433	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			改性	jieba/dict.txt	160433	56	改性	goi2 sing3		n
+7150	文化廳	文化廳	man4 faa3 teng1	043	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L163887	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			文化厅	jieba/dict.txt	163887	56	文化廳	man4 faa3 teng1		n
+7151	文化課	文化課	man4 faa3 fo3	044	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L255545	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			文化課	extra_dict/dict.txt.big	255545	56	文化課	man4 faa3 fo3		n
+7152	斑塊	斑塊	baan1 faai3	34	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164621	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			斑块	jieba/dict.txt	164621	56	斑塊	baan1 faai3		n
+7153	星斗	星斗	sing1 dau2	39	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L171580	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			星斗	jieba/dict.txt	171580	56	星斗	sing1 dau2		n
+7154	暗裏	暗裏	am3 leoi5	45	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L270568	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			暗裏	extra_dict/dict.txt.big	270568	56	暗裏	am3 leoi5		s
+7155	朝綱	朝綱	ciu4 gong1	03	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L275540	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。已另核對語境讀音。			朝綱	extra_dict/dict.txt.big	275540	56	朝綱	ziu1 gong1		n
+7156	木桿					jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L176932	already_present	正式入庫正規化後已有同字面及讀音；不重複收錄。			木杆	jieba/dict.txt	176932	56	木杆	muk6 gon1		n
+7157	本草綱目					jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L277440	reject	book_title:《本草綱目》書名。			本草綱目	extra_dict/dict.txt.big	277440	56	本草綱目	bun2 cou2 gong1 muk6		n
+7158	核訛詐	核訛詐	hat6 ngo4 zaa3	204	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L289796	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			核訛詐	extra_dict/dict.txt.big	289796	56	核訛詐	hat6 ngo4 zaa3		n
+7159	模子	模子	mou4 zi2	09	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L190312	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			模子	jieba/dict.txt	190312	56	模子	mou4 zi2		n
+7161	殺蟲	殺蟲	saat3 cung4	40	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L178943	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			杀虫	jieba/dict.txt	178943	56	殺蟲	saat3 cung4		n
+7162	毒副作用	毒副作用	duk6 fu3 zok3 jung6	2442	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L194578	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			毒副作用	jieba/dict.txt	194578	56	毒副作用	duk6 fu3 zok3 jung6		n
+7164	水坡集					jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L196990	reject	proper_name:地名。			水坡集	jieba/dict.txt	196990	56	水坡集	seoi2 bo1 zaap6		n
+7165	法制史	法制史	faat3 zai3 si2	449	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L202210	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			法制史	jieba/dict.txt	202210	56	法制史	faat3 zai3 si2		n
+7166	注射液	注射液	zyu3 se6 jik6	422	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L203273	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			注射液	jieba/dict.txt	203273	56	注射液	zyu3 se6 jik6		n
+7167	流星錘	流星錘	lau4 sing1 ceoi4	030	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L322023	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			流星錘	extra_dict/dict.txt.big	322023	56	流星錘	lau4 sing1 ceoi4		n
+7168	混合型	混合型	wan6 hap6 jing4	220	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L208846	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			混合型	jieba/dict.txt	208846	56	混合型	wan6 hap6 jing4		b
+7169	温家					jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L209970	reject	proper_name:姓氏稱呼。			温家	jieba/dict.txt	209970	56	温家	wan1 gaa1		n
+7170	烴類	烴類	ting1 leoi6	32	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L215254	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			烃类	jieba/dict.txt	215254	56	烴類	ting1 leoi6		n
+7171	熟透	熟透	suk6 tau3	24	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L217307	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			熟透	jieba/dict.txt	217307	56	熟透	suk6 tau3		v
+7172	父老鄉親	父老鄉親	fu6 lou5 hoeng1 can1	2533	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L218289	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			父老乡亲	jieba/dict.txt	218289	56	父老鄉親	fu6 lou5 hoeng1 can1		n
+7173	石縫	石縫	sek6 fung4	20	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L379865	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			石縫	extra_dict/dict.txt.big	379865	56	石縫	sek6 fung4	https://cantonese.sheik.co.uk/dictionary/characters/2871/?full=true	n
+7173:2	石縫	石縫	sek6 fung6	22	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L379865	accept	保留有正音詞義依據的縫隙名詞 fung6，另分常用；日常 fung4 讀法仍保留。			石縫	extra_dict/dict.txt.big	379865	56	石縫	sek6 fung4	https://cantonese.sheik.co.uk/dictionary/characters/2871/?full=true	n
+7174	磨光	磨光	mo4 gwong1	03	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L241234	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			磨光	jieba/dict.txt	241234	56	磨光	mo4 gwong1		n
+7175	穩穩地	穩穩地	wan2 wan2 dei6	992	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L246289	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			稳稳地	jieba/dict.txt	246289	56	穩穩地	wan2 wan2 dei6		z
+7176	細密畫	細密畫	sai3 mat6 waa2	429	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L405909	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			細密畫	extra_dict/dict.txt.big	405909	56	細密畫	sai3 mat6 waa2		n
+7177	絃樂器	絃樂器	jin4 ngok6 hei3	024	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L133487	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			弦乐器	jieba/dict.txt	133487	56	絃樂器	jin4 ngok6 hei3		n
+7178	網狀結構	網狀結構	mong5 zong6 git3 kau3	5244	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L408579	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			網狀結構	extra_dict/dict.txt.big	408579	56	網狀結構	mong5 zong6 git3 kau3		n
+7179	編委	編委	pin1 wai2	39	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L409302	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			編委	extra_dict/dict.txt.big	409302	56	編委	pin1 wai2		n
+7180	繡花針	繡花針	sau3 faa1 zam1	433	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L410742	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			繡花針	extra_dict/dict.txt.big	410742	56	繡花針	sau3 faa1 zam1		n
+7181	繼任者	繼任者	gai3 jam6 ze2	429	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L410898	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			繼任者	extra_dict/dict.txt.big	410898	56	繼任者	gai3 jam6 ze2		n
+7182	義務教育法	義務教育法	ji6 mou6 gaau3 juk6 faat3	22424	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L16914	accept	按規範義務教育的法律類別這一通行教育／法律表達收錄，不指定某國完整法規標題。			义务教育法	jieba/dict.txt	16914	56	義務教育法	ji6 mou6 gaau3 juk6 faat3		n
+7183	老周					jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L263523	reject	proper_name:姓氏稱呼。			老周	jieba/dict.txt	263523	56	老周	lou5 zau1		t
+7185	蕨類	蕨類	kyut3 leoi6	42	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L280148	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			蕨类	jieba/dict.txt	280148	56	蕨類	kyut3 leoi6		n
+7186	觀察使	觀察使	gun1 caat3 si3	344	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L463815	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。已另核對語境讀音。			觀察使	extra_dict/dict.txt.big	463815	56	觀察使	gun1 caat3 si2		n
+7187	解憂	解憂	gaai2 jau1	93	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L287422	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			解忧	jieba/dict.txt	287422	56	解憂	gaai2 jau1		v
+7188	計生	計生	gai3 saang1	43	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L466361	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			計生	extra_dict/dict.txt.big	466361	56	計生	gai3 saang1		n
+7189	試看	試看	si3 hon3	44	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L468001	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			試看	extra_dict/dict.txt.big	468001	56	試看	si3 hon3		v
+7190	變化率	變化率	bin3 faa3 leot6	442	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L71751	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。已另核對語境讀音。			变化率	jieba/dict.txt	71751	56	變化率	bin3 faa3 leot2		n
+7191	貸款人	貸款人	taai3 fun2 jan4	490	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L480867	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			貸款人	extra_dict/dict.txt.big	480867	56	貸款人	taai3 fun2 jan4		n
+7192	費率	費率	fai3 leot6	42	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L480995	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。已另核對語境讀音。			費率	extra_dict/dict.txt.big	480995	56	費率	fai3 leot2		n
+7193	超高	超高	ciu1 gou1	33	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L299562	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			超高	jieba/dict.txt	299562	56	超高	ciu1 gou1		v
+7194	重印	重印	cung4 jan3	04	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L315161	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			重印	jieba/dict.txt	315161	56	重印	cung4 jan3		n
+7195	重排	重排	cung4 paai4	00	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L315341	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			重排	jieba/dict.txt	315341	56	重排	cung4 paai4		vn
+7196	金頂	金頂	gam1 ding2	39	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L520673	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			金頂	extra_dict/dict.txt.big	520673	56	金頂	gam1 ding2		n
+7197	長拳	長拳	coeng4 kyun4	00	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L529013	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			長拳	extra_dict/dict.txt.big	529013	56	長拳	coeng4 kyun4		n
+7198	長絲	長絲	coeng4 si1	03	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L529270	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			長絲	extra_dict/dict.txt.big	529270	56	長絲	coeng4 si1		n
+7199	閾限	閾限	wik6 haan6	22	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L531811	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			閾限	extra_dict/dict.txt.big	531811	56	閾限	wik6 haan6		n
+7200	隨意性	隨意性	ceoi4 ji3 sing3	044	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L328584	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			随意性	jieba/dict.txt	328584	56	隨意性	ceoi4 ji3 sing3		d
+7201	雞腿	雞腿	gai1 teoi2	39	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L545526	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			雞腿	extra_dict/dict.txt.big	545526	56	雞腿	gai1 teoi2		n
+7202	青白	青白	cing1 baak6	32	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L331704	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			青白	jieba/dict.txt	331704	56	青白	cing1 baak6		n
+7204	高緯	高緯	gou1 wai5	35	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L570217	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			高緯	extra_dict/dict.txt.big	570217	56	高緯	gou1 wai5		b
+7205	麪點	麪點	min6 dim2	29	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L332842	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			面点	jieba/dict.txt	332842	56	麪點	min6 dim2		n
+7206	三趾馬	三趾馬	saam1 zi2 maa5	395	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L9985	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			三趾馬	extra_dict/dict.txt.big	9985	55	三趾馬	saam1 zi2 maa5		n
+7207	下切	下切	haa6 cit3	24	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L7910	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			下切	jieba/dict.txt	7910	55	下切	haa6 cit3		v
+7208	下結論	下結論	haa6 git3 leon6	242	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L12115	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			下結論	extra_dict/dict.txt.big	12115	55	下結論	haa6 git3 leon6		n
+7209	中觀	中觀	zung1 gun1	33	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L21776	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			中觀	extra_dict/dict.txt.big	21776	55	中觀	zung1 gun1		n
+7210	人本主義	人本主義	jan4 bun2 zyu2 ji6	0992	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L25883	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			人本主义	jieba/dict.txt	25883	55	人本主義	jan4 bun2 zyu2 ji6		n
+7211	休息區	休息區	jau1 sik1 keoi1	333	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L29802	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			休息区	jieba/dict.txt	29802	55	休息區	jau1 sik1 keoi1		n
+7212	佔居	佔居	zim3 geoi1	43	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L45306	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			佔居	extra_dict/dict.txt.big	45306	55	佔居	zim3 geoi1		v
+7213	倒伏	倒伏	dou2 fuk6	92	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L36309	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			倒伏	jieba/dict.txt	36309	55	倒伏	dou2 fuk6		v
+7214	公田	公田	gung1 tin4	30	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L43091	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			公田	jieba/dict.txt	43091	55	公田	gung1 tin4		n
+7215	出格	出格	ceot1 gaak3	34	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L50923	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			出格	jieba/dict.txt	50923	55	出格	ceot1 gaak3		n
+7216	刀頭	刀頭	dou1 tau4	30	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L51383	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			刀头	jieba/dict.txt	51383	55	刀頭	dou1 tau4		n
+7217	助殘	助殘	zo6 caan4	20	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L58226	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			助残	jieba/dict.txt	58226	55	助殘	zo6 caan4		vn
+7218	務工人員	務工人員	mou6 gung1 jan4 jyun4	2300	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L57859	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			务工人员	jieba/dict.txt	57859	55	務工人員	mou6 gung1 jan4 jyun4		n
+7219	十一大					jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L60945	reject	proper_name:特定黨代會序次名稱。			十一大	jieba/dict.txt	60945	55	十一大	sap6 jat1 daai6		j
+7220	厚恩	厚恩	hau5 jan1	53	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L68457	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			厚恩	jieba/dict.txt	68457	55	厚恩	hau5 jan1		n
+7221	命門	命門	ming6 mun4	20	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L120398	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			命門	extra_dict/dict.txt.big	120398	55	命門	ming6 mun4		n
+7222	咣噹	咣噹	gwong1 dong1	33	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L121564	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			咣噹	extra_dict/dict.txt.big	121564	55	咣噹	gwong1 dong1		o
+7223	商業街	商業街	soeng1 jip6 gaai1	323	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L84319	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			商业街	jieba/dict.txt	84319	55	商業街	soeng1 jip6 gaai1		n
+7224	單行本	單行本	daan1 hang4 bun2	309	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L64666	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。已另核對語境讀音。			单行本	jieba/dict.txt	64666	55	單行本	daan1 hong2 bun2		n
+7226	四部叢刊					jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L87266	reject	book_title:《四部叢刊》書名。			四部丛刊	jieba/dict.txt	87266	55	四部叢刊	sei3 bou6 cung4 hon2		n
+7227	堂兄	堂兄	tong4 hing1	03	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L93176	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			堂兄	jieba/dict.txt	93176	55	堂兄	tong4 hing1		n
+7228	塗片	塗片	tou4 pin3	04	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L141456	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			塗片	extra_dict/dict.txt.big	141456	55	塗片	tou4 pin3		n
+7229	塞上	塞上	coi3 soeng6	42	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L93813	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。已另核對語境讀音。			塞上	jieba/dict.txt	93813	55	塞上	sak1 soeng5		s
+7230	婆母	婆母	po4 mou5	05	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L105747	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			婆母	jieba/dict.txt	105747	55	婆母	po4 mou5		n
+7231	學分制	學分制	hok6 fan1 zai3	234	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L108110	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			学分制	jieba/dict.txt	108110	55	學分制	hok6 fan1 zai3		n
+7232	學術性	學術性	hok6 seot6 sing3	224	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L108218	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			学术性	jieba/dict.txt	108218	55	學術性	hok6 seot6 sing3		n
+7233	宗教學	宗教學	zung1 gaau3 hok6	342	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L110656	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			宗教学	jieba/dict.txt	110656	55	宗教學	zung1 gaau3 hok6		n
+7234	家族史	家族史	gaa1 zuk6 si2	329	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L113133	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			家族史	jieba/dict.txt	113133	55	家族史	gaa1 zuk6 si2		n
+7235	密信	密信	mat6 seon3	24	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L113811	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			密信	jieba/dict.txt	113811	55	密信	mat6 seon3		n
+7236	小病	小病	siu2 beng6	92	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L116944	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			小病	jieba/dict.txt	116944	55	小病	siu2 beng6		n
+7237	屋前	屋前	uk1 cin4	30	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L119446	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			屋前	jieba/dict.txt	119446	55	屋前	uk1 cin4		s
+7238	工業生產	工業生產	gung1 jip6 sang1 caan2	3239	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L121755	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			工业生产	jieba/dict.txt	121755	55	工業生產	gung1 jip6 sang1 caan2		n
+7239	市話	市話	si5 waa6	52	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L189597	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			市話	extra_dict/dict.txt.big	189597	55	市話	si5 waa6		n
+7240	平頂	平頂	ping4 ding2	09	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L194471	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			平頂	extra_dict/dict.txt.big	194471	55	平頂	ping4 ding2		n
+7241	建廠	建廠	gin3 cong2	49	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L130089	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			建厂	jieba/dict.txt	130089	55	建廠	gin3 cong2		n
+7242	強子	強子	koeng4 zi2	09	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L205637	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			強子	extra_dict/dict.txt.big	205637	55	強子	koeng4 zi2		n
+7243	後來者	後來者	hau6 loi4 ze2	209	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L77581	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			后来者	jieba/dict.txt	77581	55	後來者	hau6 loi4 ze2		n
+7246	投資商	投資商	tau4 zi1 soeng1	033	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L230867	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			投資商	extra_dict/dict.txt.big	230867	55	投資商	tau4 zi1 soeng1		n
+7247	拉加	拉加	laai1 gaa1	33	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L151049	accept	按印度音樂的旋律模式／拉加通名收錄，教育部音樂名詞可證，不收人名義。			拉加	jieba/dict.txt	151049	55	拉加	laai1 gaa1	https://pedia.cloud.edu.tw/Entry/Detail?title=拉加；旋律	v
+7248	持股數	持股數	ci4 gu2 sou2	099	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L153300	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			持股数	jieba/dict.txt	153300	55	持股數	ci4 gu2 sou2		n
+7249	掛麪	掛麪	gwaa3 min6	42	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L153454	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			挂面	jieba/dict.txt	153454	55	掛麪	gwaa3 min6		n
+7250	提調	提調	tai4 diu6	02	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L242995	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			提調	extra_dict/dict.txt.big	242995	55	提調	tai4 diu6		v
+7251	擴軍	擴軍	kwong3 gwan1	43	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L147443	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			扩军	jieba/dict.txt	147443	55	擴軍	kwong3 gwan1		v
+7252	教育者	教育者	gaau3 juk6 ze2	429	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L162014	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			教育者	jieba/dict.txt	162014	55	教育者	gaau3 juk6 ze2		n
+7253	方位角	方位角	fong1 wai6 gok3	324	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L166777	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			方位角	jieba/dict.txt	166777	55	方位角	fong1 wai6 gok3		n
+7254	服務生	服務生	fuk6 mou6 saang1	223	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L176107	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			服务生	jieba/dict.txt	176107	55	服務生	fuk6 mou6 saang1		n
+7255	某省	某省	mau5 saang2	59	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L184710	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			某省	jieba/dict.txt	184710	55	某省	mau5 saang2		r
+7256	油品	油品	jau4 ban2	09	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L201523	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			油品	jieba/dict.txt	201523	55	油品	jau4 ban2		n
+7257	波動性	波動性	bo1 dung6 sing3	324	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L202795	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			波动性	jieba/dict.txt	202795	55	波動性	bo1 dung6 sing3		n
+7258	渦旋	渦旋	wo1 syun4	30	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L207772	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			涡旋	jieba/dict.txt	207772	55	渦旋	wo1 syun4		n
+7259	温濕	温濕	wan1 sap1	33	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L210114	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			温湿	jieba/dict.txt	210114	55	温濕	wan1 sap1		a
+7261	犯有	犯有	faan6 jau5	25	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L220224	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			犯有	jieba/dict.txt	220224	55	犯有	faan6 jau5		v
+7262	瓷碗	瓷碗	ci4 wun2	09	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L226751	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			瓷碗	jieba/dict.txt	226751	55	瓷碗	ci4 wun2		n
+7263	病種	病種	beng6 zung2	29	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L231290	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			病种	jieba/dict.txt	231290	55	病種	beng6 zung2		n
+7264	看相	看相	hon3 soeng3	44	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L236742	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。已另核對語境讀音。			看相	jieba/dict.txt	236742	55	看相	hon3 soeng1		v
+7265	真定府					jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L236908	reject	proper_name:歷史行政區名稱。			真定府	jieba/dict.txt	236908	55	真定府	zan1 ding6 fu2		n
+7266	福分	福分	fuk1 fan6	32	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L243202	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。已另核對語境讀音。			福分	jieba/dict.txt	243202	55	福分	fuk1 fan1		n
+7267	科技界	科技界	fo1 gei6 gaai3	324	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L244574	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			科技界	jieba/dict.txt	244574	55	科技界	fo1 gei6 gaai3		n
+7268	租給	租給	zou1 kap1	33	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L388863	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			租給	extra_dict/dict.txt.big	388863	55	租給	zou1 kap1		v
+7269	穩當	穩當	wan2 dong3	94	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L246268	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。已另核對語境讀音。			稳当	jieba/dict.txt	246268	55	穩當	wan2 dong1		a
+7270	空化	空化	hung1 faa3	34	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L246826	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			空化	jieba/dict.txt	246826	55	空化	hung1 faa3		n
+7271	窄窄的	窄窄的	zaak3 zaak3 dik1	443	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L247511	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			窄窄的	jieba/dict.txt	247511	55	窄窄的	zaak3 zaak3 dik1		z
+7272	窩子					jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L247663	reject	regional_or_fragment:地域口語或一窩子等較長結構切片，未核實通用獨立詞義。			窝子	jieba/dict.txt	247663	55	窩子	wo1 zi2		n
+7273	粘彈性	粘彈性	nim1 daan6 sing3	324	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L252904	accept	保留已有黏性 nim1 sing3 及彈性 daan6 sing3 詞級讀法；CantoDict 有彈性 daan6，不能照普通話 tan 改成 taan4。			粘弹性	jieba/dict.txt	252904	55	粘彈性	nim1 daan6 sing3	https://cantonese.sheik.co.uk/dictionary/characters/620/?cf=1&full=true	n
+7274	糧棉	糧棉	loeng4 min4	00	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L253091	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			粮棉	jieba/dict.txt	253091	55	糧棉	loeng4 min4		n
+7275	結構化	結構化	git3 kau3 faa3	444	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L406593	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			結構化	extra_dict/dict.txt.big	406593	55	結構化	git3 kau3 faa3		n
+7276	網球賽	網球賽	mong5 kau4 coi3	504	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L408590	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			網球賽	extra_dict/dict.txt.big	408590	55	網球賽	mong5 kau4 coi3		n
+7277	編組站	編組站	pin1 zou2 zaam6	392	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L409386	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			編組站	extra_dict/dict.txt.big	409386	55	編組站	pin1 zou2 zaam6		n
+7278	聯創					jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L265199	reject	proper_name:企業名稱縮略，未確認通用獨立詞義。			联创	jieba/dict.txt	265199	55	聯創	lyun4 cong3		v
+7279	自省	自省	zi6 sing2	29	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L270524	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。已另核對語境讀音。			自省	jieba/dict.txt	270524	55	自省	zi6 saang2		r
+7280	自若	自若	zi6 joek6	22	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L270581	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			自若	jieba/dict.txt	270581	55	自若	zi6 joek6		v
+7281	興嘆	興嘆	hing1 taan3	34	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L44873	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			兴叹	jieba/dict.txt	44873	55	興嘆	hing1 taan3		v
+7282	興奮性	興奮性	hing1 fan5 sing3	354	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L44896	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			兴奋性	jieba/dict.txt	44896	55	興奮性	hing1 fan5 sing3		n
+7283	苦鬥	苦鬥	fu2 dau3	94	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L274563	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			苦斗	jieba/dict.txt	274563	55	苦鬥	fu2 dau3		n
+7284	落草	落草	lok6 cou2	29	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L278378	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			落草	jieba/dict.txt	278378	55	落草	lok6 cou2		n
+7285	號段	號段	hou6 dyun6	22	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L74856	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			号段	jieba/dict.txt	74856	55	號段	hou6 dyun6		n
+7286	被裝	被裝	pei5 zong1	53	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L284497	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。已另核對語境讀音。			被装	jieba/dict.txt	284497	55	被裝	bei6 zong1		n
+7287	裝假	裝假	zong1 gaa2	39	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L284683	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			装假	jieba/dict.txt	284683	55	裝假	zong1 gaa2		n
+7288	見諸	見諸	gin3 zyu1	43	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L463228	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			見諸	extra_dict/dict.txt.big	463228	55	見諸	gin3 zyu1		v
+7289	解數	解數	gaai2 sou3	94	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L287492	accept	沿用 words.hk 渾身解數的 gaai2 sou3；解字不因普通話 xiè 而改作 haai6。			解数	jieba/dict.txt	287492	55	解數	gaai2 sou2	data/lexicon/raw/words_hk/wordslist.json:渾身解數; https://en.wiktionary.org/wiki/Module:zh/data/yue-word/035	n
+7290	計算機系統	計算機系統	gai3 syun3 gei1 hai6 tung2	44329	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L466436	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			計算機系統	extra_dict/dict.txt.big	466436	55	計算機系統	gai3 syun3 gei1 hai6 tung2		n
+7291	記譜	記譜	gei3 pou2	49	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L466951	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			記譜	extra_dict/dict.txt.big	466951	55	記譜	gei3 pou2		n
+7292	註疏	註疏	zyu3 so1	43	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L203308	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			注疏	jieba/dict.txt	203308	55	註疏	zyu3 so1		n
+7293	試訓	試訓	si3 fan3	44	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L468027	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			試訓	extra_dict/dict.txt.big	468027	55	試訓	si3 fan3		vn
+7294	賢者	賢者	jin4 ze2	09	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L482125	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			賢者	extra_dict/dict.txt.big	482125	55	賢者	jin4 ze2		n
+7295	賦存	賦存	fu3 cyun4	40	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L482292	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			賦存	extra_dict/dict.txt.big	482292	55	賦存	fu3 cyun4		v
+7296	贊成票	贊成票	zaan3 sing4 piu3	404	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L482872	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			贊成票	extra_dict/dict.txt.big	482872	55	贊成票	zaan3 sing4 piu3		n
+7297	運走	運走	wan6 zau2	29	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L305360	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			运走	jieba/dict.txt	305360	55	運走	wan6 zau2		v
+7298	附體	附體	fu6 tai2	29	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L326071	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			附体	jieba/dict.txt	326071	55	附體	fu6 tai2		n
+7299	願不願意	願不願意	jyun6 bat1 jyun6 ji3	2324	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L142987	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			愿不愿意	jieba/dict.txt	142987	55	願不願意	jyun6 bat1 jyun6 ji3		v
+7300	饒有	饒有	jiu4 jau5	05	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L561447	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			饒有	extra_dict/dict.txt.big	561447	55	饒有	jiu4 jau5		v
+7301	驟增	驟增	zaau6 zang1	23	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L565717	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			驟增	extra_dict/dict.txt.big	565717	55	驟增	zaau6 zang1		v
+7302	骨骼肌	骨骼肌	gwat1 gaak3 gei1	343	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L340787	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			骨骼肌	jieba/dict.txt	340787	55	骨骼肌	gwat1 gaak3 gei1		n
+7303	高棉	高棉	gou1 min4	30	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L341655	accept	按通行族群／語言名物收錄，不作人名／企業名的整批引入。			高棉	jieba/dict.txt	341655	55	高棉	gou1 min4		n
+7304	二尖瓣	二尖瓣	ji6 zim1 faan6	232	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L20821	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			二尖瓣	jieba/dict.txt	20821	54	二尖瓣	ji6 zim1 faan6		b
+7305	交遊	交遊	gaau1 jau4	30	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L24593	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			交游	jieba/dict.txt	24593	54	交遊	gaau1 jau4		n
+7309	刊發	刊發	hon1 faat3	34	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L52435	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			刊发	jieba/dict.txt	52435	54	刊發	hon1 faat3		v
+7311	南隅	南隅	naam4 jyu4	00	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L65616	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			南隅	jieba/dict.txt	65616	54	南隅	naam4 jyu4		f
+7312	同台	同台	tung4 toi4	00	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L76599	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			同台	jieba/dict.txt	76599	54	同台	tung4 toi4		n
+7313	名園	名園	ming4 jyun4	00	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L77163	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			名园	jieba/dict.txt	77163	54	名園	ming4 jyun4		n
+7315	吸收光譜	吸收光譜	kap1 sau1 gwong1 pou2	3339	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L118105	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			吸收光譜	extra_dict/dict.txt.big	118105	54	吸收光譜	kap1 sau1 gwong1 pou2		n
+7316	喪門	喪門	song1 mun4	30	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L13335	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			丧门	jieba/dict.txt	13335	54	喪門	song1 mun4		n
+7317	單管	單管	daan1 gun2	39	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L64598	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			单管	jieba/dict.txt	64598	54	單管	daan1 gun2		n
+7318	器質性	器質性	hei3 zat1 sing3	434	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L128256	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			器質性	extra_dict/dict.txt.big	128256	54	器質性	hei3 zat1 sing3		n
+7319	圖靈機	圖靈機	tou4 ling4 gei1	003	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L89411	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			图灵机	jieba/dict.txt	89411	54	圖靈機	tou4 ling4 gei1		n
+7320	地質圖	地質圖	dei6 zat1 tou4	230	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L136930	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			地質圖	extra_dict/dict.txt.big	136930	54	地質圖	dei6 zat1 tou4		n
+7321	城鎮化	城鎮化	sing4 zan3 faa3	044	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L139218	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			城鎮化	extra_dict/dict.txt.big	139218	54	城鎮化	sing4 zan3 faa3		n
+7322	報出	報出	bou3 ceot1	43	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L140545	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			報出	extra_dict/dict.txt.big	140545	54	報出	bou3 ceot1		v
+7324	夜宴	夜宴	je6 jin3	24	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L97400	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			夜宴	jieba/dict.txt	97400	54	夜宴	je6 jin3		n
+7326	大半夜	大半夜	daai6 bun3 je6	242	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L97945	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			大半夜	jieba/dict.txt	97945	54	大半夜	daai6 bun3 je6		t
+7327	如來佛	如來佛	jyu4 loi4 fat6	002	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L157878	accept	按佛教如來尊稱這一通行宗教名物收錄。			如來佛	extra_dict/dict.txt.big	157878	54	如來佛	jyu4 loi4 fat6		d
+7328	嫻靜	嫻靜	haan4 zing6	02	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L160881	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			嫻靜	extra_dict/dict.txt.big	160881	54	嫻靜	haan4 zing6		a
+7329	學習者	學習者	hok6 zaap6 ze2	229	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L108089	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			学习者	jieba/dict.txt	108089	54	學習者	hok6 zaap6 ze2		n
+7330	家譜	家譜	gaa1 pou2	39	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L171643	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			家譜	extra_dict/dict.txt.big	171643	54	家譜	gaa1 pou2		n
+7331	實在話	實在話	sat6 zoi6 waa6	222	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L111783	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			实在话	jieba/dict.txt	111783	54	實在話	sat6 zoi6 waa6		n
+7332	寶象					jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L111638	reject	proper_name_or_fragment:人名／寶象國等作品名稱片段，未確認通用獨立義。			宝象	jieba/dict.txt	111638	54	寶象	bou2 zoeng6		n
+7333	對飲	對飲	deoi3 jam2	49	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L114873	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			对饮	jieba/dict.txt	114873	54	對飲	deoi3 jam2		n
+7334	小鼠	小鼠	siu2 syu2	99	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L117518	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			小鼠	jieba/dict.txt	117518	54	小鼠	siu2 syu2		n
+7335	巡迴賽	巡迴賽	ceon4 wui4 coi3	004	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L121616	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			巡回赛	jieba/dict.txt	121616	54	巡迴賽	ceon4 wui4 coi3		n
+7336	工商企業	工商企業	gung1 soeng1 kei5 jip6	3352	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L121945	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			工商企业	jieba/dict.txt	121945	54	工商企業	gung1 soeng1 kei5 jip6		j
+7337	平平的	平平的	ping4 ping4 dik1	003	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L126615	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			平平的	jieba/dict.txt	126615	54	平平的	ping4 ping4 dik1		z
+7338	底質	底質	dai2 zat1	93	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L197649	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			底質	extra_dict/dict.txt.big	197649	54	底質	dai2 zat1		n
+7339	府兵制	府兵制	fu2 bing1 zai3	934	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L129153	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			府兵制	jieba/dict.txt	129153	54	府兵制	fu2 bing1 zai3		n
+7340	延續性	延續性	jin4 zuk6 sing3	024	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L199899	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			延續性	extra_dict/dict.txt.big	199899	54	延續性	jin4 zuk6 sing3		n
+7341	後防線	後防線	hau6 fong4 sin3	204	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L77747	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			后防线	jieba/dict.txt	77747	54	後防線	hau6 fong4 sin3		n
+7342	應收款	應收款	jing1 sau1 fun2	339	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L128814	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			应收款	jieba/dict.txt	128814	54	應收款	jing1 sau1 fun2		n
+7343	戶數	户數	wu6 sou2	29	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L225388	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			戶數	extra_dict/dict.txt.big	225388	54	户數	wu6 sou2		n
+7344	所裏	所裏	so2 leoi5	95	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L225916	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			所裏	extra_dict/dict.txt.big	225916	54	所裏	so2 leoi5		n
+7345	扭打	扭打	nau2 daa2	99	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L147765	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			扭打	jieba/dict.txt	147765	54	扭打	nau2 daa2		v
+7346	教條化	教條化	gaau3 tiu4 faa3	404	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161914	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			教条化	jieba/dict.txt	161914	54	教條化	gaau3 tiu4 faa3		n
+7347	斷開	斷開	dyun6 hoi1	23	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L165050	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			断开	jieba/dict.txt	165050	54	斷開	dyun6 hoi1		v
+7348	本週一	本週一	bun2 zau1 jat1	933	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L177608	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			本周一	jieba/dict.txt	177608	54	本週一	bun2 zau1 jat1		n
+7349	東麓	東麓	dung1 luk1	33	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L12041	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			东麓	jieba/dict.txt	12041	54	東麓	dung1 luk1		f
+7350	板藍根	板藍根	baan2 laam4 gan1	903	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L183133	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			板蓝根	jieba/dict.txt	183133	54	板藍根	baan2 laam4 gan1		n
+7351	榮譽獎	榮譽獎	wing4 jyu6 zoeng2	029	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L296208	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			榮譽獎	extra_dict/dict.txt.big	296208	54	榮譽獎	wing4 jyu6 zoeng2		n
+7352	橋邊	橋邊	kiu4 bin1	03	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L187836	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			桥边	jieba/dict.txt	187836	54	橋邊	kiu4 bin1		s
+7353	殺人者	殺人者	saat3 jan4 ze2	409	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L178872	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			杀人者	jieba/dict.txt	178872	54	殺人者	saat3 jan4 ze2		n
+7354	殿閣	殿閣	din6 gok3	24	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L305489	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			殿閣	extra_dict/dict.txt.big	305489	54	殿閣	din6 gok3		n
+7355	每套	每套	mui5 tou3	54	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L194450	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			每套	jieba/dict.txt	194450	54	每套	mui5 tou3		r
+7356	滴落	滴落	dik6 lok6	22	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L212248	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			滴落	jieba/dict.txt	212248	54	滴落	dik6 lok6		v
+7358	灌入	灌入	gun3 jap6	42	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L213645	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			灌入	jieba/dict.txt	213645	54	灌入	gun3 jap6		v
+7359	無憾	無憾	mou4 ham6	02	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L168336	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			无憾	jieba/dict.txt	168336	54	無憾	mou4 ham6		a
+7360	狍子	狍子	paau4 zi2	09	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L220575	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			狍子	jieba/dict.txt	220575	54	狍子	paau4 zi2		n
+7361	獵戶座	獵户座	lip6 wu6 zo6	222	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L221309	accept	按通用天文名物（星座名稱）收錄，不啟用上游專名全庫。			猎户座	jieba/dict.txt	221309	54	獵户座	lip6 wu6 zo6		n
+7362	現代性	現代性	jin6 doi6 sing3	224	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L224930	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			现代性	jieba/dict.txt	224930	54	現代性	jin6 doi6 sing3		n
+7363	現場會	現場會	jin6 coeng4 wui2	209	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L224969	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。已另核對語境讀音。			现场会	jieba/dict.txt	224969	54	現場會	jin6 coeng4 wui5		n
+7364	甜香	甜香	tim4 hoeng1	03	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L227145	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			甜香	jieba/dict.txt	227145	54	甜香	tim4 hoeng1		n
+7365	痕量	痕量	han4 loeng6	02	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L231350	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。已另核對語境讀音。			痕量	jieba/dict.txt	231350	54	痕量	han4 loeng4		n
+7366	百草	百草	baak3 cou2	49	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L233664	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			百草	jieba/dict.txt	233664	54	百草	baak3 cou2		n
+7367	皮膚科	皮膚科	pei4 fu1 fo1	033	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L234184	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			皮肤科	jieba/dict.txt	234184	54	皮膚科	pei4 fu1 fo1		n
+7369	石製	石製	sek6 zai3	24	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L238626	accept	石製指以石製作；只修本詞製字，不把制度／制海權等制字一概替換。			石制	jieba/dict.txt	238626	54	石制	sek6 zai3		n
+7370	磁學	磁學	ci4 hok6	02	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L241050	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			磁学	jieba/dict.txt	241050	54	磁學	ci4 hok6		n
+7371	私藏	私藏	si1 cong4	30	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L243914	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			私藏	jieba/dict.txt	243914	54	私藏	si1 cong4		n
+7372	節間	節間	zit3 gaan1	43	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L399729	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			節間	extra_dict/dict.txt.big	399729	54	節間	zit3 gaan1		t
+7373	精明能幹	精明能幹	zing1 ming4 nang4 gon3	3004	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L253294	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			精明能干	jieba/dict.txt	253294	54	精明能幹	zing1 ming4 nang4 gon3		n
+7374	純系	純系	seon4 hai6	02	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L404613	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			純系	extra_dict/dict.txt.big	404613	54	純系	seon4 hai6		n
+7375	紫紺	紫紺	zi2 gam3	94	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L405634	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			紫紺	extra_dict/dict.txt.big	405634	54	紫紺	zi2 gam3		n
+7376	結腸癌	結腸癌	git3 coeng4 ngaam4	400	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L406687	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			結腸癌	extra_dict/dict.txt.big	406687	54	結腸癌	git3 coeng4 ngaam4		n
+7377	絕少	絕少	zyut6 siu2	29	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L406825	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			絕少	extra_dict/dict.txt.big	406825	54	絕少	zyut6 siu2		d
+7378	綠水	綠水	luk6 seoi2	29	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L407964	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			綠水	extra_dict/dict.txt.big	407964	54	綠水	luk6 seoi2		n
+7379	網癮	網癮	mong5 jan5	55	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L408594	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			網癮	extra_dict/dict.txt.big	408594	54	網癮	mong5 jan5		n
+7380	總任務	總任務	zung2 jam6 mou6	922	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L139889	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			总任务	jieba/dict.txt	139889	54	總任務	zung2 jam6 mou6		n
+7381	老規矩	老規矩	lou5 kwai1 geoi2	539	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L422671	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			老規矩	extra_dict/dict.txt.big	422671	54	老規矩	lou5 kwai1 geoi2		n
+7382	聖徒	聖徒	sing3 tou4	40	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L90168	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			圣徒	jieba/dict.txt	90168	54	聖徒	sing3 tou4		n
+7383	自感	自感	zi6 gam2	29	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L270147	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			自感	jieba/dict.txt	270147	54	自感	zi6 gam2		n
+7384	自行式	自行式	zi6 hang4 sik1	203	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L270600	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			自行式	jieba/dict.txt	270600	54	自行式	zi6 hang4 sik1		n
+7385	致殘	致殘	zi3 caan4	40	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L270939	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			致残	jieba/dict.txt	270939	54	致殘	zi3 caan4		v
+7386	花子					jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L273051	reject	regional_or_name:乞丐的地域叫法或日本人名，本輪排除。			花子	jieba/dict.txt	273051	54	花子	faa1 zi2		n
+7387	花葯	花葯	faa1 joek6	32	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L273398	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			花药	jieba/dict.txt	273398	54	花葯	faa1 joek6		n
+7388	行政村	行政村	hang4 zing3 cyun1	043	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L283007	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			行政村	jieba/dict.txt	283007	54	行政村	hang4 zing3 cyun1		n
+7389	襟翼	襟翼	kam1 jik6	32	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L285311	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			襟翼	jieba/dict.txt	285311	54	襟翼	kam1 jik6		n
+7390	要不了	要不了	jiu3 bat1 liu5	435	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L286330	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			要不了	jieba/dict.txt	286330	54	要不了	jiu3 bat1 liu5		v
+7391	觀其行	觀其行	gun1 kei4 hang6	302	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L463805	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。已另核對語境讀音。			觀其行	extra_dict/dict.txt.big	463805	54	觀其行	gun1 kei4 haang4	https://www.wenweipo.com/epaper/view/newsDetail/1399788654301417472.html; https://yawnoc.github.io/analects/1	n
+7393	賤妾	賤妾	zin6 cip3	24	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L482267	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			賤妾	extra_dict/dict.txt.big	482267	54	賤妾	zin6 cip3		n
+7394	輸氣	輸氣	syu1 hei3	34	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L494075	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			輸氣	extra_dict/dict.txt.big	494075	54	輸氣	syu1 hei3		n
+7395	輸水	輸水	syu1 seoi2	39	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L494081	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			輸水	extra_dict/dict.txt.big	494081	54	輸水	syu1 seoi2		v
+7396	輻射源	輻射源	fuk1 se6 jyun4	320	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L494183	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			輻射源	extra_dict/dict.txt.big	494183	54	輻射源	fuk1 se6 jyun4		n
+7397	迎送	迎送	jing4 sung3	04	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L305154	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			迎送	jieba/dict.txt	305154	54	迎送	jing4 sung3		v
+7398	遜於	遜於	seon3 jyu1	43	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L308473	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			逊于	jieba/dict.txt	308473	54	遜於	seon3 jyu1		v
+7399	鋒面	鋒面	fung1 min6	32	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L522408	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			鋒面	extra_dict/dict.txt.big	522408	54	鋒面	fung1 min6		n
+7400	陶方					jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L328204	reject	proper_name:人物姓名。			陶方	jieba/dict.txt	328204	54	陶方	tou4 fong1		n
+7401	隨機性	隨機性	ceoi4 gei1 sing3	034	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L328614	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			随机性	jieba/dict.txt	328614	54	隨機性	ceoi4 gei1 sing3		n
+7402	電訊報					jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L229786	reject	proper_name:報刊名稱。			电讯报	jieba/dict.txt	229786	54	電訊報	din6 seon3 bou3		n
+7403	青蛇	青蛇	cing1 se4	30	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L331816	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			青蛇	jieba/dict.txt	331816	54	青蛇	cing1 se4		n
+7404	青衫	青衫	cing1 saam1	33	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L331836	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			青衫	jieba/dict.txt	331836	54	青衫	cing1 saam1		n
+7405	鼻端	鼻端	bei6 dyun1	23	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L347972	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			鼻端	jieba/dict.txt	347972	54	鼻端	bei6 dyun1		n
+7406	一上午	一上午	jat1 soeng6 ng5	325	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L205	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			一上午	jieba/dict.txt	205	53	一上午	jat1 soeng6 ng5		t
+7409	三水					jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L6398	reject	proper_name:廣東地名。			三水	jieba/dict.txt	6398	53	三水	saam1 seoi2		n
+7410	下基層	下基層	haa6 gei1 cang4	230	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L7987	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			下基层	jieba/dict.txt	7987	53	下基層	haa6 gei1 cang4		n
+7412	乳業	乳業	jyu5 jip6	52	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L19470	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			乳业	jieba/dict.txt	19470	53	乳業	jyu5 jip6		n
+7413	人性論	人性論	jan4 sing3 leon6	042	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L36349	accept	按討論人性之理論這一哲學類別收錄，不指定某一本同名著作。			人性論	extra_dict/dict.txt.big	36349	53	人性論	jan4 sing3 leon6		n
+7414	代管	代管	doi6 gun2	29	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L27650	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			代管	jieba/dict.txt	27650	53	代管	doi6 gun2		n
+7415	佔款	佔款	zim3 fun2	49	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L45332	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			佔款	extra_dict/dict.txt.big	45332	53	佔款	zim3 fun2		v
+7416	兩面針	兩面針	loeng5 min6 zam1	523	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L13038	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			两面针	jieba/dict.txt	13038	53	兩面針	loeng5 min6 zam1		n
+7417	冠軍賽	冠軍賽	gun3 gwan1 coi3	434	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L47333	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			冠军赛	jieba/dict.txt	47333	53	冠軍賽	gun3 gwan1 coi3		n
+7418	划槳					jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L52624	already_present	正式入庫正規化後已有同字面及讀音；不重複收錄。			划桨	jieba/dict.txt	52624	53	划槳	waa4 zoeng2		v
+7419	前爪	前爪	cin4 zaau2	09	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L55983	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			前爪	jieba/dict.txt	55983	53	前爪	cin4 zaau2		n
+7420	吧嗒	吧嗒	baa1 taap3	34	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L78673	accept	按香港中學生中文詞典吧嗒吧嗒的象聲詞例，吧讀 baa1，嗒的咂嘴／互擊聲讀 taap3；不取句末助詞 baa6。			吧嗒	jieba/dict.txt	78673	53	吧嗒	baa6 taap3	https://jyut.net/query?q=吧; https://jyut.net/query?q=嗒; https://dict.revised.moe.edu.tw/dictView.jsp?ID=12381&la=0&powerMode=0	o
+7421	善為	善為	sin6 wai4	20	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L84914	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			善为	jieba/dict.txt	84914	53	善為	sin6 wai4		v
+7422	回放	回放	wui4 fong3	04	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L87482	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			回放	jieba/dict.txt	87482	53	回放	wui4 fong3		v
+7423	圓孔	圓孔	jyun4 hung2	09	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L89520	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			圆孔	jieba/dict.txt	89520	53	圓孔	jyun4 hung2		n
+7424	場裏	場裏	coeng4 leoi5	05	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L91144	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			场里	jieba/dict.txt	91144	53	場裏	coeng4 leoi5		s
+7425	填塗	填塗	tin4 tou4	00	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L141916	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			填塗	extra_dict/dict.txt.big	141916	53	填塗	tin4 tou4		v
+7426	壩子	壩子	baa3 zi2	49	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L91695	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			坝子	jieba/dict.txt	91695	53	壩子	baa3 zi2		n
+7427	多相	多相	do1 soeng3	34	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L97117	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。已另核對語境讀音。			多相	jieba/dict.txt	97117	53	多相	do1 soeng1		d
+7428	大幕	大幕	daai6 mok6	22	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L98498	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			大幕	jieba/dict.txt	98498	53	大幕	daai6 mok6		n
+7429	大麻子	大麻子	daai6 maa4 zi2	209	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L99827	accept	大麻子有農業部正式植物資料所載的蓖麻別名義，不只按人物綽號判定。			大麻子	jieba/dict.txt	99827	53	大麻子	daai6 maa4 zi2	https://kmweb.moa.gov.tw/subject/subject.php?id=37187	n
+7430	子午	子午	zi2 ng5	95	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L106278	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			子午	jieba/dict.txt	106278	53	子午	zi2 ng5		t
+7432	對撞機	對撞機	deoi3 zong6 gei1	423	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L114728	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			对撞机	jieba/dict.txt	114728	53	對撞機	deoi3 zong6 gei1		n
+7433	年增長率	年增長率	nin4 zang1 zoeng2 leot6	0392	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L194577	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			年增長率	extra_dict/dict.txt.big	194577	53	年增長率	nin4 zang1 zoeng2 leot6		n
+7434	幾幅	幾幅	gei2 fuk1	93	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L49784	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			几幅	jieba/dict.txt	49784	53	幾幅	gei2 fuk1		d
+7435	強權政治	強權政治	koeng4 kyun4 zing3 zi6	0042	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L205712	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			強權政治	extra_dict/dict.txt.big	205712	53	強權政治	koeng4 kyun4 zing3 zi6		n
+7436	彎彎的	彎彎的	waan1 waan1 dik1	333	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L133563	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			弯弯的	jieba/dict.txt	133563	53	彎彎的	waan1 waan1 dik1		z
+7437	手機遊戲	手機遊戲	sau2 gei1 jau4 hei3	9304	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L145956	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			手机游戏	jieba/dict.txt	145956	53	手機遊戲	sau2 gei1 jau4 hei3		n
+7439	撤掉	撤掉	cit3 diu6	42	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L159105	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			撤掉	jieba/dict.txt	159105	53	撤掉	cit3 diu6		v
+7440	擠佔	擠佔	zai1 zim3	34	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L154144	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			挤占	jieba/dict.txt	154144	53	擠佔	zai1 zim3		v
+7441	收購人	收購人	sau1 kau3 jan4	340	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L249316	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			收購人	extra_dict/dict.txt.big	249316	53	收購人	sau1 kau3 jan4		n
+7442	改訂	改訂	goi2 ding6	92	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L249787	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			改訂	extra_dict/dict.txt.big	249787	53	改訂	goi2 ding6		v
+7443	教書育人	教書育人	gaau3 syu1 juk6 jan4	4320	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L161749	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			教书育人	jieba/dict.txt	161749	53	教書育人	gaau3 syu1 juk6 jan4		n
+7445	斑疹	斑疹	baan1 can2	39	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L164636	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			斑疹	jieba/dict.txt	164636	53	斑疹	baan1 can2		n
+7446	新氣象	新氣象	san1 hei3 zoeng6	342	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L166309	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			新气象	jieba/dict.txt	166309	53	新氣象	san1 hei3 zoeng6		n
+7447	新黨	新黨	san1 dong2	39	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L165888	accept	按新成立政黨的普通組合義收錄，不指定某一政黨。			新党	jieba/dict.txt	165888	53	新黨	san1 dong2		n
+7448	斷口	斷口	dyun6 hau2	29	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L165015	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			断口	jieba/dict.txt	165015	53	斷口	dyun6 hau2		n
+7449	方越					jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L167151	reject	proper_name:人物姓名。			方越	jieba/dict.txt	167151	53	方越	fong1 jyut6		d
+7450	旅人	旅人	leoi5 jan4	50	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L167545	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			旅人	jieba/dict.txt	167545	53	旅人	leoi5 jan4		n
+7451	晨鳴	晨鳴	san4 ming4	00	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L268900	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			晨鳴	extra_dict/dict.txt.big	268900	53	晨鳴	san4 ming4		n
+7452	服務隊	服務隊	fuk6 mou6 deoi6	222	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L176126	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			服务队	jieba/dict.txt	176126	53	服務隊	fuk6 mou6 deoi6		n
+7453	核心區	核心區	hat6 sam1 keoi1	233	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L186416	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			核心区	jieba/dict.txt	186416	53	核心區	hat6 sam1 keoi1		n
+7454	樓門	樓門	lau4 mun4	00	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L189872	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			楼门	jieba/dict.txt	189872	53	樓門	lau4 mun4		n
+7455	標引	標引	biu1 jan5	35	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L185775	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			标引	jieba/dict.txt	185775	53	標引	biu1 jan5		n
+7458	水雲	水雲	seoi2 wan4	90	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L196819	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			水云	jieba/dict.txt	196819	53	水雲	seoi2 wan4		n
+7461	法人代表	法人代表	faat3 jan4 doi6 biu2	4029	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L202158	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			法人代表	jieba/dict.txt	202158	53	法人代表	faat3 jan4 doi6 biu2		n
+7462	混合液	混合液	wan6 hap6 jik6	222	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L208861	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			混合液	jieba/dict.txt	208861	53	混合液	wan6 hap6 jik6		n
+7463	混成旅	混成旅	wan6 sing4 leoi5	205	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L208898	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			混成旅	jieba/dict.txt	208898	53	混成旅	wan6 sing4 leoi5		n
+7464	游魚	遊魚	jau4 jyu2	09	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L210621	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			游鱼	jieba/dict.txt	210621	53	游魚	jau4 jyu2		n
+7465	潮頭	潮頭	ciu4 tau4	00	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L213159	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			潮头	jieba/dict.txt	213159	53	潮頭	ciu4 tau4		n
+7466	營養品	營養品	jing4 joeng5 ban2	059	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L345028	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			營養品	extra_dict/dict.txt.big	345028	53	營養品	jing4 joeng5 ban2		n
+7467	珊瑚樹	珊瑚樹	saan1 wu4 syu6	302	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L225229	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			珊瑚树	jieba/dict.txt	225229	53	珊瑚樹	saan1 wu4 syu6		n
+7468	甜甜的	甜甜的	tim4 tim4 dik1	003	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L227109	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			甜甜的	jieba/dict.txt	227109	53	甜甜的	tim4 tim4 dik1		z
+7469	產品設計	產品設計	caan2 ban2 cit3 gai3	9944	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L24890	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			产品设计	jieba/dict.txt	24890	53	產品設計	caan2 ban2 cit3 gai3		n
+7470	石崖	石崖	sek6 ngaai4	20	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L238789	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			石崖	jieba/dict.txt	238789	53	石崖	sek6 ngaai4		n
+7472	磁導率	磁導率	ci4 dou6 leot6	022	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L241052	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。已另核對語境讀音。			磁导率	jieba/dict.txt	241052	53	磁導率	ci4 dou6 leot2		n
+7474	空當	空當	hung1 dong3	34	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L246894	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。已另核對語境讀音。			空当	jieba/dict.txt	246894	53	空當	hung1 dong1	https://en.wiktionary.org/wiki/Module:zh/data/yue-word/031	a
+7475	窮漢	窮漢	kung4 hon3	04	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L246699	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			穷汉	jieba/dict.txt	246699	53	窮漢	kung4 hon3		n
+7476	竹葉	竹葉	zuk1 jip6	32	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L248691	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			竹叶	jieba/dict.txt	248691	53	竹葉	zuk1 jip6		n
+7477	節節勝利	節節勝利	zit3 zit3 sing3 lei6	4442	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L399686	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			節節勝利	extra_dict/dict.txt.big	399686	53	節節勝利	zit3 zit3 sing3 lei6		n
+7478	紙盒	紙盒	zi2 hap6	92	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L404750	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			紙盒	extra_dict/dict.txt.big	404750	53	紙盒	zi2 hap6		n
+7480	網卡	網卡	mong5 kaa1	53	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L408507	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			網卡	extra_dict/dict.txt.big	408507	53	網卡	mong5 kaa1		n
+7481	綵帶	綵帶	coi2 daai3	94	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L134784	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			彩带	jieba/dict.txt	134784	53	綵帶	coi2 daai3		n
+7482	總工	總工	zung2 gung1	93	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L139965	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			总工	jieba/dict.txt	139965	53	總工	zung2 gung1		n
+7483	老尚					jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L263654	reject	proper_name:姓氏稱呼。			老尚	jieba/dict.txt	263654	53	老尚	lou5 soeng6		n
+7484	老房子	老房子	lou5 fong4 zi2	509	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L263732	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			老房子	jieba/dict.txt	263732	53	老房子	lou5 fong4 zi2		n
+7485	老陸					jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L264012	reject	proper_name:姓氏稱呼。			老陆	jieba/dict.txt	264012	53	老陸	lou5 luk6		n
+7486	職業性	職業性	zik1 jip6 sing3	324	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L265073	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			职业性	jieba/dict.txt	265073	53	職業性	zik1 jip6 sing3		n
+7487	膨出	膨出	paang4 ceot1	03	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L269663	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			膨出	jieba/dict.txt	269663	53	膨出	paang4 ceot1		v
+7488	航天局	航天局	hong4 tin1 guk6	032	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L271462	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			航天局	jieba/dict.txt	271462	53	航天局	hong4 tin1 guk6		n
+7489	茶山	茶山	caa4 saan1	03	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L275529	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			茶山	jieba/dict.txt	275529	53	茶山	caa4 saan1		n
+7490	著者	著者	zyu3 ze2	49	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L278458	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。已另核對語境讀音。			著者	jieba/dict.txt	278458	53	著者	zoek3 ze2		n
+7491	蒸饃					jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L448824	reject	regional_northern:饅頭的明顯北方地域稱呼。			蒸饃	extra_dict/dict.txt.big	448824	53	蒸饃	zing1 mo4		n
+7492	號角聲	號角聲	hou6 gok3 sing1	243	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L74871	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			号角声	jieba/dict.txt	74871	53	號角聲	hou6 gok3 sing1		n
+7493	製冷劑	製冷劑	zai3 laang5 zai1	453	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L55192	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			制冷剂	jieba/dict.txt	55192	53	製冷劑	zai3 laang5 zai1		n
+7494	褡褳	褡褳	daap3 lin4	40	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L285219	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			褡裢	jieba/dict.txt	285219	53	褡褳	daap3 lin4		n
+7495	西風帶	西風帶	sai1 fung1 daai3	334	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L462730	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			西風帶	extra_dict/dict.txt.big	462730	53	西風帶	sai1 fung1 daai3		n
+7496	見面會	見面會	gin3 min6 wui2	429	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L463251	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。已另核對語境讀音。			見面會	extra_dict/dict.txt.big	463251	53	見面會	gin3 min6 wui5		n
+7498	詐敗	詐敗	zaa3 baai6	42	general	jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L467639	accept	通行書面表達；按整體用法作 AI 輔助粵音覆核。			詐敗	extra_dict/dict.txt.big	467639	53	詐敗	zaa3 baai6		v

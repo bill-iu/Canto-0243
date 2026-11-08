@@ -20,11 +20,11 @@ export const ABOUT_COPY = {
       '<li><strong>持續更新</strong> — 維護者持續改進詞庫與功能，並透過 Release 發佈</li>',
     lexiconTitle: '補充詞庫與讀音審核',
     lexiconBody:
-      '除上游詞庫外，亦收錄維護者審核的<strong>通用中文、填詞短語及粵語口語</strong>，三批合共新增 <strong>536 個表達</strong>，例如「迎風起」「花開花落」「只差一點」「講清楚」。今批 199 個表達中，168 個有跨曲歌詞證據，31 個有 Essay 口語證據。新增詞條會核對字面、粵拼及聲調編碼；已確認錯誤的讀音會移除，有依據的變讀則保留。',
+      '本輪 12,608 項候選已完成審核，自建補充詞庫現有<strong>79,678 個有效表達、83,534 條讀音</strong>，涵蓋<strong>通用及書面中文、填詞短語與粵語口語</strong>，例如「迎風起」「花開花落」「只差一點」「講清楚」。逐詞核對字面、完整粵拼及聲調編碼，分開評定<strong>詞語常用度與讀音常用度</strong>：日常表達優先，較少用詞排後，過於冷僻的自建詞退回；先排序全部候選，再顯示首 200 項及後續結果。詞語排序參考 Essay 與 TUBELEX 中文字幕詞頻；資料不足時另記 AI 情境判斷及依據，AI 判斷並非實測詞頻。已確認錯音移除，有依據的現代變讀保留。',
     lexiconReadings:
-      '例如「善良」讀 <strong>sin6 loeng4</strong>（20），「圖書館」讀 <strong>tou4 syu1 gun2</strong>（039）；「迎風起」讀 <strong>jing4 fung1 hei2</strong>（039），在 <strong>0243 鬆模式</strong>可用「033起」找到。含「病」的字詞只收日常 <strong>beng6</strong>：移除 34 組 bing6 異讀，保留所有原有字面。',
+      '例如「善良」讀 <strong>sin6 loeng4</strong>（20），「圖書館」讀 <strong>tou4 syu1 gun2</strong>（039）；「迎風起」讀 <strong>jing4 fung1 hei2</strong>（039），在 <strong>0243 鬆模式</strong>可用「033起」找到。含「病」的字詞只收日常 <strong>beng6</strong>，已移除 bing6 異讀。',
     lexiconUpdate:
-      'PWA 重新開啟並完成詞庫更新後即可使用最新資料；桌面版請下載最新完整套件。Windows 開啟 Canto-0243.exe，macOS Intel 開啟 Canto-0243.app；桌面版首次啟動需連網下載執行環境，其後可離線使用。',
+      '2026-11-08 更新沿用 v1.1.2 版本名。PWA 重新開啟並完成詞庫更新後即可使用最新資料；桌面版請重新下載最新完整套件。Windows 開啟 Canto-0243.exe，macOS Intel 開啟 Canto-0243.app；桌面版首次啟動需連網下載執行環境，其後可離線使用。',
     navigationTitle: '查詢分頁與上一頁',
     navigationBody: '瀏覽器上一頁會返回目前 app 分頁的上一個查詢結果。例如在同一分頁輸入「43」，再輸入「243」，按瀏覽器上一頁即返回「43」的結果。自動搜尋亦會記錄歷史；其他 app 分頁不受影響，重新載入後仍可返回。',
     pledgeTitle: '承諾與授權',
@@ -44,6 +44,7 @@ export const ABOUT_COPY = {
       '本應用程式得以實現，全賴語言學家、開源維護者及社群貢獻者的出色工作。我們十分榮幸能整合以下項目的數據：',
     sourcesList:
       '<li><a href="https://github.com/bill-iu/Canto-0243/blob/main/docs/lexicon-supplement.md" target="_blank" rel="noopener noreferrer">專案補充詞庫</a>：維護者審核缺詞及讀音修正；專案編輯採用 Canto-0243 License，語料衍生證據保留上游授權。</li>' +
+      '<li><a href="https://github.com/naist-nlp/tubelex" target="_blank" rel="noopener noreferrer">TUBELEX 中文字幕詞頻</a>：影片字幕的整詞出現及頻道分布，補充詞語常用度排序；BSD 3-Clause。</li>' +
       '<li><a href="https://github.com/jasonleeubc/Cantopop-corpus" target="_blank" rel="noopener noreferrer">Cantopop corpus</a>：Jason Y H Lee 的 105 首廣東歌語料；短語及標音證據採用 <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>。</li>' +
       '<li><a href="https://words.hk/" target="_blank" rel="noopener noreferrer">words.hk（粵典）</a>：採用<strong>非商業開放授權</strong>（詳見 <a href="https://words.hk/base/hoifong/" target="_blank" rel="noopener noreferrer">words.hk /hoifong</a>）。</li>' +
       '<li><a href="https://github.com/CanCLID/rime-cantonese-upstream" target="_blank" rel="noopener noreferrer">Rime 粵語詞典補缺來源</a>：採用 <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>。</li>' +
@@ -90,11 +91,11 @@ export const ABOUT_COPY = {
       '<li><strong>持续更新</strong> — 维护者持续改进词库与功能，并透过 Release 发布</li>',
     lexiconTitle: '补充词库与读音审核',
     lexiconBody:
-      '除上游词库外，亦收录维护者审核的<strong>通用中文、填词短语及粤语口语</strong>，三批合共新增 <strong>536 个表达</strong>，例如「迎风起」「花开花落」「只差一点」「讲清楚」。今批 199 个表达中，168 个有跨曲歌词证据，31 个有 Essay 口语证据。新增词条会核对字面、粤拼及声调编码；已确认错误的读音会移除，有依据的变读则保留。',
+      '本轮 12,608 项候选已完成审核，自建补充词库现有<strong>79,678 个有效表达、83,534 条读音</strong>，涵盖<strong>通用及书面中文、填词短语与粤语口语</strong>，例如「迎风起」「花开花落」「只差一点」「讲清楚」。逐词核对字面、完整粤拼及声调编码，分开评定<strong>词语常用度与读音常用度</strong>：日常表达优先，较少用词排后，过于冷僻的自建词退回；先排序全部候选，再显示首 200 项及后续结果。词语排序参考 Essay 与 TUBELEX 中文字幕词频；资料不足时另记 AI 情境判断及依据，AI 判断并非实测词频。已确认错音移除，有依据的现代变读保留。',
     lexiconReadings:
-      '例如「善良」读 <strong>sin6 loeng4</strong>（20），「图书馆」读 <strong>tou4 syu1 gun2</strong>（039）；「迎风起」读 <strong>jing4 fung1 hei2</strong>（039），在 <strong>0243 宽松模式</strong>可用「033起」找到。含「病」的字词只收日常 <strong>beng6</strong>：移除 34 组 bing6 异读，保留所有原有字面。',
+      '例如「善良」读 <strong>sin6 loeng4</strong>（20），「图书馆」读 <strong>tou4 syu1 gun2</strong>（039）；「迎风起」读 <strong>jing4 fung1 hei2</strong>（039），在 <strong>0243 宽松模式</strong>可用「033起」找到。含「病」的字词只收日常 <strong>beng6</strong>，已移除 bing6 异读。',
     lexiconUpdate:
-      'PWA 重新打开并完成词库更新后即可使用最新资料；桌面版请下载最新完整套件。Windows 打开 Canto-0243.exe，macOS Intel 打开 Canto-0243.app；桌面版首次启动需联网下载运行环境，其后可离线使用。',
+      '2026-11-08 更新沿用 v1.1.2 版本名。PWA 重新打开并完成词库更新后即可使用最新资料；桌面版请重新下载最新完整套件。Windows 打开 Canto-0243.exe，macOS Intel 打开 Canto-0243.app；桌面版首次启动需联网下载运行环境，其后可离线使用。',
     navigationTitle: '查询分页与上一页',
     navigationBody: '浏览器上一页会返回当前 app 分页的上一个查询结果。例如在同一分页输入「43」，再输入「243」，按浏览器上一页即返回「43」的结果。自动搜索也会记录历史；其他 app 分页不受影响，重新加载后仍可返回。',
     pledgeTitle: '承诺与授权',
@@ -114,6 +115,7 @@ export const ABOUT_COPY = {
       '本应用程式得以实现，全赖语言学家、开源维护者及社群贡献者的出色工作。我们十分荣幸能整合以下项目的数据：',
     sourcesList:
       '<li><a href="https://github.com/bill-iu/Canto-0243/blob/main/docs/lexicon-supplement.md" target="_blank" rel="noopener noreferrer">项目补充词库</a>：维护者审核缺词及读音修正；项目编辑采用 Canto-0243 License，语料衍生证据保留上游授权。</li>' +
+      '<li><a href="https://github.com/naist-nlp/tubelex" target="_blank" rel="noopener noreferrer">TUBELEX 中文字幕词频</a>：视频字幕的整词出现及频道分布，补充词语常用度排序；BSD 3-Clause。</li>' +
       '<li><a href="https://github.com/jasonleeubc/Cantopop-corpus" target="_blank" rel="noopener noreferrer">Cantopop corpus</a>：Jason Y H Lee 的 105 首广东歌语料；短语及标音证据采用 <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>。</li>' +
       '<li><a href="https://words.hk/" target="_blank" rel="noopener noreferrer">words.hk（粤典）</a>：采用<strong>非商业开放授权</strong>（详见 <a href="https://words.hk/base/hoifong/" target="_blank" rel="noopener noreferrer">words.hk /hoifong</a>）。</li>' +
       '<li><a href="https://github.com/CanCLID/rime-cantonese-upstream" target="_blank" rel="noopener noreferrer">Rime 粤语词典补缺来源</a>：采用 <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>。</li>' +
@@ -160,11 +162,11 @@ export const ABOUT_COPY = {
       '<li><strong>Actively maintained</strong> — lexicon and features keep improving via Releases</li>',
     lexiconTitle: 'Supplementary lexicon & reading review',
     lexiconBody:
-      'Alongside upstream dictionaries, a maintainer-reviewed supplement covers <strong>general Chinese, lyric phrases, and colloquial Cantonese</strong>, with <strong>536 expressions added across three batches</strong>, including 「迎風起」「花開花落」「只差一點」「講清楚」. Of the latest 199 additions, 168 have evidence in multiple songs and 31 have Essay colloquial evidence. Entries are checked for wording, Jyutping, and tone codes. Confirmed incorrect readings are removed while supported variants are retained.',
+      'All 12,608 candidates in this review round have been reviewed. The supplementary lexicon now has <strong>79,678 active expressions and 83,534 readings</strong>, covering <strong>general and written Chinese, lyric phrases, and colloquial Cantonese</strong>, including 「迎風起」「花開花落」「只差一點」「講清楚」. Wording, whole-word Jyutping, and tone codes are checked. <strong>Word familiarity and pronunciation preference are ranked separately</strong>: everyday expressions come first, less common terms follow, and overly obscure curated entries are withdrawn. All candidates are ranked before the first 200 results and later pages are shown. Word ranking draws on Essay and TUBELEX Chinese subtitle frequencies; AI contextual judgments and their reasons are recorded separately when evidence is missing. These judgments are not measured frequencies. Confirmed incorrect readings are removed while supported modern variants are retained.',
     lexiconReadings:
-      'For example, 「善良」 is <strong>sin6 loeng4</strong> (20), and 「圖書館」 is <strong>tou4 syu1 gun2</strong> (039). 「迎風起」 is <strong>jing4 fung1 hei2</strong> (039); search for 「033起」 in <strong>0243 loose mode</strong> to find it. Expressions containing 「病」 use everyday <strong>beng6</strong>; 34 bing6 variants are removed while all existing word forms are preserved.',
+      'For example, 「善良」 is <strong>sin6 loeng4</strong> (20), and 「圖書館」 is <strong>tou4 syu1 gun2</strong> (039). 「迎風起」 is <strong>jing4 fung1 hei2</strong> (039); search for 「033起」 in <strong>0243 loose mode</strong> to find it. Expressions containing 「病」 use only everyday <strong>beng6</strong>; bing6 variants have been removed.',
     lexiconUpdate:
-      'Reopen the PWA and complete its lexicon update to use the latest data. For Desktop, download the latest complete bundle and open Canto-0243.exe on Windows or Canto-0243.app on macOS Intel. The first Desktop launch needs internet to download its runtime; later use is offline.',
+      'The 2026-11-08 update keeps the v1.1.2 version name. Reopen the PWA and complete its lexicon update to use the latest data. For Desktop, download the latest complete bundle again and open Canto-0243.exe on Windows or Canto-0243.app on macOS Intel. The first Desktop launch needs internet to download its runtime; later use is offline.',
     navigationTitle: 'Query tabs & browser Back',
     navigationBody: 'Browser Back restores the previous query and results in the current app tab. For example, type 43 and then 243 in the same tab; browser Back returns to the results for 43. Automatic searches also enter the history. Other app tabs stay unchanged, and history survives reloading.',
     pledgeTitle: 'Commitment & license',
@@ -184,6 +186,7 @@ export const ABOUT_COPY = {
       'This app exists thanks to outstanding work by linguists, open-source maintainers, and community contributors. We are proud to integrate data from:',
     sourcesList:
       '<li><a href="https://github.com/bill-iu/Canto-0243/blob/main/docs/lexicon-supplement.md" target="_blank" rel="noopener noreferrer">Project supplementary lexicon</a>: maintainer-reviewed missing expressions and reading corrections; project edits use Canto-0243 License, while corpus-derived evidence retains its upstream license.</li>' +
+      '<li><a href="https://github.com/naist-nlp/tubelex" target="_blank" rel="noopener noreferrer">TUBELEX Chinese subtitle frequencies</a>: Word counts and channel distribution inform word familiarity; BSD 3-Clause.</li>' +
       '<li><a href="https://github.com/jasonleeubc/Cantopop-corpus" target="_blank" rel="noopener noreferrer">Cantopop corpus</a>: 105 songs compiled by Jason Y H Lee; phrase and reading evidence under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>.</li>' +
       '<li><a href="https://words.hk/" target="_blank" rel="noopener noreferrer">words.hk (粵典)</a>: <strong>non-commercial open license</strong> (see <a href="https://words.hk/base/hoifong/" target="_blank" rel="noopener noreferrer">words.hk /hoifong</a>).</li>' +
       '<li><a href="https://github.com/CanCLID/rime-cantonese-upstream" target="_blank" rel="noopener noreferrer">Rime Cantonese supplement sources</a>: <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>.</li>' +

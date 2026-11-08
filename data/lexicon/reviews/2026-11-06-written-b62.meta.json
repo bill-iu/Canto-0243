@@ -1,0 +1,2723 @@
+{
+  "batch": "2026-11-06-written-b62",
+  "date": "2026-11-07",
+  "reviewer": "AI-assisted word-form, sense and whole-word Cantonese review; not human item-by-item approval",
+  "source_repository": "https://github.com/fxsjy/jieba",
+  "source_commit": "67fa2e36e72f69d9134b8a1037b83fbb070b9775",
+  "source_license": "MIT",
+  "source_files": [
+    {
+      "path": "jieba/dict.txt",
+      "url": "https://raw.githubusercontent.com/fxsjy/jieba/67fa2e36e72f69d9134b8a1037b83fbb070b9775/jieba/dict.txt",
+      "sha256": "7197c3211ddd98962b036cdf40324d1ea2bfaa12bd028e68faa70111a88e12a8",
+      "bytes": 5071852
+    },
+    {
+      "path": "extra_dict/dict.txt.big",
+      "url": "https://raw.githubusercontent.com/fxsjy/jieba/67fa2e36e72f69d9134b8a1037b83fbb070b9775/extra_dict/dict.txt.big",
+      "sha256": "b16011275c42955ccd81fc1adecc93a59dbb7926af69d93fc95d4943d40f6aad",
+      "bytes": 8583143
+    },
+    {
+      "path": "LICENSE",
+      "url": "https://raw.githubusercontent.com/fxsjy/jieba/67fa2e36e72f69d9134b8a1037b83fbb070b9775/LICENSE",
+      "sha256": "18ba0984839f85853b29fadaf992f7dba8fd0ca0fbeae34de2b8735222dc7a37",
+      "bytes": 1075
+    }
+  ],
+  "input_git_commit": "193592e174079439bbaf6af3db9b370b13646877",
+  "input_curated_sha256": "7366327421cbb24f90588f0277cad973c347eeb51875ef7d08237de34d5ae19e",
+  "input_curated_rows": 71341,
+  "input_db_sha256": "6175f4d4d43d4b44e7e4c3a7762d8a815dd2f554aaf95867d6ec1ae2666e5cf9",
+  "newly_reviewed_candidates": 2000,
+  "revisited_candidates": 0,
+  "review_rows": 2067,
+  "review_candidate_ids": 2000,
+  "review_verdict_rows": {
+    "reject": 1108,
+    "accept": 959
+  },
+  "reading_repairs": 0,
+  "added_rows": 959,
+  "added_literals": 892,
+  "total_curated_rows": 72300,
+  "cumulative_reviewed_candidates": 119994,
+  "cumulative_candidate_decisions": {
+    "accept": 68813,
+    "reject": 49778,
+    "already_present": 1154,
+    "defer": 249
+  },
+  "candidate_pool": 146602,
+  "unreviewed_pool_candidates": 26608,
+  "regional_candidates_still_held": 924,
+  "selection": "Next 2000 individually reviewed candidates offsets113250:115250 IDs117994–119993. All961 initial accepts rechecked;70 lower-familiarity/narrow expressions withdrawn and1 lyric expression restored, leaving892 before normalized duplicate detection. Nine pinned Cantopop observations/all17 supplied spans read. Cross-word fragments, white-hair noun boundaries and repeated choruses are not everyday whole-word frequency. No existing source or overlay reading edits this batch.",
+  "lyric_corpus": {
+    "repository": "https://github.com/jasonleeubc/Cantopop-corpus",
+    "commit": "018e88540b917c40dc3f7248ed98908208544b54",
+    "license": "CC-BY-4.0",
+    "observations_policy": "Pinned local lyric-word observations only; not approved readings or everyday frequency. Full-word context reviewed separately."
+  },
+  "frequency_meaning": "Upstream dictionary weight, not measured corpus occurrences or a product ranking weight. Proposed usage rank is AI contextual judgment and is not substituted for available measured whole-word frequency.",
+  "normalization_policy": "s2hk with104 exact-literal restorations and15 preserved senses across28 input keys; cache format36. New exact語雲→語云 keeps the say/words sense. Full previous runtime, word-usage and226 relation/support files checked for key impact. No previous source, overlay or stored relation key edits.",
+  "second_pass_familiarity_withdrawals": 70,
+  "net_familiarity_withdrawals": 69,
+  "explicit_restored_candidates": [
+    119662
+  ],
+  "initial_accepted_candidates": 961,
+  "final_accepted_candidates_before_dedup": 892,
+  "reading_policy": "No automatic promotion of character-default drafts; whole-word review plus contextual high-risk and compound-reference audit; 病=beng6 only",
+  "original_curated_rows_preserved": 71341,
+  "previous_source_repairs_explicit": true,
+  "review_tsv_sha256": "e223c7739b59a16c982d645b2aae2f8067df61bc52b178fa9aca674d41a16a4c",
+  "validation": {
+    "merged_rows": 251293,
+    "merged_literals": 233263,
+    "unique_triples": 251291,
+    "baseline_rows": 250334,
+    "all_previous_rows_and_multiplicities_retained": true,
+    "confirmed_old_wrong_sense_readings_removed": 0,
+    "all_accepted_primary_reading_checks": 892,
+    "old_word_grades_preserved": 132706,
+    "new_source_readings": 959,
+    "new_pairs_retained": true,
+    "search_checks": 737,
+    "preferred_reading_checks": 65,
+    "word_usage_keys": 133598,
+    "withdrawn_curated_literals": 2051,
+    "live_db_unchanged": true,
+    "backend_pwa_essay_frequency_keys": 266884,
+    "essay_frequency_tables_equal": true,
+    "backend_pwa_word_grade_keys": 133598,
+    "backend_pwa_curated_reading_grade_keys": 73300,
+    "word_grade_tables_equal": true,
+    "curated_reading_grade_tables_equal": true,
+    "old_source_rows_preserved": 71341,
+    "old_reading_grades_preserved": 71341,
+    "old_usage_rows_preserved": 132706,
+    "old_judgments_preserved": 19576,
+    "new_source_forms": 892,
+    "new_merged_forms": 892,
+    "existing_merged_forms_with_new_readings": [],
+    "raw_source_forms": 69366,
+    "normalized_source_forms": 69364,
+    "new_word_usage_judgments": 263,
+    "unrelated_user_files_unchanged": true,
+    "previous_overlay_bytes_preserved": true,
+    "existing_runtime_readings_mirrored": 0,
+    "exact_existing_wrong_sense_overlay_deletions": 0,
+    "all_previous_source_flags_and_multiplicities_preserved": true,
+    "old_source_flag_rows_verified": 250334,
+    "new_merged_readings": 959,
+    "new_merged_readings_net": 959,
+    "full_final_inventory_rebuilt_and_compared": true,
+    "client_query_engine_with_new_dictionary": {
+      "checks": 627,
+      "modes": 3,
+      "new_dictionary_loaded_in_client_engine": true,
+      "preferred_readings_equal": true
+    },
+    "heteronym_full_pool_ranking_equal": true,
+    "non_han_tiers_match_backend": true,
+    "unicode_scalar_tiebreak_parity": true,
+    "new_exact_literal_restorations": {
+      "語雲": "語云"
+    },
+    "normalization_impact": {
+      "new_exact_restorations": {
+        "語雲": "語云"
+      },
+      "exact_restorations_total": 104,
+      "preserved_literal_senses_total": 15,
+      "preserved_literal_input_keys_total": 28,
+      "normalization_code_unchanged": false,
+      "relation_source_bytes_unchanged": true,
+      "stored_relation_literal_keys_migrated": 0,
+      "cache_format": "36",
+      "previous_runtime_rows_scanned": 250334,
+      "previous_runtime_literals_scanned": 232371,
+      "previous_runtime_rows_affected_by_normalization": 0,
+      "previous_word_usage_keys_scanned": 132706,
+      "previous_word_usage_records_affected_by_normalization": 0,
+      "affected_previous_keys": 0,
+      "relation_and_supporting_files_scanned": 226,
+      "unchanged_code_sha256": {},
+      "previous_code_sha256": {
+        "app/utils/trad_chinese.py": "14ce3a3f9d91a91eada4ca80b36540e8dc4e9bdf21fe0f89c1cd49d76a11a2d4",
+        "ingest/lexicon_layer_cache.py": "c0c19a3eaa5a1de520d5599e6f791c5b4b3745e876cba8c81f9b28d269dbd746"
+      },
+      "changed_code_sha256": {
+        "app/utils/trad_chinese.py": "b6f96faddb9d3dbc17922e3defb3a9ffaf5b55158e6a498b94dbc2a73dd8b9f9",
+        "ingest/lexicon_layer_cache.py": "6e61bd84abc9a13f64b370f03c008186bc520b08358ed9bd551ae7ad4ee4d6d3"
+      },
+      "relation_file_sha256": {
+        "data/antonym/.gitignore": "0c26250189ad7dc5f7ccc9576b0ab9a8357332917c5933c3d076af2ddbc44cc7",
+        "data/cilin/.gitignore": "a44e8b083c5a30f180c0565c4959f081a31636ea397cef1a328209967eb91950",
+        "data/cilin/new_cilin.txt": "25eca50c06888d7f0957c3e82eaddae2922eac99246a06ee62b4eb55cac04c06",
+        "data/relations/manual_relations.tsv": "cfaaeb616ff3906fb250d834c847fe393096d38d0cfb03f07b4ca8e9408dc88d",
+        "data/syn_ant/ant_syn_bridge_pairs.tsv": "6698ea435a1ca2c7207d022a03cef29bc84d0f0260a6c26a9925564187161f0a",
+        "data/syn_ant/campaign_final_audit.meta.json": "f619f5ddbb4d67bea16a0947016972d5ef9fb6a972b65a50e2a3590aa4e842df",
+        "data/syn_ant/campaign_len4.meta.json": "e469c9169d715ebc468bfe1ffbe8c4ddf364568229945dfdac1590686fcac196",
+        "data/syn_ant/campaign_len4.tsv": "3b81bae50d758e11a13bdb7c281cdf1bb59b96e3a9f46db2ac514365e42da285",
+        "data/syn_ant/campaign_len4_final_audit.meta.json": "9b67bcb91b3d29b53411179c2a2bee5139f651ab25209486ba09611be6f748eb",
+        "data/syn_ant/campaign_len4_no_natural.meta.json": "d0666f9417f100d21c96979bdb8ffb911c4c07cc72cef0e287533cb1b8bc51c5",
+        "data/syn_ant/campaign_len4_no_natural.tsv": "9f529ab982c03e51de806994e5f4f394c3b88c73e7270dcebb27a8698047ecf5",
+        "data/syn_ant/campaign_top5000.meta.json": "545802949cc9d74de75e31bf15931dc933c085ef8a281c0bbbf877a82d0ab7b8",
+        "data/syn_ant/campaign_top5000.tsv": "521b0a6305627c0a562ea83633c04f65404d8645eef5e9073dd06b97a1de4d72",
+        "data/syn_ant/compound_antonyms.txt": "fd8c45fb14c460edb2061759ca5be381fd311b4c66b923e5f5a4272fb1bca565",
+        "data/syn_ant/compound_synonyms.txt": "760301a8f8d303434a36c780b875ee57ceabbd5071111d73d4c58f97d75019c8",
+        "data/syn_ant/fixtures/antonym_sample.txt": "6656a61f577cb78212bf88cc7b0dd86fca8b72f0a6744909d965377060335314",
+        "data/syn_ant/fixtures/cilin_sample.txt": "3ee7f6adaed0f83531d426a0846dde3228b5de3b9690a323f70451d547c4b950",
+        "data/syn_ant/fixtures/cow_sample.txt": "b688f27ffe1a89aeef016fc9efe55c4cbc7adc0149671e3cfd565d5a8859be35",
+        "data/syn_ant/fixtures/guotong_noise_sample.txt": "2fb8fe2fbe632304f67aaf577873170f1c225e9c17a85c02392384ac54b11718",
+        "data/syn_ant/fixtures/len4_b01_accepted_draft.tsv": "9cc39036c46634afd206aee58b5d9ac3e1c6ab99645e7a1bb45a5c1e7239cc47",
+        "data/syn_ant/fixtures/len4_b01_all.txt": "fa20cd327d4640d39edff225df139713dbe709a1a06ee65e8099e58cf1b7dc4e",
+        "data/syn_ant/fixtures/len4_b01_dump.txt": "72b0bf0b5b149a32792b21b08babdf21f4bf2783ec6250b490bc4f9b5bef2b2c",
+        "data/syn_ant/fixtures/len4_b01_filtered.tsv": "5d32915f1ef944939b0030684d938678c2283b53f9e8abd0792677d5de054175",
+        "data/syn_ant/fixtures/len4_b01_no_natural_draft.tsv": "903de903b828de3c8805d812c70ce71ca4298c5800d4ae0f193492a84f36557c",
+        "data/syn_ant/fixtures/len4_b01_no_natural_final.tsv": "3fd66d7d6865af0d6927f3feab2b5b8462619b95f2b23501252df74e0b1ec566",
+        "data/syn_ant/fixtures/len4_b01_parent_pairs.tsv": "9cc39036c46634afd206aee58b5d9ac3e1c6ab99645e7a1bb45a5c1e7239cc47",
+        "data/syn_ant/fixtures/len4_b01_proposals.tsv": "c39a7146619e7de86b80499d91fcac5ba406b7794f621c575e98a53136d48758",
+        "data/syn_ant/fixtures/len4_b01_sample.tsv": "91e0a98548d6ce1bf40063776727a03b101e885c71e1200dd13b4d8e52c9be16",
+        "data/syn_ant/fixtures/len4_b01_sample.txt": "9ca90f574ceaa603d6413b6459771403110cd7fcd45747528e1fe10f85c83407",
+        "data/syn_ant/fixtures/len4_b01_unresolved.txt": "fa20cd327d4640d39edff225df139713dbe709a1a06ee65e8099e58cf1b7dc4e",
+        "data/syn_ant/fixtures/len4_b02_accepted_draft.tsv": "5189d507cb42fc9fd340d9dab2a99c878d50544490b2cf0970eb8af2554959aa",
+        "data/syn_ant/fixtures/len4_b02_filtered.tsv": "eaf9b8c9ed4260f73a3f90d2b984aa7e9c5f0125d835ff91db84a45b4c3dc82c",
+        "data/syn_ant/fixtures/len4_b02_heads.txt": "b2baa7924ef23b70b1405fb46a2bd6a067195146649b1fe3946ff37667fac803",
+        "data/syn_ant/fixtures/len4_b02_no_natural_draft.tsv": "b972ec7f17ffed4c7525ccdec917350187bdb10da8b32788971d4424bd68f733",
+        "data/syn_ant/fixtures/len4_b02_no_natural_final.tsv": "9cbb5d98822a13548f62ee75386c00ed388bbbeaabe727ba6b0e2d1c9d965dbf",
+        "data/syn_ant/fixtures/len4_b02_parent_pairs.tsv": "b62b3c5548cfb3ef53e4174848585c1d53dfc166a4be23c37dba29719b2e6d4e",
+        "data/syn_ant/fixtures/len4_b02_proposals.tsv": "12969f691dfa487ca122ada72ea8a373d3332887e15684a32e6fdd9f343e8637",
+        "data/syn_ant/fixtures/len4_b02_unresolved.txt": "b2baa7924ef23b70b1405fb46a2bd6a067195146649b1fe3946ff37667fac803",
+        "data/syn_ant/fixtures/len4_b03_accepted_draft.tsv": "ef048a8126da18a36fa47a96d87849ffd99ea26076f0ae7b29cdd32699570d98",
+        "data/syn_ant/fixtures/len4_b03_filtered.tsv": "877bd11a53939b2410a9124aa2aaf5e9bf42e8ef46878f702dcff7161ae1d9d3",
+        "data/syn_ant/fixtures/len4_b03_no_natural_draft.tsv": "b797e7ea7894777c2ecf6b8a323b5bdac4ebff22c5d4a34c1fee782c96a52430",
+        "data/syn_ant/fixtures/len4_b03_no_natural_final.tsv": "cf9ebab0e48a86cedbd6c208ad38a9301c483575f650556e0a511dfacd5bd148",
+        "data/syn_ant/fixtures/len4_b03_parent_pairs.tsv": "10c3ce880d7decf2ef5474bf116a1c584f6fb732a3ed98e8cd6b0dff0a69f4c8",
+        "data/syn_ant/fixtures/len4_b03_proposals.tsv": "e2fdba63217841450406db22a91d359fa87ea501e6f0a58bcefe9b7598779c60",
+        "data/syn_ant/fixtures/len4_b03_unresolved.txt": "d58c9fff306cf165aa87485effcfa5f9b92b570b8c7518226284344687f21db2",
+        "data/syn_ant/fixtures/len4_b04_accepted_draft.tsv": "a793be8dd09c2939fea9bca864c90085689cfab087bcad868d26c648c89a013c",
+        "data/syn_ant/fixtures/len4_b04_filtered.tsv": "fea4befec1e07dc725a0dfbc8c44faf71036cd8ba530f556e893a97efa758b9e",
+        "data/syn_ant/fixtures/len4_b04_no_natural_draft.tsv": "e6dcfc6c25f0362ffbb9e177bf402de6b2c487c5013c7db3634c8d5f9139bd7e",
+        "data/syn_ant/fixtures/len4_b04_no_natural_final.tsv": "5670611866271d0105f91ca999b67f521cb562dc7e4918c51490c16d892593ad",
+        "data/syn_ant/fixtures/len4_b04_parent_pairs.tsv": "28434ed921e137f5e34c5d22df4c6c6f22174b181837243c5d35637f59bedc72",
+        "data/syn_ant/fixtures/len4_b04_proposals.tsv": "7799cabb929b0c50bd272cb683f14669a2ab89094626db2de1f4ac837b53a00b",
+        "data/syn_ant/fixtures/len4_b04_unresolved.txt": "2d49bff2328d4ab57e5aa6c4e63dbd47874f68fc8f3c5c820365c72b6b9c5dd4",
+        "data/syn_ant/fixtures/len4_b05_accepted_draft.tsv": "e67776fdd9607dd929ee5d1478b4f873b24dace11f20101677484a5231ad28b5",
+        "data/syn_ant/fixtures/len4_b05_filtered.tsv": "20c990fe1341817ac440b0beb6c305bbd18aadbed665231fe678d8528d2ef733",
+        "data/syn_ant/fixtures/len4_b05_no_natural_draft.tsv": "ecfb8a3da8f854579ce7e29e6a39296c7f84a2fb4ca4b74f0f120dd3019adb6e",
+        "data/syn_ant/fixtures/len4_b05_no_natural_final.tsv": "7a60fda01b10a60d1acd9229506a4d0b8140d7eb65165422e3b24e83e9934df5",
+        "data/syn_ant/fixtures/len4_b05_parent_pairs.tsv": "64a00d76c62cda4ef63e3526fb3f0f404685cab8d40b1b316d353d219bb049ab",
+        "data/syn_ant/fixtures/len4_b05_proposals.tsv": "31c6c9d1faadbd08cbd8abfacdc1bb92f5c9df030f012b360127a2e216f95e8b",
+        "data/syn_ant/fixtures/len4_b05_unresolved.txt": "d7cd0fe293284d05f16eb5ef80f4a76f5158d8a5abb644032c837da5f8b649ca",
+        "data/syn_ant/fixtures/len4_b06_accepted_draft.tsv": "f545fb4978f19fa89d00aa3349c3eae99719c2b47441d1ea4154d094a7feb281",
+        "data/syn_ant/fixtures/len4_b06_filtered.tsv": "b8db1eaad70747aba5f4d677bdf20a112d822704f83bf7f3e29537f0ece4517b",
+        "data/syn_ant/fixtures/len4_b06_no_natural_draft.tsv": "13f5bd84017d3dccbabbc9f00724474aaa271df409e3678b0d4d46fb2a5a82c2",
+        "data/syn_ant/fixtures/len4_b06_no_natural_final.tsv": "e587442919610a30a665645dd514121298f0518ea45a21de682f475b7e5eed7d",
+        "data/syn_ant/fixtures/len4_b06_parent_pairs.tsv": "aa4710473f1b499e9879b75140b724e2fa3bd13e47afa67687f01c0114e4061f",
+        "data/syn_ant/fixtures/len4_b06_proposals.tsv": "a4a158c243bd73c0074ab1128de82242dce603e98f16601f9b86159f701509a2",
+        "data/syn_ant/fixtures/len4_b06_unresolved.txt": "90c8431197f11ea62ef3ba830eb6ff74b5236d405a9ae1460429abae88d4df82",
+        "data/syn_ant/fixtures/len4_final_acc_sample.tsv": "1880b5268f1f830cac1c1df63002b1897b83e25f875bbaa6470320053e32a877",
+        "data/syn_ant/fixtures/len4_final_nn_sample.tsv": "5919ff130565dc7ccc7ba71bb071b2b430b0a13a4588b13b8dbc7403bf06fdfc",
+        "data/syn_ant/fixtures/len4_final_sample_stats.json": "1405c5f5c20e40ce537adb9868d6d17e22b4d4619b022bf33a7b3257dfa70620",
+        "data/syn_ant/fixtures/post_syn_ant_b01_accepted.tsv": "33c3348ab3ab16598784ac9c2177fae5690946cc0b5341d826c5737d317961d1",
+        "data/syn_ant/fixtures/post_syn_ant_b01_filtered.tsv": "21b53511a52eb1303d00dba9ed5e498fa0354c5e58f268091bc9f2c850d9418d",
+        "data/syn_ant/fixtures/post_syn_ant_b01_no_natural_draft.tsv": "7fbaea5992272ac49b5713d3aed65ab2b1e6ea7bee8791a0adcca4f0d8c51b03",
+        "data/syn_ant/fixtures/post_syn_ant_b01_proposals.tsv": "49bea4a339fa1a511b802dd73292fb8642d8446f16742c552ef72631d5fd2190",
+        "data/syn_ant/fixtures/post_syn_ant_b02_accepted.tsv": "c6191a66f90882c611830809317ad9c440f96d52b667620dea29c05b40c4a5f6",
+        "data/syn_ant/fixtures/post_syn_ant_b02_filtered.tsv": "8a492d457546a3c264ff6b3f0076f861d4be51678e7b097ba36d2dc8c8199683",
+        "data/syn_ant/fixtures/post_syn_ant_b02_no_natural_draft.tsv": "3b12e56e60bc971a993b983b48be3b1944990f5222503def98e8c8749ef4ce41",
+        "data/syn_ant/fixtures/post_syn_ant_b02_proposals.tsv": "f8a4f3cc9d581287a0e150ff3ca3a8abac1778d777444a8c5489491e126f4b48",
+        "data/syn_ant/fixtures/post_syn_ant_b03_accepted.tsv": "07c73b2c81d70e9e8b4ed8f19ab73bdbdd8f2bb59dd02cea61e89178d1efcc94",
+        "data/syn_ant/fixtures/post_syn_ant_b03_filtered.tsv": "31fe3bdbab18aaed055a7bdc47839283297cc0d069594aa454cb5cd601b5d568",
+        "data/syn_ant/fixtures/post_syn_ant_b03_no_natural_draft.tsv": "ecb9bf9868d4f189cec9acad7ea24e62082a8c148840ab12440502181ed73290",
+        "data/syn_ant/fixtures/post_syn_ant_b03_proposals.tsv": "b99bf148234935ff3c17cc85a64a09e91aba54574f6287faebf97f4389750d99",
+        "data/syn_ant/fixtures/post_syn_ant_b04_accepted.tsv": "6b5e35ec25dd8b29c733066052f2f7e93c26c836deb5b748b5952dacc000ea3d",
+        "data/syn_ant/fixtures/post_syn_ant_b04_filtered.tsv": "d1a198c7bf5df394b8c3241b70e26dd4aaf10fcff8a0ce79f40e76a2f1613c36",
+        "data/syn_ant/fixtures/post_syn_ant_b04_proposals.tsv": "03dc53113fca7ac9a9123faf6c6d7a5f0913e3025ce58edbcfdea91fa20b5add",
+        "data/syn_ant/fixtures/post_syn_ant_b05_accepted.tsv": "c4f08498bc4d49d5f41c214be58585544b7574a7cba088df81f77c36275f7482",
+        "data/syn_ant/fixtures/post_syn_ant_b05_filtered.tsv": "df7e484d58fd3aaa422617df5ebc81370bf8a8e23b10571de8312b539c8be71b",
+        "data/syn_ant/fixtures/post_syn_ant_b05_no_natural_draft.tsv": "afbd4fc111b5f07cb5643ee2f06efe5982263e935d8a76cab3401059a7375f38",
+        "data/syn_ant/fixtures/post_syn_ant_b05_proposals.tsv": "83a690f2c0d90267829c32b551587cba0c583a18cb7e5e02a0b106eb17a554af",
+        "data/syn_ant/fixtures/post_syn_ant_gap_b02_top150.tsv": "cfe5e6ea26c78383b4b1d58ff909b95a508bb32db174c097dd8102fccf9cbe8c",
+        "data/syn_ant/fixtures/post_syn_ant_gap_b03_top150.tsv": "c54fa71967864388c2b870e2ef18d11b8d80af02e4d202092a94fd122819ede6",
+        "data/syn_ant/fixtures/post_syn_ant_gap_b04_top150.tsv": "054dfa4c7cd9c276529022fc431f2b2fbbeb8cbba9298749b1636776c1c2df6d",
+        "data/syn_ant/fixtures/post_syn_ant_gap_b05_all.tsv": "b09c534bcf84cdefc8920736717b3677316a61e981b8271029ae91daa4cf03a1",
+        "data/syn_ant/fixtures/post_syn_ant_gap_top150.tsv": "6e11f36b065fb989f08f67d7015c0436991302db4b6544887c19c250fb6dd526",
+        "data/syn_ant/fixtures/post_syn_ant_p1_nn_flip_b01_accepted.tsv": "27ce33793fc0672b07c7da2d02fd52bba69f356554f8a47e84898005b85e374e",
+        "data/syn_ant/fixtures/post_syn_ant_p1_nn_flip_b01_filtered.tsv": "27ce33793fc0672b07c7da2d02fd52bba69f356554f8a47e84898005b85e374e",
+        "data/syn_ant/fixtures/post_syn_ant_p1_nn_flip_b01_proposals.tsv": "12b9b9628879c1a1ee9e45bd865cf6212d2ce2d5b9fed5f0717c186a12524656",
+        "data/syn_ant/fixtures/post_syn_ant_ring5k10k_b01_accepted.tsv": "e7313d892386bdd47ac7a56b686123ad7b0520e7256cd18d18c973e972366d76",
+        "data/syn_ant/fixtures/post_syn_ant_ring5k10k_b01_filtered.tsv": "3e94e85ce07318f5154bd04e83c9d1c48bfe4001f0cbeb4c2d5474dc0bef1ad2",
+        "data/syn_ant/fixtures/post_syn_ant_ring5k10k_b01_no_natural_draft.tsv": "aeaa3b68cdbbb3ee8b0bc07655891bc783d0d45bc2a609b6087eed5568879bf6",
+        "data/syn_ant/fixtures/post_syn_ant_ring5k10k_b01_proposals.tsv": "9b22414073ed7b3c7ac14d78b7bdb5b5eea48ac5586c2bac26cd2b2b5cf96cc7",
+        "data/syn_ant/fixtures/post_syn_ant_ring5k10k_b01_top150.tsv": "6faf1999a0a1f866dcf8d32a7f37d5e2b3d67b57ced29e2f3e2537b99abb411d",
+        "data/syn_ant/fixtures/post_syn_ant_ring5k10k_b02_accepted.tsv": "16bcc8121254549c36b0da334a1ae6d23d506ddb7e8792c9a78ce3108c36c7d3",
+        "data/syn_ant/fixtures/post_syn_ant_ring5k10k_b02_filtered.tsv": "6dc46c6bfc9f10d018f413fdb4614a98e85e72b061501f93779234df1a747af4",
+        "data/syn_ant/fixtures/post_syn_ant_ring5k10k_b02_proposals.tsv": "6fd796ccfff5e0d94696d5651db1c5af95d77156251d7a838ede987a7e24f92c",
+        "data/syn_ant/fixtures/post_syn_ant_ring5k10k_b02_top150.tsv": "bc92633092fc5b3e3236bab1d6b87529f7a8a71b8073ed5cae7198a27a5eb7f4",
+        "data/syn_ant/fixtures/post_syn_ant_ring5k10k_b03_accepted.tsv": "ff3d2b071888629fbfbaef3c752dcd2ab0f78c1e35df9d5244109a51f563729d",
+        "data/syn_ant/fixtures/post_syn_ant_ring5k10k_b03_filtered.tsv": "ddc958b465381a7a03b7928f646cb4320e0a54627eeedc63d1d2ce0122e944bd",
+        "data/syn_ant/fixtures/post_syn_ant_ring5k10k_b03_proposals.tsv": "042099d7e9cfa472e62b2b235432a1a5cfa1105859d73aff61a831ecc923d8da",
+        "data/syn_ant/fixtures/post_syn_ant_ring5k10k_b03_top150.tsv": "5762a028ba75134a9f33e10d01819f28e3fcdacc08d932d5e0eb63900627b007",
+        "data/syn_ant/fixtures/post_syn_ant_ring5k10k_b04_accepted.tsv": "848d67924f2398af00faa448800e989cbbeb3b8eaa3e918ee73867b4a8381d04",
+        "data/syn_ant/fixtures/post_syn_ant_ring5k10k_b04_filtered.tsv": "592998acf9cd4a1ef977206e4db334d6b5258e7f68c976a5cf3b901d0ea9498a",
+        "data/syn_ant/fixtures/post_syn_ant_ring5k10k_b04_proposals.tsv": "6999a6c8923794e20450b835da3c0acd91b889e1f972c76f92cc64755e1e857e",
+        "data/syn_ant/fixtures/post_syn_ant_ring5k10k_b04_top500.tsv": "97559ba54946ed842ede16ccd567780fbf20c05cd2eccea936cff449a34de0b9",
+        "data/syn_ant/fixtures/post_syn_ant_ring5k10k_b05_accepted.tsv": "1971042c5aa0c5185d7ff32c5ec7dea4ba24c0d970cf4ada0f0a08bf1d82b089",
+        "data/syn_ant/fixtures/post_syn_ant_ring5k10k_b05_filtered.tsv": "3a68d41624bfcccf5bef779ad9e4eb6a0c16a14f8173a19accd178ea45888953",
+        "data/syn_ant/fixtures/post_syn_ant_ring5k10k_b05_proposals.tsv": "bab8408bcbc0d66d35bbea4d45b6d8d1d7ec271351836c08491b165d0788be97",
+        "data/syn_ant/fixtures/post_syn_ant_ring5k10k_b05_top500.tsv": "82a9f339d3f572c5fe2f12fa87c6fa3a30bea833db710ad68366af73bca40fdc",
+        "data/syn_ant/fixtures/post_syn_ant_ring5k10k_b06_accepted.tsv": "9051f60f5887c7f530d6ceb3c5af7c889b1376fd60a7e0e72f4b89e9929e65a6",
+        "data/syn_ant/fixtures/post_syn_ant_ring5k10k_b06_all.tsv": "7496e5606d14777196cb1da92906143879f4671255d52a6ccf044df038bf10f9",
+        "data/syn_ant/fixtures/post_syn_ant_ring5k10k_b06_filtered.tsv": "b403aa1d805819eaf15a0afd4402be775933b3b89c76eae871d28a413b193f42",
+        "data/syn_ant/fixtures/post_syn_ant_ring5k10k_b06_proposals.tsv": "bf2700fef2e2e95180a495eda2c703d44b46850fd1f78048b92924dc1e0917ad",
+        "data/syn_ant/fixtures/post_syn_ant_ring5k10k_open.tsv": "85c01ceafb097d992fa6d38dd6227ea959fc37d4334b687438d5a53925622656",
+        "data/syn_ant/fixtures/relations.tsv": "3f9c4778cf1ddfd0496c0f040f3df2293cacd7b7bf09d8868bdc56464bfed13c",
+        "data/syn_ant/project-antonyms-prompt-len4.txt": "c53c95966f0caefb50daeff3da5826ef473b0150f09f8461fa040306cc96a6cc",
+        "data/syn_ant/project-antonyms-prompt.txt": "b579cc0a6ed6a25840b341933bbe33286a4183f2bb0c2523c1537ab3e0c82fac",
+        "data/syn_ant/project/campaign_syn_len4.meta.json": "bf600de7acdae8da0eb88c03ef053eb98ebf2be89eb12dd39b52840d2fc79d95",
+        "data/syn_ant/project/campaign_syn_len4.tsv": "0b05741d8df8c8449951bf635afc57ea1c51721ca772c9d2dc394324dc761dda",
+        "data/syn_ant/project/campaign_syn_len4_final_audit.meta.json": "5f4674fbdcddb0ff8594d843666dec0db48f2a10332547545858939d11106dc4",
+        "data/syn_ant/project/campaign_syn_top5000.meta.json": "649024f18563de7838ccc1655af0b73a5c3e49f1658b41c266d01c1bf097ec31",
+        "data/syn_ant/project/campaign_syn_top5000.tsv": "09fb9eb9fecdabaa8f2b6f7781f35ec62a4ebb21d3c12c8482dbe627e5ca6df2",
+        "data/syn_ant/project/campaign_syn_top5000_final_audit.meta.json": "d4ab2ecb5408ad236303b6c2fecf0a464c6d8acd3515459aa0f9500bc4a0b693",
+        "data/syn_ant/project/fixtures/syn_len4_b01_accepted.tsv": "646fd91d35745e8f5f71bacaae67d5ad967de7e3b5c0b4e7b511de25870103fe",
+        "data/syn_ant/project/fixtures/syn_len4_b01_adequate.tsv": "f95bfad577acdb7edeccfcfd9752d443704c7fec3d5c222c00d6fd0efebbfd89",
+        "data/syn_ant/project/fixtures/syn_len4_b01_heads.tsv": "09911b143bf62c33e0dcec8a4c51aaf08fc22b4d34dd7b720c2e221f9152a10b",
+        "data/syn_ant/project/fixtures/syn_len4_b01_heads_list.txt": "16aa72348dfa45aaa9c7813076617e4a2b5e3dcbbcb5d4c065c3112e1cdf8b74",
+        "data/syn_ant/project/fixtures/syn_len4_b01_no_natural.tsv": "8ac208deb38df1645329da164a1e8a303e15282ba090c12613f184e3ed6fcc7b",
+        "data/syn_ant/project/fixtures/syn_len4_b02_accepted.tsv": "37454c3113a0fc84dbc52d523ac3336b05f2e9e9b8620d62e1fa43b78fb29c82",
+        "data/syn_ant/project/fixtures/syn_len4_b02_adequate.tsv": "c34138b598b7de9d1a913dd3355d0b2c0da74f71ab454fe3561c7b0c8ebcda24",
+        "data/syn_ant/project/fixtures/syn_len4_b02_heads.tsv": "64e896634fab456b114632bc187a5480faf11fbc3309a445232d529270f1bcff",
+        "data/syn_ant/project/fixtures/syn_len4_b02_heads_list.txt": "41afd954d77a7f1512304d03eadd5dd5cf0f7f67ee651f3dc880dff6814938ec",
+        "data/syn_ant/project/fixtures/syn_len4_b02_no_natural.tsv": "65931af1ad565fd64f619b9a65b65f02f9f6cffc85965f574622bac73c723e35",
+        "data/syn_ant/project/fixtures/syn_len4_b03_accepted.tsv": "e1708e1639d2a804dfc6eb3d21c78cec37c21bf2bb18a4c9360f34dc898d92ea",
+        "data/syn_ant/project/fixtures/syn_len4_b03_adequate.tsv": "ae874317d19c152597323d8567d57ee73d3615cf01e4ea0d94ebae3d75746064",
+        "data/syn_ant/project/fixtures/syn_len4_b03_heads.tsv": "e60f525b348fbb192ac3c422c0c6693bfc98f802442534b742173ee03651fc78",
+        "data/syn_ant/project/fixtures/syn_len4_b03_heads_list.txt": "ccf174fd4bd48a3eead1f461cc5aade8f9077f52c8bb4fbb17894e9fcf1008ca",
+        "data/syn_ant/project/fixtures/syn_len4_b03_no_natural.tsv": "07664a6a600ccd61639ca68c30de1a2ff85b6fb6a15f137b2e5817776b670958",
+        "data/syn_ant/project/fixtures/syn_len4_b04_accepted.tsv": "08c336fbd171416c638689fcd9767aab89d26f7ab78125613b34308434810a3f",
+        "data/syn_ant/project/fixtures/syn_len4_b04_adequate.tsv": "9c5b89309097175d5547be420da358130651dcf9d771ede5a78bf5e6e0e39f4f",
+        "data/syn_ant/project/fixtures/syn_len4_b04_heads.tsv": "b70c9b12eda76ebeed270a71bc7996857985103bfa70ab08f997963b0e9df063",
+        "data/syn_ant/project/fixtures/syn_len4_b04_heads_list.txt": "28049f309101556aadc121d6740dee50465cb1b1d53a8d01a0029af2b6161dca",
+        "data/syn_ant/project/fixtures/syn_len4_b04_no_natural.tsv": "7efb9efae9afee6c6850c52ad17287863f864350edd76bb2cc51972cc56f2f20",
+        "data/syn_ant/project/fixtures/syn_len4_b05_accepted.tsv": "eababe476d6182a959ab50b4a118fbdac5fba7481513dffe40edd202178fc51f",
+        "data/syn_ant/project/fixtures/syn_len4_b05_adequate.tsv": "54b5756b045658c8a6e42540f4648a3bd0bf8ed7c8ea93a230654361c9fc7dad",
+        "data/syn_ant/project/fixtures/syn_len4_b05_heads.tsv": "87d6b43afbbd1bb076936d29ea0d1103da4933647f47d42227e26930814db4d7",
+        "data/syn_ant/project/fixtures/syn_len4_b05_heads_list.txt": "4ff84de73a15323c154440ffc4bc0616a1dfaef27d751cbd56d64e48d2d0b3ad",
+        "data/syn_ant/project/fixtures/syn_len4_b05_no_natural.tsv": "fba6d686dc7224ebfebb124d9492bfea485fda1d8d769c4e9f05778c42c721b3",
+        "data/syn_ant/project/fixtures/syn_len4_b06_accepted.tsv": "816b184232f395aa79f910f5e3db10428d52b38b3d4502e8c90e6956bd45b978",
+        "data/syn_ant/project/fixtures/syn_len4_b06_adequate.tsv": "394f44b4d9f0e3019cb10dfa060bb40e4f4add869015ccc0c9645027157bc3ba",
+        "data/syn_ant/project/fixtures/syn_len4_b06_heads.tsv": "992a2749413f9976548357731dae6b1ddb3590c4baf60fdf0cb1e9efa5a4f6dd",
+        "data/syn_ant/project/fixtures/syn_len4_b06_heads_list.txt": "ed4d23de829b303a055777d1013287d726e79f06b729ab0ad2f60bd6372737b6",
+        "data/syn_ant/project/fixtures/syn_len4_b06_no_natural.tsv": "b6e9bc991f8ef0e0befd40f06804ac02f3fde1bd4849c1f0b4ee4ab334ceb235",
+        "data/syn_ant/project/fixtures/syn_len4_b07_accepted.tsv": "5ba8ce6a524f8e58407c8c3022c7d65384d0b1af8c43ff0796f1347f5b14523c",
+        "data/syn_ant/project/fixtures/syn_len4_b07_adequate.tsv": "3ffb57e2d127f5a8bb6f210bd6facaae8c426295c7095585e98fffc0a7f5a551",
+        "data/syn_ant/project/fixtures/syn_len4_b07_heads.tsv": "d35fef808bc460f59794cf8ee852f8b562e42de646667914632b9aa3a62cb5cc",
+        "data/syn_ant/project/fixtures/syn_len4_b07_heads_list.txt": "b6638dd9b4f38d21f161c6891ef8c89dd526de8e7afa02f3335b7cde5e5d8fd9",
+        "data/syn_ant/project/fixtures/syn_len4_b07_no_natural.tsv": "2723eb213947b39917cb61b5357c319dbbb6bd3a408ac0a48af1794cdce3984e",
+        "data/syn_ant/project/fixtures/syn_len4_b08_accepted.tsv": "085253d70bfbe8473d3db646738806c9d6d440a3431369a9018a51740adfeac7",
+        "data/syn_ant/project/fixtures/syn_len4_b08_adequate.tsv": "d9aec16ee29377a3c4a64469f5ce6aa0f861bb9e5f43a6a0e2396f639cbdef01",
+        "data/syn_ant/project/fixtures/syn_len4_b08_heads.tsv": "796f9e6e30890be0c60a244a94b09e5aef86261e7d2b31ca9eaf149149bbf0f7",
+        "data/syn_ant/project/fixtures/syn_len4_b08_heads_list.txt": "ca89ead3ac1141996cce166089300c598d20823d3eb29c766e6bfbf2ed1dd1a9",
+        "data/syn_ant/project/fixtures/syn_len4_b08_no_natural.tsv": "221a3688f09b2eac2f07a92a777df1c43ad2c7cae763ad2cd36ac99cff9cb5c9",
+        "data/syn_ant/project/fixtures/syn_len4_b09_accepted.tsv": "efc568043fb2cd758f05975d3246650854caa8ea775dca24db3b87c516bb9679",
+        "data/syn_ant/project/fixtures/syn_len4_b09_adequate.tsv": "65a28b16b76c29c7b40ef35b8c52b2c068b25b57b3fd88578a646950359521c7",
+        "data/syn_ant/project/fixtures/syn_len4_b09_heads.tsv": "4ba72f1bc36878e97ff99390e7b830e0a334cde361e321daa8535a976346065d",
+        "data/syn_ant/project/fixtures/syn_len4_b09_heads_list.txt": "d118d567680e2386681cd9f0034f5819c5ed1359f85d8a9bd29000b952c9780d",
+        "data/syn_ant/project/fixtures/syn_len4_b09_no_natural.tsv": "ca8ce6adef51b8b077fd37c05b539c7b81c4f5813de6d4884cd5de7d78425703",
+        "data/syn_ant/project/fixtures/syn_len4_b10_accepted.tsv": "7461532e9e99755e2d6b314055adf3bf2ef79ab32614f1c19f28433a05ae072f",
+        "data/syn_ant/project/fixtures/syn_len4_b10_adequate.tsv": "0f0d2907cb132e497bef30ac44f172e3e351640fca076395fcbcde80e8204369",
+        "data/syn_ant/project/fixtures/syn_len4_b10_heads.tsv": "ced8f0b18b77b2fa6ffcc0e91f9ac0eccf85479c591121a29c2d91a637c4e2b8",
+        "data/syn_ant/project/fixtures/syn_len4_b10_heads_list.txt": "d1d38c8f543de76c98a0b2a7b9ab5c74ade03cc23bfe60657f7f9c83d683d0a3",
+        "data/syn_ant/project/fixtures/syn_len4_b10_no_natural.tsv": "9563dd7acf366622c13ec301f01c155e2d241d3f9d2969de315bd9f2bccddba5",
+        "data/syn_ant/project/fixtures/syn_len4_final_audit_accepted_sample.tsv": "2dbe3ffc27da2e785510cfc874baf080d357872b6f689fd30fa2c36b8fdd2fdd",
+        "data/syn_ant/project/fixtures/syn_len4_final_audit_adequate_sample.tsv": "c3d7c2fd74cfea3e5a31d815fe51068c2891406c5e527cd74cad0b3bcbaada6e",
+        "data/syn_ant/project/fixtures/syn_len4_final_audit_no_natural_sample.tsv": "a2460c89ca5ea694ef5477184f7f076073e8f0c767bec405c0b7291304d2a50e",
+        "data/syn_ant/project/fixtures/syn_top5000_b01_accepted.tsv": "cd8808df5be2739aeadf87c9e35175f98f18f7cdcf714af21993ce4390894665",
+        "data/syn_ant/project/fixtures/syn_top5000_b01_adequate.tsv": "06fdd422e0bf2501881b8873e69fed0c189d6562f9f93c6c4968e17cbc4b1c19",
+        "data/syn_ant/project/fixtures/syn_top5000_b01_existing_syn.tsv": "cc0bafb4e82df98544b93bd6aeb68c37570f4490b314f70f3c1898a998c48b38",
+        "data/syn_ant/project/fixtures/syn_top5000_b01_heads.tsv": "28d12cfc20c28394e93f6611e7d101ac1d98cc438f89d10e5e8dd84bab9996b0",
+        "data/syn_ant/project/fixtures/syn_top5000_b01_no_natural.tsv": "91fc6d5c5c740ba4155d45f58cf69a9ff1a999e324423f4e0c910a88bd34a97e",
+        "data/syn_ant/project/fixtures/syn_top5000_b02_accepted.tsv": "a6a3c25dd8534a54fb36a621249b09cbab0a435d3581020f07cef91148f972c8",
+        "data/syn_ant/project/fixtures/syn_top5000_b02_adequate.tsv": "5a2b7c60d850b31602bab86acd40453120c30185ec583af715a06975e2061bff",
+        "data/syn_ant/project/fixtures/syn_top5000_b02_heads.tsv": "4956ff868e8f7579c7d922134c90339a7cb8b5ed2f042356b412d1a99ab5cecf",
+        "data/syn_ant/project/fixtures/syn_top5000_b02_no_natural.tsv": "2c33e4144538a90f2ab1b68b161069e886c61fc25627e505e2ec6896ed5bcabe",
+        "data/syn_ant/project/fixtures/syn_top5000_b03_accepted.tsv": "ee866d90b11d7479db818025aa4cdd348b0b1ad6ab666107cc120dbfd0714e73",
+        "data/syn_ant/project/fixtures/syn_top5000_b03_adequate.tsv": "fd42a69b021208ccc8fbe9c1d80ae9660db1c4cd01c4192d96c7e22d335451ca",
+        "data/syn_ant/project/fixtures/syn_top5000_b03_heads.tsv": "745f18e1da5371aa392f7f0ab098c3634b8de88c057904b5aaa8ff61d559c0d6",
+        "data/syn_ant/project/fixtures/syn_top5000_b03_no_natural.tsv": "bc6eff30663e088dd740f1c49ec41c804b9a4bfdf6de6fa7a749c4db80552d9c",
+        "data/syn_ant/project/fixtures/syn_top5000_b04_accepted.tsv": "212327d0ce2317e9b55cbef7e7915ce0bb3aec7e009bc5dc88ad9efb15c9891b",
+        "data/syn_ant/project/fixtures/syn_top5000_b04_adequate.tsv": "4b05a7882e3dc830ed6615ac20bd121aa240189ec3d9afc0628b9c1282ddcbf0",
+        "data/syn_ant/project/fixtures/syn_top5000_b04_heads.tsv": "362e9b271c126ffc93cfd1fc056c18eb73a279ed8b1ee5c499a078607aa9b50f",
+        "data/syn_ant/project/fixtures/syn_top5000_b04_no_natural.tsv": "62a867b4163f4617ceb1525d86e6978fcecc3937f4fde0b367819d4d30265023",
+        "data/syn_ant/project/fixtures/syn_top5000_b05_accepted.tsv": "46e9efc2b708a92accf731630c9cbaeba056e0c4244cfed2171749ee60b2423b",
+        "data/syn_ant/project/fixtures/syn_top5000_b05_adequate.tsv": "bad896c53fb21b20ba330d1c80d87f4518cde6265b9b0b2741f39834448fdf5b",
+        "data/syn_ant/project/fixtures/syn_top5000_b05_heads.tsv": "bd88217ae16db82f4a190531e7dd29e17aa08b0942410ae48e3608019d9a14da",
+        "data/syn_ant/project/fixtures/syn_top5000_b05_no_natural.tsv": "10bdb47c1dba0bcd3c32358dbcad5606fc5fb2043c7c17e5652bd3883810d65f",
+        "data/syn_ant/project/fixtures/syn_top5000_b06_accepted.tsv": "15601136fe701bd5558458e61efbf052ab744b3590248c5c9827857743f2434f",
+        "data/syn_ant/project/fixtures/syn_top5000_b06_adequate.tsv": "a2693d68cc38e619b23128a0d0d84244878c55070d054c5e71b038377be5d393",
+        "data/syn_ant/project/fixtures/syn_top5000_b06_heads.tsv": "675cdbf7a50c08a3d8fe97e4446789c4e8d97fc819254dd4bff5690b84842f41",
+        "data/syn_ant/project/fixtures/syn_top5000_b06_no_natural.tsv": "081ab378b882f52bd110989cc26b8aa55ce28d503d35008f55b27fafc3c4a3b3",
+        "data/syn_ant/project/fixtures/syn_top5000_final_audit_accepted_sample.tsv": "3412ffae22f632eee16cc89cdab72e6375670d59ae09610dfe914d1b09261a57",
+        "data/syn_ant/project/fixtures/syn_top5000_final_audit_adequate_sample.tsv": "49ae4dfd498f24640e246f1627ca24f6279cc9411869207caf2bba5cb8b15420",
+        "data/syn_ant/project/fixtures/syn_top5000_final_audit_no_natural_sample.tsv": "76bd8c43a719867f4cb1cd0da0481f746f1454989368155b9cc445d3d115d588",
+        "data/syn_ant/project/project-synonyms-prompt.txt": "ac69c02f318d3bf7215e89a4c7bea0b5e228ffc080634a45e6c8b486af4a5e50",
+        "data/syn_ant/project/project_adequate_existing.tsv": "4cd9cb2067c25a912a72ca6a17538d4008144bc203ff6c83ae24e792616f3652",
+        "data/syn_ant/project/project_no_natural_synonyms.tsv": "c197bb353c6f0c05b6b989cb338eb98dabf1a96888a72c9810f80043696595c7",
+        "data/syn_ant/project/project_synonyms.meta.json": "dd42030b9363b0cba9b2ac47557bb35419dd2eafb82e9c3ad05464db5077e5ba",
+        "data/syn_ant/project/project_synonyms.tsv": "f5725c327ba13a77fc4b6c227397250a9897492813197fd8dff56292263af6ce",
+        "data/syn_ant/project_antonyms.meta.json": "c67ac3f81b093186a2c4e2f36118ff0c5c4d4d25c8dade15a6fb8313c0fbacfb",
+        "data/syn_ant/project_antonyms.tsv": "577182b4c84ca25cc4ff014bc5f9f6d4e9b1329bc6a2c0fab3040ae64661cad4",
+        "data/syn_ant/project_no_natural_antonyms.meta.json": "a699b8ae49ec792ac1d194f71d04d6ce79f4828c27686f8d8a5902f0497bd20d",
+        "data/syn_ant/project_no_natural_antonyms.tsv": "24d5c38e6d595a612c712aacd6baa499f651dd1c5e2763f1ef8184fd9f31a457",
+        "data/syn_ant/raw/.gitignore": "d19364b360f6386494b8c27fdc84b73ac2c3cbed05d71924d7b2d0359047ff1c",
+        "data/syn_ant/sources.yaml": "bf542a5b75bef69e5ed91a9d5ca6a0f0e9bec1ac3d58258e17f738204a720c84",
+        "data/thesaurus/.gitignore": "980858e85eecddf8156396d55356eab1a67fec007da549fe6df200404050df09",
+        "data/thesaurus/dict_antonym.txt": "4878d6bb5a173f67bfd03b74744ec2658f0b8cba5f534e04f70084337cf7f98b",
+        "data/thesaurus/dict_synonym.txt": "5a78accfa48f1400ece36f8bc8c0afdd579dc60260f023dabcca9429c3a7f4d3"
+      },
+      "relation_text_decoding_audit": {
+        "utf-8-sig": 225,
+        "utf-16": 1
+      },
+      "relation_literal_candidates_affected": []
+    },
+    "prior_runtime_rows_affected_by_new_normalization": 0,
+    "prior_word_usage_records_affected_by_new_normalization": 0,
+    "prior_stored_relation_keys_migrated": 0,
+    "previous_source_rows_preserved": 71341,
+    "previous_reading_grades_preserved": 71341,
+    "explicit_previous_reading_grade_repairs": 0,
+    "previous_word_usage_records_preserved": 132706,
+    "previous_word_usage_judgments_preserved": 19576,
+    "new_word_normalization_idempotent": true,
+    "post_review_original_spelling_regression_check": true,
+    "full_pool_parity_queries": 173,
+    "full_pool_parity_rows": 136740,
+    "full_pool_ranking_equal": true,
+    "smoke_tests": 340,
+    "smoke_passed": 336,
+    "smoke_skipped": 4,
+    "seam_tests": 89,
+    "seam_passed": 83,
+    "seam_skipped": 6,
+    "guide_query_tests": 1,
+    "guide_query_tests_passed": true,
+    "pwa_build": true,
+    "portable_build": true,
+    "full_app_typecheck": true,
+    "ranking_and_lookup_self_checks": true,
+    "targeted_node_typecheck": true,
+    "pwa_artifact_guard": true,
+    "layer_cache_format": "36",
+    "layer_cache_cold_misses": 8,
+    "layer_cache_warm_hits": 8,
+    "layer_cache_counter_matches_uncached_db": true,
+    "paging_fixture": {
+      "total": 206,
+      "first_page": 200,
+      "second_page": 6,
+      "everyday_literal_inserted_last_ranks_first": true,
+      "modes": 3
+    },
+    "final_reading_audit": {
+      "batch": "B62",
+      "initial_accepted": 961,
+      "withdrawals": [
+        {
+          "id": 117998,
+          "char": "詞長",
+          "previous_jyutping": "ci4 coeng4",
+          "reason": "完整候選仍偏冷僻、過窄領域／舊職稱、罕用變語或低復用片段；按一般生活及書面熟悉度撤回，不把來源詞典權重當生活詞頻。"
+        },
+        {
+          "id": 118027,
+          "char": "詢證",
+          "previous_jyutping": "seon1 zing3",
+          "reason": "完整候選仍偏冷僻、過窄領域／舊職稱、罕用變語或低復用片段；按一般生活及書面熟悉度撤回，不把來源詞典權重當生活詞頻。"
+        },
+        {
+          "id": 118177,
+          "char": "詮註",
+          "previous_jyutping": "cyun4 zyu3",
+          "reason": "完整候選仍偏冷僻、過窄領域／舊職稱、罕用變語或低復用片段；按一般生活及書面熟悉度撤回，不把來源詞典權重當生活詞頻。"
+        },
+        {
+          "id": 118160,
+          "char": "詩餘",
+          "previous_jyutping": "si1 jyu4",
+          "reason": "完整候選仍偏冷僻、過窄領域／舊職稱、罕用變語或低復用片段；按一般生活及書面熟悉度撤回，不把來源詞典權重當生活詞頻。"
+        },
+        {
+          "id": 118163,
+          "char": "詭奇",
+          "previous_jyutping": "gwai2 kei4",
+          "reason": "完整候選仍偏冷僻、過窄領域／舊職稱、罕用變語或低復用片段；按一般生活及書面熟悉度撤回，不把來源詞典權重當生活詞頻。"
+        },
+        {
+          "id": 118164,
+          "char": "詭局",
+          "previous_jyutping": "gwai2 guk6",
+          "reason": "完整候選仍偏冷僻、過窄領域／舊職稱、罕用變語或低復用片段；按一般生活及書面熟悉度撤回，不把來源詞典權重當生活詞頻。"
+        },
+        {
+          "id": 118296,
+          "char": "誇示",
+          "previous_jyutping": "kwaa1 si6",
+          "reason": "完整候選仍偏冷僻、過窄領域／舊職稱、罕用變語或低復用片段；按一般生活及書面熟悉度撤回，不把來源詞典權重當生活詞頻。"
+        },
+        {
+          "id": 118299,
+          "char": "誇誕",
+          "previous_jyutping": "kwaa1 daan3",
+          "reason": "完整候選仍偏冷僻、過窄領域／舊職稱、罕用變語或低復用片段；按一般生活及書面熟悉度撤回，不把來源詞典權重當生活詞頻。"
+        },
+        {
+          "id": 118300,
+          "char": "誇說",
+          "previous_jyutping": "kwaa1 syut3",
+          "reason": "完整候選仍偏冷僻、過窄領域／舊職稱、罕用變語或低復用片段；按一般生活及書面熟悉度撤回，不把來源詞典權重當生活詞頻。"
+        },
+        {
+          "id": 118389,
+          "char": "誑言",
+          "previous_jyutping": "gwong2 jin4",
+          "reason": "完整候選仍偏冷僻、過窄領域／舊職稱、罕用變語或低復用片段；按一般生活及書面熟悉度撤回，不把來源詞典權重當生活詞頻。"
+        },
+        {
+          "id": 118454,
+          "char": "語妙絕倫",
+          "previous_jyutping": "jyu5 miu6 zyut6 leon4",
+          "reason": "完整候選仍偏冷僻、過窄領域／舊職稱、罕用變語或低復用片段；按一般生活及書面熟悉度撤回，不把來源詞典權重當生活詞頻。"
+        },
+        {
+          "id": 118459,
+          "char": "語形",
+          "previous_jyutping": "jyu5 jing4",
+          "reason": "完整候選仍偏冷僻、過窄領域／舊職稱、罕用變語或低復用片段；按一般生活及書面熟悉度撤回，不把來源詞典權重當生活詞頻。"
+        },
+        {
+          "id": 118499,
+          "char": "語辭",
+          "previous_jyutping": "jyu5 ci4",
+          "reason": "完整候選仍偏冷僻、過窄領域／舊職稱、罕用變語或低復用片段；按一般生活及書面熟悉度撤回，不把來源詞典權重當生活詞頻。"
+        },
+        {
+          "id": 118531,
+          "char": "誠敬",
+          "previous_jyutping": "sing4 ging3",
+          "reason": "完整候選仍偏冷僻、過窄領域／舊職稱、罕用變語或低復用片段；按一般生活及書面熟悉度撤回，不把來源詞典權重當生活詞頻。"
+        },
+        {
+          "id": 118542,
+          "char": "誡條",
+          "previous_jyutping": "gaai3 tiu4",
+          "reason": "完整候選仍偏冷僻、過窄領域／舊職稱、罕用變語或低復用片段；按一般生活及書面熟悉度撤回，不把來源詞典權重當生活詞頻。"
+        },
+        {
+          "id": 118587,
+          "char": "誤碼率",
+          "previous_jyutping": "ng6 maa5 leot6",
+          "reason": "完整候選仍偏冷僻、過窄領域／舊職稱、罕用變語或低復用片段；按一般生活及書面熟悉度撤回，不把來源詞典權重當生活詞頻。"
+        },
+        {
+          "id": 118512,
+          "char": "語音課",
+          "previous_jyutping": "jyu5 jam1 fo3",
+          "reason": "完整候選仍偏冷僻、過窄領域／舊職稱、罕用變語或低復用片段；按一般生活及書面熟悉度撤回，不把來源詞典權重當生活詞頻。"
+        },
+        {
+          "id": 118772,
+          "char": "調光師",
+          "previous_jyutping": "diu6 gwong1 si1",
+          "reason": "完整候選仍偏冷僻、過窄領域／舊職稱、罕用變語或低復用片段；按一般生活及書面熟悉度撤回，不把來源詞典權重當生活詞頻。"
+        },
+        {
+          "id": 118810,
+          "char": "調度長",
+          "previous_jyutping": "diu6 dou6 coeng4",
+          "reason": "完整候選仍偏冷僻、過窄領域／舊職稱、罕用變語或低復用片段；按一般生活及書面熟悉度撤回，不把來源詞典權重當生活詞頻。"
+        },
+        {
+          "id": 118884,
+          "char": "調試器",
+          "previous_jyutping": "tiu4 si3 hei3",
+          "reason": "完整候選仍偏冷僻、過窄領域／舊職稱、罕用變語或低復用片段；按一般生活及書面熟悉度撤回，不把來源詞典權重當生活詞頻。"
+        },
+        {
+          "id": 118899,
+          "char": "調配器",
+          "previous_jyutping": "diu6 pui3 hei3",
+          "reason": "完整候選仍偏冷僻、過窄領域／舊職稱、罕用變語或低復用片段；按一般生活及書面熟悉度撤回，不把來源詞典權重當生活詞頻。"
+        },
+        {
+          "id": 118900,
+          "char": "調配法",
+          "previous_jyutping": "diu6 pui3 faat3",
+          "reason": "完整候選仍偏冷僻、過窄領域／舊職稱、罕用變語或低復用片段；按一般生活及書面熟悉度撤回，不把來源詞典權重當生活詞頻。"
+        },
+        {
+          "id": 119056,
+          "char": "論件計酬",
+          "previous_jyutping": "leon6 gin6 gai3 cau4",
+          "reason": "完整候選仍偏冷僻、過窄領域／舊職稱、罕用變語或低復用片段；按一般生活及書面熟悉度撤回，不把來源詞典權重當生活詞頻。"
+        },
+        {
+          "id": 119071,
+          "char": "論壇狀態",
+          "previous_jyutping": "leon6 taan4 zong6 taai3",
+          "reason": "完整候選仍偏冷僻、過窄領域／舊職稱、罕用變語或低復用片段；按一般生活及書面熟悉度撤回，不把來源詞典權重當生活詞頻。"
+        },
+        {
+          "id": 119074,
+          "char": "論定",
+          "previous_jyutping": "leon6 ding6",
+          "reason": "完整候選仍偏冷僻、過窄領域／舊職稱、罕用變語或低復用片段；按一般生活及書面熟悉度撤回，不把來源詞典權重當生活詞頻。"
+        },
+        {
+          "id": 119087,
+          "char": "論旨",
+          "previous_jyutping": "leon6 zi2",
+          "reason": "完整候選仍偏冷僻、過窄領域／舊職稱、罕用變語或低復用片段；按一般生活及書面熟悉度撤回，不把來源詞典權重當生活詞頻。"
+        },
+        {
+          "id": 119091,
+          "char": "論法",
+          "previous_jyutping": "leon6 faat3",
+          "reason": "完整候選仍偏冷僻、過窄領域／舊職稱、罕用變語或低復用片段；按一般生活及書面熟悉度撤回，不把來源詞典權重當生活詞頻。"
+        },
+        {
+          "id": 119119,
+          "char": "諧和感",
+          "previous_jyutping": "haai4 wo4 gam2",
+          "reason": "完整候選仍偏冷僻、過窄領域／舊職稱、罕用變語或低復用片段；按一般生活及書面熟悉度撤回，不把來源詞典權重當生活詞頻。"
+        },
+        {
+          "id": 119147,
+          "char": "諳曉",
+          "previous_jyutping": "am1 hiu2",
+          "reason": "完整候選仍偏冷僻、過窄領域／舊職稱、罕用變語或低復用片段；按一般生活及書面熟悉度撤回，不把來源詞典權重當生活詞頻。"
+        },
+        {
+          "id": 119149,
+          "char": "諳習",
+          "previous_jyutping": "am1 zaap6",
+          "reason": "完整候選仍偏冷僻、過窄領域／舊職稱、罕用變語或低復用片段；按一般生活及書面熟悉度撤回，不把來源詞典權重當生活詞頻。"
+        },
+        {
+          "id": 119150,
+          "char": "諳識",
+          "previous_jyutping": "am1 sik1",
+          "reason": "完整候選仍偏冷僻、過窄領域／舊職稱、罕用變語或低復用片段；按一般生活及書面熟悉度撤回，不把來源詞典權重當生活詞頻。"
+        },
+        {
+          "id": 119188,
+          "char": "謀國",
+          "previous_jyutping": "mau4 gwok3",
+          "reason": "完整候選仍偏冷僻、過窄領域／舊職稱、罕用變語或低復用片段；按一般生活及書面熟悉度撤回，不把來源詞典權重當生活詞頻。"
+        },
+        {
+          "id": 119211,
+          "char": "謀議",
+          "previous_jyutping": "mau4 ji5",
+          "reason": "完整候選仍偏冷僻、過窄領域／舊職稱、罕用變語或低復用片段；按一般生活及書面熟悉度撤回，不把來源詞典權重當生活詞頻。"
+        },
+        {
+          "id": 119212,
+          "char": "謀變",
+          "previous_jyutping": "mau4 bin3",
+          "reason": "完整候選仍偏冷僻、過窄領域／舊職稱、罕用變語或低復用片段；按一般生活及書面熟悉度撤回，不把來源詞典權重當生活詞頻。"
+        },
+        {
+          "id": 119226,
+          "char": "謄寫簿",
+          "previous_jyutping": "tang4 se2 bou2",
+          "reason": "完整候選仍偏冷僻、過窄領域／舊職稱、罕用變語或低復用片段；按一般生活及書面熟悉度撤回，不把來源詞典權重當生活詞頻。"
+        },
+        {
+          "id": 119227,
+          "char": "謄抄",
+          "previous_jyutping": "tang4 caau1",
+          "reason": "完整候選仍偏冷僻、過窄領域／舊職稱、罕用變語或低復用片段；按一般生活及書面熟悉度撤回，不把來源詞典權重當生活詞頻。"
+        },
+        {
+          "id": 119230,
+          "char": "謄稿",
+          "previous_jyutping": "tang4 gou2",
+          "reason": "完整候選仍偏冷僻、過窄領域／舊職稱、罕用變語或低復用片段；按一般生活及書面熟悉度撤回，不把來源詞典權重當生活詞頻。"
+        },
+        {
+          "id": 119271,
+          "char": "講授法",
+          "previous_jyutping": "gong2 sau6 faat3",
+          "reason": "完整候選仍偏冷僻、過窄領域／舊職稱、罕用變語或低復用片段；按一般生活及書面熟悉度撤回，不把來源詞典權重當生活詞頻。"
+        },
+        {
+          "id": 119282,
+          "char": "講演術",
+          "previous_jyutping": "gong2 jin2 seot6",
+          "reason": "完整候選仍偏冷僻、過窄領域／舊職稱、罕用變語或低復用片段；按一般生活及書面熟悉度撤回，不把來源詞典權重當生活詞頻。"
+        },
+        {
+          "id": 119283,
+          "char": "講演錄",
+          "previous_jyutping": "gong2 jin2 luk6",
+          "reason": "完整候選仍偏冷僻、過窄領域／舊職稱、罕用變語或低復用片段；按一般生活及書面熟悉度撤回，不把來源詞典權重當生活詞頻。"
+        },
+        {
+          "id": 119296,
+          "char": "講讀",
+          "previous_jyutping": "gong2 duk6",
+          "reason": "完整候選仍偏冷僻、過窄領域／舊職稱、罕用變語或低復用片段；按一般生活及書面熟悉度撤回，不把來源詞典權重當生活詞頻。"
+        },
+        {
+          "id": 119327,
+          "char": "謳功頌德",
+          "previous_jyutping": "au1 gung1 zung6 dak1",
+          "reason": "完整候選仍偏冷僻、過窄領域／舊職稱、罕用變語或低復用片段；按一般生活及書面熟悉度撤回，不把來源詞典權重當生活詞頻。"
+        },
+        {
+          "id": 119389,
+          "char": "證據辨認",
+          "previous_jyutping": "zing3 geoi3 bin6 jing6",
+          "reason": "完整候選仍偏冷僻、過窄領域／舊職稱、罕用變語或低復用片段；按一般生活及書面熟悉度撤回，不把來源詞典權重當生活詞頻。"
+        },
+        {
+          "id": 119423,
+          "char": "識字知書",
+          "previous_jyutping": "sik1 zi6 zi1 syu1",
+          "reason": "完整候選仍偏冷僻、過窄領域／舊職稱、罕用變語或低復用片段；按一般生活及書面熟悉度撤回，不把來源詞典權重當生活詞頻。"
+        },
+        {
+          "id": 119428,
+          "char": "識文解字",
+          "previous_jyutping": "sik1 man4 gaai2 zi6",
+          "reason": "完整候選仍偏冷僻、過窄領域／舊職稱、罕用變語或低復用片段；按一般生活及書面熟悉度撤回，不把來源詞典權重當生活詞頻。"
+        },
+        {
+          "id": 119432,
+          "char": "識時達變",
+          "previous_jyutping": "sik1 si4 daat6 bin3",
+          "reason": "完整候選仍偏冷僻、過窄領域／舊職稱、罕用變語或低復用片段；按一般生活及書面熟悉度撤回，不把來源詞典權重當生活詞頻。"
+        },
+        {
+          "id": 119434,
+          "char": "識禮知書",
+          "previous_jyutping": "sik1 lai5 zi1 syu1",
+          "reason": "完整候選仍偏冷僻、過窄領域／舊職稱、罕用變語或低復用片段；按一般生活及書面熟悉度撤回，不把來源詞典權重當生活詞頻。"
+        },
+        {
+          "id": 119460,
+          "char": "警具",
+          "previous_jyutping": "ging2 geoi6",
+          "reason": "完整候選仍偏冷僻、過窄領域／舊職稱、罕用變語或低復用片段；按一般生活及書面熟悉度撤回，不把來源詞典權重當生活詞頻。"
+        },
+        {
+          "id": 119486,
+          "char": "警戒哨",
+          "previous_jyutping": "ging2 gaai3 saau3",
+          "reason": "完整候選仍偏冷僻、過窄領域／舊職稱、罕用變語或低復用片段；按一般生活及書面熟悉度撤回，不把來源詞典權重當生活詞頻。"
+        },
+        {
+          "id": 119500,
+          "char": "警花",
+          "previous_jyutping": "ging2 faa1",
+          "reason": "完整候選仍偏冷僻、過窄領域／舊職稱、罕用變語或低復用片段；按一般生活及書面熟悉度撤回，不把來源詞典權重當生活詞頻。"
+        },
+        {
+          "id": 119519,
+          "char": "譯師",
+          "previous_jyutping": "jik6 si1",
+          "reason": "完整候選仍偏冷僻、過窄領域／舊職稱、罕用變語或低復用片段；按一般生活及書面熟悉度撤回，不把來源詞典權重當生活詞頻。"
+        },
+        {
+          "id": 119522,
+          "char": "譯成電碼",
+          "previous_jyutping": "jik6 sing4 din6 maa5",
+          "reason": "完整候選仍偏冷僻、過窄領域／舊職稱、罕用變語或低復用片段；按一般生活及書面熟悉度撤回，不把來源詞典權重當生活詞頻。"
+        },
+        {
+          "id": 119533,
+          "char": "議決案",
+          "previous_jyutping": "ji5 kyut3 on3",
+          "reason": "完整候選仍偏冷僻、過窄領域／舊職稱、罕用變語或低復用片段；按一般生活及書面熟悉度撤回，不把來源詞典權重當生活詞頻。"
+        },
+        {
+          "id": 119556,
+          "char": "護守",
+          "previous_jyutping": "wu6 sau2",
+          "reason": "完整候選仍偏冷僻、過窄領域／舊職稱、罕用變語或低復用片段；按一般生活及書面熟悉度撤回，不把來源詞典權重當生活詞頻。"
+        },
+        {
+          "id": 119564,
+          "char": "護念",
+          "previous_jyutping": "wu6 nim6",
+          "reason": "完整候選仍偏冷僻、過窄領域／舊職稱、罕用變語或低復用片段；按一般生活及書面熟悉度撤回，不把來源詞典權重當生活詞頻。"
+        },
+        {
+          "id": 119570,
+          "char": "護林防火",
+          "previous_jyutping": "wu6 lam4 fong4 fo2",
+          "reason": "完整候選仍偏冷僻、過窄領域／舊職稱、罕用變語或低復用片段；按一般生活及書面熟悉度撤回，不把來源詞典權重當生活詞頻。"
+        },
+        {
+          "id": 119598,
+          "char": "護身法",
+          "previous_jyutping": "wu6 san1 faat3",
+          "reason": "完整候選仍偏冷僻、過窄領域／舊職稱、罕用變語或低復用片段；按一般生活及書面熟悉度撤回，不把來源詞典權重當生活詞頻。"
+        },
+        {
+          "id": 119600,
+          "char": "護過飾非",
+          "previous_jyutping": "wu6 gwo3 sik1 fei1",
+          "reason": "完整候選仍偏冷僻、過窄領域／舊職稱、罕用變語或低復用片段；按一般生活及書面熟悉度撤回，不把來源詞典權重當生活詞頻。"
+        },
+        {
+          "id": 119633,
+          "char": "讀書三餘",
+          "previous_jyutping": "duk6 syu1 saam1 jyu4",
+          "reason": "完整候選仍偏冷僻、過窄領域／舊職稱、罕用變語或低復用片段；按一般生活及書面熟悉度撤回，不把來源詞典權重當生活詞頻。"
+        },
+        {
+          "id": 119632,
+          "char": "讀書三到",
+          "previous_jyutping": "duk6 syu1 saam1 dou2",
+          "reason": "完整候選仍偏冷僻、過窄領域／舊職稱、罕用變語或低復用片段；按一般生活及書面熟悉度撤回，不把來源詞典權重當生活詞頻。"
+        },
+        {
+          "id": 119635,
+          "char": "讀書君子",
+          "previous_jyutping": "duk6 syu1 gwan1 zi2",
+          "reason": "完整候選仍偏冷僻、過窄領域／舊職稱、罕用變語或低復用片段；按一般生活及書面熟悉度撤回，不把來源詞典權重當生活詞頻。"
+        },
+        {
+          "id": 119693,
+          "char": "變危為安",
+          "previous_jyutping": "bin3 ngai4 wai4 on1",
+          "reason": "完整候選仍偏冷僻、過窄領域／舊職稱、罕用變語或低復用片段；按一般生活及書面熟悉度撤回，不把來源詞典權重當生活詞頻。"
+        },
+        {
+          "id": 119710,
+          "char": "變奏曲式",
+          "previous_jyutping": "bin3 zau3 kuk1 sik1",
+          "reason": "完整候選仍偏冷僻、過窄領域／舊職稱、罕用變語或低復用片段；按一般生活及書面熟悉度撤回，不把來源詞典權重當生活詞頻。"
+        },
+        {
+          "id": 119802,
+          "char": "變色牙",
+          "previous_jyutping": "bin3 sik1 ngaa4",
+          "reason": "完整候選仍偏冷僻、過窄領域／舊職稱、罕用變語或低復用片段；按一般生活及書面熟悉度撤回，不把來源詞典權重當生活詞頻。"
+        },
+        {
+          "id": 119832,
+          "char": "變速齒輪",
+          "previous_jyutping": "bin3 cuk1 ci2 leon4",
+          "reason": "完整候選仍偏冷僻、過窄領域／舊職稱、罕用變語或低復用片段；按一般生活及書面熟悉度撤回，不把來源詞典權重當生活詞頻。"
+        },
+        {
+          "id": 119842,
+          "char": "變量名",
+          "previous_jyutping": "bin3 loeng6 ming4",
+          "reason": "完整候選仍偏冷僻、過窄領域／舊職稱、罕用變語或低復用片段；按一般生活及書面熟悉度撤回，不把來源詞典權重當生活詞頻。"
+        },
+        {
+          "id": 119863,
+          "char": "讒口鑠金",
+          "previous_jyutping": "caam4 hau2 soek3 gam1",
+          "reason": "完整候選仍偏冷僻、過窄領域／舊職稱、罕用變語或低復用片段；按一般生活及書面熟悉度撤回，不把來源詞典權重當生活詞頻。"
+        },
+        {
+          "id": 119879,
+          "char": "讓我憂",
+          "previous_jyutping": "joeng6 ngo5 jau1",
+          "reason": "完整候選仍偏冷僻、過窄領域／舊職稱、罕用變語或低復用片段；按一般生活及書面熟悉度撤回，不把來源詞典權重當生活詞頻。"
+        },
+        {
+          "id": 119933,
+          "char": "豆科作物",
+          "previous_jyutping": "dau6 fo1 zok3 mat6",
+          "reason": "完整候選仍偏冷僻、過窄領域／舊職稱、罕用變語或低復用片段；按一般生活及書面熟悉度撤回，不把來源詞典權重當生活詞頻。"
+        },
+        {
+          "id": 119945,
+          "char": "豆萁相煎",
+          "previous_jyutping": "dau6 kei4 soeng1 zin1",
+          "reason": "完整候選仍偏冷僻、過窄領域／舊職稱、罕用變語或低復用片段；按一般生活及書面熟悉度撤回，不把來源詞典權重當生活詞頻。"
+        }
+      ],
+      "grade_changes": [
+        {
+          "id": 118006,
+          "char": "詠志",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 118013,
+          "char": "詠物",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 118014,
+          "char": "詠經",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 118015,
+          "char": "詠詩",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 118032,
+          "char": "試乘試駕",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 118050,
+          "char": "試妝",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 118104,
+          "char": "試題答案",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 118106,
+          "char": "試養",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 118152,
+          "char": "詩詞曲賦",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 118171,
+          "char": "詭譎多變",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 118173,
+          "char": "詭辯者",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 118190,
+          "char": "話劇表演",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 118194,
+          "char": "話外音",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 118305,
+          "char": "誌慶",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 118363,
+          "char": "認股",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 118358,
+          "char": "認罪悔過",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 118352,
+          "char": "認知障礙",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 118467,
+          "char": "語文課程",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 118472,
+          "char": "語法錯誤",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 118486,
+          "char": "語言文字",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 118487,
+          "char": "語言文學",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 118490,
+          "char": "語言特點",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 118492,
+          "char": "語言藝術",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 118493,
+          "char": "語言表達",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 118507,
+          "char": "語音撥號",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 118517,
+          "char": "誠信為本",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 118520,
+          "char": "誠如所言",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 118527,
+          "char": "誠意金",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 118528,
+          "char": "誠懇待人",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 118532,
+          "char": "誠然如此",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 118545,
+          "char": "誣控",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 118546,
+          "char": "誣稱",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 118562,
+          "char": "誤國害民",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 118570,
+          "char": "誤導人心",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 118716,
+          "char": "課堂作業",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 118719,
+          "char": "課堂秩序",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 118720,
+          "char": "課堂紀律",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 118722,
+          "char": "課外指導",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 118723,
+          "char": "課外練習",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 118726,
+          "char": "課後練習",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 118736,
+          "char": "課程名稱",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 118738,
+          "char": "課程目標",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 118740,
+          "char": "課程計劃",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 118741,
+          "char": "課程設計",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 118773,
+          "char": "調兵",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 118778,
+          "char": "調劑身心",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 118820,
+          "char": "調整佈局",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 118823,
+          "char": "調整結構",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 118835,
+          "char": "調查過程",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 118882,
+          "char": "調解糾紛",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 118942,
+          "char": "談判代表",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 118946,
+          "char": "談吐詼諧",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 119062,
+          "char": "論功封賞",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 119079,
+          "char": "論據不足",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 119080,
+          "char": "論文答辯",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 119115,
+          "char": "諜報人員",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 119116,
+          "char": "諜報員",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 119138,
+          "char": "諮詢機構",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 119151,
+          "char": "諷刺作品",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 119152,
+          "char": "諷刺作家",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 119155,
+          "char": "諷刺詩",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 119186,
+          "char": "謀取私利",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 119195,
+          "char": "謀殺者",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 119203,
+          "char": "謀福利",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 119204,
+          "char": "謀私利",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 119216,
+          "char": "謂之",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 119242,
+          "char": "謙厚有禮",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 119248,
+          "char": "謙虛有禮",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 119252,
+          "char": "謙遜有禮",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 119278,
+          "char": "講求實效",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 119280,
+          "char": "講演稿",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 119281,
+          "char": "講演者",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 119330,
+          "char": "謹以此文",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 119337,
+          "char": "謹慎從事",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 119347,
+          "char": "謹致謝意",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 119446,
+          "char": "譜寫成",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 119448,
+          "char": "譜成樂曲",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 119464,
+          "char": "警務局長",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 119474,
+          "char": "警官證",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 119476,
+          "char": "警察學校",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 119477,
+          "char": "警察局長",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 119481,
+          "char": "警察部隊",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 119487,
+          "char": "警戒水位",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 119523,
+          "char": "譯文集",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 119530,
+          "char": "議會選舉",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 119537,
+          "char": "議論紛紜",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 119582,
+          "char": "護理產品",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 119607,
+          "char": "譽滿天下",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 119637,
+          "char": "讀書無用",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 119638,
+          "char": "讀書看報",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 119640,
+          "char": "讀書筆記",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 119651,
+          "char": "讀者來信",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 119691,
+          "char": "變化萬端",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 119692,
+          "char": "變化規律",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 119737,
+          "char": "變性手術",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 119823,
+          "char": "變通方法",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 119831,
+          "char": "變速裝置",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 119850,
+          "char": "變頻空調",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 119947,
+          "char": "豆藤",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 119986,
+          "char": "豐收在望",
+          "previous_grade": 1,
+          "grade": 2
+        }
+      ],
+      "amendments": [
+        {
+          "id": 118187,
+          "char": "話中帶刺",
+          "previous_jyutping": "waa6 zung3 daai3 ci3",
+          "jyutping": "waa6 zung1 daai3 ci3",
+          "alternatives": [],
+          "note": "話中為言語之中zung1，非中選命中zung3。",
+          "reference": "https://jyut.net/query?q=中"
+        },
+        {
+          "id": 118209,
+          "char": "話題一轉",
+          "previous_jyutping": "waa6 tai4 jat1 zyun3",
+          "jyutping": "waa6 tai4 jat1 zyun2",
+          "alternatives": [],
+          "note": "改變話題方向zyun2，不從轉圈zyun3機械拼接。",
+          "reference": "https://jyut.net/query?q=轉"
+        },
+        {
+          "id": 118141,
+          "char": "詩歌散文",
+          "previous_jyutping": "si1 go1 saan2 man2",
+          "jyutping": "si1 go1 saan2 man4",
+          "alternatives": [],
+          "note": "完整散文saan2man4，不把中文／文字詞末變調man2無據搬入散文。",
+          "reference": "https://cantonese.sheik.co.uk/dictionary/characters/2163/?cf=1&full=true"
+        },
+        {
+          "id": 118403,
+          "char": "誓死不降",
+          "previous_jyutping": "sai6 sei2 bat1 gong3",
+          "jyutping": "sai6 sei2 bat1 hong4",
+          "alternatives": [],
+          "note": "投降hong4，不讀下降gong3。",
+          "reference": "https://jyut.net/query?q=降"
+        },
+        {
+          "id": 118478,
+          "char": "語義上",
+          "previous_jyutping": "jyu5 ji6 soeng5",
+          "jyutping": "jyu5 ji6 soeng6",
+          "alternatives": [],
+          "note": "在語義層面／語義之上用方位soeng6，非向上移動soeng5。",
+          "reference": "https://jyut.net/query?q=上"
+        },
+        {
+          "id": 118731,
+          "char": "課本上",
+          "previous_jyutping": "fo3 bun2 soeng5",
+          "jyutping": "fo3 bun2 soeng6",
+          "alternatives": [],
+          "note": "課本之上位置soeng6，非上去動詞soeng5。",
+          "reference": "https://jyut.net/query?q=上"
+        },
+        {
+          "id": 118671,
+          "char": "說短道長",
+          "previous_jyutping": "syut3 dyun2 dou6 zoeng2",
+          "jyutping": "syut3 dyun2 dou6 coeng4",
+          "alternatives": [],
+          "note": "說長短coeng4，非道長職銜zoeng2；不讓分詞道長覆蓋完整俗語義。",
+          "reference": "https://jyut.net/query?q=長"
+        },
+        {
+          "id": 118637,
+          "char": "說唱樂",
+          "previous_jyutping": "syut3 coeng3 lok6",
+          "jyutping": "syut3 coeng3 ngok6",
+          "alternatives": [],
+          "note": "音樂ngok6，非快樂lok6；說唱syut3非游說seoi3。",
+          "reference": "https://jyut.net/query?q=樂 ; https://cantonese.sheik.co.uk/dictionary/characters/138/?full=true"
+        },
+        {
+          "id": 118664,
+          "char": "說服教育",
+          "previous_jyutping": "syut3 fuk6 gaau3 juk6",
+          "jyutping": "seoi3 fuk6 gaau3 juk6",
+          "alternatives": [],
+          "note": "完整說服有seoi3fuk6現代字書與整詞依據，不把普通話說shuō之syut3直接套入勸說義；本批不改寫任何舊來源。",
+          "reference": "https://jyut.net/query?q=說 ; https://en.wiktionary.org/wiki/說服"
+        },
+        {
+          "id": 118094,
+          "char": "試運轉",
+          "previous_jyutping": "si3 wan6 zyun3",
+          "jyutping": "si3 wan6 zyun2",
+          "alternatives": [],
+          "note": "完整運轉wan6zyun2現代詞級依據，不機械採轉圈3。",
+          "reference": "https://en.wiktionary.org/wiki/運轉"
+        },
+        {
+          "id": 119331,
+          "char": "謹備菲酌",
+          "previous_jyutping": "gan2 bei6 fei1 zoek3",
+          "jyutping": "gan2 bei6 fei2 zoek3",
+          "alternatives": [],
+          "note": "菲薄自謙之fei2，非芳菲fei1。",
+          "reference": "https://jyut.net/query?q=菲"
+        },
+        {
+          "id": 119477,
+          "char": "警察局長",
+          "previous_jyutping": "ging2 caat3 guk6 coeng4",
+          "jyutping": "ging2 caat3 guk6 zoeng2",
+          "alternatives": [],
+          "note": "職銜長zoeng2，非長短coeng4。",
+          "reference": "https://jyut.net/query?q=長"
+        },
+        {
+          "id": 119968,
+          "char": "豎行",
+          "previous_jyutping": "syu6 haang4",
+          "jyutping": "syu6 hong4",
+          "alternatives": [],
+          "note": "文字直排之行列hong4，不讀走路haang4。",
+          "reference": "https://jyut.net/query?q=行"
+        },
+        {
+          "id": 119535,
+          "char": "議處",
+          "previous_jyutping": "ji5 cyu3",
+          "jyutping": "ji5 cyu2",
+          "alternatives": [
+            "ji5 cyu5"
+          ],
+          "note": "討論處置cyu2建議先cyu5現代同義後，不套地方cyu3。",
+          "reference": "https://jyut.net/query?q=處"
+        },
+        {
+          "id": 119784,
+          "char": "變相處理",
+          "previous_jyutping": "bin3 soeng3 cyu5 lei5",
+          "jyutping": "bin3 soeng3 cyu2 lei5",
+          "alternatives": [
+            "bin3 soeng3 cyu5 lei5"
+          ],
+          "note": "處理cyu2建議先cyu5現代同義後，不讀地方3。",
+          "reference": "https://jyut.net/query?q=處"
+        },
+        {
+          "id": 119825,
+          "char": "變通處理",
+          "previous_jyutping": "bin3 tung1 cyu5 lei5",
+          "jyutping": "bin3 tung1 cyu2 lei5",
+          "alternatives": [
+            "bin3 tung1 cyu5 lei5"
+          ],
+          "note": "處理cyu2建議先cyu5現代同義後，不讀地方3。",
+          "reference": "https://jyut.net/query?q=處"
+        },
+        {
+          "id": 118566,
+          "char": "誤報率",
+          "previous_jyutping": "ng6 bou3 leot2",
+          "jyutping": "ng6 bou3 leot6",
+          "alternatives": [],
+          "note": "比率名詞leot6，非草稿leot2或率領seot1。",
+          "reference": "https://jyut.net/query?q=率"
+        },
+        {
+          "id": 118568,
+          "char": "誤字率",
+          "previous_jyutping": "ng6 zi6 leot2",
+          "jyutping": "ng6 zi6 leot6",
+          "alternatives": [],
+          "note": "比率名詞leot6，非草稿leot2或率領seot1。",
+          "reference": "https://jyut.net/query?q=率"
+        },
+        {
+          "id": 118067,
+          "char": "試片",
+          "previous_jyutping": "si3 pin3",
+          "jyutping": "si3 pin2",
+          "alternatives": [
+            "si3 pin3"
+          ],
+          "note": "電影片pin2現代口語先3書讀後，試片非試驗片材料義。",
+          "reference": "https://jyut.net/query?q=片"
+        },
+        {
+          "id": 118068,
+          "char": "試片室",
+          "previous_jyutping": "si3 pin3 sat1",
+          "jyutping": "si3 pin2 sat1",
+          "alternatives": [
+            "si3 pin3 sat1"
+          ],
+          "note": "電影片pin2現代口語先3書讀後，試片非試驗片材料義。",
+          "reference": "https://jyut.net/query?q=片"
+        },
+        {
+          "id": 118081,
+          "char": "試訂",
+          "previous_jyutping": "si3 ding6",
+          "jyutping": "si3 deng6",
+          "alternatives": [
+            "si3 ding3",
+            "si3 ding6"
+          ],
+          "note": "試訂購／誤訂購deng6口語先，現代訂購書讀ding3與ding6後，不一概刪6。",
+          "reference": "https://jyut.net/query?q=訂 ; https://cantonese.sheik.co.uk/dictionary/characters/1187/?full=true"
+        },
+        {
+          "id": 118592,
+          "char": "誤訂",
+          "previous_jyutping": "ng6 ding6",
+          "jyutping": "ng6 deng6",
+          "alternatives": [
+            "ng6 ding3",
+            "ng6 ding6"
+          ],
+          "note": "試訂購／誤訂購deng6口語先，現代訂購書讀ding3與ding6後，不一概刪6。",
+          "reference": "https://jyut.net/query?q=訂 ; https://cantonese.sheik.co.uk/dictionary/characters/1187/?full=true"
+        },
+        {
+          "id": 118244,
+          "char": "該軟件",
+          "previous_jyutping": "goi1 jyun5 gin6",
+          "jyutping": "goi1 jyun5 gin2",
+          "alternatives": [
+            "goi1 jyun5 gin6"
+          ],
+          "note": "物件gin2日常先gin6原讀後。",
+          "reference": "https://jyut.net/query?q=件"
+        },
+        {
+          "id": 119055,
+          "char": "論件",
+          "previous_jyutping": "leon6 gin6",
+          "jyutping": "leon6 gin2",
+          "alternatives": [
+            "leon6 gin6"
+          ],
+          "note": "物件gin2日常先gin6原讀後。",
+          "reference": "https://jyut.net/query?q=件"
+        },
+        {
+          "id": 119373,
+          "char": "證券交易",
+          "previous_jyutping": "zing3 gyun3 gaau1 jik6",
+          "jyutping": "zing3 hyun3 gaau1 jik6",
+          "alternatives": [
+            "zing3 gyun3 gaau1 jik6"
+          ],
+          "note": "券hyun3建議日常先，讀音表明列gyun3現代又讀後，不把有效變讀一律視作錯音。",
+          "reference": "https://jyut.net/query?q=券"
+        },
+        {
+          "id": 119376,
+          "char": "證券期貨",
+          "previous_jyutping": "zing3 gyun3 kei4 fo3",
+          "jyutping": "zing3 hyun3 kei4 fo3",
+          "alternatives": [
+            "zing3 gyun3 kei4 fo3"
+          ],
+          "note": "券hyun3建議日常先，讀音表明列gyun3現代又讀後，不把有效變讀一律視作錯音。",
+          "reference": "https://jyut.net/query?q=券"
+        },
+        {
+          "id": 119378,
+          "char": "證券犯罪",
+          "previous_jyutping": "zing3 gyun3 faan6 zeoi6",
+          "jyutping": "zing3 hyun3 faan6 zeoi6",
+          "alternatives": [
+            "zing3 gyun3 faan6 zeoi6"
+          ],
+          "note": "券hyun3建議日常先，讀音表明列gyun3現代又讀後，不把有效變讀一律視作錯音。",
+          "reference": "https://jyut.net/query?q=券"
+        },
+        {
+          "id": 119379,
+          "char": "證券監管",
+          "previous_jyutping": "zing3 gyun3 gaam1 gun2",
+          "jyutping": "zing3 hyun3 gaam1 gun2",
+          "alternatives": [
+            "zing3 gyun3 gaam1 gun2"
+          ],
+          "note": "券hyun3建議日常先，讀音表明列gyun3現代又讀後，不把有效變讀一律視作錯音。",
+          "reference": "https://jyut.net/query?q=券"
+        },
+        {
+          "id": 119381,
+          "char": "證券行情",
+          "previous_jyutping": "zing3 gyun3 hong4 cing4",
+          "jyutping": "zing3 hyun3 hong4 cing4",
+          "alternatives": [
+            "zing3 gyun3 hong4 cing4"
+          ],
+          "note": "券hyun3建議日常先，讀音表明列gyun3現代又讀後，不把有效變讀一律視作錯音。",
+          "reference": "https://jyut.net/query?q=券"
+        },
+        {
+          "id": 119619,
+          "char": "讀卡",
+          "previous_jyutping": "duk6 kaa1",
+          "jyutping": "duk6 kaat1",
+          "alternatives": [
+            "duk6 kaa1"
+          ],
+          "note": "卡片kaat1日常先，完整卡片kaa1現代又讀後；不是只按卡通kaa1推所有卡字。",
+          "reference": "https://jyut.net/query?q=卡"
+        },
+        {
+          "id": 119956,
+          "char": "豌豆苗",
+          "previous_jyutping": "wun2 dau2 miu4",
+          "jyutping": "wun2 dau6 miu4",
+          "alternatives": [
+            "wun2 dau2 miu4"
+          ],
+          "note": "完整豌豆wun2dau6／dau2現代詞級及原發音均有依據；苗／莢組詞先用植物本調6，2作保留的現代語音後。",
+          "reference": "https://yue.forvo.com/word/豌豆/ ; https://www.pinhok.com/cdn/kbpdf/japanese/cantonese/inshoku-butsu-no-kanton-go-mei.pdf"
+        },
+        {
+          "id": 119957,
+          "char": "豌豆莢",
+          "previous_jyutping": "wun2 dau2 gaap3",
+          "jyutping": "wun2 dau6 gaap3",
+          "alternatives": [
+            "wun2 dau2 gaap3"
+          ],
+          "note": "完整豌豆wun2dau6／dau2現代詞級及原發音均有依據；苗／莢組詞先用植物本調6，2作保留的現代語音後。",
+          "reference": "https://yue.forvo.com/word/豌豆/ ; https://www.pinhok.com/cdn/kbpdf/japanese/cantonese/inshoku-butsu-no-kanton-go-mei.pdf"
+        },
+        {
+          "id": 118771,
+          "char": "調光",
+          "previous_jyutping": "diu6 gwong1",
+          "jyutping": "tiu4 gwong1",
+          "alternatives": [],
+          "note": "調整、調校或調和tiu4；非調派資源diu6。",
+          "reference": "https://jyut.net/query?q=調"
+        },
+        {
+          "id": 118803,
+          "char": "調好",
+          "previous_jyutping": "diu6 hou2",
+          "jyutping": "tiu4 hou2",
+          "alternatives": [],
+          "note": "調整、調校或調和tiu4；非調派資源diu6。",
+          "reference": "https://jyut.net/query?q=調"
+        },
+        {
+          "id": 118804,
+          "char": "調妥",
+          "previous_jyutping": "diu6 to5",
+          "jyutping": "tiu4 to5",
+          "alternatives": [],
+          "note": "調整、調校或調和tiu4；非調派資源diu6。",
+          "reference": "https://jyut.net/query?q=調"
+        },
+        {
+          "id": 118815,
+          "char": "調快",
+          "previous_jyutping": "diu6 faai3",
+          "jyutping": "tiu4 faai3",
+          "alternatives": [],
+          "note": "調整、調校或調和tiu4；非調派資源diu6。",
+          "reference": "https://jyut.net/query?q=調"
+        },
+        {
+          "id": 118817,
+          "char": "調成",
+          "previous_jyutping": "diu6 sing4",
+          "jyutping": "tiu4 sing4",
+          "alternatives": [],
+          "note": "調整、調校或調和tiu4；非調派資源diu6。",
+          "reference": "https://jyut.net/query?q=調"
+        },
+        {
+          "id": 118847,
+          "char": "調琴",
+          "previous_jyutping": "diu6 kam4",
+          "jyutping": "tiu4 kam4",
+          "alternatives": [],
+          "note": "調整、調校或調和tiu4；非調派資源diu6。",
+          "reference": "https://jyut.net/query?q=調"
+        },
+        {
+          "id": 118862,
+          "char": "調細",
+          "previous_jyutping": "diu6 sai3",
+          "jyutping": "tiu4 sai3",
+          "alternatives": [],
+          "note": "調整、調校或調和tiu4；非調派資源diu6。",
+          "reference": "https://jyut.net/query?q=調"
+        },
+        {
+          "id": 118863,
+          "char": "調絃",
+          "previous_jyutping": "diu6 jin4",
+          "jyutping": "tiu4 jin4",
+          "alternatives": [],
+          "note": "調整、調校或調和tiu4；非調派資源diu6。",
+          "reference": "https://jyut.net/query?q=調"
+        },
+        {
+          "id": 118890,
+          "char": "調輕",
+          "previous_jyutping": "diu6 hing1",
+          "jyutping": "tiu4 hing1",
+          "alternatives": [],
+          "note": "調整、調校或調和tiu4；非調派資源diu6。",
+          "reference": "https://jyut.net/query?q=調"
+        },
+        {
+          "id": 118891,
+          "char": "調近",
+          "previous_jyutping": "diu6 gan6",
+          "jyutping": "tiu4 gan6",
+          "alternatives": [],
+          "note": "調整、調校或調和tiu4；非調派資源diu6。",
+          "reference": "https://jyut.net/query?q=調"
+        },
+        {
+          "id": 118901,
+          "char": "調重",
+          "previous_jyutping": "diu6 cung4",
+          "jyutping": "tiu4 cung4",
+          "alternatives": [],
+          "note": "調整、調校或調和tiu4；非調派資源diu6。",
+          "reference": "https://jyut.net/query?q=調"
+        },
+        {
+          "id": 118911,
+          "char": "調高",
+          "previous_jyutping": "diu6 gou1",
+          "jyutping": "tiu4 gou1",
+          "alternatives": [],
+          "note": "調整、調校或調和tiu4；非調派資源diu6。",
+          "reference": "https://jyut.net/query?q=調"
+        },
+        {
+          "id": 118797,
+          "char": "調增",
+          "previous_jyutping": "diu6 zang1",
+          "jyutping": "tiu4 zang1",
+          "alternatives": [],
+          "note": "調整、調校或調和tiu4；非調派資源diu6。",
+          "reference": "https://jyut.net/query?q=調"
+        },
+        {
+          "id": 118759,
+          "char": "調上",
+          "previous_jyutping": "diu6 soeng5",
+          "jyutping": "tiu4 soeng5",
+          "alternatives": [
+            "diu6 soeng5"
+          ],
+          "note": "調整位置／高低tiu4先，調派到上級或下級diu6後；兩個自然現代語境分開，不一律刪其中一音。",
+          "reference": "https://jyut.net/query?q=調"
+        },
+        {
+          "id": 118760,
+          "char": "調上來",
+          "previous_jyutping": "diu6 soeng5 loi4",
+          "jyutping": "tiu4 soeng5 loi4",
+          "alternatives": [
+            "diu6 soeng5 loi4"
+          ],
+          "note": "調整位置／高低tiu4先，調派到上級或下級diu6後；兩個自然現代語境分開，不一律刪其中一音。",
+          "reference": "https://jyut.net/query?q=調"
+        },
+        {
+          "id": 118761,
+          "char": "調上去",
+          "previous_jyutping": "diu6 soeng5 heoi3",
+          "jyutping": "tiu4 soeng5 heoi3",
+          "alternatives": [
+            "diu6 soeng5 heoi3"
+          ],
+          "note": "調整位置／高低tiu4先，調派到上級或下級diu6後；兩個自然現代語境分開，不一律刪其中一音。",
+          "reference": "https://jyut.net/query?q=調"
+        },
+        {
+          "id": 118762,
+          "char": "調下",
+          "previous_jyutping": "diu6 haa6",
+          "jyutping": "tiu4 haa6",
+          "alternatives": [
+            "diu6 haa6"
+          ],
+          "note": "調整位置／高低tiu4先，調派到上級或下級diu6後；兩個自然現代語境分開，不一律刪其中一音。",
+          "reference": "https://jyut.net/query?q=調"
+        },
+        {
+          "id": 118763,
+          "char": "調下來",
+          "previous_jyutping": "diu6 haa6 loi4",
+          "jyutping": "tiu4 haa6 loi4",
+          "alternatives": [
+            "diu6 haa6 loi4"
+          ],
+          "note": "調整位置／高低tiu4先，調派到上級或下級diu6後；兩個自然現代語境分開，不一律刪其中一音。",
+          "reference": "https://jyut.net/query?q=調"
+        },
+        {
+          "id": 118764,
+          "char": "調下去",
+          "previous_jyutping": "diu6 haa6 heoi3",
+          "jyutping": "tiu4 haa6 heoi3",
+          "alternatives": [
+            "diu6 haa6 heoi3"
+          ],
+          "note": "調整位置／高低tiu4先，調派到上級或下級diu6後；兩個自然現代語境分開，不一律刪其中一音。",
+          "reference": "https://jyut.net/query?q=調"
+        },
+        {
+          "id": 118768,
+          "char": "調來調去",
+          "previous_jyutping": "diu6 loi4 diu6 heoi3",
+          "jyutping": "tiu4 loi4 tiu4 heoi3",
+          "alternatives": [
+            "diu6 loi4 diu6 heoi3"
+          ],
+          "note": "反覆調校tiu4先，反覆調派diu6後；不混作兩字隨意交叉拼讀。",
+          "reference": "https://jyut.net/query?q=調"
+        },
+        {
+          "id": 118776,
+          "char": "調到",
+          "previous_jyutping": "diu6 dou2",
+          "jyutping": "diu6 dou3",
+          "alternatives": [
+            "tiu4 dou3"
+          ],
+          "note": "調派到達diu6dou3與調至目標tiu4dou3分開；草稿dou2不直接充當到達音。",
+          "reference": "https://jyut.net/query?q=調 ; https://jyut.net/query?q=到"
+        },
+        {
+          "id": 118898,
+          "char": "調配出",
+          "previous_jyutping": "diu6 pui3 ceot1",
+          "jyutping": "tiu4 pui3 ceot1",
+          "alternatives": [
+            "diu6 pui3 ceot1"
+          ],
+          "note": "調製材料tiu4先，分派資源diu6後；完整粵典兩個調配詞義有據。",
+          "reference": "https://words.hk/zidin/調配"
+        },
+        {
+          "id": 118869,
+          "char": "調至",
+          "previous_jyutping": "diu6 zi3",
+          "jyutping": "tiu4 zi3",
+          "alternatives": [
+            "diu6 zi3"
+          ],
+          "note": "調整至某值tiu4先，調派至某處diu6後。",
+          "reference": "https://jyut.net/query?q=調"
+        },
+        {
+          "id": 118873,
+          "char": "調色盤",
+          "previous_jyutping": "tiu4 sik1 pun4",
+          "jyutping": "tiu4 sik1 pun2",
+          "alternatives": [
+            "tiu4 sik1 pun4"
+          ],
+          "note": "名詞盤pun2日常變調先pun4書讀後。",
+          "reference": "https://jyut.net/query?q=盤"
+        },
+        {
+          "id": 118626,
+          "char": "說來聽聽",
+          "previous_jyutping": "syut3 loi4 teng1 teng1",
+          "jyutping": "syut3 loi4 teng1 teng1",
+          "alternatives": [
+            "syut3 loi4 ting1 ting1"
+          ],
+          "note": "聆聽teng1語音先ting1書讀後，與聽覺／聽從特定ting3詞例分開。",
+          "reference": "https://jyut.net/query?q=聽"
+        },
+        {
+          "id": 118644,
+          "char": "說好聽",
+          "previous_jyutping": "syut3 hou2 teng1",
+          "jyutping": "syut3 hou2 teng1",
+          "alternatives": [
+            "syut3 hou2 ting1"
+          ],
+          "note": "聆聽teng1語音先ting1書讀後，與聽覺／聽從特定ting3詞例分開。",
+          "reference": "https://jyut.net/query?q=聽"
+        },
+        {
+          "id": 118343,
+          "char": "認真聽講",
+          "previous_jyutping": "jing6 zan1 teng1 gong2",
+          "jyutping": "jing6 zan1 teng1 gong2",
+          "alternatives": [
+            "jing6 zan1 ting1 gong2"
+          ],
+          "note": "聆聽teng1語音先ting1書讀後，與聽覺／聽從特定ting3詞例分開。",
+          "reference": "https://jyut.net/query?q=聽"
+        },
+        {
+          "id": 119261,
+          "char": "講到",
+          "previous_jyutping": "gong2 dou2",
+          "jyutping": "gong2 dou3",
+          "alternatives": [],
+          "note": "到達／談及某處或變化程度dou3，不把草稿dou2一律當到達的首選讀音；自然結果能力讀法另候整詞證據。",
+          "reference": "https://jyut.net/query?q=到"
+        },
+        {
+          "id": 118975,
+          "char": "談論到",
+          "previous_jyutping": "taam4 leon6 dou2",
+          "jyutping": "taam4 leon6 dou3",
+          "alternatives": [],
+          "note": "到達／談及某處或變化程度dou3，不把草稿dou2一律當到達的首選讀音；自然結果能力讀法另候整詞證據。",
+          "reference": "https://jyut.net/query?q=到"
+        },
+        {
+          "id": 119682,
+          "char": "變到",
+          "previous_jyutping": "bin3 dou2",
+          "jyutping": "bin3 dou3",
+          "alternatives": [],
+          "note": "到達／談及某處或變化程度dou3，不把草稿dou2一律當到達的首選讀音；自然結果能力讀法另候整詞證據。",
+          "reference": "https://jyut.net/query?q=到"
+        },
+        {
+          "id": 119059,
+          "char": "論到",
+          "previous_jyutping": "leon6 dou2",
+          "jyutping": "leon6 dou3",
+          "alternatives": [],
+          "note": "到達／談及某處或變化程度dou3，不把草稿dou2一律當到達的首選讀音；自然結果能力讀法另候整詞證據。",
+          "reference": "https://jyut.net/query?q=到"
+        },
+        {
+          "id": 119618,
+          "char": "讀到",
+          "previous_jyutping": "duk6 dou2",
+          "jyutping": "duk6 dou3",
+          "alternatives": [],
+          "note": "到達／談及某處或變化程度dou3，不把草稿dou2一律當到達的首選讀音；自然結果能力讀法另候整詞證據。",
+          "reference": "https://jyut.net/query?q=到"
+        },
+        {
+          "id": 119504,
+          "char": "警覺到",
+          "previous_jyutping": "ging2 gok3 dou2",
+          "jyutping": "ging2 gok3 dou3",
+          "alternatives": [],
+          "note": "到達／談及某處或變化程度dou3，不把草稿dou2一律當到達的首選讀音；自然結果能力讀法另候整詞證據。",
+          "reference": "https://jyut.net/query?q=到"
+        },
+        {
+          "id": 118990,
+          "char": "請假單",
+          "previous_jyutping": "cing2 gaa2 daan1",
+          "jyutping": "cing2 gaa3 daan1",
+          "alternatives": [],
+          "note": "請假假期gaa3，非真假gaa2。",
+          "reference": "https://words.hk/zidin/請假"
+        },
+        {
+          "id": 118991,
+          "char": "請假條",
+          "previous_jyutping": "cing2 gaa2 tiu4",
+          "jyutping": "cing2 gaa3 tiu4",
+          "alternatives": [],
+          "note": "請假假期gaa3，非真假gaa2。",
+          "reference": "https://words.hk/zidin/請假"
+        },
+        {
+          "id": 119047,
+          "char": "請降",
+          "previous_jyutping": "cing2 gong3",
+          "jyutping": "cing2 hong4",
+          "alternatives": [],
+          "note": "請求投降hong4，非下降gong3。",
+          "reference": "https://jyut.net/query?q=降"
+        },
+        {
+          "id": 119045,
+          "char": "請進來",
+          "previous_jyutping": "cing2 zeon3 loi4",
+          "jyutping": "ceng2 zeon3 loi4",
+          "alternatives": [
+            "cing2 zeon3 loi4"
+          ],
+          "note": "請ceng2現代口語先cing2讀書音後；請假假期gaa3固定，不套真假gaa2。",
+          "reference": "https://jyut.net/query?q=請 ; https://words.hk/zidin/請假"
+        },
+        {
+          "id": 118986,
+          "char": "請不動",
+          "previous_jyutping": "cing2 bat1 dung6",
+          "jyutping": "ceng2 bat1 dung6",
+          "alternatives": [
+            "cing2 bat1 dung6"
+          ],
+          "note": "請ceng2現代口語先cing2讀書音後；請假假期gaa3固定，不套真假gaa2。",
+          "reference": "https://jyut.net/query?q=請 ; https://words.hk/zidin/請假"
+        },
+        {
+          "id": 118987,
+          "char": "請不起",
+          "previous_jyutping": "cing2 bat1 hei2",
+          "jyutping": "ceng2 bat1 hei2",
+          "alternatives": [
+            "cing2 bat1 hei2"
+          ],
+          "note": "請ceng2現代口語先cing2讀書音後；請假假期gaa3固定，不套真假gaa2。",
+          "reference": "https://jyut.net/query?q=請 ; https://words.hk/zidin/請假"
+        },
+        {
+          "id": 118991,
+          "char": "請假條",
+          "previous_jyutping": "cing2 gaa3 tiu4",
+          "jyutping": "ceng2 gaa3 tiu4",
+          "alternatives": [
+            "cing2 gaa3 tiu4"
+          ],
+          "note": "請ceng2現代口語先cing2讀書音後；請假假期gaa3固定，不套真假gaa2。",
+          "reference": "https://jyut.net/query?q=請 ; https://words.hk/zidin/請假"
+        },
+        {
+          "id": 119007,
+          "char": "請坐下來",
+          "previous_jyutping": "cing2 co5 haa6 loi4",
+          "jyutping": "ceng2 co5 haa6 loi4",
+          "alternatives": [
+            "cing2 co5 haa6 loi4"
+          ],
+          "note": "請ceng2現代口語先cing2讀書音後；請假假期gaa3固定，不套真假gaa2。",
+          "reference": "https://jyut.net/query?q=請 ; https://words.hk/zidin/請假"
+        },
+        {
+          "id": 119036,
+          "char": "請舉手",
+          "previous_jyutping": "cing2 geoi2 sau2",
+          "jyutping": "ceng2 geoi2 sau2",
+          "alternatives": [
+            "cing2 geoi2 sau2"
+          ],
+          "note": "請ceng2現代口語先cing2讀書音後；請假假期gaa3固定，不套真假gaa2。",
+          "reference": "https://jyut.net/query?q=請 ; https://words.hk/zidin/請假"
+        },
+        {
+          "id": 118984,
+          "char": "請上來",
+          "previous_jyutping": "cing2 soeng5 loi4",
+          "jyutping": "ceng2 soeng5 loi4",
+          "alternatives": [
+            "cing2 soeng5 loi4"
+          ],
+          "note": "請ceng2現代口語先cing2讀書音後；請假假期gaa3固定，不套真假gaa2。",
+          "reference": "https://jyut.net/query?q=請 ; https://words.hk/zidin/請假"
+        },
+        {
+          "id": 119038,
+          "char": "請說出",
+          "previous_jyutping": "cing2 syut3 ceot1",
+          "jyutping": "ceng2 syut3 ceot1",
+          "alternatives": [
+            "cing2 syut3 ceot1"
+          ],
+          "note": "請ceng2現代口語先cing2讀書音後；請假假期gaa3固定，不套真假gaa2。",
+          "reference": "https://jyut.net/query?q=請 ; https://words.hk/zidin/請假"
+        },
+        {
+          "id": 118995,
+          "char": "請到",
+          "previous_jyutping": "cing2 dou2",
+          "jyutping": "ceng2 dou2",
+          "alternatives": [
+            "cing2 dou2"
+          ],
+          "note": "請ceng2現代口語先cing2讀書音後；請假假期gaa3固定，不套真假gaa2。",
+          "reference": "https://jyut.net/query?q=請 ; https://words.hk/zidin/請假"
+        },
+        {
+          "id": 119006,
+          "char": "請坐下",
+          "previous_jyutping": "cing2 co5 haa6",
+          "jyutping": "ceng2 co5 haa6",
+          "alternatives": [
+            "cing2 co5 haa6"
+          ],
+          "note": "請ceng2現代口語先cing2讀書音後；請假假期gaa3固定，不套真假gaa2。",
+          "reference": "https://jyut.net/query?q=請 ; https://words.hk/zidin/請假"
+        },
+        {
+          "id": 119025,
+          "char": "請用茶",
+          "previous_jyutping": "cing2 jung6 caa4",
+          "jyutping": "ceng2 jung6 caa4",
+          "alternatives": [
+            "cing2 jung6 caa4"
+          ],
+          "note": "請ceng2現代口語先cing2讀書音後；請假假期gaa3固定，不套真假gaa2。",
+          "reference": "https://jyut.net/query?q=請 ; https://words.hk/zidin/請假"
+        },
+        {
+          "id": 119015,
+          "char": "請救兵",
+          "previous_jyutping": "cing2 gau3 bing1",
+          "jyutping": "ceng2 gau3 bing1",
+          "alternatives": [
+            "cing2 gau3 bing1"
+          ],
+          "note": "請ceng2現代口語先cing2讀書音後；請假假期gaa3固定，不套真假gaa2。",
+          "reference": "https://jyut.net/query?q=請 ; https://words.hk/zidin/請假"
+        },
+        {
+          "id": 119008,
+          "char": "請客吃飯",
+          "previous_jyutping": "cing2 haak3 hek3 faan6",
+          "jyutping": "ceng2 haak3 hek3 faan6",
+          "alternatives": [
+            "cing2 haak3 hek3 faan6"
+          ],
+          "note": "請ceng2現代口語先cing2讀書音後；請假假期gaa3固定，不套真假gaa2。",
+          "reference": "https://jyut.net/query?q=請 ; https://words.hk/zidin/請假"
+        },
+        {
+          "id": 119001,
+          "char": "請原諒",
+          "previous_jyutping": "cing2 jyun4 loeng6",
+          "jyutping": "ceng2 jyun4 loeng6",
+          "alternatives": [
+            "cing2 jyun4 loeng6"
+          ],
+          "note": "請ceng2現代口語先cing2讀書音後；請假假期gaa3固定，不套真假gaa2。",
+          "reference": "https://jyut.net/query?q=請 ; https://words.hk/zidin/請假"
+        },
+        {
+          "id": 119028,
+          "char": "請留步",
+          "previous_jyutping": "cing2 lau4 bou6",
+          "jyutping": "ceng2 lau4 bou6",
+          "alternatives": [
+            "cing2 lau4 bou6"
+          ],
+          "note": "請ceng2現代口語先cing2讀書音後；請假假期gaa3固定，不套真假gaa2。",
+          "reference": "https://jyut.net/query?q=請 ; https://words.hk/zidin/請假"
+        },
+        {
+          "id": 119046,
+          "char": "請進去",
+          "previous_jyutping": "cing2 zeon3 heoi3",
+          "jyutping": "ceng2 zeon3 heoi3",
+          "alternatives": [
+            "cing2 zeon3 heoi3"
+          ],
+          "note": "請ceng2現代口語先cing2讀書音後；請假假期gaa3固定，不套真假gaa2。",
+          "reference": "https://jyut.net/query?q=請 ; https://words.hk/zidin/請假"
+        },
+        {
+          "id": 119024,
+          "char": "請用",
+          "previous_jyutping": "cing2 jung6",
+          "jyutping": "ceng2 jung6",
+          "alternatives": [
+            "cing2 jung6"
+          ],
+          "note": "請ceng2現代口語先cing2讀書音後；請假假期gaa3固定，不套真假gaa2。",
+          "reference": "https://jyut.net/query?q=請 ; https://words.hk/zidin/請假"
+        },
+        {
+          "id": 119029,
+          "char": "請登入",
+          "previous_jyutping": "cing2 dang1 jap6",
+          "jyutping": "ceng2 dang1 jap6",
+          "alternatives": [
+            "cing2 dang1 jap6"
+          ],
+          "note": "請ceng2現代口語先cing2讀書音後；請假假期gaa3固定，不套真假gaa2。",
+          "reference": "https://jyut.net/query?q=請 ; https://words.hk/zidin/請假"
+        },
+        {
+          "id": 118985,
+          "char": "請上去",
+          "previous_jyutping": "cing2 soeng5 heoi3",
+          "jyutping": "ceng2 soeng5 heoi3",
+          "alternatives": [
+            "cing2 soeng5 heoi3"
+          ],
+          "note": "請ceng2現代口語先cing2讀書音後；請假假期gaa3固定，不套真假gaa2。",
+          "reference": "https://jyut.net/query?q=請 ; https://words.hk/zidin/請假"
+        },
+        {
+          "id": 119005,
+          "char": "請回去",
+          "previous_jyutping": "cing2 wui4 heoi3",
+          "jyutping": "ceng2 wui4 heoi3",
+          "alternatives": [
+            "cing2 wui4 heoi3"
+          ],
+          "note": "請ceng2現代口語先cing2讀書音後；請假假期gaa3固定，不套真假gaa2。",
+          "reference": "https://jyut.net/query?q=請 ; https://words.hk/zidin/請假"
+        },
+        {
+          "id": 118994,
+          "char": "請出",
+          "previous_jyutping": "cing2 ceot1",
+          "jyutping": "ceng2 ceot1",
+          "alternatives": [
+            "cing2 ceot1"
+          ],
+          "note": "請ceng2現代口語先cing2讀書音後；請假假期gaa3固定，不套真假gaa2。",
+          "reference": "https://jyut.net/query?q=請 ; https://words.hk/zidin/請假"
+        },
+        {
+          "id": 118990,
+          "char": "請假單",
+          "previous_jyutping": "cing2 gaa3 daan1",
+          "jyutping": "ceng2 gaa3 daan1",
+          "alternatives": [
+            "cing2 gaa3 daan1"
+          ],
+          "note": "請ceng2現代口語先cing2讀書音後；請假假期gaa3固定，不套真假gaa2。",
+          "reference": "https://jyut.net/query?q=請 ; https://words.hk/zidin/請假"
+        },
+        {
+          "id": 119033,
+          "char": "請等一下",
+          "previous_jyutping": "cing2 dang2 jat1 haa6",
+          "jyutping": "ceng2 dang2 jat1 haa6",
+          "alternatives": [
+            "cing2 dang2 jat1 haa6"
+          ],
+          "note": "請ceng2現代口語先cing2讀書音後；請假假期gaa3固定，不套真假gaa2。",
+          "reference": "https://jyut.net/query?q=請 ; https://words.hk/zidin/請假"
+        },
+        {
+          "id": 119004,
+          "char": "請回到",
+          "previous_jyutping": "cing2 wui4 dou3",
+          "jyutping": "ceng2 wui4 dou3",
+          "alternatives": [
+            "cing2 wui4 dou3"
+          ],
+          "note": "請ceng2現代口語先cing2讀書音後；請假假期gaa3固定，不套真假gaa2。",
+          "reference": "https://jyut.net/query?q=請 ; https://words.hk/zidin/請假"
+        },
+        {
+          "id": 118993,
+          "char": "請入",
+          "previous_jyutping": "cing2 jap6",
+          "jyutping": "ceng2 jap6",
+          "alternatives": [
+            "cing2 jap6"
+          ],
+          "note": "請ceng2現代口語先cing2讀書音後；請假假期gaa3固定，不套真假gaa2。",
+          "reference": "https://jyut.net/query?q=請 ; https://words.hk/zidin/請假"
+        },
+        {
+          "id": 119027,
+          "char": "請留下",
+          "previous_jyutping": "cing2 lau4 haa6",
+          "jyutping": "ceng2 lau4 haa6",
+          "alternatives": [
+            "cing2 lau4 haa6"
+          ],
+          "note": "請ceng2現代口語先cing2讀書音後；請假假期gaa3固定，不套真假gaa2。",
+          "reference": "https://jyut.net/query?q=請 ; https://words.hk/zidin/請假"
+        },
+        {
+          "id": 119032,
+          "char": "請稍等",
+          "previous_jyutping": "cing2 saau2 dang2",
+          "jyutping": "ceng2 saau2 dang2",
+          "alternatives": [
+            "cing2 saau2 dang2"
+          ],
+          "note": "請ceng2現代口語先cing2讀書音後；請假假期gaa3固定，不套真假gaa2。",
+          "reference": "https://jyut.net/query?q=請 ; https://words.hk/zidin/請假"
+        },
+        {
+          "id": 118998,
+          "char": "請勿動手",
+          "previous_jyutping": "cing2 mat6 dung6 sau2",
+          "jyutping": "cing2 mat6 dung6 sau2",
+          "alternatives": [],
+          "note": "正式公告／書面請求先保留cing2讀書音；口語ceng2有現代依據，不因此改寫其他來源。",
+          "reference": "https://jyut.net/query?q=請"
+        },
+        {
+          "id": 118999,
+          "char": "請勿喧譁",
+          "previous_jyutping": "cing2 mat6 hyun1 waa1",
+          "jyutping": "cing2 mat6 hyun1 waa1",
+          "alternatives": [],
+          "note": "正式公告／書面請求先保留cing2讀書音；口語ceng2有現代依據，不因此改寫其他來源。",
+          "reference": "https://jyut.net/query?q=請"
+        },
+        {
+          "id": 119000,
+          "char": "請勿踐踏",
+          "previous_jyutping": "cing2 mat6 cin5 daap6",
+          "jyutping": "cing2 mat6 cin5 daap6",
+          "alternatives": [],
+          "note": "正式公告／書面請求先保留cing2讀書音；口語ceng2有現代依據，不因此改寫其他來源。",
+          "reference": "https://jyut.net/query?q=請"
+        },
+        {
+          "id": 119002,
+          "char": "請參閲",
+          "previous_jyutping": "cing2 caam1 jyut6",
+          "jyutping": "cing2 caam1 jyut6",
+          "alternatives": [],
+          "note": "正式公告／書面請求先保留cing2讀書音；口語ceng2有現代依據，不因此改寫其他來源。",
+          "reference": "https://jyut.net/query?q=請"
+        },
+        {
+          "id": 119016,
+          "char": "請於",
+          "previous_jyutping": "cing2 jyu1",
+          "jyutping": "cing2 jyu1",
+          "alternatives": [],
+          "note": "正式公告／書面請求先保留cing2讀書音；口語ceng2有現代依據，不因此改寫其他來源。",
+          "reference": "https://jyut.net/query?q=請"
+        },
+        {
+          "id": 119018,
+          "char": "請款",
+          "previous_jyutping": "cing2 fun2",
+          "jyutping": "cing2 fun2",
+          "alternatives": [],
+          "note": "正式公告／書面請求先保留cing2讀書音；口語ceng2有現代依據，不因此改寫其他來源。",
+          "reference": "https://jyut.net/query?q=請"
+        },
+        {
+          "id": 119019,
+          "char": "請款單",
+          "previous_jyutping": "cing2 fun2 daan1",
+          "jyutping": "cing2 fun2 daan1",
+          "alternatives": [],
+          "note": "正式公告／書面請求先保留cing2讀書音；口語ceng2有現代依據，不因此改寫其他來源。",
+          "reference": "https://jyut.net/query?q=請"
+        },
+        {
+          "id": 119011,
+          "char": "請指示",
+          "previous_jyutping": "cing2 zi2 si6",
+          "jyutping": "cing2 zi2 si6",
+          "alternatives": [],
+          "note": "正式公告／書面請求先保留cing2讀書音；口語ceng2有現代依據，不因此改寫其他來源。",
+          "reference": "https://jyut.net/query?q=請"
+        },
+        {
+          "id": 119020,
+          "char": "請求事項",
+          "previous_jyutping": "cing2 kau4 si6 hong6",
+          "jyutping": "cing2 kau4 si6 hong6",
+          "alternatives": [],
+          "note": "正式公告／書面請求先保留cing2讀書音；口語ceng2有現代依據，不因此改寫其他來源。",
+          "reference": "https://jyut.net/query?q=請"
+        },
+        {
+          "id": 119022,
+          "char": "請求者",
+          "previous_jyutping": "cing2 kau4 ze2",
+          "jyutping": "cing2 kau4 ze2",
+          "alternatives": [],
+          "note": "正式公告／書面請求先保留cing2讀書音；口語ceng2有現代依據，不因此改寫其他來源。",
+          "reference": "https://jyut.net/query?q=請"
+        },
+        {
+          "id": 119030,
+          "char": "請示報告",
+          "previous_jyutping": "cing2 si6 bou3 gou3",
+          "jyutping": "cing2 si6 bou3 gou3",
+          "alternatives": [],
+          "note": "正式公告／書面請求先保留cing2讀書音；口語ceng2有現代依據，不因此改寫其他來源。",
+          "reference": "https://jyut.net/query?q=請"
+        },
+        {
+          "id": 119049,
+          "char": "請願團",
+          "previous_jyutping": "cing2 jyun6 tyun4",
+          "jyutping": "cing2 jyun6 tyun4",
+          "alternatives": [],
+          "note": "正式公告／書面請求先保留cing2讀書音；口語ceng2有現代依據，不因此改寫其他來源。",
+          "reference": "https://jyut.net/query?q=請"
+        },
+        {
+          "id": 118988,
+          "char": "請予",
+          "previous_jyutping": "cing2 jyu5",
+          "jyutping": "cing2 jyu5",
+          "alternatives": [],
+          "note": "正式公告／書面請求先保留cing2讀書音；口語ceng2有現代依據，不因此改寫其他來源。",
+          "reference": "https://jyut.net/query?q=請"
+        },
+        {
+          "id": 118999,
+          "char": "請勿喧譁",
+          "previous_jyutping": "cing2 mat6 hyun1 waa1",
+          "jyutping": "cing2 mat6 hyun1 waa1",
+          "alternatives": [],
+          "note": "喧譁hyun1waa1現代建議；waa4只見早期字書又讀，不憑普通話huá加4。",
+          "reference": "https://jyut.net/query?q=譁"
+        },
+        {
+          "id": 118167,
+          "char": "詭秘莫測",
+          "previous_jyutping": "gwai2 bei3 mok6 cak1",
+          "jyutping": "gwai2 bei3 mok6 cak1",
+          "alternatives": [
+            "gwai2 bei3 mok6 caak1"
+          ],
+          "note": "測cak1現代建議先，caak1現代習讀後；不把讀音表又讀一概說成古音或錯音。",
+          "reference": "https://jyut.net/query?q=測"
+        },
+        {
+          "id": 119684,
+          "char": "變化不測",
+          "previous_jyutping": "bin3 faa3 bat1 caak1",
+          "jyutping": "bin3 faa3 bat1 cak1",
+          "alternatives": [
+            "bin3 faa3 bat1 caak1"
+          ],
+          "note": "測cak1現代建議先，caak1現代習讀後；不把讀音表又讀一概說成古音或錯音。",
+          "reference": "https://jyut.net/query?q=測"
+        },
+        {
+          "id": 119716,
+          "char": "變幻不測",
+          "previous_jyutping": "bin3 waan6 bat1 caak1",
+          "jyutping": "bin3 waan6 bat1 cak1",
+          "alternatives": [
+            "bin3 waan6 bat1 caak1"
+          ],
+          "note": "測cak1現代建議先，caak1現代習讀後；不把讀音表又讀一概說成古音或錯音。",
+          "reference": "https://jyut.net/query?q=測"
+        },
+        {
+          "id": 118583,
+          "char": "誤測",
+          "previous_jyutping": "ng6 caak1",
+          "jyutping": "ng6 cak1",
+          "alternatives": [
+            "ng6 caak1"
+          ],
+          "note": "測cak1現代建議先，caak1現代習讀後；不把讀音表又讀一概說成古音或錯音。",
+          "reference": "https://jyut.net/query?q=測"
+        },
+        {
+          "id": 119368,
+          "char": "證件照",
+          "previous_jyutping": "zing3 gin2 ziu3",
+          "jyutping": "zing3 gin2 ziu3",
+          "alternatives": [
+            "zing3 gin6 ziu3"
+          ],
+          "note": "證件gin2日常物件音先，gin6書讀後；詞內物件變調有現代詞級依據。",
+          "reference": "https://jyut.net/query?q=件"
+        },
+        {
+          "id": 119369,
+          "char": "證件號碼",
+          "previous_jyutping": "zing3 gin2 hou6 maa5",
+          "jyutping": "zing3 gin2 hou6 maa5",
+          "alternatives": [
+            "zing3 gin6 hou6 maa5"
+          ],
+          "note": "證件gin2日常物件音先，gin6書讀後；詞內物件變調有現代詞級依據。",
+          "reference": "https://jyut.net/query?q=件"
+        },
+        {
+          "id": 119069,
+          "char": "論壇會員",
+          "previous_jyutping": "leon6 taan4 wui2 jyun4",
+          "jyutping": "leon6 taan4 wui2 jyun4",
+          "alternatives": [
+            "leon6 taan4 wui6 jyun4"
+          ],
+          "note": "會員wui2現代口語先6原讀後；不因裸字表等級把完整會員2判罕見。",
+          "reference": "https://jyut.net/query?q=會"
+        },
+        {
+          "id": 119084,
+          "char": "論斤兩",
+          "previous_jyutping": "leon6 gan1 loeng2",
+          "jyutping": "leon6 gan1 loeng2",
+          "alternatives": [],
+          "note": "完整斤兩gan1loeng2為重量名詞，不套數目兩個loeng5；整詞普通配讀不因裸字2級自動判罕見。",
+          "reference": "https://cantonese.sheik.co.uk/dictionary/characters/兩/?full=true"
+        },
+        {
+          "id": 118924,
+          "char": "諄諄勸導",
+          "previous_jyutping": "zeon1 zeon1 hyun3 dou6",
+          "jyutping": "zeon1 zeon1 hyun3 dou6",
+          "alternatives": [],
+          "note": "諄諄zeon1zeon1為現代字書建議音，與詞語較書面分開，不將裸字罕見級別當整詞讀音罕見。",
+          "reference": "https://jyut.net/query?q=諄"
+        },
+        {
+          "id": 118925,
+          "char": "諄諄囑咐",
+          "previous_jyutping": "zeon1 zeon1 zuk1 fu6",
+          "jyutping": "zeon1 zeon1 zuk1 fu6",
+          "alternatives": [],
+          "note": "諄諄zeon1zeon1為現代字書建議音，與詞語較書面分開，不將裸字罕見級別當整詞讀音罕見。",
+          "reference": "https://jyut.net/query?q=諄"
+        },
+        {
+          "id": 118449,
+          "char": "語云",
+          "previous_jyutping": "jyu5 wan4",
+          "jyutping": "jyu5 wan4",
+          "alternatives": [],
+          "note": "語云之云為說，不是雲朵；只對完整語云／語雲作正規化修復，保留原始简体语云來源證據。",
+          "reference": "https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=云"
+        }
+      ],
+      "restored_candidates": [
+        {
+          "id": 119662,
+          "char": "讀過去",
+          "previous_verdict": "reject",
+          "reason": "終審補回：從頭讀過去有完整歌詞用法，可作方向或回看過去的自然填詞搭配；同曲三次重複不當三個獨立生活頻率。"
+        }
+      ],
+      "net_familiarity_withdrawals": 69,
+      "final_accepted_before_dedup": 892,
+      "corpus": {
+        "observations": 9,
+        "supplied_spans": 17,
+        "all_original_spans_read": true,
+        "wider_contexts_read": true,
+        "source_commit": "018e88540b917c40dc3f7248ed98908208544b54",
+        "boundary_notes": {
+          "118305": "誌慶完整慶祝短語，三次同曲副歌不當獨立生活頻率。",
+          "118958": "是談情客…中的談情為完整自然動賓搭配。",
+          "119259": "講出我們…／儘管講出不快為完整動補短語；同曲副歌不重複計獨立頻率。",
+          "119261": "分手講到了嘴邊為說至某處dou3完整語境，不套dou2。",
+          "119662": "從頭讀過去有完整閱讀／回看過去填詞搭配，三次同曲重複不當獨立生活頻率，按AI熟悉度2補回。",
+          "119675": "亦變作悶…為完整轉變搭配。",
+          "119682": "變到再沒童話／情人節變到更…為完整變化至某程度dou3；同曲副歌不作獨立頻率。",
+          "119779": "看青春變／白髮中的白屬白髮名詞內部，命中不當獨立變白整詞頻率；變白另按日常顏色變化AI判斷保留。",
+          "119834": "可改變／過去當沒有，跨改變及過去兩詞，不收變過為完整命中。"
+        }
+      },
+      "prior_decisions_preserved": 117994,
+      "explicit_prior_decision_repairs": [],
+      "existing_runtime_audit": {
+        "policy": "No existing source or overlay edits this batch; retained all previous source objects and reviewed modern variants. Unsupported old reading suspicions require separate source-specific audit, never blanket deletion."
+      },
+      "reading_review_sealed": true,
+      "all_accepted_final_readings_reviewed": 892,
+      "new_exact_literal_restorations": {
+        "語雲": "語云"
+      },
+      "normalization_cache_format": "36",
+      "same_word_orthographic_canonicalizations": [
+        {
+          "id": 118702,
+          "source_form": "課以重税",
+          "canonical_form": "課以重稅"
+        },
+        {
+          "id": 118997,
+          "source_form": "請加羣",
+          "canonical_form": "請加群"
+        }
+      ],
+      "verified_supplemental_references": {
+        "論斤兩": "https://en.wiktionary.org/wiki/斤兩"
+      }
+    }
+  }
+}

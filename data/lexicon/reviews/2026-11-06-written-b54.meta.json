@@ -1,0 +1,1766 @@
+{
+  "batch": "2026-11-06-written-b54",
+  "date": "2026-11-07",
+  "reviewer": "AI-assisted word-form, sense and whole-word Cantonese review; not human item-by-item approval",
+  "source_repository": "https://github.com/fxsjy/jieba",
+  "source_commit": "67fa2e36e72f69d9134b8a1037b83fbb070b9775",
+  "source_license": "MIT",
+  "source_files": [
+    {
+      "path": "jieba/dict.txt",
+      "url": "https://raw.githubusercontent.com/fxsjy/jieba/67fa2e36e72f69d9134b8a1037b83fbb070b9775/jieba/dict.txt",
+      "sha256": "7197c3211ddd98962b036cdf40324d1ea2bfaa12bd028e68faa70111a88e12a8",
+      "bytes": 5071852
+    },
+    {
+      "path": "extra_dict/dict.txt.big",
+      "url": "https://raw.githubusercontent.com/fxsjy/jieba/67fa2e36e72f69d9134b8a1037b83fbb070b9775/extra_dict/dict.txt.big",
+      "sha256": "b16011275c42955ccd81fc1adecc93a59dbb7926af69d93fc95d4943d40f6aad",
+      "bytes": 8583143
+    },
+    {
+      "path": "LICENSE",
+      "url": "https://raw.githubusercontent.com/fxsjy/jieba/67fa2e36e72f69d9134b8a1037b83fbb070b9775/LICENSE",
+      "sha256": "18ba0984839f85853b29fadaf992f7dba8fd0ca0fbeae34de2b8735222dc7a37",
+      "bytes": 1075
+    }
+  ],
+  "input_git_commit": "5f8e136497acce2bddc7519c3231e6677fbdc537",
+  "input_curated_sha256": "c011d4ecba6598244956eec4bdb0ec9d37f8645bd7748d12fe3b7c2516a5e1fb",
+  "input_curated_rows": 64117,
+  "input_db_sha256": "6175f4d4d43d4b44e7e4c3a7762d8a815dd2f554aaf95867d6ec1ae2666e5cf9",
+  "newly_reviewed_candidates": 2000,
+  "revisited_candidates": 1,
+  "review_rows": 2074,
+  "review_candidate_ids": 2001,
+  "review_verdict_rows": {
+    "repair": 1,
+    "reject": 1055,
+    "accept": 1000,
+    "already_present": 18
+  },
+  "reading_repairs": 1,
+  "added_rows": 1000,
+  "added_literals": 927,
+  "total_curated_rows": 65117,
+  "cumulative_reviewed_candidates": 103994,
+  "cumulative_candidate_decisions": {
+    "accept": 62180,
+    "reject": 40423,
+    "already_present": 1142,
+    "defer": 249
+  },
+  "candidate_pool": 146602,
+  "unreviewed_pool_candidates": 42608,
+  "regional_candidates_still_held": 924,
+  "selection": "Next 2000 individually reviewed candidates offsets97250:99250 IDs101994–103993. All996 initial accepts rechecked;56 cold/narrow/unstable expressions withdrawn and3 explicitly restored, leaving943 before normalization and duplicate detection. Five pinned Cantopop observations and all8 supplied spans read; cross-word fragments and chorus repetitions are not independent everyday word frequency. Prior decision21696 響應者 has one explicit reading/code repair; all other prior decisions and source objects preserved. One existing runtime 豌豆 wun2 dau2 is explicitly mirrored for primary reading rank; runtime exact-pair deduplication is retained.",
+  "lyric_corpus": {
+    "repository": "https://github.com/jasonleeubc/Cantopop-corpus",
+    "commit": "018e88540b917c40dc3f7248ed98908208544b54",
+    "license": "CC-BY-4.0",
+    "observations_policy": "Pinned local lyric-word observations only; not approved readings or everyday frequency. Full-word context reviewed separately."
+  },
+  "frequency_meaning": "Upstream dictionary weight, not measured corpus occurrences or a product ranking weight. Proposed usage rank is AI contextual judgment and is not substituted for available measured whole-word frequency.",
+  "normalization_policy": "Existing s2hk plus98 exact-literal restorations and15 preserved senses across28 input keys; cache32. Two exact additions restore star/dipper 移星換斗 and permission 礙難照准. Both key families absent from previous runtime/source/rank/usage and226 tracked relation/supporting files; no relation migration. Prior 響應者 source reading repaired jing1→jing3; exact overlay removes 響應 jing1 and old-only 轎車 kiu4, retaining modern alternatives.",
+  "second_pass_familiarity_withdrawals": 56,
+  "net_familiarity_withdrawals": 53,
+  "explicit_restored_candidates": [
+    103025,
+    103190,
+    103880
+  ],
+  "initial_accepted_candidates": 996,
+  "final_accepted_candidates_before_dedup": 943,
+  "reading_policy": "No automatic promotion of character-default drafts; whole-word review plus contextual high-risk and compound-reference audit; 病=beng6 only",
+  "original_curated_rows_preserved": 64116,
+  "previous_source_repairs_explicit": true,
+  "review_tsv_sha256": "9b4e5ee576f642126f57ead0f485a8fcf0fb8794621673c790ae124c81420b5f",
+  "validation": {
+    "merged_rows": 244110,
+    "merged_literals": 226630,
+    "unique_triples": 244108,
+    "baseline_rows": 243113,
+    "all_previous_rows_except_explicit_corrections_and_multiplicities_retained": true,
+    "all_previous_rows_and_multiplicities_retained": false,
+    "explicit_old_runtime_reading_repairs": 1,
+    "confirmed_old_wrong_sense_readings_removed": 1,
+    "confirmed_old_only_readings_removed": 1,
+    "explicit_old_runtime_changes": [
+      [
+        "響應",
+        "hoeng2 jing1",
+        "93"
+      ],
+      [
+        "轎車",
+        "kiu4 ce1",
+        "03"
+      ],
+      [
+        "響應者",
+        "hoeng2 jing1 ze2",
+        "939"
+      ]
+    ],
+    "all_accepted_primary_reading_checks": 927,
+    "old_word_grades_preserved": 126039,
+    "new_source_readings": 1000,
+    "new_pairs_retained": true,
+    "search_checks": 343,
+    "preferred_reading_checks": 70,
+    "word_usage_keys": 126965,
+    "withdrawn_curated_literals": 2051,
+    "live_db_unchanged": true,
+    "backend_pwa_essay_frequency_keys": 266884,
+    "essay_frequency_tables_equal": true,
+    "backend_pwa_word_grade_keys": 126965,
+    "backend_pwa_curated_reading_grade_keys": 65914,
+    "word_grade_tables_equal": true,
+    "curated_reading_grade_tables_equal": true,
+    "old_source_rows_preserved": 64116,
+    "old_reading_grades_preserved": 64116,
+    "explicit_previous_source_repairs": [
+      {
+        "char": "響應者",
+        "previous_jyutping": "hoeng2 jing1 ze2",
+        "jyutping": "hoeng2 jing3 ze2",
+        "batch": "2026-11-06-written-b13",
+        "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L83006"
+      }
+    ],
+    "explicit_previous_reading_grade_repairs": 1,
+    "old_usage_rows_preserved": 126039,
+    "old_judgments_preserved": 17456,
+    "new_source_forms": 927,
+    "new_runtime_reading_pairs": 999,
+    "new_merged_forms": 926,
+    "existing_merged_forms_with_new_readings": [
+      "豌豆"
+    ],
+    "raw_source_forms": 62733,
+    "normalized_source_forms": 62731,
+    "new_word_usage_judgments": 330,
+    "unrelated_user_files_unchanged": true,
+    "previous_overlay_bytes_preserved": true,
+    "existing_runtime_readings_mirrored": 1,
+    "exact_existing_wrong_sense_overlay_deletions": 1,
+    "exact_existing_old_only_overlay_deletions": 1,
+    "new_merged_readings": 999,
+    "new_merged_readings_net": 997,
+    "full_final_inventory_rebuilt_and_compared": true,
+    "client_query_engine_with_new_dictionary": {
+      "checks": 243,
+      "modes": 3,
+      "new_dictionary_loaded_in_client_engine": true,
+      "preferred_readings_equal": true
+    },
+    "heteronym_full_pool_ranking_equal": true,
+    "non_han_tiers_match_backend": true,
+    "unicode_scalar_tiebreak_parity": true,
+    "new_exact_literal_restorations": {
+      "移星換鬥": "移星換斗",
+      "礙難照準": "礙難照准"
+    },
+    "normalization_impact": {
+      "new_exact_restorations": {
+        "移星換鬥": "移星換斗",
+        "礙難照準": "礙難照准"
+      },
+      "exact_restorations_total": 98,
+      "preserved_literal_senses_total": 15,
+      "preserved_literal_input_keys_total": 28,
+      "normalization_code_unchanged": false,
+      "relation_source_bytes_unchanged": true,
+      "stored_relation_literal_keys_migrated": 0,
+      "cache_format": "32",
+      "previous_runtime_rows_affected_by_normalization": 0,
+      "affected_previous_keys": 0,
+      "relation_and_supporting_files_scanned": 226
+    },
+    "prior_runtime_rows_affected_by_new_normalization": 0,
+    "prior_word_usage_records_affected_by_new_normalization": 0,
+    "prior_stored_relation_keys_migrated": 0,
+    "previous_source_rows_preserved": 64116,
+    "previous_reading_grades_preserved": 64116,
+    "previous_word_usage_records_preserved": 126039,
+    "previous_word_usage_judgments_preserved": 17456,
+    "new_word_normalization_idempotent": true,
+    "post_review_original_spelling_regression_check": true,
+    "full_pool_parity_queries": 125,
+    "full_pool_parity_rows": 116558,
+    "full_pool_ranking_equal": true,
+    "smoke_tests": 332,
+    "smoke_passed": 328,
+    "smoke_skipped": 4,
+    "seam_tests": 89,
+    "seam_passed": 83,
+    "seam_skipped": 6,
+    "guide_query_tests": 1,
+    "guide_query_tests_passed": true,
+    "pwa_build": true,
+    "portable_build": true,
+    "full_app_typecheck": true,
+    "ranking_and_lookup_self_checks": true,
+    "targeted_node_typecheck": true,
+    "pwa_artifact_guard": true,
+    "layer_cache_format": "32",
+    "layer_cache_cold_misses": 8,
+    "layer_cache_warm_hits": 8,
+    "layer_cache_counter_matches_uncached_db": true,
+    "paging_fixture": {
+      "total": 206,
+      "first_page": 200,
+      "second_page": 6,
+      "everyday_literal_inserted_last_ranks_first": true,
+      "modes": 3
+    },
+    "final_reading_audit": {
+      "batch": "B54",
+      "initial_accepted": 996,
+      "withdrawals": [
+        {
+          "id": 102164,
+          "char": "硬翻領",
+          "previous_jyutping": "ngaang6 faan1 leng5",
+          "reason": "較少用古語／變體、過窄專科名稱或低復用搭配，日常與通用書面使用不足，本輪不收。"
+        },
+        {
+          "id": 102196,
+          "char": "碌碌無奇",
+          "previous_jyutping": "luk1 luk1 mou4 kei4",
+          "reason": "碌碌無奇是較少用變語，按常用度撤回；庸碌的 luk1 本身正確，不改 luk6。"
+        },
+        {
+          "id": 102339,
+          "char": "確守信義",
+          "previous_jyutping": "kok3 sau2 seon3 ji6",
+          "reason": "確守信義獨立使用較少，不改恪守信義製作另一詞源。"
+        },
+        {
+          "id": 102340,
+          "char": "確守合同",
+          "previous_jyutping": "kok3 sau2 hap6 tung4",
+          "reason": "確守合同獨立使用較少，不改恪守合同製作另一詞源。"
+        },
+        {
+          "id": 102516,
+          "char": "磨損量",
+          "previous_jyutping": "mo4 syun2 loeng6",
+          "reason": "較少用古語／變體、過窄專科名稱或低復用搭配，日常與通用書面使用不足，本輪不收。"
+        },
+        {
+          "id": 102648,
+          "char": "礦質肥料",
+          "previous_jyutping": "kwong3 zat1 fei4 liu2",
+          "reason": "較少用古語／變體、過窄專科名稱或低復用搭配，日常與通用書面使用不足，本輪不收。"
+        },
+        {
+          "id": 102667,
+          "char": "示波圖",
+          "previous_jyutping": "si6 bo1 tou4",
+          "reason": "較少用古語／變體、過窄專科名稱或低復用搭配，日常與通用書面使用不足，本輪不收。"
+        },
+        {
+          "id": 102739,
+          "char": "社會知覺",
+          "previous_jyutping": "se5 wui2 zi1 gok3",
+          "reason": "較少用古語／變體、過窄專科名稱或低復用搭配，日常與通用書面使用不足，本輪不收。"
+        },
+        {
+          "id": 102784,
+          "char": "祖姑",
+          "previous_jyutping": "zou2 gu1",
+          "reason": "較少用古語／變體、過窄專科名稱或低復用搭配，日常與通用書面使用不足，本輪不收。"
+        },
+        {
+          "id": 102821,
+          "char": "神名",
+          "previous_jyutping": "san4 ming4",
+          "reason": "較少用古語／變體、過窄專科名稱或低復用搭配，日常與通用書面使用不足，本輪不收。"
+        },
+        {
+          "id": 102904,
+          "char": "神經系",
+          "previous_jyutping": "san4 ging1 hai6",
+          "reason": "較少用古語／變體、過窄專科名稱或低復用搭配，日常與通用書面使用不足，本輪不收。"
+        },
+        {
+          "id": 102939,
+          "char": "神道設教",
+          "previous_jyutping": "san4 dou6 cit3 gaau3",
+          "reason": "較少用古語／變體、過窄專科名稱或低復用搭配，日常與通用書面使用不足，本輪不收。"
+        },
+        {
+          "id": 103003,
+          "char": "祭主",
+          "previous_jyutping": "zai3 zyu2",
+          "reason": "較少用古語／變體、過窄專科名稱或低復用搭配，日常與通用書面使用不足，本輪不收。"
+        },
+        {
+          "id": 103036,
+          "char": "禁屠",
+          "previous_jyutping": "gam3 tou4",
+          "reason": "較少用古語／變體、過窄專科名稱或低復用搭配，日常與通用書面使用不足，本輪不收。"
+        },
+        {
+          "id": 103062,
+          "char": "禁牧",
+          "previous_jyutping": "gam3 muk6",
+          "reason": "較少用古語／變體、過窄專科名稱或低復用搭配，日常與通用書面使用不足，本輪不收。"
+        },
+        {
+          "id": 103110,
+          "char": "福態",
+          "previous_jyutping": "fuk1 taai3",
+          "reason": "福態是較少用原形，不改富態製作另一詞源。"
+        },
+        {
+          "id": 103124,
+          "char": "禪功",
+          "previous_jyutping": "sim4 gung1",
+          "reason": "較少用古語／變體、過窄專科名稱或低復用搭配，日常與通用書面使用不足，本輪不收。"
+        },
+        {
+          "id": 103131,
+          "char": "禪家",
+          "previous_jyutping": "sim4 gaa1",
+          "reason": "較少用古語／變體、過窄專科名稱或低復用搭配，日常與通用書面使用不足，本輪不收。"
+        },
+        {
+          "id": 103141,
+          "char": "禮台",
+          "previous_jyutping": "lai5 toi4",
+          "reason": "較少用古語／變體、過窄專科名稱或低復用搭配，日常與通用書面使用不足，本輪不收。"
+        },
+        {
+          "id": 103157,
+          "char": "禮懺",
+          "previous_jyutping": "lai5 caam3",
+          "reason": "較少用古語／變體、過窄專科名稱或低復用搭配，日常與通用書面使用不足，本輪不收。"
+        },
+        {
+          "id": 103258,
+          "char": "私營成分",
+          "previous_jyutping": "si1 jing4 sing4 fan6",
+          "reason": "較少用古語／變體、過窄專科名稱或低復用搭配，日常與通用書面使用不足，本輪不收。"
+        },
+        {
+          "id": 103264,
+          "char": "私相傳授",
+          "previous_jyutping": "si1 soeng1 cyun4 sau6",
+          "reason": "較少用古語／變體、過窄專科名稱或低復用搭配，日常與通用書面使用不足，本輪不收。"
+        },
+        {
+          "id": 103267,
+          "char": "私線",
+          "previous_jyutping": "si1 sin3",
+          "reason": "較少用古語／變體、過窄專科名稱或低復用搭配，日常與通用書面使用不足，本輪不收。"
+        },
+        {
+          "id": 103268,
+          "char": "私罰",
+          "previous_jyutping": "si1 fat6",
+          "reason": "較少用古語／變體、過窄專科名稱或低復用搭配，日常與通用書面使用不足，本輪不收。"
+        },
+        {
+          "id": 103294,
+          "char": "秉正",
+          "previous_jyutping": "bing2 zing3",
+          "reason": "較少用古語／變體、過窄專科名稱或低復用搭配，日常與通用書面使用不足，本輪不收。"
+        },
+        {
+          "id": 103315,
+          "char": "秋扇見捐",
+          "previous_jyutping": "cau1 sin3 gin3 gyun1",
+          "reason": "較少用古語／變體、過窄專科名稱或低復用搭配，日常與通用書面使用不足，本輪不收。"
+        },
+        {
+          "id": 103329,
+          "char": "秋試",
+          "previous_jyutping": "cau1 si3",
+          "reason": "較少用古語／變體、過窄專科名稱或低復用搭配，日常與通用書面使用不足，本輪不收。"
+        },
+        {
+          "id": 103386,
+          "char": "科技實業",
+          "previous_jyutping": "fo1 gei6 sat6 jip6",
+          "reason": "較少用古語／變體、過窄專科名稱或低復用搭配，日常與通用書面使用不足，本輪不收。"
+        },
+        {
+          "id": 103402,
+          "char": "科技股份",
+          "previous_jyutping": "fo1 gei6 gu2 fan6",
+          "reason": "較少用古語／變體、過窄專科名稱或低復用搭配，日常與通用書面使用不足，本輪不收。"
+        },
+        {
+          "id": 103411,
+          "char": "科教性",
+          "previous_jyutping": "fo1 gaau3 sing3",
+          "reason": "較少用古語／變體、過窄專科名稱或低復用搭配，日常與通用書面使用不足，本輪不收。"
+        },
+        {
+          "id": 103414,
+          "char": "科教部",
+          "previous_jyutping": "fo1 gaau3 bou6",
+          "reason": "較少用古語／變體、過窄專科名稱或低復用搭配，日常與通用書面使用不足，本輪不收。"
+        },
+        {
+          "id": 103448,
+          "char": "秘使",
+          "previous_jyutping": "bei3 si2",
+          "reason": "秘使為較少用原形，不改密使製作另一詞源。"
+        },
+        {
+          "id": 103449,
+          "char": "秘商",
+          "previous_jyutping": "bei3 soeng1",
+          "reason": "較少用古語／變體、過窄專科名稱或低復用搭配，日常與通用書面使用不足，本輪不收。"
+        },
+        {
+          "id": 103459,
+          "char": "秘書學",
+          "previous_jyutping": "bei3 syu1 hok6",
+          "reason": "較少用古語／變體、過窄專科名稱或低復用搭配，日常與通用書面使用不足，本輪不收。"
+        },
+        {
+          "id": 103731,
+          "char": "税契",
+          "previous_jyutping": "seoi3 kai3",
+          "reason": "較少用古語／變體、過窄專科名稱或低復用搭配，日常與通用書面使用不足，本輪不收。"
+        },
+        {
+          "id": 103734,
+          "char": "税户",
+          "previous_jyutping": "seoi3 wu6",
+          "reason": "較少用古語／變體、過窄專科名稱或低復用搭配，日常與通用書面使用不足，本輪不收。"
+        },
+        {
+          "id": 103741,
+          "char": "税收理論",
+          "previous_jyutping": "seoi3 sau1 lei5 leon6",
+          "reason": "較少用古語／變體、過窄專科名稱或低復用搭配，日常與通用書面使用不足，本輪不收。"
+        },
+        {
+          "id": 103758,
+          "char": "稗史",
+          "previous_jyutping": "baai6 si2",
+          "reason": "較少用古語／變體、過窄專科名稱或低復用搭配，日常與通用書面使用不足，本輪不收。"
+        },
+        {
+          "id": 103762,
+          "char": "稚小",
+          "previous_jyutping": "zi6 siu2",
+          "reason": "較少用古語／變體、過窄專科名稱或低復用搭配，日常與通用書面使用不足，本輪不收。"
+        },
+        {
+          "id": 103763,
+          "char": "稚年",
+          "previous_jyutping": "zi6 nin4",
+          "reason": "較少用古語／變體、過窄專科名稱或低復用搭配，日常與通用書面使用不足，本輪不收。"
+        },
+        {
+          "id": 103777,
+          "char": "稟受",
+          "previous_jyutping": "ban2 sau6",
+          "reason": "較少用古語／變體、過窄專科名稱或低復用搭配，日常與通用書面使用不足，本輪不收。"
+        },
+        {
+          "id": 103795,
+          "char": "種兔",
+          "previous_jyutping": "zung2 tou3",
+          "reason": "較少用古語／變體、過窄專科名稱或低復用搭配，日常與通用書面使用不足，本輪不收。"
+        },
+        {
+          "id": 103802,
+          "char": "種子活力",
+          "previous_jyutping": "zung2 zi2 wut6 lik6",
+          "reason": "較少用古語／變體、過窄專科名稱或低復用搭配，日常與通用書面使用不足，本輪不收。"
+        },
+        {
+          "id": 103805,
+          "char": "種子鑑定",
+          "previous_jyutping": "zung2 zi2 gaam3 ding6",
+          "reason": "較少用古語／變體、過窄專科名稱或低復用搭配，日常與通用書面使用不足，本輪不收。"
+        },
+        {
+          "id": 103824,
+          "char": "種田人家",
+          "previous_jyutping": "zung3 tin4 jan4 gaa1",
+          "reason": "較少用古語／變體、過窄專科名稱或低復用搭配，日常與通用書面使用不足，本輪不收。"
+        },
+        {
+          "id": 103836,
+          "char": "種類表",
+          "previous_jyutping": "zung2 leoi6 biu2",
+          "reason": "較少用古語／變體、過窄專科名稱或低復用搭配，日常與通用書面使用不足，本輪不收。"
+        },
+        {
+          "id": 103837,
+          "char": "種養業",
+          "previous_jyutping": "zung3 joeng5 jip6",
+          "reason": "較少用古語／變體、過窄專科名稱或低復用搭配，日常與通用書面使用不足，本輪不收。"
+        },
+        {
+          "id": 103839,
+          "char": "種鴿",
+          "previous_jyutping": "zung2 gaap3",
+          "reason": "較少用古語／變體、過窄專科名稱或低復用搭配，日常與通用書面使用不足，本輪不收。"
+        },
+        {
+          "id": 103840,
+          "char": "種龜",
+          "previous_jyutping": "zung2 gwai1",
+          "reason": "較少用古語／變體、過窄專科名稱或低復用搭配，日常與通用書面使用不足，本輪不收。"
+        },
+        {
+          "id": 103856,
+          "char": "稱謂語",
+          "previous_jyutping": "cing1 wai6 jyu5",
+          "reason": "較少用古語／變體、過窄專科名稱或低復用搭配，日常與通用書面使用不足，本輪不收。"
+        },
+        {
+          "id": 103863,
+          "char": "稱頌一時",
+          "previous_jyutping": "cing1 zung6 jat1 si4",
+          "reason": "較少用古語／變體、過窄專科名稱或低復用搭配，日常與通用書面使用不足，本輪不收。"
+        },
+        {
+          "id": 103924,
+          "char": "積層雲",
+          "previous_jyutping": "zik1 cang4 wan4",
+          "reason": "積層雲為較少用氣象別稱，不重排成層積雲來源。"
+        },
+        {
+          "id": 103936,
+          "char": "積數",
+          "previous_jyutping": "zik1 sou3",
+          "reason": "較少用古語／變體、過窄專科名稱或低復用搭配，日常與通用書面使用不足，本輪不收。"
+        },
+        {
+          "id": 103963,
+          "char": "積歲累月",
+          "previous_jyutping": "zik1 seoi3 leoi5 jyut6",
+          "reason": "較少用古語／變體、過窄專科名稱或低復用搭配，日常與通用書面使用不足，本輪不收。"
+        },
+        {
+          "id": 103967,
+          "char": "積水為海",
+          "previous_jyutping": "zik1 seoi2 wai4 hoi2",
+          "reason": "較少用古語／變體、過窄專科名稱或低復用搭配，日常與通用書面使用不足，本輪不收。"
+        },
+        {
+          "id": 103968,
+          "char": "積沙成灘",
+          "previous_jyutping": "zik1 saa1 sing4 taan1",
+          "reason": "較少用古語／變體、過窄專科名稱或低復用搭配，日常與通用書面使用不足，本輪不收。"
+        }
+      ],
+      "grade_changes": [
+        {
+          "id": 102379,
+          "char": "碾去",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 102402,
+          "char": "磁卡電話",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 102465,
+          "char": "磊落不凡",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 102476,
+          "char": "磕個響頭",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 102481,
+          "char": "磕頭禮拜",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 102850,
+          "char": "神情畢肖",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 102877,
+          "char": "神清目爽",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 102973,
+          "char": "票值",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 102988,
+          "char": "票據打印",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 103037,
+          "char": "禁忌證",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 103073,
+          "char": "禁阻",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 103136,
+          "char": "禮儀模特",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 103146,
+          "char": "禮品玩具",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 103151,
+          "char": "禮品部",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 103196,
+          "char": "禿石",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 103197,
+          "char": "禿禿",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 103229,
+          "char": "私函",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 103230,
+          "char": "私務",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 103277,
+          "char": "私銷",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 103279,
+          "char": "私願",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 103283,
+          "char": "秉公滅私",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 103325,
+          "char": "秋節",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 103467,
+          "char": "秘約",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 103502,
+          "char": "租貸",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 103549,
+          "char": "移動用户",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 103665,
+          "char": "程序編制",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 103761,
+          "char": "稚女",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 103766,
+          "char": "稚語",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 103767,
+          "char": "稚音",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 103798,
+          "char": "種子倉庫",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 103800,
+          "char": "種子數",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 103801,
+          "char": "種子檢驗",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 103803,
+          "char": "種子消毒",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 103838,
+          "char": "種馬場",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 103857,
+          "char": "稱賞不已",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 103939,
+          "char": "積日累歲",
+          "previous_grade": 1,
+          "grade": 2
+        },
+        {
+          "id": 103809,
+          "char": "種得",
+          "previous_grade": 2,
+          "grade": 1
+        },
+        {
+          "id": 103823,
+          "char": "種瓜",
+          "previous_grade": 2,
+          "grade": 1
+        }
+      ],
+      "amendments": [
+        {
+          "id": 103025,
+          "char": "裸體",
+          "previous_jyutping": "lo2 tai2",
+          "jyutping": "lo2 tai2",
+          "alternatives": [],
+          "note": "祼體按同詞誤字修正為裸體；lo2 同步，已有正規詞音會查重。",
+          "reference": "AI:whole-word-context"
+        },
+        {
+          "id": 103190,
+          "char": "禾木旁",
+          "previous_jyutping": "wo4 muk6 pong4",
+          "jyutping": "wo4 muk6 pong4",
+          "alternatives": [],
+          "note": "常用教學部件名稱，屬通用國語字形詞，非方言。",
+          "reference": "AI:whole-word-context"
+        },
+        {
+          "id": 103880,
+          "char": "稼穡艱難",
+          "previous_jyutping": "gaa3 sik1 gaan1 naan4",
+          "jyutping": "gaa3 sik1 gaan1 naan4",
+          "alternatives": [],
+          "note": "可辨識的學校與書面引語，列較後書面級，不混同最常用生活詞。",
+          "reference": "AI:whole-word-context"
+        },
+        {
+          "id": 102034,
+          "char": "砸出",
+          "previous_jyutping": "zaak3 ceot1",
+          "jyutping": "zaak3 ceot1",
+          "alternatives": [
+            "zaap3 ceot1"
+          ],
+          "note": "重物撞壓／砸破語境，粵拼字表砸 zaak3 及壓砸詞例支持日常先讀；現代書面 zaap3 同義保留後，不機械加入舊書 zaap6。",
+          "reference": "https://lshk.org/wp-content/uploads/2022/11/LSHK_粵語拼音字表.pdf ; https://jyut.net/query?q=砸 ; https://www.wenweipo.com/epaper/view/newsDetail/1447623711099326464.html"
+        },
+        {
+          "id": 102036,
+          "char": "砸掉",
+          "previous_jyutping": "zaak3 diu6",
+          "jyutping": "zaak3 diu6",
+          "alternatives": [
+            "zaap3 diu6"
+          ],
+          "note": "重物撞壓／砸破語境，粵拼字表砸 zaak3 及壓砸詞例支持日常先讀；現代書面 zaap3 同義保留後，不機械加入舊書 zaap6。",
+          "reference": "https://lshk.org/wp-content/uploads/2022/11/LSHK_粵語拼音字表.pdf ; https://jyut.net/query?q=砸 ; https://www.wenweipo.com/epaper/view/newsDetail/1447623711099326464.html"
+        },
+        {
+          "id": 102038,
+          "char": "砸死",
+          "previous_jyutping": "zaak3 sei2",
+          "jyutping": "zaak3 sei2",
+          "alternatives": [
+            "zaap3 sei2"
+          ],
+          "note": "重物撞壓／砸破語境，粵拼字表砸 zaak3 及壓砸詞例支持日常先讀；現代書面 zaap3 同義保留後，不機械加入舊書 zaap6。",
+          "reference": "https://lshk.org/wp-content/uploads/2022/11/LSHK_粵語拼音字表.pdf ; https://jyut.net/query?q=砸 ; https://www.wenweipo.com/epaper/view/newsDetail/1447623711099326464.html"
+        },
+        {
+          "id": 102040,
+          "char": "砸破",
+          "previous_jyutping": "zaak3 po3",
+          "jyutping": "zaak3 po3",
+          "alternatives": [
+            "zaap3 po3"
+          ],
+          "note": "重物撞壓／砸破語境，粵拼字表砸 zaak3 及壓砸詞例支持日常先讀；現代書面 zaap3 同義保留後，不機械加入舊書 zaap6。",
+          "reference": "https://lshk.org/wp-content/uploads/2022/11/LSHK_粵語拼音字表.pdf ; https://jyut.net/query?q=砸 ; https://www.wenweipo.com/epaper/view/newsDetail/1447623711099326464.html"
+        },
+        {
+          "id": 102041,
+          "char": "砸破飯碗",
+          "previous_jyutping": "zaak3 po3 faan6 wun2",
+          "jyutping": "zaak3 po3 faan6 wun2",
+          "alternatives": [
+            "zaap3 po3 faan6 wun2"
+          ],
+          "note": "重物撞壓／砸破語境，粵拼字表砸 zaak3 及壓砸詞例支持日常先讀；現代書面 zaap3 同義保留後，不機械加入舊書 zaap6。",
+          "reference": "https://lshk.org/wp-content/uploads/2022/11/LSHK_粵語拼音字表.pdf ; https://jyut.net/query?q=砸 ; https://www.wenweipo.com/epaper/view/newsDetail/1447623711099326464.html"
+        },
+        {
+          "id": 102042,
+          "char": "砸腳",
+          "previous_jyutping": "zaak3 goek3",
+          "jyutping": "zaak3 goek3",
+          "alternatives": [
+            "zaap3 goek3"
+          ],
+          "note": "重物撞壓／砸破語境，粵拼字表砸 zaak3 及壓砸詞例支持日常先讀；現代書面 zaap3 同義保留後，不機械加入舊書 zaap6。",
+          "reference": "https://lshk.org/wp-content/uploads/2022/11/LSHK_粵語拼音字表.pdf ; https://jyut.net/query?q=砸 ; https://www.wenweipo.com/epaper/view/newsDetail/1447623711099326464.html"
+        },
+        {
+          "id": 102043,
+          "char": "砸車",
+          "previous_jyutping": "zaak3 ce1",
+          "jyutping": "zaak3 ce1",
+          "alternatives": [
+            "zaap3 ce1"
+          ],
+          "note": "重物撞壓／砸破語境，粵拼字表砸 zaak3 及壓砸詞例支持日常先讀；現代書面 zaap3 同義保留後，不機械加入舊書 zaap6。",
+          "reference": "https://lshk.org/wp-content/uploads/2022/11/LSHK_粵語拼音字表.pdf ; https://jyut.net/query?q=砸 ; https://www.wenweipo.com/epaper/view/newsDetail/1447623711099326464.html"
+        },
+        {
+          "id": 102044,
+          "char": "砸過來",
+          "previous_jyutping": "zaak3 gwo3 loi4",
+          "jyutping": "zaak3 gwo3 loi4",
+          "alternatives": [
+            "zaap3 gwo3 loi4"
+          ],
+          "note": "重物撞壓／砸破語境，粵拼字表砸 zaak3 及壓砸詞例支持日常先讀；現代書面 zaap3 同義保留後，不機械加入舊書 zaap6。",
+          "reference": "https://lshk.org/wp-content/uploads/2022/11/LSHK_粵語拼音字表.pdf ; https://jyut.net/query?q=砸 ; https://www.wenweipo.com/epaper/view/newsDetail/1447623711099326464.html"
+        },
+        {
+          "id": 102045,
+          "char": "砸過去",
+          "previous_jyutping": "zaak3 gwo3 heoi3",
+          "jyutping": "zaak3 gwo3 heoi3",
+          "alternatives": [
+            "zaap3 gwo3 heoi3"
+          ],
+          "note": "重物撞壓／砸破語境，粵拼字表砸 zaak3 及壓砸詞例支持日常先讀；現代書面 zaap3 同義保留後，不機械加入舊書 zaap6。",
+          "reference": "https://lshk.org/wp-content/uploads/2022/11/LSHK_粵語拼音字表.pdf ; https://jyut.net/query?q=砸 ; https://www.wenweipo.com/epaper/view/newsDetail/1447623711099326464.html"
+        },
+        {
+          "id": 102046,
+          "char": "砸門",
+          "previous_jyutping": "zaak3 mun4",
+          "jyutping": "zaak3 mun4",
+          "alternatives": [
+            "zaap3 mun4"
+          ],
+          "note": "重物撞壓／砸破語境，粵拼字表砸 zaak3 及壓砸詞例支持日常先讀；現代書面 zaap3 同義保留後，不機械加入舊書 zaap6。",
+          "reference": "https://lshk.org/wp-content/uploads/2022/11/LSHK_粵語拼音字表.pdf ; https://jyut.net/query?q=砸 ; https://www.wenweipo.com/epaper/view/newsDetail/1447623711099326464.html"
+        },
+        {
+          "id": 102039,
+          "char": "砸牌子",
+          "previous_jyutping": "zaak3 paai4 zi2",
+          "jyutping": "zaap3 paai4 zi2",
+          "alternatives": [],
+          "note": "砸牌子為比喻毀壞名聲，書面砸 zaap3；不把重物壓砸的 zaak3 自動套入比喻義。",
+          "reference": "https://jyut.net/query?q=砸"
+        },
+        {
+          "id": 102103,
+          "char": "硬件加速",
+          "previous_jyutping": "ngaang6 gin6 gaa1 cuk1",
+          "jyutping": "ngaang6 gin2 gaa1 cuk1",
+          "alternatives": [
+            "ngaang6 gin6 gaa1 cuk1"
+          ],
+          "note": "硬件器物日常 gin2 先，文讀 gin6 後；詞語常用度另排。",
+          "reference": "https://words.hk/zidin/硬件"
+        },
+        {
+          "id": 102104,
+          "char": "硬件報價",
+          "previous_jyutping": "ngaang6 gin6 bou3 gaa3",
+          "jyutping": "ngaang6 gin2 bou3 gaa3",
+          "alternatives": [
+            "ngaang6 gin6 bou3 gaa3"
+          ],
+          "note": "硬件器物日常 gin2 先，文讀 gin6 後；詞語常用度另排。",
+          "reference": "https://words.hk/zidin/硬件"
+        },
+        {
+          "id": 102105,
+          "char": "硬件安全",
+          "previous_jyutping": "ngaang6 gin6 on1 cyun4",
+          "jyutping": "ngaang6 gin2 on1 cyun4",
+          "alternatives": [
+            "ngaang6 gin6 on1 cyun4"
+          ],
+          "note": "硬件器物日常 gin2 先，文讀 gin6 後；詞語常用度另排。",
+          "reference": "https://words.hk/zidin/硬件"
+        },
+        {
+          "id": 102108,
+          "char": "硬件資訊",
+          "previous_jyutping": "ngaang6 gin6 zi1 seon3",
+          "jyutping": "ngaang6 gin2 zi1 seon3",
+          "alternatives": [
+            "ngaang6 gin6 zi1 seon3"
+          ],
+          "note": "硬件器物日常 gin2 先，文讀 gin6 後；詞語常用度另排。",
+          "reference": "https://words.hk/zidin/硬件"
+        },
+        {
+          "id": 102143,
+          "char": "硬盤共享",
+          "previous_jyutping": "ngaang6 pun4 gung6 hoeng2",
+          "jyutping": "ngaang6 pun2 gung6 hoeng2",
+          "alternatives": [
+            "ngaang6 pun4 gung6 hoeng2"
+          ],
+          "note": "盤作器物或磁性儲存盤名詞，日常 pun2 先、文讀 pun4 後；硬盤有完整詞例。磁盤組合先後屬同義語境 AI 判斷，非各詞均有實測音頻。",
+          "reference": "https://words.hk/zidin/硬盤 ; https://jyut.net/query?q=盤"
+        },
+        {
+          "id": 102144,
+          "char": "硬盤分區",
+          "previous_jyutping": "ngaang6 pun4 fan1 keoi1",
+          "jyutping": "ngaang6 pun2 fan1 keoi1",
+          "alternatives": [
+            "ngaang6 pun4 fan1 keoi1"
+          ],
+          "note": "盤作器物或磁性儲存盤名詞，日常 pun2 先、文讀 pun4 後；硬盤有完整詞例。磁盤組合先後屬同義語境 AI 判斷，非各詞均有實測音頻。",
+          "reference": "https://words.hk/zidin/硬盤 ; https://jyut.net/query?q=盤"
+        },
+        {
+          "id": 102146,
+          "char": "硬盤容量",
+          "previous_jyutping": "ngaang6 pun4 jung4 loeng6",
+          "jyutping": "ngaang6 pun2 jung4 loeng6",
+          "alternatives": [
+            "ngaang6 pun4 jung4 loeng6"
+          ],
+          "note": "盤作器物或磁性儲存盤名詞，日常 pun2 先、文讀 pun4 後；硬盤有完整詞例。磁盤組合先後屬同義語境 AI 判斷，非各詞均有實測音頻。",
+          "reference": "https://words.hk/zidin/硬盤 ; https://jyut.net/query?q=盤"
+        },
+        {
+          "id": 102148,
+          "char": "硬盤數據",
+          "previous_jyutping": "ngaang6 pun4 sou3 geoi3",
+          "jyutping": "ngaang6 pun2 sou3 geoi3",
+          "alternatives": [
+            "ngaang6 pun4 sou3 geoi3"
+          ],
+          "note": "盤作器物或磁性儲存盤名詞，日常 pun2 先、文讀 pun4 後；硬盤有完整詞例。磁盤組合先後屬同義語境 AI 判斷，非各詞均有實測音頻。",
+          "reference": "https://words.hk/zidin/硬盤 ; https://jyut.net/query?q=盤"
+        },
+        {
+          "id": 102149,
+          "char": "硬盤機",
+          "previous_jyutping": "ngaang6 pun4 gei1",
+          "jyutping": "ngaang6 pun2 gei1",
+          "alternatives": [
+            "ngaang6 pun4 gei1"
+          ],
+          "note": "盤作器物或磁性儲存盤名詞，日常 pun2 先、文讀 pun4 後；硬盤有完整詞例。磁盤組合先後屬同義語境 AI 判斷，非各詞均有實測音頻。",
+          "reference": "https://words.hk/zidin/硬盤 ; https://jyut.net/query?q=盤"
+        },
+        {
+          "id": 102151,
+          "char": "硬盤盒",
+          "previous_jyutping": "ngaang6 pun4 hap6",
+          "jyutping": "ngaang6 pun2 hap6",
+          "alternatives": [
+            "ngaang6 pun4 hap6"
+          ],
+          "note": "盤作器物或磁性儲存盤名詞，日常 pun2 先、文讀 pun4 後；硬盤有完整詞例。磁盤組合先後屬同義語境 AI 判斷，非各詞均有實測音頻。",
+          "reference": "https://words.hk/zidin/硬盤 ; https://jyut.net/query?q=盤"
+        },
+        {
+          "id": 102152,
+          "char": "硬盤空間",
+          "previous_jyutping": "ngaang6 pun4 hung1 gaan1",
+          "jyutping": "ngaang6 pun2 hung1 gaan1",
+          "alternatives": [
+            "ngaang6 pun4 hung1 gaan1"
+          ],
+          "note": "盤作器物或磁性儲存盤名詞，日常 pun2 先、文讀 pun4 後；硬盤有完整詞例。磁盤組合先後屬同義語境 AI 判斷，非各詞均有實測音頻。",
+          "reference": "https://words.hk/zidin/硬盤 ; https://jyut.net/query?q=盤"
+        },
+        {
+          "id": 102153,
+          "char": "硬盤還原",
+          "previous_jyutping": "ngaang6 pun4 waan4 jyun4",
+          "jyutping": "ngaang6 pun2 waan4 jyun4",
+          "alternatives": [
+            "ngaang6 pun4 waan4 jyun4"
+          ],
+          "note": "盤作器物或磁性儲存盤名詞，日常 pun2 先、文讀 pun4 後；硬盤有完整詞例。磁盤組合先後屬同義語境 AI 判斷，非各詞均有實測音頻。",
+          "reference": "https://words.hk/zidin/硬盤 ; https://jyut.net/query?q=盤"
+        },
+        {
+          "id": 103550,
+          "char": "移動硬盤",
+          "previous_jyutping": "ji4 dung6 ngaang6 pun4",
+          "jyutping": "ji4 dung6 ngaang6 pun2",
+          "alternatives": [
+            "ji4 dung6 ngaang6 pun4"
+          ],
+          "note": "盤作器物或磁性儲存盤名詞，日常 pun2 先、文讀 pun4 後；硬盤有完整詞例。磁盤組合先後屬同義語境 AI 判斷，非各詞均有實測音頻。",
+          "reference": "https://words.hk/zidin/硬盤 ; https://jyut.net/query?q=盤"
+        },
+        {
+          "id": 102237,
+          "char": "碗盆",
+          "previous_jyutping": "wun2 pun4",
+          "jyutping": "wun2 pun2",
+          "alternatives": [
+            "wun2 pun4"
+          ],
+          "note": "盤作器物或磁性儲存盤名詞，日常 pun2 先、文讀 pun4 後；硬盤有完整詞例。磁盤組合先後屬同義語境 AI 判斷，非各詞均有實測音頻。",
+          "reference": "https://words.hk/zidin/硬盤 ; https://jyut.net/query?q=盤"
+        },
+        {
+          "id": 102238,
+          "char": "碗盤",
+          "previous_jyutping": "wun2 pun4",
+          "jyutping": "wun2 pun2",
+          "alternatives": [
+            "wun2 pun4"
+          ],
+          "note": "盤作器物或磁性儲存盤名詞，日常 pun2 先、文讀 pun4 後；硬盤有完整詞例。磁盤組合先後屬同義語境 AI 判斷，非各詞均有實測音頻。",
+          "reference": "https://words.hk/zidin/硬盤 ; https://jyut.net/query?q=盤"
+        },
+        {
+          "id": 102430,
+          "char": "磁盤分區",
+          "previous_jyutping": "ci4 pun4 fan1 keoi1",
+          "jyutping": "ci4 pun2 fan1 keoi1",
+          "alternatives": [
+            "ci4 pun4 fan1 keoi1"
+          ],
+          "note": "盤作器物或磁性儲存盤名詞，日常 pun2 先、文讀 pun4 後；硬盤有完整詞例。磁盤組合先後屬同義語境 AI 判斷，非各詞均有實測音頻。",
+          "reference": "https://words.hk/zidin/硬盤 ; https://jyut.net/query?q=盤"
+        },
+        {
+          "id": 102431,
+          "char": "磁盤工具",
+          "previous_jyutping": "ci4 pun4 gung1 geoi6",
+          "jyutping": "ci4 pun2 gung1 geoi6",
+          "alternatives": [
+            "ci4 pun4 gung1 geoi6"
+          ],
+          "note": "盤作器物或磁性儲存盤名詞，日常 pun2 先、文讀 pun4 後；硬盤有完整詞例。磁盤組合先後屬同義語境 AI 判斷，非各詞均有實測音頻。",
+          "reference": "https://words.hk/zidin/硬盤 ; https://jyut.net/query?q=盤"
+        },
+        {
+          "id": 102432,
+          "char": "磁盤操作",
+          "previous_jyutping": "ci4 pun4 cou1 zok3",
+          "jyutping": "ci4 pun2 cou1 zok3",
+          "alternatives": [
+            "ci4 pun4 cou1 zok3"
+          ],
+          "note": "盤作器物或磁性儲存盤名詞，日常 pun2 先、文讀 pun4 後；硬盤有完整詞例。磁盤組合先後屬同義語境 AI 判斷，非各詞均有實測音頻。",
+          "reference": "https://words.hk/zidin/硬盤 ; https://jyut.net/query?q=盤"
+        },
+        {
+          "id": 102433,
+          "char": "磁盤格式",
+          "previous_jyutping": "ci4 pun4 gaak3 sik1",
+          "jyutping": "ci4 pun2 gaak3 sik1",
+          "alternatives": [
+            "ci4 pun4 gaak3 sik1"
+          ],
+          "note": "盤作器物或磁性儲存盤名詞，日常 pun2 先、文讀 pun4 後；硬盤有完整詞例。磁盤組合先後屬同義語境 AI 判斷，非各詞均有實測音頻。",
+          "reference": "https://words.hk/zidin/硬盤 ; https://jyut.net/query?q=盤"
+        },
+        {
+          "id": 102434,
+          "char": "磁盤清理",
+          "previous_jyutping": "ci4 pun4 cing1 lei5",
+          "jyutping": "ci4 pun2 cing1 lei5",
+          "alternatives": [
+            "ci4 pun4 cing1 lei5"
+          ],
+          "note": "盤作器物或磁性儲存盤名詞，日常 pun2 先、文讀 pun4 後；硬盤有完整詞例。磁盤組合先後屬同義語境 AI 判斷，非各詞均有實測音頻。",
+          "reference": "https://words.hk/zidin/硬盤 ; https://jyut.net/query?q=盤"
+        },
+        {
+          "id": 102435,
+          "char": "磁盤盒",
+          "previous_jyutping": "ci4 pun4 hap6",
+          "jyutping": "ci4 pun2 hap6",
+          "alternatives": [
+            "ci4 pun4 hap6"
+          ],
+          "note": "盤作器物或磁性儲存盤名詞，日常 pun2 先、文讀 pun4 後；硬盤有完整詞例。磁盤組合先後屬同義語境 AI 判斷，非各詞均有實測音頻。",
+          "reference": "https://words.hk/zidin/硬盤 ; https://jyut.net/query?q=盤"
+        },
+        {
+          "id": 102436,
+          "char": "磁盤碎片",
+          "previous_jyutping": "ci4 pun4 seoi3 pin2",
+          "jyutping": "ci4 pun2 seoi3 pin2",
+          "alternatives": [
+            "ci4 pun4 seoi3 pin2"
+          ],
+          "note": "盤作器物或磁性儲存盤名詞，日常 pun2 先、文讀 pun4 後；硬盤有完整詞例。磁盤組合先後屬同義語境 AI 判斷，非各詞均有實測音頻。",
+          "reference": "https://words.hk/zidin/硬盤 ; https://jyut.net/query?q=盤"
+        },
+        {
+          "id": 102437,
+          "char": "磁盤空間",
+          "previous_jyutping": "ci4 pun4 hung1 gaan1",
+          "jyutping": "ci4 pun2 hung1 gaan1",
+          "alternatives": [
+            "ci4 pun4 hung1 gaan1"
+          ],
+          "note": "盤作器物或磁性儲存盤名詞，日常 pun2 先、文讀 pun4 後；硬盤有完整詞例。磁盤組合先後屬同義語境 AI 判斷，非各詞均有實測音頻。",
+          "reference": "https://words.hk/zidin/硬盤 ; https://jyut.net/query?q=盤"
+        },
+        {
+          "id": 102438,
+          "char": "磁盤鏡像",
+          "previous_jyutping": "ci4 pun4 geng3 zoeng6",
+          "jyutping": "ci4 pun2 geng3 zoeng6",
+          "alternatives": [
+            "ci4 pun4 geng3 zoeng6"
+          ],
+          "note": "盤作器物或磁性儲存盤名詞，日常 pun2 先、文讀 pun4 後；硬盤有完整詞例。磁盤組合先後屬同義語境 AI 判斷，非各詞均有實測音頻。",
+          "reference": "https://words.hk/zidin/硬盤 ; https://jyut.net/query?q=盤"
+        },
+        {
+          "id": 102013,
+          "char": "破裂聲",
+          "previous_jyutping": "po3 lit6 sing1",
+          "jyutping": "po3 lit6 seng1",
+          "alternatives": [
+            "po3 lit6 sing1"
+          ],
+          "note": "聲音義聲採日常 seng1 先，文讀 sing1 後，兩者均現代同義。",
+          "reference": "https://jyut.net/query?q=聲"
+        },
+        {
+          "id": 102221,
+          "char": "碎裂聲",
+          "previous_jyutping": "seoi3 lit6 sing1",
+          "jyutping": "seoi3 lit6 seng1",
+          "alternatives": [
+            "seoi3 lit6 sing1"
+          ],
+          "note": "聲音義聲採日常 seng1 先，文讀 sing1 後，兩者均現代同義。",
+          "reference": "https://jyut.net/query?q=聲"
+        },
+        {
+          "id": 102301,
+          "char": "碰擊聲",
+          "previous_jyutping": "pung3 gik1 sing1",
+          "jyutping": "pung3 gik1 seng1",
+          "alternatives": [
+            "pung3 gik1 sing1"
+          ],
+          "note": "聲音義聲採日常 seng1 先，文讀 sing1 後，兩者均現代同義。",
+          "reference": "https://jyut.net/query?q=聲"
+        },
+        {
+          "id": 102240,
+          "char": "豌豆",
+          "previous_jyutping": "wun2 dau6",
+          "jyutping": "wun2 dau2",
+          "alternatives": [
+            "wun2 dau6",
+            "wun1 dau6"
+          ],
+          "note": "碗豆按同詞常見誤寫改豌豆。完整豌豆有 wun2 dau6*2，豌另有現代原讀 wun1；首讀已有資料會查重，不憑單字再製 wun1 dau2 組合。",
+          "reference": "https://cantonese.sheik.co.uk/dictionary/characters/636/?cf=1&full=true ; https://jyut.net/query?q=豌"
+        },
+        {
+          "id": 102284,
+          "char": "碰下",
+          "previous_jyutping": "pung3 haa6",
+          "jyutping": "pung3 haa5",
+          "alternatives": [
+            "pung3 haa6"
+          ],
+          "note": "碰下作碰一下的短時動作 haa5 優先；向下觸碰的 haa6 另保留，次序依自然完整用法判斷。",
+          "reference": "AI:whole-word-context"
+        },
+        {
+          "id": 102286,
+          "char": "碰到問題",
+          "previous_jyutping": "pung3 dou3 man6 tai4",
+          "jyutping": "pung3 dou2 man6 tai4",
+          "alternatives": [
+            "pung3 dou3 man6 tai4"
+          ],
+          "note": "碰到問題／矛盾取結果達成的日常 dou2 優先，文讀 dou3 同義後。",
+          "reference": "AI:whole-word-context"
+        },
+        {
+          "id": 102287,
+          "char": "碰到矛盾",
+          "previous_jyutping": "pung3 dou3 maau4 teon5",
+          "jyutping": "pung3 dou2 maau4 teon5",
+          "alternatives": [
+            "pung3 dou3 maau4 teon5"
+          ],
+          "note": "碰到問題／矛盾取結果達成的日常 dou2 優先，文讀 dou3 同義後。",
+          "reference": "AI:whole-word-context"
+        },
+        {
+          "id": 102378,
+          "char": "碾到",
+          "previous_jyutping": "nin5 dou2",
+          "jyutping": "nin5 dou3",
+          "alternatives": [
+            "nin5 dou2"
+          ],
+          "note": "到接程度、位置、時間或數量界限採 dou3 先，可能／達成的 dou2 後；磨到歌詞直接為程度結果，不判 dou3 錯音。",
+          "reference": "AI:whole-word-context"
+        },
+        {
+          "id": 102500,
+          "char": "磨到",
+          "previous_jyutping": "mo4 dou2",
+          "jyutping": "mo4 dou3",
+          "alternatives": [
+            "mo4 dou2"
+          ],
+          "note": "到接程度、位置、時間或數量界限採 dou3 先，可能／達成的 dou2 後；磨到歌詞直接為程度結果，不判 dou3 錯音。",
+          "reference": "AI:whole-word-context"
+        },
+        {
+          "id": 103542,
+          "char": "移到",
+          "previous_jyutping": "ji4 dou2",
+          "jyutping": "ji4 dou3",
+          "alternatives": [
+            "ji4 dou2"
+          ],
+          "note": "到接程度、位置、時間或數量界限採 dou3 先，可能／達成的 dou2 後；磨到歌詞直接為程度結果，不判 dou3 錯音。",
+          "reference": "AI:whole-word-context"
+        },
+        {
+          "id": 103910,
+          "char": "積到",
+          "previous_jyutping": "zik1 dou2",
+          "jyutping": "zik1 dou3",
+          "alternatives": [
+            "zik1 dou2"
+          ],
+          "note": "到接程度、位置、時間或數量界限採 dou3 先，可能／達成的 dou2 後；磨到歌詞直接為程度結果，不判 dou3 錯音。",
+          "reference": "AI:whole-word-context"
+        },
+        {
+          "id": 102260,
+          "char": "碟片數",
+          "previous_jyutping": "dip6 pin2 sou3",
+          "jyutping": "dip6 pin2 sou3",
+          "alternatives": [
+            "dip6 pin3 sou3"
+          ],
+          "note": "碟片、影片名詞日常 pin2 先、文讀 pin3 後；數量的數維持 sou3。",
+          "reference": "https://jyut.net/query?q=片"
+        },
+        {
+          "id": 102440,
+          "char": "磁碟片",
+          "previous_jyutping": "ci4 dip6 pin3",
+          "jyutping": "ci4 dip6 pin2",
+          "alternatives": [
+            "ci4 dip6 pin3"
+          ],
+          "note": "碟片、影片名詞日常 pin2 先、文讀 pin3 後；數量的數維持 sou3。",
+          "reference": "https://jyut.net/query?q=片"
+        },
+        {
+          "id": 103495,
+          "char": "租片",
+          "previous_jyutping": "zou1 pin2",
+          "jyutping": "zou1 pin2",
+          "alternatives": [
+            "zou1 pin3"
+          ],
+          "note": "碟片、影片名詞日常 pin2 先、文讀 pin3 後；數量的數維持 sou3。",
+          "reference": "https://jyut.net/query?q=片"
+        },
+        {
+          "id": 102592,
+          "char": "鹼性反應",
+          "previous_jyutping": "gaan2 sing3 faan2 jing3",
+          "jyutping": "gaan2 sing3 faan2 jing3",
+          "alternatives": [],
+          "note": "來源硷／礆按同字異體採通行鹼字，保留原來源字面；不是改成另一同義詞，不把原字當讀音錯誤。",
+          "reference": "AI:whole-word-context"
+        },
+        {
+          "id": 102596,
+          "char": "鹼金屬",
+          "previous_jyutping": "gaan2 gam1 suk6",
+          "jyutping": "gaan2 gam1 suk6",
+          "alternatives": [],
+          "note": "來源硷／礆按同字異體採通行鹼字，保留原來源字面；不是改成另一同義詞，不把原字當讀音錯誤。",
+          "reference": "AI:whole-word-context"
+        },
+        {
+          "id": 102608,
+          "char": "礙難照准",
+          "previous_jyutping": "ngoi6 naan4 ziu3 zeon2",
+          "jyutping": "ngoi6 naan4 ziu3 zeon2",
+          "alternatives": [],
+          "note": "批准申請義用准，非標準的準；精確整詞還原，保留來源原形。",
+          "reference": "https://www.npu.edu.tw/df_ufiles/177/公文常用語彙.pdf ; https://www.tipo.gov.tw/tw/copyright/692-10983.html"
+        },
+        {
+          "id": 102609,
+          "char": "礙難照准",
+          "previous_jyutping": "ngoi6 naan4 ziu3 zeon2",
+          "jyutping": "ngoi6 naan4 ziu3 zeon2",
+          "alternatives": [],
+          "note": "批准申請義用准，非標準的準；精確整詞還原，保留來源原形。",
+          "reference": "https://www.npu.edu.tw/df_ufiles/177/公文常用語彙.pdf ; https://www.tipo.gov.tw/tw/copyright/692-10983.html"
+        },
+        {
+          "id": 102826,
+          "char": "神奇莫測",
+          "previous_jyutping": "san4 kei4 mok6 cak1",
+          "jyutping": "san4 kei4 mok6 caak1",
+          "alternatives": [
+            "san4 kei4 mok6 cak1"
+          ],
+          "note": "莫測／不測／難測為不可推測，現代 caak1 習讀先、cak1 文讀後，非按字書筆數當詞頻。",
+          "reference": "https://jyut.net/query?q=測"
+        },
+        {
+          "id": 102958,
+          "char": "神鬼不測",
+          "previous_jyutping": "san4 gwai2 bat1 caak1",
+          "jyutping": "san4 gwai2 bat1 caak1",
+          "alternatives": [
+            "san4 gwai2 bat1 cak1"
+          ],
+          "note": "莫測／不測／難測為不可推測，現代 caak1 習讀先、cak1 文讀後，非按字書筆數當詞頻。",
+          "reference": "https://jyut.net/query?q=測"
+        },
+        {
+          "id": 102960,
+          "char": "神鬼難測",
+          "previous_jyutping": "san4 gwai2 naan4 caak1",
+          "jyutping": "san4 gwai2 naan4 caak1",
+          "alternatives": [
+            "san4 gwai2 naan4 cak1"
+          ],
+          "note": "莫測／不測／難測為不可推測，現代 caak1 習讀先、cak1 文讀後，非按字書筆數當詞頻。",
+          "reference": "https://jyut.net/query?q=測"
+        },
+        {
+          "id": 102832,
+          "char": "神秘",
+          "previous_jyutping": "san4 mat6",
+          "jyutping": "san4 bei3",
+          "alternatives": [],
+          "note": "神密誤寫按神秘修正，秘 bei3 同步替換原密 mat6 音節；正字已有詞音查重。",
+          "reference": "AI:whole-word-context"
+        },
+        {
+          "id": 102849,
+          "char": "神情沮喪",
+          "previous_jyutping": "san4 cing4 zeoi2 song3",
+          "jyutping": "san4 cing4 zeoi2 song3",
+          "alternatives": [],
+          "note": "沮喪完整詞 zeoi2 song3 有現代直接詞例；神情沮喪同義正常，不因 Rime 單字等級誤降讀音。",
+          "reference": "https://words.hk/zidin/沮喪"
+        },
+        {
+          "id": 102927,
+          "char": "神話傳說",
+          "previous_jyutping": "san4 waa2 cyun4 syut3",
+          "jyutping": "san4 waa2 cyun4 syut3",
+          "alternatives": [
+            "san4 waa6 cyun4 syut3"
+          ],
+          "note": "神話完整詞有 waa6*2，日常名詞 waa2 優先、文讀 waa6 較後。",
+          "reference": "https://cantonese.sheik.co.uk/dictionary/characters/258/"
+        },
+        {
+          "id": 102928,
+          "char": "神話故事",
+          "previous_jyutping": "san4 waa2 gu3 si6",
+          "jyutping": "san4 waa2 gu3 si6",
+          "alternatives": [
+            "san4 waa6 gu3 si6"
+          ],
+          "note": "神話完整詞有 waa6*2，日常名詞 waa2 優先、文讀 waa6 較後。",
+          "reference": "https://cantonese.sheik.co.uk/dictionary/characters/258/"
+        },
+        {
+          "id": 102929,
+          "char": "神話般",
+          "previous_jyutping": "san4 waa2 bun1",
+          "jyutping": "san4 waa2 bun1",
+          "alternatives": [
+            "san4 waa6 bun1"
+          ],
+          "note": "神話完整詞有 waa6*2，日常名詞 waa2 優先、文讀 waa6 較後。",
+          "reference": "https://cantonese.sheik.co.uk/dictionary/characters/258/"
+        },
+        {
+          "id": 102994,
+          "char": "票販",
+          "previous_jyutping": "piu3 faan2",
+          "jyutping": "piu3 faan2",
+          "alternatives": [
+            "piu3 faan3"
+          ],
+          "note": "票販作小販名詞，變調 faan2 先、文讀 faan3 後；不將販賣動詞另一語音 faan5 無條件套入此名詞。",
+          "reference": "https://jyut.net/query?q=販"
+        },
+        {
+          "id": 103276,
+          "char": "私販",
+          "previous_jyutping": "si1 faan3",
+          "jyutping": "si1 faan3",
+          "alternatives": [
+            "si1 faan5"
+          ],
+          "note": "私販作私下販賣動詞，faan3 先；現代語音小買賣 faan5 同義後，不把 faan5 說成純古音。",
+          "reference": "https://jyut.net/query?q=販"
+        },
+        {
+          "id": 103027,
+          "char": "禁住",
+          "previous_jyutping": "gam1 zyu6",
+          "jyutping": "kam1 zyu6",
+          "alternatives": [
+            "gam1 zyu6",
+            "gam3 zyu6"
+          ],
+          "note": "禁受、禁住取經受／耐受語音 kam1 先，gam1 文讀後；禁住亦可指禁止限制 gam3。現代不禁笑的 gam3 仍有例，不據裸字表刪舊禁受或禁不住讀法。",
+          "reference": "https://jyut.net/query?q=禁"
+        },
+        {
+          "id": 103030,
+          "char": "禁受住",
+          "previous_jyutping": "gam1 sau6 zyu6",
+          "jyutping": "kam1 sau6 zyu6",
+          "alternatives": [
+            "gam1 sau6 zyu6"
+          ],
+          "note": "禁受、禁住取經受／耐受語音 kam1 先，gam1 文讀後；禁住亦可指禁止限制 gam3。現代不禁笑的 gam3 仍有例，不據裸字表刪舊禁受或禁不住讀法。",
+          "reference": "https://jyut.net/query?q=禁"
+        },
+        {
+          "id": 103242,
+          "char": "私家轎車",
+          "previous_jyutping": "si1 gaa1 kiu2 ce1",
+          "jyutping": "si1 gaa1 giu2 ce1",
+          "alternatives": [
+            "si1 gaa1 giu6 ce1",
+            "si1 gaa1 kiu2 ce1"
+          ],
+          "note": "轎車有完整 giu6*2、四門轎車 giu2 詞例，giu2 日常先；giu6 文讀與現代俗讀 kiu2 另保留。kiu4 只見1947舊書，本批不增。",
+          "reference": "https://cantonese.sheik.co.uk/dictionary/words/6910/ ; https://cantonese.org/search.php?q=四 ; https://jyut.net/query?q=轎"
+        },
+        {
+          "id": 103250,
+          "char": "私放罪犯",
+          "previous_jyutping": "si1 fong3 zeoi6 faan6",
+          "jyutping": "si1 fong3 zeoi6 faan2",
+          "alternatives": [
+            "si1 fong3 zeoi6 faan6"
+          ],
+          "note": "罪犯完整詞 faan6*2，名詞日常變調 faan2 優先，文讀 faan6 後，非犯罪動詞的讀法一概替換。",
+          "reference": "https://cantonese.sheik.co.uk/dictionary/characters/2546/"
+        },
+        {
+          "id": 102976,
+          "char": "票券",
+          "previous_jyutping": "piu3 hyun3",
+          "jyutping": "piu3 hyun3",
+          "alternatives": [
+            "piu3 gyun3"
+          ],
+          "note": "票據憑證的券採建議 hyun3 先；1992讀音表現代又讀 gyun3 同義後，不套只見舊書 hyun5。",
+          "reference": "https://jyut.net/query?q=券"
+        },
+        {
+          "id": 103143,
+          "char": "禮品券",
+          "previous_jyutping": "lai5 ban2 hyun3",
+          "jyutping": "lai5 ban2 hyun3",
+          "alternatives": [
+            "lai5 ban2 gyun3"
+          ],
+          "note": "票據憑證的券採建議 hyun3 先；1992讀音表現代又讀 gyun3 同義後，不套只見舊書 hyun5。",
+          "reference": "https://jyut.net/query?q=券"
+        },
+        {
+          "id": 103286,
+          "char": "秉公處理",
+          "previous_jyutping": "bing2 gung1 cyu2 lei5",
+          "jyutping": "bing2 gung1 cyu2 lei5",
+          "alternatives": [
+            "bing2 gung1 cyu5 lei5"
+          ],
+          "note": "處理作處置辦理，現代 cyu2 先、同義 cyu5 後，非處所 cyu3。",
+          "reference": "https://jyut.net/query?q=處"
+        },
+        {
+          "id": 103296,
+          "char": "秉燭夜行",
+          "previous_jyutping": "bing2 zuk1 je6 haang4",
+          "jyutping": "bing2 zuk1 je6 haang4",
+          "alternatives": [
+            "bing2 zuk1 je6 hang4"
+          ],
+          "note": "夜行為步行，日常 haang4 先、文讀 hang4 後，不沿行列讀音。",
+          "reference": "https://jyut.net/query?q=行"
+        },
+        {
+          "id": 103369,
+          "char": "科學論斷",
+          "previous_jyutping": "fo1 hok6 leon6 dyun6",
+          "jyutping": "fo1 hok6 leon6 dyun3",
+          "alternatives": [],
+          "note": "論斷是判定判斷義 dyun3，非折斷 dyun6；按整詞義修正，不全局換斷字。",
+          "reference": "https://jyut.net/query?q=斷"
+        },
+        {
+          "id": 103587,
+          "char": "移星換斗",
+          "previous_jyutping": "ji4 sing1 wun6 dau2",
+          "jyutping": "ji4 sing1 wun6 dau2",
+          "alternatives": [],
+          "note": "改變星斗位置的斗 dau2，非鬥爭 dau3；精確整詞還原。",
+          "reference": "https://dict.revised.moe.edu.tw/dictView.jsp?ID=150486&q=1&word=斗"
+        },
+        {
+          "id": 103588,
+          "char": "移星換斗",
+          "previous_jyutping": "ji4 sing1 wun6 dau2",
+          "jyutping": "ji4 sing1 wun6 dau2",
+          "alternatives": [],
+          "note": "改變星斗位置的斗 dau2，非鬥爭 dau3；精確整詞還原。",
+          "reference": "https://dict.revised.moe.edu.tw/dictView.jsp?ID=150486&q=1&word=斗"
+        },
+        {
+          "id": 103681,
+          "char": "稍候一下",
+          "previous_jyutping": "saau2 hau6 jat1 haa5",
+          "jyutping": "saau2 hau6 jat1 haa5",
+          "alternatives": [
+            "saau2 hau6 jat1 haa6"
+          ],
+          "note": "一下為短暫動作，日常 haa5 先、文讀 haa6 後。",
+          "reference": "AI:whole-word-context"
+        },
+        {
+          "id": 103708,
+          "char": "稍等一下",
+          "previous_jyutping": "saau2 dang2 jat1 haa6",
+          "jyutping": "saau2 dang2 jat1 haa5",
+          "alternatives": [
+            "saau2 dang2 jat1 haa6"
+          ],
+          "note": "一下為短暫動作，日常 haa5 先、文讀 haa6 後。",
+          "reference": "AI:whole-word-context"
+        },
+        {
+          "id": 103796,
+          "char": "種因",
+          "previous_jyutping": "zung2 jan1",
+          "jyutping": "zung3 jan1",
+          "alternatives": [],
+          "note": "種因為種下因緣的動詞 zung3，非種類種子名詞 zung2；與種過歌詞語義一致。",
+          "reference": "https://jyut.net/query?q=種"
+        },
+        {
+          "id": 103927,
+          "char": "積年累歲",
+          "previous_jyutping": "zik1 nin4 leoi5 seoi3",
+          "jyutping": "zik1 nin4 leoi5 seoi3",
+          "alternatives": [
+            "zik1 nin4 leoi6 seoi3"
+          ],
+          "note": "累積義 leoi5 為現代文讀，leoi6 亦有粵典累積與長年累月整詞現代依據，兩者保留；書面四字短語5先，積累資金6先為 AI 語境排序，非實測音頻。",
+          "reference": "https://words.hk/zidin/累積 ; https://cantonese.sheik.co.uk/dictionary/characters/2842/?full=true ; https://jyut.net/query?q=累"
+        },
+        {
+          "id": 103938,
+          "char": "積日累月",
+          "previous_jyutping": "zik1 jat6 leoi5 jyut6",
+          "jyutping": "zik1 jat6 leoi5 jyut6",
+          "alternatives": [
+            "zik1 jat6 leoi6 jyut6"
+          ],
+          "note": "累積義 leoi5 為現代文讀，leoi6 亦有粵典累積與長年累月整詞現代依據，兩者保留；書面四字短語5先，積累資金6先為 AI 語境排序，非實測音頻。",
+          "reference": "https://words.hk/zidin/累積 ; https://cantonese.sheik.co.uk/dictionary/characters/2842/?full=true ; https://jyut.net/query?q=累"
+        },
+        {
+          "id": 103939,
+          "char": "積日累歲",
+          "previous_jyutping": "zik1 jat6 leoi5 seoi3",
+          "jyutping": "zik1 jat6 leoi5 seoi3",
+          "alternatives": [
+            "zik1 jat6 leoi6 seoi3"
+          ],
+          "note": "累積義 leoi5 為現代文讀，leoi6 亦有粵典累積與長年累月整詞現代依據，兩者保留；書面四字短語5先，積累資金6先為 AI 語境排序，非實測音頻。",
+          "reference": "https://words.hk/zidin/累積 ; https://cantonese.sheik.co.uk/dictionary/characters/2842/?full=true ; https://jyut.net/query?q=累"
+        },
+        {
+          "id": 103980,
+          "char": "積累資金",
+          "previous_jyutping": "zik1 leoi5 zi1 gam1",
+          "jyutping": "zik1 leoi6 zi1 gam1",
+          "alternatives": [
+            "zik1 leoi5 zi1 gam1"
+          ],
+          "note": "累積義 leoi5 為現代文讀，leoi6 亦有粵典累積與長年累月整詞現代依據，兩者保留；書面四字短語5先，積累資金6先為 AI 語境排序，非實測音頻。",
+          "reference": "https://words.hk/zidin/累積 ; https://cantonese.sheik.co.uk/dictionary/characters/2842/?full=true ; https://jyut.net/query?q=累"
+        },
+        {
+          "id": 103961,
+          "char": "積極響應",
+          "previous_jyutping": "zik1 gik6 hoeng2 jing1",
+          "jyutping": "zik1 gik6 hoeng2 jing3",
+          "alternatives": [],
+          "note": "響應為回應、附和 jing3，非應該 jing1；整詞有現代直接詞例。舊響應者只修精確該詞音節與碼，保留原批次和來源。",
+          "reference": "https://words.hk/zidin/響應 ; https://cantonese.sheik.co.uk/dictionary/characters/536/?cf=1&full=true"
+        },
+        {
+          "id": 21696,
+          "char": "響應者",
+          "previous_jyutping": "hoeng2 jing1 ze2",
+          "jyutping": "hoeng2 jing3 ze2",
+          "alternatives": [],
+          "note": "響應為回應、附和 jing3，非應該 jing1；整詞有現代直接詞例。舊響應者只修精確該詞音節與碼，保留原批次和來源。",
+          "reference": "https://words.hk/zidin/響應 ; https://cantonese.sheik.co.uk/dictionary/characters/536/?cf=1&full=true"
+        }
+      ],
+      "restored_candidates": [
+        {
+          "id": 103025,
+          "char": "祼體",
+          "proposed_char": "裸體",
+          "reason": "祼體按同詞誤字修正為裸體；lo2 同步，已有正規詞音會查重。"
+        },
+        {
+          "id": 103190,
+          "char": "禾木旁",
+          "proposed_char": "禾木旁",
+          "reason": "常用教學部件名稱，屬通用國語字形詞，非方言。"
+        },
+        {
+          "id": 103880,
+          "char": "稼穡艱難",
+          "proposed_char": "稼穡艱難",
+          "reason": "可辨識的學校與書面引語，列較後書面級，不混同最常用生活詞。"
+        }
+      ],
+      "final_accepted_before_dedup": 943,
+      "corpus": {
+        "observations": 5,
+        "supplied_spans": 8,
+        "all_original_spans_read": true,
+        "source_commit": "018e88540b917c40dc3f7248ed98908208544b54",
+        "boundary_notes": {
+          "102308": "碰過我的手是完整述語，pung3 gwo3；同一副歌重複不當三個獨立常用度觀測。",
+          "102500": "磨到有襟花是程度結果，mo4 dou3 正常；dou2 是另有可能／達成用法，非原譜錯讀。",
+          "103235": "自私／地吵醒他跨詞，私地不收，不改私底或私下造詞源。",
+          "103571": "移山填海及移山是給我護蔭皆有完整移山 ji4 saan1，保留。",
+          "103834": "忘掉種過的花有完整種過 zung3 gwo3 動詞，不採種子 zung2。"
+        }
+      },
+      "prior_decisions_preserved": 101993,
+      "explicit_prior_decision_repairs": [
+        21696
+      ],
+      "existing_runtime_audit": {
+        "響應 jing1": "Wrong respond sense; exact deletion while preserving jing3.",
+        "響應者 jing1": "Explicit B13 source reading/code repair to jing3; provenance retained.",
+        "轎車 kiu4": "Old-only1947 form excluded from modern whole-word result; giu2/giu6/kiu2 retained.",
+        "時間 gaan3": "Modern words.hk full word explicitly si4 gaan3 and si4 gaan1; retain 響應時間 original.",
+        "累積 leoi6": "Modern words.hk full word valid; preserve old5/6.",
+        "碌碌 luk1": "Modern sense correct; not mineral luk6.",
+        "販 faan5": "Modern 小買賣語音 valid, no global deletion.",
+        "禁 gam3": "Modern 不禁笑 example valid; no deletion based only on bare character."
+      },
+      "existing_runtime_readings_mirrored_for_explicit_preference": [
+        {
+          "char": "豌豆",
+          "jyutping": "wun2 dau2",
+          "reason": "完整豌豆 wun2 dau6*2 支持日常 wun2 dau2 優先；既有 runtime 已有此讀音，本列只明確鏡錄來源及正常讀音順位，合併搜尋不增加重複詞條。原碗豆為同詞誤寫，來源不變；較後 wun2 dau6、wun1 dau6 分列。"
+        }
+      ]
+    }
+  },
+  "existing_runtime_readings_mirrored_for_explicit_preference": 1,
+  "new_runtime_reading_pairs": 999
+}

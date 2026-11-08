@@ -37,6 +37,7 @@ sources:
     license: project
     enabled_by_default: true
     raw_path: data/lexicon/curated_lexicon.json
+    word_usage_path: data/lexicon/word_usage.tsv
     source_rank: 20
     attribution: Maintainer curated lexicon readings
 

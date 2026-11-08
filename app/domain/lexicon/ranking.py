@@ -8,6 +8,7 @@ from typing import Any, Iterable, List, TypeVar
 
 from app.lexicon.curated_index import curated_sort_boost
 from app.lexicon.essay_index import get_essay_frequency
+from app.lexicon.word_usage import word_usage_sort_key
 from app.lexicon.rime_char_index import pron_rank_sort_value_for_word
 from app.domain.lexicon.word_row import get_word_jyutping, get_word_text
 
@@ -31,13 +32,16 @@ def _is_aa_variant_jyutping(jyutping: str) -> bool:
 
 
 def search_result_sort_key(word) -> tuple:
-    """扁平搜尋結果排序：純漢字 → essay → curated → pron_rank → 字面。"""
+    """純漢字 → 詞語常用度 → essay → 字幕分布 → curated → 讀音 → 字面。"""
     ch = get_word_text(word)
     jyut = get_word_jyutping(word)
     han_tier = _rank_tier(ch)
+    usage_rank, subtitle_distribution = word_usage_sort_key(ch)
     return (
         han_tier,
+        usage_rank,
         -get_essay_frequency(ch),
+        subtitle_distribution,
         -curated_sort_boost(ch),
         pron_rank_sort_value_for_word(ch, jyut),
         ch,
@@ -71,9 +75,12 @@ def heteronym_sort_key(word) -> tuple:
     ch = get_word_text(word)
     jyut = get_word_jyutping(word)
     han_tier = _rank_tier(ch)
+    usage_rank, subtitle_distribution = word_usage_sort_key(ch)
     return (
         han_tier,
+        usage_rank,
         -get_essay_frequency(ch),
+        subtitle_distribution,
         -curated_sort_boost(ch),
         ch,
         jyut,
