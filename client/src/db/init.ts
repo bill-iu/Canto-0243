@@ -5,7 +5,8 @@
 import type { DatabaseBackend } from './database-backend.ts';
 import { resolveDbBackendMode, type DbBackendMode } from './db-backend-mode.ts';
 import { ensureLexiconInOpfs } from './opfs-lexicon.ts';
-import { opfsAvailable } from './opfs-storage.ts';
+import { opfsAvailable, resetOpfsProbe } from './opfs-storage.ts';
+import { storageError, storageFailureMessage } from './storage-error.ts';
 import {
   getLexiconCacheStatus,
   purgeStaleLexiconCaches,
@@ -35,6 +36,7 @@ import { invalidateRelationGraph } from './relation-graph.ts';
 import { invalidateLexiconMembership } from './lexicon-membership.ts';
 import { invalidateRelationPoolCache } from './relation-pool/index.ts';
 import { resetHeteronymIndex } from './heteronym.ts';
+import { resetTailPreload } from './tail-preload.ts';
 
 
 let db: DatabaseBackend | null = null;
@@ -44,6 +46,11 @@ let lexiconTargetPromise: Promise<LexiconTarget> | null = null;
 let databaseInitPromise: Promise<DatabaseBackend> | null = null;
 let lastLexiconRestoreSource: LexiconRestoreSource | null = null;
 let activeDbBackendMode: DbBackendMode | null = null;
+let persistenceError: Error | null = null;
+let databaseGeneration = 0;
+let databaseResetPromise: Promise<void> = Promise.resolve();
+
+export function getLexiconPersistenceError(): Error | null { return persistenceError; }
 
 const SKIP_OPFS_VFS_SESSION_KEY = 'canto-skip-opfs-vfs';
 
@@ -121,8 +128,8 @@ async function loadSqlJsFromBytes(bytes: Uint8Array): Promise<DatabaseBackend> {
 }
 
 async function persistLexiconForOffline(version: string, bytes: Uint8Array): Promise<void> {
-  if (!(await opfsAvailable()) || !bytes.byteLength) return;
   try {
+    if (!(await opfsAvailable()) || !bytes.byteLength) return;
     const ensured = await ensureLexiconInOpfs({
       version,
       expectedByteSize: bytes.byteLength,
@@ -134,6 +141,7 @@ async function persistLexiconForOffline(version: string, bytes: Uint8Array): Pro
         : `Lexicon already in OPFS (${ensured.byteSize} bytes)`,
     );
   } catch (error) {
+    persistenceError = storageError(error, 'persist', version);
     console.warn('Lexicon OPFS persist skipped:', error);
   }
 }
@@ -190,6 +198,7 @@ async function initializeOpfsLexicon(target: LexiconTarget): Promise<DatabaseBac
     gzip: target.useGzip,
     progressTotal: target.fetchByteSize,
     expectedByteSize: target.byteSize,
+    expectedSha256: target.sha256,
   });
   lastLexiconRestoreSource = opened.fetched ? 'network' : 'opfs';
   console.log(
@@ -217,6 +226,7 @@ async function openLexiconDatabase(target: LexiconTarget): Promise<DatabaseBacke
     return opened;
   } catch (error) {
     console.warn('OPFS VFS lexicon open failed, degrading to sql.js', error);
+    await resetOpfsVfsWorker();
     markOpfsVfsSessionSkip();
     activeDbBackendMode = 'sqljs';
     return initializeSqlJsPath(target);
@@ -267,9 +277,17 @@ export async function initializeDatabase(dbPath?: string): Promise<DatabaseBacke
   if (db && isInitialized) return db;
   if (databaseInitPromise) return databaseInitPromise;
 
+  const generation = databaseGeneration;
+  const reset = databaseResetPromise;
+  const assertCurrent = () => {
+    if (generation !== databaseGeneration) throw new DOMException('Database initialization cancelled', 'AbortError');
+  };
   databaseInitPromise = (async () => {
     try {
-      prewarmOpfsVfsWorker();
+      await reset;
+      assertCurrent();
+      persistenceError = null;
+      if (getDbBackendMode() === 'opfs-vfs' && !shouldSkipOpfsVfsThisSession()) prewarmOpfsVfsWorker();
       resetGateProgress();
       reportGatePhase('download', 0);
 
@@ -283,6 +301,7 @@ export async function initializeDatabase(dbPath?: string): Promise<DatabaseBacke
         : await getCurrentLexiconTarget();
 
       db = await openLexiconDatabase(target);
+      assertCurrent();
       // openLexicon 已報 open@0.9（OPFS）或 open@0.95（sql.js）；唔好再報較低 open@0.4。
       reportGatePhase('open', 0.92);
       // C1 ADR-0038: refuse legacy JSON phoneme columns.
@@ -299,7 +318,7 @@ export async function initializeDatabase(dbPath?: string): Promise<DatabaseBacke
             /* ignore */
           }
           db = null;
-          resetOpfsVfsWorker();
+          await resetOpfsVfsWorker();
           await purgeStaleLexiconCaches(target, 'phoneme storage contract');
           db = await openLexiconDatabase(target);
           await assertPhonemeStorageContract(db);
@@ -315,7 +334,7 @@ export async function initializeDatabase(dbPath?: string): Promise<DatabaseBacke
           /* ignore */
         }
         db = null;
-        resetOpfsVfsWorker();
+        await resetOpfsVfsWorker();
         await purgeStaleLexiconCaches(target, 'word length invariant');
         db = await openLexiconDatabase(target);
         await assertLexiconLengthInvariant(db);
@@ -331,18 +350,21 @@ export async function initializeDatabase(dbPath?: string): Promise<DatabaseBacke
       resetHeteronymIndex();
       reportGatePhase('open', 0.96);
       await ensureGateAuxiliaryIndexes();
+      assertCurrent();
       reportGatePhase('open', 1);
       isInitialized = true;
 
       console.log(`Database initialized (${getActiveDbBackendMode()})`);
       return db;
     } catch (error) {
-      databaseInitPromise = null;
       isInitialized = false;
       if (db) {
-        void db.close();
+        try { await db.close(); } catch { /* preserve initialization failure */ }
         db = null;
       }
+      await resetOpfsVfsWorker();
+      if (generation !== databaseGeneration) throw error;
+      databaseInitPromise = null;
       console.error('Failed to initialize database:', error);
       const offline = typeof navigator !== 'undefined' && !navigator.onLine;
       const detail =
@@ -350,9 +372,10 @@ export async function initializeDatabase(dbPath?: string): Promise<DatabaseBacke
           ? `（${error.message}）`
           : '';
       throw new Error(
-        offline
+        storageFailureMessage(error) ?? (offline
           ? '離線無法載入詞庫；請連網開啟一次，待顯示「離線就緒」後再試飛航模式'
-          : `無法載入詞庫，請確認網路後重試${detail}`,
+          : `無法載入詞庫，請確認網路後重試${detail}`),
+        { cause: error },
       );
     }
   })();
@@ -370,7 +393,13 @@ export function isDatabaseInitialized(): boolean {
   return injectedDb !== null || isInitialized;
 }
 
-export function resetDatabase(): void {
+export function resetDatabase(): Promise<void> {
+  databaseGeneration += 1;
+  const previousInit = databaseInitPromise;
+  const previousReset = databaseResetPromise;
+  const previousDb = db;
+  const tailStopped = resetTailPreload();
+  db = null;
   injectedDb = null;
   isInitialized = false;
   staticRelationLoaded = false;
@@ -385,11 +414,26 @@ export function resetDatabase(): void {
   databaseInitPromise = null;
   lastLexiconRestoreSource = null;
   activeDbBackendMode = null;
-  resetOpfsVfsWorker();
-  if (db) {
-    void db.close();
-    db = null;
-  }
+  persistenceError = null;
+  resetOpfsProbe();
+  const workerClosed = resetOpfsVfsWorker();
+  databaseResetPromise = (async () => {
+    await previousReset;
+    await tailStopped;
+    await workerClosed;
+    try { await previousDb?.close(); } catch { /* resources may already have been terminated */ }
+    try { await previousInit; } catch { /* invalidated attempt */ }
+    // In-flight preload may have populated caches after the synchronous invalidation.
+    staticRelationLoaded = false;
+    resetGateAuxiliaryIndexes();
+    invalidatePhonemeIndex();
+    invalidateRelationGraph();
+    resetCompoundCaches();
+    invalidateLexiconMembership();
+    invalidateRelationPoolCache();
+    resetHeteronymIndex();
+  })();
+  return databaseResetPromise;
 }
 
 export { db };

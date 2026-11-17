@@ -4,7 +4,7 @@
 import { lexiconStorageVersion, type LexiconTarget } from './lexicon-manifest.ts';
 import { fetchLexiconBytesFromUrl } from './lexicon-fetch.ts';
 import { lexiconOpfsFileName, readLexiconFromOpfs, removeLexiconFromOpfs } from './opfs-lexicon.ts';
-import { opfsFileSize } from './opfs-storage.ts';
+import { opfsFileSize, opfsFileExists } from './opfs-storage.ts';
 
 export type LexiconRestoreSource = 'opfs' | 'sw-cache' | 'network';
 
@@ -15,7 +15,8 @@ export type LexiconCacheStatus = {
 };
 
 export async function isOpfsLexiconCached(version: string): Promise<boolean> {
-  return (await opfsFileSize(lexiconOpfsFileName(version))) > 0;
+  const name = lexiconOpfsFileName(version);
+  return !(await opfsFileExists(`${name}.importing`)) && (await opfsFileSize(name)) > 0;
 }
 
 export async function isSwLexiconCached(url: string): Promise<boolean> {
@@ -37,7 +38,7 @@ export async function purgeSwLexiconCache(urls: string[]): Promise<void> {
       const cache = await caches.open(name);
       for (const url of urls) {
         try {
-          await cache.delete(url, { ignoreSearch: true });
+          await cache.delete(url);
         } catch {
           /* best-effort */
         }

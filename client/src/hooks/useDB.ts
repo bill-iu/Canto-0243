@@ -12,11 +12,9 @@ import {
 } from 'react';
 import {
   initializeDatabase,
-  getCurrentLexiconTarget,
   getDefaultDbUrl,
   isDatabaseInitialized,
   isLexiconCachedForBackend,
-  removeLexiconFromOpfs,
   resetDatabase,
   clearOpfsVfsSessionSkip,
 } from '../db/init';
@@ -36,12 +34,12 @@ import type {
   SearchPageResult,
 } from '../db/query';
 import { isSearchCancelledError } from '../db/search-cancel.ts';
-import { reportGatePhase, subscribeGateProgress, resetGateProgressListeners } from '../db/startup-progress.ts';
+import { reportGatePhase, subscribeGateProgress, resetGateProgress } from '../db/startup-progress.ts';
+import { storageFailureMessage } from '../db/storage-error.ts';
 import {
   isStartupComplete,
   startTailPreload,
   subscribeTailProgress,
-  resetTailPreload,
 } from '../db/tail-preload.ts';
 import { isPortableHost } from '../host-mode.ts';
 import {
@@ -170,6 +168,8 @@ function useEngineDBState(enabled: boolean): UseDBReturn {
   const [isDbCached, setIsDbCached] = useState<boolean | null>(null);
   const [isValidated, setIsValidated] = useState<boolean>(false);
   const initializeInFlightRef = useRef<Promise<void> | null>(null);
+  const retryInFlightRef = useRef<Promise<void> | null>(null);
+  const attemptRef = useRef(0);
   const initStartedAtRef = useRef<number | null>(null);
   const hadCacheAtInitRef = useRef(false);
   const statusRef = useRef(status);
@@ -210,6 +210,10 @@ function useEngineDBState(enabled: boolean): UseDBReturn {
       return;
     }
 
+    const attempt = ++attemptRef.current;
+    const current = () => attempt === attemptRef.current;
+    statusRef.current = 'loading';
+    isValidatedRef.current = false;
     const run = (async () => {
       try {
         setStatus('loading');
@@ -220,10 +224,12 @@ function useEngineDBState(enabled: boolean): UseDBReturn {
         setSuppressGateOverlay(false);
         initStartedAtRef.current = performance.now();
         hadCacheAtInitRef.current = await isLexiconCachedForBackend();
-
+        if (!current()) return;
         await initializeDatabase();
+        if (!current()) return;
         reportGatePhase('validate', 0.3);
         await validateOfflineReadiness();
+        if (!current()) return;
         reportGatePhase('validate', 1);
         setIsValidated(true);
 
@@ -233,10 +239,16 @@ function useEngineDBState(enabled: boolean): UseDBReturn {
         }
 
         setStatus('ready');
+        statusRef.current = 'ready';
+        isValidatedRef.current = true;
         setProgress(100);
         void startTailPreload();
       } catch (err) {
-        setError(err instanceof Error ? err : new Error(String(err)));
+        if (!current()) return;
+        statusRef.current = 'error';
+        isValidatedRef.current = false;
+        const message = storageFailureMessage(err);
+        setError(message ? new Error(message, { cause: err }) : err instanceof Error ? err : new Error(String(err)));
         setStatus('error');
         setProgress(0);
         setIsValidated(false);
@@ -255,25 +267,28 @@ function useEngineDBState(enabled: boolean): UseDBReturn {
 
   const retryOfflineReady = useCallback(async () => {
     if (!enabled) return;
-    resetDatabase();
-    resetGateProgressListeners();
-    resetTailPreload();
-    setStatus('idle');
-    setProgress(0);
-    setTailProgress(0);
-    setStartupComplete(false);
-    setSuppressGateOverlay(false);
-    setError(null);
-    setIsValidated(false);
-    clearOpfsVfsSessionSkip();
-    try {
-      const target = await getCurrentLexiconTarget();
-      await removeLexiconFromOpfs(target.version);
-    } catch {
-      /* ponytail: purge stale OPFS best-effort */
-    }
-    await checkDbCached();
-    await initialize();
+    if (retryInFlightRef.current) return retryInFlightRef.current;
+    const run = (async () => {
+      attemptRef.current += 1;
+      statusRef.current = 'loading';
+      isValidatedRef.current = false;
+      setStatus('loading');
+      setProgress(0);
+      setTailProgress(0);
+      setStartupComplete(false);
+      setSuppressGateOverlay(false);
+      setError(null);
+      setIsValidated(false);
+      resetGateProgress();
+      await resetDatabase();
+      initializeInFlightRef.current = null;
+      clearOpfsVfsSessionSkip();
+      await checkDbCached();
+      await initialize();
+    })();
+    retryInFlightRef.current = run;
+    try { await run; }
+    finally { if (retryInFlightRef.current === run) retryInFlightRef.current = null; }
   }, [checkDbCached, enabled, initialize]);
 
   const searchQuery = useCallback(async (options: QueryOptions) => {
@@ -298,8 +313,12 @@ function useEngineDBState(enabled: boolean): UseDBReturn {
 
   const reset = useCallback(() => {
     if (!enabled) return;
-    resetDatabase();
-    resetGateProgressListeners();
+    attemptRef.current += 1;
+    statusRef.current = 'idle';
+    isValidatedRef.current = false;
+    initializeInFlightRef.current = null;
+    void resetDatabase();
+    resetGateProgress();
     setStatus('idle');
     setProgress(0);
     setTailProgress(0);
@@ -314,10 +333,12 @@ function useEngineDBState(enabled: boolean): UseDBReturn {
     if (initializeInFlightRef.current || !isDatabaseInitialized() || status !== 'idle') {
       return;
     }
+    const attempt = attemptRef.current;
     void (async () => {
       try {
         reportGatePhase('validate', 0.3);
         await validateOfflineReadiness();
+        if (attempt !== attemptRef.current) return;
         reportGatePhase('validate', 1);
         setIsValidated(true);
         setStatus('ready');

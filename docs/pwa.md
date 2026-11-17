@@ -8,6 +8,14 @@
 - 詞庫版本：跟 release tag（semver，例如 `v1.0.3`）
 - DB 更新：大換庫跟 **新 semver 全量發佈**；細換庫可同一 tag `-WithLexicon` 覆寫；程式-only 刷新 **唔**覆寫庫
 
+## 啟動相容與復原（2026-11-17）
+
+- iOS／iPadOS 相容目標為 **16.4 起**（包括 17、18）；主畫面 PWA 與 Safari 須分開驗證飛航冷啟，能力模擬不代替實機驗收。
+- 預設 opfs-vfs；native Worker 失敗先清理，再以 sql.js 開庫。舊 Safari 缺 createWritable 時，專用 Worker 用同步控制代碼分塊保存詞庫。
+- 「重試離線就緒」保留有效詞庫、句稿及偏好，只於確認完整性失敗時重建該 identity；儲存空間不足、其他分頁使用中與儲存權限受限分開提示。
+- OPFS 可用時仍須持久副本＋真查詢才解鎖，唔以逾時或 RAM 中有詞庫代替 Ready。
+- 檢查：`node scripts/self-check-harness.mjs --id startup-storage-recovery`（client 目錄）。詳見 [修復計劃](working-plans/2026-11-17-pwa-browser-startup-repair.md)。
+
 ## 產物體積（研究結論，v1.1.x）
 
 | 比較 | 約略 |

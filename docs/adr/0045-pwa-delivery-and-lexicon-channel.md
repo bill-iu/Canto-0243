@@ -8,7 +8,7 @@
 
 1. **React + Vite PWA**（`client/`）部署 GitHub Pages；Service Worker 離線快取。
 2. **查詢引擎** — **方案 D**：TypeScript port（與 Portable 雙引擎），**唔**走 Pyodide（方案 E 暫緩）。Parity 以 golden／smoke 守。
-3. **DB backend** — 預設／fallback **sql.js**；**opfs-vfs**（wa-sqlite Worker + OPFSCoopSyncVFS）為可選路徑，流式寫入 OPFS、唔把整庫載入 sql.js heap。能力不足則降級 sql.js。
+3. **DB backend** — 預設 **opfs-vfs**（wa-sqlite Worker + OPFSCoopSyncVFS），流式寫入 OPFS；可指定 **sqljs**，native 開庫失敗亦降級 sql.js。降級前須關閉／終止失敗 Worker 並結束 pending 請求。sql.js 的 OPFS 持久化按能力選 createWritable 或專用 Worker 同步控制代碼，不依賴 Safari 26 API。
 
 ## 2. 帶寬與詞庫發現
 
@@ -30,6 +30,11 @@
 2. **渠道同步（S3）** — 發佈閘綠後 `copy-db.js` copy 入 `client/public/` + 刷 manifest（可選 gz）；閘紅唔自動 sync。
 3. **開發掛載（S2）** — Vite dev 優先 stream 根 `lyrics.db`。
 4. **完整性** — 開庫校 `byteSize`／`sha256`；唔合 purge OPFS + SW 後重拉。OPFS 同 version 不同 size 須重下（唔靜默沿用舊包）。
+5. **匯入與復原** — 兩後端以完整版本＋SHA 檔名共用匯入鎖；寫入中標記只於落地驗證成功後移除。只有 NotFoundError 當缺檔；鎖定、配額及權限錯誤保留原因。一般重試只重開及驗證，證實損壞才精準重建，唔清全站資料。
+
+## 5. 瀏覽器相容目標（2026-11-17）
+
+PWA 編譯與驗收目標為 iOS／iPadOS 16.4 起，包括 17、18。舊 Safari 的 sql.js 持久化以小型 Worker 分塊寫入，保留主執行緒 bytes，不再假設 getDirectory 代表 createWritable 可用。自動化能力故障注入不等同各 iOS 版本實機飛航冷啟驗收；實測狀態見修復驗證紀錄。
 
 **Considered Options（摘要）**
 

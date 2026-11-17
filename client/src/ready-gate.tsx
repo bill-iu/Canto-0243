@@ -59,7 +59,7 @@ export interface ReadyGateProps {
 }
 
 function unlockShell() {
-  sessionStorage.setItem(PWA_GATE_LANDED_KEY, '1');
+  try { sessionStorage.setItem(PWA_GATE_LANDED_KEY, '1'); } catch { /* storage is optional for shell display */ }
   revealPwaShell();
 }
 

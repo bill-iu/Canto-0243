@@ -12,6 +12,7 @@ import { ensureProjectPosCarrier } from '../pos/carrier.ts';
 
 type TailListener = (progress: number) => void;
 
+let generation = 0;
 let tailPromise: Promise<void> | null = null;
 let tailComplete = false;
 let tailProgress = 0;
@@ -39,13 +40,16 @@ async function runStage(
   from: number,
   to: number,
   work: () => Promise<void>,
+  attempt: number,
 ): Promise<void> {
+  if (attempt !== generation) throw new DOMException('Tail cancelled', 'AbortError');
   setTailProgress(from);
   try {
     await work();
   } catch (err) {
     console.warn(`Tail preload stage «${label}» failed (degraded):`, err);
   }
+  if (attempt !== generation) throw new DOMException('Tail cancelled', 'AbortError');
   setTailProgress(to);
 }
 
@@ -71,38 +75,40 @@ export function startTailPreload(): Promise<void> {
   if (tailComplete) return Promise.resolve();
   if (tailPromise) return tailPromise;
 
+  const attempt = generation;
   tailPromise = (async () => {
     setTailProgress(2);
 
     // Idempotent; gate already loaded these — cheap hit if warm
     await runStage('gate-aux', 2, 10, async () => {
       await ensureGateAuxiliaryIndexes();
-    });
+    }, attempt);
 
     await runStage('static-relation', 10, 35, async () => {
       await ensureStaticRelationIndexes();
-    });
+    }, attempt);
 
     // ADR-0058: 詞性載體 — never blocks gate; missing → 詞性缺標
     await runStage('project-pos', 35, 42, async () => {
       await ensureProjectPosCarrier(publicAssetUrl('project-pos-index.json'));
-    });
+    }, attempt);
 
     await runStage('lexicon-membership', 42, 70, async () => {
       const db = getDbOrNull();
       if (!db) return;
       await getLexiconMembership(db);
-    });
+    }, attempt);
 
     await runStage('phoneme-index', 70, 100, async () => {
       const db = getDbOrNull();
       if (!db) return;
       await ensurePhonemeIndex(db);
-    });
+    }, attempt);
 
     setTailProgress(100);
     tailComplete = true;
   })().catch((err) => {
+    if (attempt !== generation) return;
     tailPromise = null;
     console.warn('Tail preload failed (degraded):', err);
     setTailProgress(100);
@@ -112,9 +118,13 @@ export function startTailPreload(): Promise<void> {
   return tailPromise;
 }
 
-export function resetTailPreload(): void {
+export function resetTailPreload(): Promise<void> {
+  const previous = tailPromise;
+  generation += 1;
   tailPromise = null;
   tailComplete = false;
   tailProgress = 0;
-  tailListeners.clear();
+  // Active hooks retain their subscriptions across retry.
+  setTailProgress(0);
+  return previous ?? Promise.resolve();
 }

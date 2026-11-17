@@ -1,6 +1,7 @@
 import type { DatabaseBackend, DatabaseStatement, SqlBindParams } from './database-backend.ts';
 import { lexiconOpfsFileName } from './opfs-lexicon.ts';
 import { reportDownloadBytes } from './startup-progress.ts';
+import { storageError } from './storage-error.ts';
 import type { OpfsVfsWorkerRequest, OpfsVfsWorkerResponse } from './opfs-vfs-worker.ts';
 import type { ReplacementPlanV1, WorkbenchCandidateResponse } from '../workbench/contracts.ts';
 import type { GroupPoolInput } from '../workbench/group-candidates.ts';
@@ -20,13 +21,13 @@ type InitResult = Extract<OpfsVfsWorkerResponse, { type: 'init-ok' }>;
 type QueryResult = Extract<OpfsVfsWorkerResponse, { type: 'query-ok' }>;
 type WorkbenchResult = Extract<OpfsVfsWorkerResponse, { type: 'workbench-ok' }>;
 
-let sharedWorker: Worker | null = null;
 let sharedBackend: OpfsVfsBackend | null = null;
 
 class OpfsVfsBackend implements DatabaseBackend {
   private nextId = 1;
   private readonly pending = new Map<number, Pending>();
   private closed = false;
+  private closing: Promise<void> | null = null;
   private readonly worker: Worker;
 
   constructor(worker: Worker) {
@@ -34,6 +35,7 @@ class OpfsVfsBackend implements DatabaseBackend {
     worker.addEventListener('message', (event: MessageEvent<OpfsVfsWorkerResponse>) => {
       const res = event.data;
       if (res.type === 'progress') {
+        if (this.closed) return;
         reportDownloadBytes(res.loaded, res.total);
         return;
       }
@@ -48,7 +50,8 @@ class OpfsVfsBackend implements DatabaseBackend {
         pending: this.pending.size,
       });
       if (res.type === 'error') {
-        pending.reject(new Error(res.message));
+        recordResumeDebug('worker-failure', { name: res.name, stage: res.stage, fileName: res.fileName ?? null });
+        pending.reject(storageError(res, res.stage));
         return;
       }
       pending.resolve(res);
@@ -56,20 +59,23 @@ class OpfsVfsBackend implements DatabaseBackend {
     worker.addEventListener('error', (event) => {
       recordResumeDebug('worker-error', { message: event.message });
       this.rejectAll(event.error ?? new Error(event.message));
+      this.terminate();
     });
     worker.addEventListener('messageerror', () => {
       recordResumeDebug('worker-message-error', { pending: this.pending.size });
+      this.rejectAll(storageError(new Error('Cannot decode Worker response'), 'worker-message'));
+      this.terminate();
     });
   }
 
   async prewarm(): Promise<void> {
-    void this.ask({ type: 'prewarm' });
+    await this.ask({ type: 'prewarm' });
   }
 
   async init(
     fileName: string,
     dbUrl: string,
-    opts?: { gzip?: boolean; progressTotal?: number; expectedByteSize?: number },
+    opts?: { gzip?: boolean; progressTotal?: number; expectedByteSize?: number; expectedSha256?: string },
   ): Promise<InitResult> {
     return this.ask({
       type: 'init',
@@ -78,6 +84,7 @@ class OpfsVfsBackend implements DatabaseBackend {
       gzip: opts?.gzip,
       progressTotal: opts?.progressTotal,
       expectedByteSize: opts?.expectedByteSize,
+      expectedSha256: opts?.expectedSha256,
     });
   }
 
@@ -86,14 +93,29 @@ class OpfsVfsBackend implements DatabaseBackend {
     return new OpfsVfsStatement(this, sql);
   }
 
-  async close(): Promise<void> {
-    if (this.closed) return;
+  close(): Promise<void> {
+    if (this.closing) return this.closing;
+    if (this.closed) return Promise.resolve();
     this.closed = true;
-    try {
-      await this.ask({ type: 'close' });
-    } finally {
-      this.rejectAll(new Error('OPFS VFS database closed'));
-    }
+    this.rejectAll(new DOMException('OPFS VFS database closed', 'AbortError'));
+    this.closing = (async () => {
+      let timer: ReturnType<typeof setTimeout> | undefined;
+      try {
+        await Promise.race([
+          this.ask({ type: 'close' }),
+          new Promise<void>(resolve => { timer = setTimeout(resolve, 1500); }),
+        ]);
+      } catch { /* termination releases resources even if graceful close fails */ }
+      finally { clearTimeout(timer); this.terminate(); }
+    })();
+    return this.closing;
+  }
+
+  private terminate(): void {
+    this.closed = true;
+    this.rejectAll(new DOMException('OPFS VFS Worker terminated', 'AbortError'));
+    this.worker.terminate();
+    if (sharedBackend === this) { sharedBackend = null; }
   }
 
   async query(sql: string, params: SqlBindParams): Promise<QueryResult> {
@@ -121,6 +143,7 @@ class OpfsVfsBackend implements DatabaseBackend {
   }
 
   private ask<T extends Omit<OpfsVfsWorkerRequest, 'id'>>(msg: T): Promise<ExtractResponse<T['type']>> {
+    if (this.closed && msg.type !== 'close') return Promise.reject(new DOMException('OPFS VFS database closed', 'AbortError'));
     const id = this.nextId;
     this.nextId += 1;
     const request = { ...msg, id } as OpfsVfsWorkerRequest;
@@ -137,7 +160,8 @@ class OpfsVfsBackend implements DatabaseBackend {
         requestType: request.type,
         pending: this.pending.size,
       });
-      this.worker.postMessage(request);
+      try { this.worker.postMessage(request); }
+      catch (error) { this.pending.delete(id); reject(error); }
     });
   }
 
@@ -205,8 +229,8 @@ function getSharedBackend(): OpfsVfsBackend {
     throw new Error('OPFS VFS requires Worker support');
   }
   if (!sharedBackend) {
-    sharedWorker = new Worker(new URL('./opfs-vfs-worker.ts', import.meta.url), { type: 'module' });
-    sharedBackend = new OpfsVfsBackend(sharedWorker);
+    const worker = new Worker(new URL('./opfs-vfs-worker.ts', import.meta.url), { type: 'module' });
+    sharedBackend = new OpfsVfsBackend(worker);
     recordResumeDebug('worker-created');
   }
   return sharedBackend;
@@ -215,7 +239,7 @@ function getSharedBackend(): OpfsVfsBackend {
 /** E: 下載前預熱 wa-sqlite + OPFS VFS */
 export function prewarmOpfsVfsWorker(): void {
   try {
-    void getSharedBackend().prewarm();
+    void getSharedBackend().prewarm().catch(error => console.warn('OPFS prewarm failed:', error));
   } catch {
     /* ponytail: prewarm best-effort */
   }
@@ -228,13 +252,10 @@ export type OpenOpfsVfsDatabaseResult = {
   fetched: boolean;
 };
 
-export function resetOpfsVfsWorker(): void {
-  if (sharedWorker) {
-    recordResumeDebug('worker-reset');
-    sharedWorker.terminate();
-    sharedWorker = null;
-    sharedBackend = null;
-  }
+export async function resetOpfsVfsWorker(): Promise<void> {
+  const backend = sharedBackend;
+  sharedBackend = null;
+  if (backend) { recordResumeDebug('worker-reset'); await backend.close(); }
 }
 
 export function getOpfsVfsWorkerDebugState(): ResumeDebugWorkerState {
@@ -274,6 +295,7 @@ export async function openOpfsVfsDatabase(opts: {
   gzip?: boolean;
   progressTotal?: number;
   expectedByteSize?: number;
+  expectedSha256?: string;
 }): Promise<OpenOpfsVfsDatabaseResult> {
   const backend = getSharedBackend();
   const fileName = lexiconOpfsFileName(opts.version);
@@ -281,6 +303,7 @@ export async function openOpfsVfsDatabase(opts: {
     gzip: opts.gzip,
     progressTotal: opts.progressTotal,
     expectedByteSize: opts.expectedByteSize,
+    expectedSha256: opts.expectedSha256,
   });
   return {
     db: backend,

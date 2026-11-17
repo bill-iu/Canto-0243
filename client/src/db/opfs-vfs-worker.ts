@@ -8,6 +8,9 @@ import { loadBrowserRankingIndex } from './ranking-index-browser.ts';
 import type { ReplacementPlanV1, WorkbenchCandidateResponse } from '../workbench/contracts.ts';
 import type { GroupPoolInput } from '../workbench/group-candidates.ts';
 import { PwaCandidateSnapshotStore } from '../workbench/pwa-candidate-snapshot.ts';
+import { withLexiconImportLock } from './opfs-lexicon.ts';
+import { opfsFileExists, markOpfsImport, removeOpfsFile } from './opfs-storage.ts';
+import { isMissingFile, storageError } from './storage-error.ts';
 
 const VFS_NAME = 'canto-opfs-coop';
 const DB_RELATED_SUFFIXES = ['', '-journal', '-wal'] as const;
@@ -25,6 +28,7 @@ export type OpfsVfsWorkerRequest =
       progressTotal?: number;
       /** When set, existing OPFS file is dropped if size differs (stale channel cache). */
       expectedByteSize?: number;
+      expectedSha256?: string;
     }
   | { id: number; type: 'query'; sql: string; params: SqlBindParams }
   | {
@@ -43,9 +47,10 @@ export type OpfsVfsWorkerResponse =
   | { id: number; type: 'query-ok'; rows: Array<Record<string, unknown>> }
   | { id: number; type: 'workbench-ok'; response: WorkbenchCandidateResponse }
   | { id: number; type: 'close-ok' }
-  | { id: number; type: 'error'; message: string };
+  | { id: number; type: 'error'; message: string; name: string; stage: string; fileName?: string };
 
 let sqlite3: Sqlite3 | null = null;
+let sqliteInit: Promise<Sqlite3> | null = null;
 let dbHandle: number | null = null;
 let activeFileName = '';
 let workbenchSnapshots = new PwaCandidateSnapshotStore();
@@ -56,26 +61,24 @@ function postProgress(loaded: number, total: number): void {
 
 async function ensureSqlite(): Promise<Sqlite3> {
   if (sqlite3) return sqlite3;
-  const module = await SQLiteESMFactory();
-  const db = SQLite.Factory(module);
-  const vfs = await OPFSCoopSyncVFS.create(VFS_NAME, module);
-  db.vfs_register(vfs, true);
-  sqlite3 = db;
-  return db;
+  sqliteInit ??= (async () => {
+    const module = await SQLiteESMFactory();
+    const db = SQLite.Factory(module);
+    const vfs = await OPFSCoopSyncVFS.create(VFS_NAME, module);
+    db.vfs_register(vfs, true);
+    return (sqlite3 = db);
+  })().catch(error => { sqliteInit = null; throw error; });
+  return sqliteInit;
 }
 
 async function opfsFileSize(fileName: string): Promise<number> {
   try {
     const root = await navigator.storage.getDirectory();
     const handle = await root.getFileHandle(fileName);
-    const access = await handle.createSyncAccessHandle();
-    try {
-      return access.getSize();
-    } finally {
-      access.close();
-    }
-  } catch {
-    return 0;
+    return (await handle.getFile()).size;
+  } catch (error) {
+    if (isMissingFile(error)) return 0;
+    throw storageError(error, 'stat', fileName);
   }
 }
 
@@ -84,8 +87,8 @@ async function removeRelatedFiles(fileName: string): Promise<void> {
   for (const suffix of DB_RELATED_SUFFIXES) {
     try {
       await root.removeEntry(fileName + suffix);
-    } catch {
-      /* missing ok */
+    } catch (error) {
+      if (!isMissingFile(error)) throw storageError(error, 'remove', fileName + suffix);
     }
   }
 }
@@ -117,8 +120,13 @@ async function writeStreamToOpfs(
       const { value, done } = await reader.read();
       if (done) break;
       if (value?.byteLength) {
-        access.write(value as BufferSource, { at: offset });
-        offset += value.byteLength;
+        let written = 0;
+        while (written < value.byteLength) {
+          const count = access.write(value.subarray(written) as BufferSource, { at: offset + written });
+          if (count <= 0) throw new Error('OPFS write made no progress');
+          written += count;
+        }
+        offset += written;
         loaded += value.byteLength;
         if (total > 0 || loaded % (512 * 1024) < value.byteLength) {
           postProgress(loaded, total || loaded);
@@ -158,29 +166,42 @@ async function ensureDbFile(
   gzip: boolean,
   progressTotal?: number,
   expectedByteSize?: number,
+  expectedSha256?: string,
 ): Promise<{ byteSize: number; fetched: boolean }> {
-  const existing = await opfsFileSize(fileName);
-  if (existing > 0) {
-    if (expectedByteSize == null || existing === expectedByteSize) {
-      return { byteSize: existing, fetched: false };
+  return withLexiconImportLock(fileName, async () => {
+    const verifyHash = async () => {
+      if (!expectedSha256) return true;
+      const root = await navigator.storage.getDirectory();
+      const file = await (await root.getFileHandle(fileName)).getFile();
+      const hash = await crypto.subtle.digest('SHA-256', await file.arrayBuffer());
+      return Array.from(new Uint8Array(hash), b => b.toString(16).padStart(2, '0')).join('') === expectedSha256;
+    };
+    const incomplete = await opfsFileExists(`${fileName}.importing`);
+    const existing = await opfsFileSize(fileName);
+    if (existing > 0 && !incomplete) {
+      if ((expectedByteSize == null || existing === expectedByteSize) && await verifyHash()) {
+        return { byteSize: existing, fetched: false };
+      }
     }
-    // Same version key, different package (e.g. j2 compact slim vs legacy JSON).
-    await removeRelatedFiles(fileName);
-  }
 
-  const db = await ensureSqlite();
-  await removeRelatedFiles(fileName);
-  await createVfsShell(db, fileName);
-  const byteSize = await streamUrlIntoOpfs(fileName, dbUrl, gzip, progressTotal);
-  if (byteSize <= 0) {
-    throw new Error(`Empty lexicon payload for ${fileName}`);
-  }
-  if (expectedByteSize != null && byteSize !== expectedByteSize) {
-    throw new Error(
-      `Lexicon size mismatch after fetch: expected ${expectedByteSize}, got ${byteSize}`,
-    );
-  }
-  return { byteSize, fetched: true };
+    const db = await ensureSqlite();
+    await removeRelatedFiles(fileName);
+    await markOpfsImport(fileName);
+    await createVfsShell(db, fileName);
+    const byteSize = await streamUrlIntoOpfs(fileName, dbUrl, gzip, progressTotal);
+    if (byteSize <= 0) {
+      throw new Error(`Empty lexicon payload for ${fileName}`);
+    }
+    if (expectedByteSize != null && byteSize !== expectedByteSize) {
+      throw new Error(
+        `Lexicon size mismatch after fetch: expected ${expectedByteSize}, got ${byteSize}`,
+      );
+    }
+    if (!(await verifyHash())) throw new Error('Lexicon integrity check failed (sha256 mismatch)');
+    if (await opfsFileSize(fileName) !== byteSize) throw new Error('OPFS persisted size mismatch');
+    await removeOpfsFile(`${fileName}.importing`);
+    return { byteSize, fetched: true };
+  });
 }
 
 async function ensureOpenDb(fileName = activeFileName): Promise<number> {
@@ -273,8 +294,7 @@ const workerDatabase: DatabaseBackend = {
   },
 };
 
-self.onmessage = async (event: MessageEvent<OpfsVfsWorkerRequest>) => {
-  const msg = event.data;
+async function handleRequest(msg: OpfsVfsWorkerRequest): Promise<void> {
   try {
     if (msg.type === 'prewarm') {
       await ensureSqlite();
@@ -288,6 +308,7 @@ self.onmessage = async (event: MessageEvent<OpfsVfsWorkerRequest>) => {
         Boolean(msg.gzip),
         msg.progressTotal,
         msg.expectedByteSize,
+        msg.expectedSha256,
       );
       await ensureOpenDb(msg.fileName);
       await loadBrowserRankingIndex();
@@ -326,10 +347,20 @@ self.onmessage = async (event: MessageEvent<OpfsVfsWorkerRequest>) => {
       self.postMessage({ id: msg.id, type: 'close-ok' } satisfies OpfsVfsWorkerResponse);
     }
   } catch (error) {
+    const failure = storageError(error, msg.type);
     self.postMessage({
       id: msg.id,
       type: 'error',
-      message: error instanceof Error ? error.message : String(error),
+      message: failure.message,
+      name: failure.name,
+      stage: failure.stage,
+      fileName: failure.fileName,
     } satisfies OpfsVfsWorkerResponse);
   }
+}
+
+// SQLite/VFS operations share one connection, including init and close.
+let requests = Promise.resolve();
+self.onmessage = (event: MessageEvent<OpfsVfsWorkerRequest>) => {
+  requests = requests.then(() => handleRequest(event.data));
 };
