@@ -207,6 +207,8 @@ html.fonts-ready .ready-gate .pwa-boot-gate__status {
 }
 
 .ready-gate .primary-button {
+  flex: 0 0 auto;
+  max-width: calc(100vw - 48px);
   margin-top: 8px;
 }
 

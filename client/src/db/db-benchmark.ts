@@ -87,7 +87,7 @@ export function formatBenchmarkSample(sample: DbBenchmarkSample): string {
 export async function runDbBenchmark(opts?: { resetFirst?: boolean }): Promise<DbBenchmarkSample> {
   const t0 = performance.now();
   if (opts?.resetFirst) {
-    resetDatabase();
+    await resetDatabase();
   }
 
   const version = lexiconVersion();

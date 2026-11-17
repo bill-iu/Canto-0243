@@ -296,7 +296,7 @@ export default defineConfig(({ command, mode }) => {
           // ponytail: main bundle holds query+UI; split later if gate budget needs it
           chunkSizeWarningLimit: 600,
         }
-      : undefined,
+      : { target: ['chrome111', 'edge111', 'firefox114', 'safari16.4', 'ios16.4'] },
     define: {
       ...(portableHost ? { 'import.meta.env.VITE_PORTABLE_HOST': JSON.stringify('1') } : {}),
       'import.meta.env.VITE_RANKING_INDEX_SHA256': JSON.stringify(rankingAsset?.sha256 || ''),

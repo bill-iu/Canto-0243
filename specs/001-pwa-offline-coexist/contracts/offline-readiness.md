@@ -44,7 +44,7 @@
 
 | 路徑 | 職責 | 典型生命週期 |
 |------|------|----------------|
-| **OPFS** | 版本化檔案 `lyrics-{version}.db` 落地（`sqljs` 與 `opfs` 成功開庫後皆寫入） | 瀏覽器儲存空間；清除「網站資料」可能一併刪除 |
+| **OPFS** | 版本＋SHA 檔案 `lyrics-{version}-{sha256}.db` 落地（`sqljs` 與 `opfs-vfs` 皆支援；manifest 無 SHA 時退回版本鍵） | 瀏覽器儲存空間；清除「網站資料」可能一併刪除 |
 | **Service Worker `CacheFirst`** | HTTP 層快取 `lyrics.{version}.db`（含 `lyrics.dev.db`） | Workbox `database-cache`；與 HTML/JS 快取策略分開 |
 
 **復原優先順序**（實作：`client/src/db/lexicon-restore.ts`）：
@@ -53,12 +53,12 @@
 2. **SW 快取** — `fetch(lyrics.*.db)` 由 `CacheFirst` 命中（離線可用）
 3. **網路** — 僅在在線且前兩者皆無時下載
 
-兩條本機路徑**任一存在**即視為「詞庫已可離線取得」的前置條件（`isLexiconCachedForBackend`）；完成開庫與探針查詢後才進入 **Ready**。
+兩條本機路徑**任一存在**可作啟動的快取提示（`isLexiconCachedForBackend`），不等同 Ready。實際就緒驗證採保守條件：OPFS 可用時，必須有有效且已完成寫入的 OPFS 副本；OPFS API 缺失時才容許使用 SW 本機副本。兩者均須完成開庫與「事業」真查詢。暫時存取失敗不等同 OPFS API 缺失，須呈現真正原因及復原指引。
 
 **`VITE_DB_BACKEND` 差異**：
 
-- `sqljs`（預設）：開庫 bytes 來自上述 1→2→3；整檔進 RAM；**首次成功開庫後寫入 OPFS**（供 iOS 飛航冷啟）
-- `opfs`：優先 OPFS 開庫；若 OPFS 缺失則從 2 或 3 取得並**寫入 OPFS** 後再開
+- `sqljs`（明確指定／降級）：開庫 bytes 來自上述 1→2→3；整檔進 RAM；先驗證並持久化原始 bytes（供 iOS 飛航冷啟）。缺 createWritable 時以專用 Worker 同步控制代碼分塊寫入。
+- `opfs-vfs`（預設）：優先 OPFS 開庫；若 OPFS 缺失則從 2 或 3 取得並**寫入 OPFS** 後再開；失敗時先清理 Worker 才降級。
 
 ### Critical display fonts
 
@@ -75,5 +75,5 @@ PWA shell 的品牌字體屬離線就緒體驗的一部分。以下文字必須�
 見 [quickstart.md § Scenario B](../quickstart.md#scenario-b-p3-cache-evicted--user-can-self-recover)：
 
 - 若 **OPFS 與 SW 皆已清除** 且裝置離線 → **Not Ready**，提示需連網一次
-- 若 **僅清除其一** → 仍可能透過另一路徑完成離線就緒（無需重新下載全檔，除非兩路皆空）
+- 若 **僅清除其一** → 可透過另一路徑復原；OPFS 可用但副本已清除時，須由有效 SW 副本重建 OPFS 再完成就緒。
 - 使用者可透過「重新嘗試離線就緒」在連網後自助復原

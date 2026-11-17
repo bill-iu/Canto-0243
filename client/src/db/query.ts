@@ -23,12 +23,14 @@ import {
   getDatabase,
   getActiveDbBackendMode,
   getLastLexiconRestoreSource,
+  getLexiconPersistenceError,
   initializeDatabase,
   isDatabaseInitialized,
 } from './init';
 import { queryRows } from './database-backend.ts';
 import { getLexiconCacheStatus } from './lexicon-restore.ts';
 import { opfsAvailable } from './opfs-storage.ts';
+import { storageFailureMessage } from './storage-error.ts';
 import { DEFAULT_RELATION_POOL_PAGE_SIZE } from './relation-pool/index.ts';
 
 // Re-export the query engine types
@@ -224,6 +226,8 @@ export async function validateOfflineReadiness(): Promise<void> {
   const hasOpfs = await opfsAvailable();
   // ponytail: iOS 飛航依賴 OPFS；僅 SW 命中不足以保證冷啟
   if (hasOpfs && !cache.opfs) {
+    const failure = getLexiconPersistenceError();
+    if (failure) throw new Error(storageFailureMessage(failure) ?? '本機詞庫儲存失敗，請重試', { cause: failure });
     throw new Error('離線就緒驗證失敗：詞庫尚未寫入本機儲存，請稍候或重試');
   }
   if (!hasOpfs && !cache.any) {

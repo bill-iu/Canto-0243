@@ -6,6 +6,11 @@
   ],
   "checks": [
     {
+      "id": "startup-storage-recovery",
+      "script": "startup-storage-recovery-self-check.ts",
+      "tags": ["ci", "pwa", "local"]
+    },
+    {
       "id": "ranking-index-browser",
       "script": "ranking-index-browser-self-check.ts",
       "tags": ["ci", "pwa", "local"]
