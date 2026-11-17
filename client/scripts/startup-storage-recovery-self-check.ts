@@ -285,7 +285,7 @@ lexiconStorageVersion=x=>x.version,publicAssetUrl=x=>x,lexiconVersionFromEnv=()=
   './db-patch.ts': 'export const applyRuntimeDbPatches=async()=>{},ensureConnectiveCompoundRows=async()=>{},ensureComposedWordRow=async()=>{};',
   './lexicon-length-invariant.ts': 'export class LexiconLengthInvariantError extends Error{};export const assertLexiconLengthInvariant=async()=>{};',
   './phoneme-contract.ts': 'export const phonemeStorageContractOk=async()=>true,assertPhonemeStorageContract=async()=>{};',
-  './auxiliary-indexes.ts': 'export const ensureGateAuxiliaryIndexes=async()=>{},resetGateAuxiliaryIndexes=()=>{};',
+  './auxiliary-indexes.ts': 'export const ensureGateAuxiliaryIndexes=()=>globalThis.auxCall?.(),resetGateAuxiliaryIndexes=()=>{};',
   './tail-preload.ts': 'export const resetTailPreload=async()=>{};',
 });
 const disposal = defer(), disposalStarted = defer();
@@ -293,7 +293,8 @@ let sqlOpens = 0, databaseCloses = 0;
 let sqlWork = async () => { sqlOpens++; return { close: async () => { databaseCloses++; } }; };
 const sessionValues = new Map<string,string>();
 const initialization = realm(initCode, {
-  console: { ...console, warn() {}, log() {} },
+  console: { ...console, error() {}, warn() {}, log() {} },
+  navigator: { onLine: true },
   sessionStorage: { getItem: (k:string)=>sessionValues.get(k), setItem:(k:string,v:string)=>sessionValues.set(k,v),removeItem:(k:string)=>sessionValues.delete(k) },
   disposeWorker: () => { disposalStarted.resolve(); return disposal.promise; }, sqlOpen: () => sqlWork(),
 });
@@ -320,3 +321,19 @@ await clearing; await cancelled; await newInitialization;
 assert(initialization.subject.isDatabaseInitialized());
 assert(databaseCloses >= 2, 'cancelled/superseded DB connections must close');
 console.log('startup cross-backend/init cancellation self-check ok');
+
+// New callers must share a failure until cleanup ends, rather than opening underneath disposal.
+await initialization.subject.resetDatabase();
+const cleanupGate = defer(), cleanupStarted = defer();
+initialization.auxCall = async () => { throw new Error('auxiliary index failed'); };
+initialization.disposeWorker = () => { cleanupStarted.resolve(); return cleanupGate.promise; };
+const failing = initialization.subject.initializeDatabase();
+const failed = assert.rejects(failing, (error: any) => error.cause?.message === 'auxiliary index failed');
+await cleanupStarted.promise;
+const opensDuringCleanup = sqlOpens;
+const concurrent = assert.rejects(initialization.subject.initializeDatabase(), (error: any) => error.cause?.message === 'auxiliary index failed');
+await Promise.resolve(); await Promise.resolve();
+assert.equal(sqlOpens, opensDuringCleanup, 'initialization stays single-flight through failure cleanup');
+cleanupGate.resolve(); await Promise.all([failed, concurrent]);
+assert(!initialization.subject.isDatabaseInitialized());
+console.log('startup failure cleanup single-flight self-check ok');

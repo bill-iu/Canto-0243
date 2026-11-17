@@ -17,7 +17,7 @@
 |---|---|
 | TypeScript | tsconfig.app.json --noEmit 通過 |
 | startup-storage-recovery | 實際儲存函式／Worker 的舊 API 備援、部分寫入、配額、鎖定、缺檔、損壞副本、跨後端匯入互斥通過 |
-| 重試／初始化 | 實際 hook 的連按合併、過期結果隔離、實際初始化的先清理再降級、reset 排空舊連線通過 |
+| 重試／初始化 | 實際 hook 的連按合併、過期結果隔離、實際初始化的先清理再降級、reset 排空舊連線、失敗清理完成前維持 single-flight 通過 |
 | 就緒誠實 | 真查詢成功但持久化失敗時拒絕 Ready；有效副本成功；探針無結果拒絕 |
 | 排序索引 | ranking-index-browser-self-check 通過，含離線新 realm、同 tag 換內容、Vite Worker 與 Workbox |
 | 啟動進度 | startup-progress-self-check 的斷言通過 |
@@ -34,7 +34,7 @@
 - Windows 此次 shell 的子程序無法以裸 node／npx 名稱解析執行檔，npm run build／self-check harness 因此未跑起。使用已安裝的 Node，直接執行相同 prebuild、Vite、產物檢查及 tsx 腳本完成上述檢查；prebuild 四個資料步驟皆命中既有內容 stamp。
 - 既有 startup-progress 腳本輸出成功後會因 BroadcastChannel 保持開啟，該次程序已停止；排序索引與本次新增檢查均正常結束。不是新增修復造成的斷言失敗。
 - iOS／iPadOS 16.4、17、18 的 Safari 與主畫面 PWA、macOS Safari／Firefox、低記憶體實機仍待驗；能力注入與 Chromium 結果不冒充這些實機驗收。
-- A→B 自動更新與所有窄屏／字體放大組合仍待覆核；本輪未改 SW activation 策略。
+- 基本 A→B 更新已覆核：舊 SW 頁面仍可查，新頁面載入新版 index-525bfeyR.js 後仍有 4707 項結果；完整跨平台／雙分頁更新及窄屏／字體放大矩陣仍待覆核。本輪未改 SW activation 策略。
 
 ## 發佈狀態與既有版本
 
@@ -44,6 +44,7 @@
 - Windows 舊資產 SHA-256：909a8dcc3fe4b2d4ef2f4e0341160835a996e6f82cc3bccfa1b79c45da3d0af8。
 - macOS Intel 舊資產 SHA-256：d5afc9297a4b26113935f408aa00c3cf860cfc35d3d9cabb6640c537b96bc573。
 - 本機 .git/index.lock 寫入受限，git checkout／pull 無法執行；本機 gh 對 GitHub 的 socket 連線受限。GitHub 連接已讀取遠端基準與 Release 資訊。
+- 修復已透過 GitHub 連接推送 dev，建立 [PR #177](https://github.com/bill-iu/Canto-0243/pull/177)；CI 結果及合併狀態以 PR 即時頁為準。本機 Git HEAD 仍在起始基準，檔案保留修復；恢復 Git 寫入後須先核對與遠端內容一致，再同步 metadata，避免直接 reset --hard 丟棄工作樹內容。
 - Chrome 的 GitHub Pages workflow 頁目前未登入，未能觸發手動部署。發佈資產及 Pages 尚未更換；不把本機 build 成功當成已上線。
 
 後續須先確認 dev 修復提交及 CI，經 PR 合入 main，再從 main 刷新 v1.1.2 tag、重建並覆寫 Windows／macOS 程式資產（不覆寫詞庫），最後從 main dispatch pages.yml，target_tag=v1.1.2，並覆核線上搜尋及離線重開。

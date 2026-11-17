@@ -357,7 +357,6 @@ export async function initializeDatabase(dbPath?: string): Promise<DatabaseBacke
       console.log(`Database initialized (${getActiveDbBackendMode()})`);
       return db;
     } catch (error) {
-      if (generation === databaseGeneration) databaseInitPromise = null;
       isInitialized = false;
       if (db) {
         try { await db.close(); } catch { /* preserve initialization failure */ }
@@ -365,6 +364,7 @@ export async function initializeDatabase(dbPath?: string): Promise<DatabaseBacke
       }
       await resetOpfsVfsWorker();
       if (generation !== databaseGeneration) throw error;
+      databaseInitPromise = null;
       console.error('Failed to initialize database:', error);
       const offline = typeof navigator !== 'undefined' && !navigator.onLine;
       const detail =
